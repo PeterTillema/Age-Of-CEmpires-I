@@ -22,12 +22,9 @@ _:	ld	(TopRowLeftOrRight), a
 	and	a, 4
 	add	a, 12 + 8
 	ld	(DrawTile_Clipped_Height), a
-	ld	a, (ix + OFFSET_Y)
-	rra
-	rra
-	rra
-	and	a, 1
-	add	a, 4
+	ld	a, 7
+	cp	a, (ix + OFFSET_Y)
+	sbc	a, 2
 	ld	(TileHowManyRowsClipped), a
 	
 	ld	a, (ix + OFFSET_Y)	; Point to the output
