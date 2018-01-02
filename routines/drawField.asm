@@ -12,24 +12,22 @@ DrawField:
 _:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
-	ld	hl, (DrawTile_Unclipped - TileDrawingRoutinePtr1 - 2) & 0FFh << 8 + 18h		; Write JR <offset>
-	ld	(TileDrawingRoutinePtr1), hl
-	ld	hl, (DrawTile_Unclipped - TileDrawingRoutinePtr2 - 2) & 0FFh << 8 + 18h		; Write JR <offset>
-	ld	(TileDrawingRoutinePtr2), hl
 
+	ld	a, 028h
+	ld	(TileDrawingRoutinePtr1), a
+	
 	ld	a, (ix + OFFSET_Y)
 	cpl
 	and	a, 4
 	add	a, 12 + 8
 	ld	(DrawTile_Clipped_Height), a
 	ld	a, (ix + OFFSET_Y)
-	rra
+ 	rra
 	rra
 	rra
 	and	a, 1
-	add	a, 4
+	add	a, 4 
 	ld	(TileHowManyRowsClipped), a
-	
 	ld	a, (ix + OFFSET_Y)	; Point to the output
 	ld	e, a
 	ld	d, 160
@@ -60,6 +58,17 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	a, 29			; 29 rows
 	ld	(TempSP2), sp
 	ld	sp, lcdWidth
+	jr	DisplayEachRowLoop
+EnclosedDisplayJump:
+
+TriggerCliping:
+	jp	DrawTile_Clipped
+TileIsOutOfField:
+; z flag is correctly set for correct clip jump
+	exx
+	ld	hl, blackbuffer
+	jr	TileDrawingRoutinePtr1
+
 DisplayEachRowLoop:
 ; Registers:
 ;   BC  = length of row tile
@@ -82,20 +91,23 @@ startingPosition = $+2			; Here are the shadow registers active
 	jr	nz, +_
 TopRowLeftOrRight = $+2
 	lea	iy, iy+0
-_:	ex	af, af'
+_:	
+	ex	af, af'	; actually ex flag from bit 0,a
 	ld	a, 9
+
 DisplayTile:
 	ld	b, a
-	ld	a, d			; Check if DE and IX are >= 0 and < MAP_SIZE
-	or	a, ixh
-	jr	nz, TileIsOutOfField
-	ld	a, e			; Check if one of the both indexes is more than the MAP_SIZE, which is $80
+	ld	a, e
 	or	a, ixl
 	add	a, a
-	jr	c, TileIsOutOfField
-	ld	a, (hl)			; Get the tile index
-	or	a, a
+	sbc	a, a
+	or	a, d
+	or	a, ixh
+	jr	nz, TileIsOutOfField
+; a is zero here, just or it
+	or	a, (hl)			; Get the tile index
 	jp	z, SkipDrawingOfTile
+; z flag is NZ here
 	exx				; Here are the main registers active
 	ld	c, a
 	ld	b, 3
@@ -104,18 +116,8 @@ DisplayTile:
 	add	hl, bc
 	ld	hl, (hl)		; Pointer to the tile
 TileDrawingRoutinePtr1 = $
-	jr	DrawTile_Unclipped	; This will be modified to the clipped version after X rows
-	.db	0
-	.db	DrawTile_Clipped >> 16
-	
-TileIsOutOfField:
-	exx
-	ld	hl, blackBuffer
-TileDrawingRoutinePtr2 = $
-	jr	DrawTile_Unclipped	; This will be modified to the clipped version after X rows
-	.db	0
-	.db	DrawTile_Clipped >> 16
-	
+	jr	z, TriggerCliping	; z = never jump, nz=jump
+; actually use the z flag as a general flag since we know his status at this point of execution
 DrawTile_Unclipped:
 	lea	de, iy
 	ld	bc, 2
@@ -196,36 +198,39 @@ SkipDrawingOfTile:
 	add	hl, bc
 	dec	a
 	jp	nz, DisplayTile
-	ld	bc, (MAP_SIZE * 10 - 9) * 2
-	add	hl, bc
-	ex	de, hl
-	ld	bc, -9
-	add	hl, bc
-	ex	de, hl
-	lea	ix, ix+9+1
+
 	ex	af, af'
-	bit	0, a
+; previous ex also saved flag
 IncrementRowXOrNot1:
 	jr	nz, +_
 	inc	de
-	ld	bc, (-MAP_SIZE + 1) * 2
-	add	hl, bc
+	add	hl, bc	; bc still hold the correct value to add :)
 	dec	ix
+_:
+	ex	de, hl
+	ld	c, -9		; bc was previously <0
+	add	hl, bc
+	ex	de, hl
+	ld	bc, (MAP_SIZE * 10 - 9) * 2
+	add	hl, bc
+	lea	ix, ix+9+1
+
 TileHowManyRowsClipped = $+1
-_:	cp	a, 2
+	cp	a, 2
 	jr	nc, +_
-	ld	bc, DrawTile_Clipped & 0FFFFh << 8 + 0C3h
-	ld	(TileDrawingRoutinePtr1), bc
-	ld	(TileDrawingRoutinePtr2), bc
 	ld	c, a
+	ld	a, 020h
+	ld	(TileDrawingRoutinePtr1), a
 	ld	a, (DrawTile_Clipped_Height)
 	sub	a, 9
 	jr	c, StopDisplayTiles
 	inc	a
 	ld	(DrawTile_Clipped_Height), a
 	ld	a, c
-_:	dec	a
+_:	
+	dec	a
 	jp	nz, DisplayEachRowLoop
+
 StopDisplayTiles:
 	ld	de, (currDrawingBuffer)
 	ld	hl, _resources \.r2
@@ -267,7 +272,7 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 14
 	ldir
 	sub	a, 4
-	jp	z, StopDrawingTile
+	jp	z, +_
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
@@ -285,7 +290,7 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 30
 	ldir
 	sub	a, 4
-	jr	z, StopDrawingTile
+	jr	z, +_
 	add	iy, sp
 	lea	de, iy-16
 	ld	c, 34
@@ -303,7 +308,7 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 22
 	ldir
 	sub	a, 4
-	jr	z, StopDrawingTile
+	jr	z, +_
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
@@ -321,12 +326,11 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 6
 	ldir
 	sub	a, 4
-	jr	z, StopDrawingTile
+	jr	z, +_
 	add	iy, sp
 	lea	de, iy-0
 	ldi
 	ldi
-StopDrawingTile:
 _:	ld	iy, 0
 BackupIY = $-3
 	exx
