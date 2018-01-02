@@ -12,26 +12,21 @@ DrawField:
 _:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
-	ld	hl, (DrawTile_Unclipped - TileDrawingRoutinePtr1 - 2) & 0FFh << 8 + 18h		; Write JR <offset>
+	ld	hl, DrawTile_Unclipped	; Set drawing routine
 	ld	(TileDrawingRoutinePtr1), hl
-	ld	hl, (DrawTile_Unclipped - TileDrawingRoutinePtr2 - 2) & 0FFh << 8 + 18h		; Write JR <offset>
 	ld	(TileDrawingRoutinePtr2), hl
-
+	
 	ld	a, (ix + OFFSET_Y)
 	cpl
 	and	a, 4
 	add	a, 12 + 8
 	ld	(DrawTile_Clipped_Height), a
-	ld	a, (ix + OFFSET_Y)
-	rra
-	rra
-	rra
-	and	a, 1
-	add	a, 4
+	ld	a, 7
+	cp	(ix + OFFSET_Y)
+	sbc	a, 2
 	ld	(TileHowManyRowsClipped), a
 	
-	ld	a, (ix + OFFSET_Y)	; Point to the output
-	ld	e, a
+	ld	e, (ix + OFFSET_Y)	; Point to the output
 	ld	d, 160
 	mlt	de
 	ld	hl, (currDrawingBuffer)
@@ -86,7 +81,7 @@ _:	ex	af, af'
 	ld	a, 9
 DisplayTile:
 	ld	b, a
-	ld	a, d			; Check if DE and IX are >= 0 and < MAP_SIZE
+	ld	a, d
 	or	a, ixh
 	jr	nz, TileIsOutOfField
 	ld	a, e			; Check if one of the both indexes is more than the MAP_SIZE, which is $80
@@ -103,18 +98,14 @@ DisplayTile:
 	ld	hl, TilePointers - 3
 	add	hl, bc
 	ld	hl, (hl)		; Pointer to the tile
-TileDrawingRoutinePtr1 = $
-	jr	DrawTile_Unclipped	; This will be modified to the clipped version after X rows
-	.db	0
-	.db	DrawTile_Clipped >> 16
+TileDrawingRoutinePtr1 = $+1
+	jp	DrawTile_Unclipped	; This will be modified to the clipped version after 25 rows
 	
 TileIsOutOfField:
 	exx
 	ld	hl, blackBuffer
-TileDrawingRoutinePtr2 = $
-	jr	DrawTile_Unclipped	; This will be modified to the clipped version after X rows
-	.db	0
-	.db	DrawTile_Clipped >> 16
+TileDrawingRoutinePtr2 = $+1
+	jp	DrawTile_Unclipped	; This will be modified to the clipped version after 25 rows
 	
 DrawTile_Unclipped:
 	lea	de, iy
@@ -214,7 +205,7 @@ IncrementRowXOrNot1:
 TileHowManyRowsClipped = $+1
 _:	cp	a, 2
 	jr	nc, +_
-	ld	bc, DrawTile_Clipped & 0FFFFh << 8 + 0C3h
+	ld	bc, DrawTile_Clipped
 	ld	(TileDrawingRoutinePtr1), bc
 	ld	(TileDrawingRoutinePtr2), bc
 	ld	c, a
@@ -267,7 +258,7 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 14
 	ldir
 	sub	a, 4
-	jp	z, StopDrawingTile
+	jp	z, +_
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
@@ -285,7 +276,7 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 30
 	ldir
 	sub	a, 4
-	jr	z, StopDrawingTile
+	jr	z, +_
 	add	iy, sp
 	lea	de, iy-16
 	ld	c, 34
@@ -303,7 +294,7 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 22
 	ldir
 	sub	a, 4
-	jr	z, StopDrawingTile
+	jr	z, +_
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
@@ -321,12 +312,11 @@ DrawTile_Clipped_Height = $+1
 	ld	c, 6
 	ldir
 	sub	a, 4
-	jr	z, StopDrawingTile
+	jr	z, +_
 	add	iy, sp
 	lea	de, iy-0
 	ldi
 	ldi
-StopDrawingTile:
 _:	ld	iy, 0
 BackupIY = $-3
 	exx
