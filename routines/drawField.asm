@@ -24,6 +24,7 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(DrawTile_Clipped_Height), a
 	ld	a, 7
 	cp	a, (ix + OFFSET_Y)
+	ccf
 	sbc	a, 2
 	ld	(TileHowManyRowsClipped), a
 	
