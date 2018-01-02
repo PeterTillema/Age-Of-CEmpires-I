@@ -83,14 +83,15 @@ _:	ex	af, af'
 	ld	a, 9
 DisplayTile:
 	ld	b, a
-	ld	a, e
-	or	a, ixl
-	add	a, a
-	sbc	a, a
-	or	a, d
+	ld	a, d			; Check if DE and IX are >= 0 and < MAP_SIZE
 	or	a, ixh
 	jr	nz, TileIsOutOfField
-	or	a, (hl)			; Get the tile index
+	ld	a, e			; Check if one of the both indexes is more than the MAP_SIZE, which is $80
+	or	a, ixl
+	add	a, a
+	jr	c, TileIsOutOfField
+	ld	a, (hl)			; Get the tile index
+	or	a, a
 	jp	z, SkipDrawingOfTile
 	exx				; Here are the main registers active
 	ld	c, a
@@ -192,21 +193,23 @@ SkipDrawingOfTile:
 	add	hl, bc
 	dec	a
 	jp	nz, DisplayTile
+	ld	bc, (MAP_SIZE * 10 - 9) * 2
+	add	hl, bc
+	ex	de, hl
+	ld	bc, -9
+	add	hl, bc
+	ex	de, hl
+	lea	ix, ix+9+1
 	ex	af, af'
+	bit	0, a
 IncrementRowXOrNot1:
 	jr	nz, +_
 	inc	de
+	ld	bc, (-MAP_SIZE + 1) * 2
 	add	hl, bc
 	dec	ix
-_:	ex	de, hl
-	ld	c, -9
-	add	hl, bc
-	ex	de, hl
-	ld	bc, (MAP_SIZE * 10 - 9) * 2
-	add	hl, bc
-	lea	ix, ix+9+1
 TileHowManyRowsClipped = $+1
-	cp	a, 0
+_:	cp	a, 2
 	jr	nc, +_
 	ld	bc, DrawTile_Clipped & 0FFFFh << 8 + 0C3h
 	ld	(TileDrawingRoutinePtr1), bc
