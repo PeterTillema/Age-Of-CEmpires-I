@@ -288,16 +288,53 @@ StopDisplayTiles:
 	ldir
 	ld	hl, blackBuffer
 	ld	bc, lcdWidth * 13 + 32
-	ld	a, lcdHeight - 15 - 13 + 1
-_:	ldir
+	ldir
+	or	a, a			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
+	sbc	hl, hl
 	ex	de, hl
-	inc	b
-	add	hl, bc
-	ex	de, hl
-	ld	c, 32 + 32
-	dec	b
+	ld	a, lcdHeight - 15 - 13 - 1
+	ld	bc, 320
+	dec	hl
+_:	add	hl, bc
+	ld	(hl),e
+	ld	sp,hl
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
 	dec	a
 	jr	nz, -_
+	ld	bc, lcdWidth - 32 + 1
+	add	hl, bc			; Clear the last row of the right edge
+	ld	sp, hl
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
+	push	de
 TempSP2 = $+1
 	ld	sp, 0
 	ret

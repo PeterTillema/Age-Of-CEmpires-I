@@ -163,6 +163,16 @@ RunProgram:
 	ld	hl, _age_1_pal
 	ld	bc, 256*2
 	ldir
+	
+#if 1 == 1				; Easier debugging if you have a full pink background
+	ld	hl, screenBuffer
+	ld	(hl), 255
+	push	hl
+	pop	de
+	inc	de
+	ld	bc, 320*240-1
+	ldir
+#endif
 	scf
 	sbc	hl, hl
 	ld	(hl), 2
