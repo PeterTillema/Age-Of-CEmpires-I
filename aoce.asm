@@ -158,6 +158,7 @@ RunProgram:
 	ldir
 	ld	hl, vRAM+(320*240)
 	ld	(currDrawingBuffer), hl
+	ld	(mpLcdBase), hl
 	ld	de, mpLcdPalette
 	ld	hl, _age_1_pal
 	ld	bc, 256*2

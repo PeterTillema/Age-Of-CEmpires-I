@@ -1,5 +1,5 @@
 TilePointers:
-	.dl	_grass \.r2
+	.dl	_grass + _grass_size - 1 \.r2
 	.dl	_bush_1 \ .r2
 	.dl	_bush_2 \ .r2
 	.dl	_gold_1 \ .r2

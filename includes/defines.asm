@@ -10,7 +10,7 @@ currDrawingBuffer           .equ 0E30014h
 screenBuffer                .equ vRAM+(320*240)
 mapAddress                  .equ pixelShadow
 puppetStack                 .equ pixelShadow+(MAP_SIZE*MAP_SIZE*2)
-blackBuffer                 .equ 0E40000h
+blackBuffer                 .equ 0E50000h
 variables                   .equ saveSScreen+21000
 
 ;;; Keypresses

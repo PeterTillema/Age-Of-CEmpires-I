@@ -20,14 +20,21 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	a, (ix + OFFSET_Y)
 	cpl
 	and	a, 4
-	add	a, 12 + 8
-	ld	(DrawTile_Clipped_Height), a
+	add	a, 12
+	ld	(DrawTile_Clipped_Height2), a
+	sub	a, 8
+	ld	(DrawTile_Clipped_Height1), a
 	ld	a, 7
 	cp	a, (ix + OFFSET_Y)
 	adc	a, -3
-	ld	(TileHowManyRowsClipped), a
+	ld	(TileHowManyRowsClipped1), a
+	dec	a
+	ld	(TileHowManyRowsClipped2), a
+	dec	a
+	ld	(TileHowManyRowsClipped3), a
 	
 	ld	a, (ix + OFFSET_Y)	; Point to the output
+	add	a, 16			; Point to the row of the bottom right pixel
 	ld	e, a
 	ld	d, 160
 	mlt	de
@@ -36,7 +43,7 @@ _:	ld	(TopRowLeftOrRight), a
 	add	hl, de
 	ld	d, 0
 	ld	a, b
-	add	a, 16			; We start at column 16
+	add	a, 17			; We start at column 17 (bottom right pixel)
 	ld	e, a
 	add	hl, de
 	ld	(startingPosition), hl
@@ -56,7 +63,6 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	ix, (_IYOffsets + TopLeftYTile)
 	ld	a, 29			; 29 rows
 	ld	(TempSP2), sp
-	ld	sp, lcdWidth
 DisplayEachRowLoop:
 ; Registers:
 ;   BC  = length of row tile
@@ -67,7 +73,7 @@ DisplayEachRowLoop:
 ;   DE' = x index tile
 ;   HL' = pointer to map data
 ;   IX  = y index tile
-;   IY  = pointer to output
+;   ;;;;;IY  = pointer to output
 ;   SP  = SCREEN_WIDTH
 
 startingPosition = $+2			; Here are the shadow registers active
@@ -93,9 +99,9 @@ DisplayTile:
 	or	a, (hl)			; Get the tile index
 	jp	z, SkipDrawingOfTile
 	exx				; Here are the main registers active
-	cp	a, TILE_STONE_2 + 1
-	jr	c, +_
-	cp	a, TILE_TREE
+	;cp	a, TILE_STONE_2 + 1
+	;jr	c, +_
+	;cp	a, TILE_TREE
 	;jp	nc, DisplayTileWithTree
 	;jp	DisplayBuilding
 _:	ld	c, a
@@ -118,75 +124,107 @@ TileDrawingRoutinePtr2 = $
 	.db	DrawTile_Clipped >> 16
 	
 DrawTile_Unclipped:
+	ld	sp, -322
 	lea	de, iy
 	ld	bc, 2
-	ldir
-	add	iy, sp
-	lea	de, iy-2
+	lddr
 	ld	c, 6
-	ldir
-	add	iy, sp
-	lea	de, iy-4
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 10
-	ldir
-	add	iy, sp
-	lea	de, iy-6
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 14
-	ldir
-	add	iy, sp
-	lea	de, iy-8
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 18
-	ldir
-	add	iy, sp
-	lea	de, iy-10
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 22
-	ldir
-	add	iy, sp
-	lea	de, iy-12
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 26
-	ldir
-	add	iy, sp
-	lea	de, iy-14
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 30
-	ldir
-	add	iy, sp
-	lea	de, iy-16
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 34
-	ldir
-	add	iy, sp
-	lea	de, iy-14
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
+	ld	sp, -318
 	ld	c, 30
-	ldir
-	add	iy, sp
-	lea	de, iy-12
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 26
-	ldir
-	add	iy, sp
-	lea	de, iy-10
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 22
-	ldir
-	add	iy, sp
-	lea	de, iy-8
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 18
-	ldir
-	add	iy, sp
-	lea	de, iy-6
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 14
-	ldir
-	add	iy, sp
-	lea	de, iy-4
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 10
-	ldir
-	add	iy, sp
-	lea	de, iy-2
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	ld	c, 6
-	ldir
-	add	iy, sp
-	lea	de, iy-0
-	ldi
-	ldi
-	ld	de, -(lcdWidth * 16)
-	add	iy, de
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
+	ld	c, 2
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
 	exx
 SkipDrawingOfTile:
 	lea	iy, iy + 32		; Skip to next tile
@@ -210,19 +248,32 @@ _:	ex	de, hl
 	ld	bc, (MAP_SIZE * 10 - 9) * 2
 	add	hl, bc
 	lea	ix, ix+9+1
-TileHowManyRowsClipped = $+1
+TileHowManyRowsClipped1 = $+1
 	cp	a, 0
-	jr	nc, +_
+	jr	nc, ++_
+TileHowManyRowsClipped2 = $+1
+	cp	a, 0
+	jr	nz, +_
+	ld	sp, 320
 	ld	bc, DrawTile_Clipped & 0FFFFh << 8 + 0C3h
 	ld	(TileDrawingRoutinePtr1), bc
 	ld	(TileDrawingRoutinePtr2), bc
+	ld	iy, (startingPosition)
+	ld	bc, -lcdWidth * 16
+	add	iy, bc
+	ld	(startingPosition), iy
+	dec	a
+	jp	DisplayEachRowLoop
+TileHowManyRowsClipped3 = $+1
+_:	cp	a, 0
+	jr	nz, StopDisplayTiles
 	ld	c, a
-	ld	a, (DrawTile_Clipped_Height)
-	sub	a, 9
-	jr	c, StopDisplayTiles
-	inc	a
-	ld	(DrawTile_Clipped_Height), a
+DrawTile_Clipped_Height1 = $+1
+	ld	a, 0
+	ld	(DrawTile_Clipped_Height2), a
 	ld	a, c
+	dec	a
+	jp	DisplayEachRowLoop
 _:	dec	a
 	jp	nz, DisplayEachRowLoop
 StopDisplayTiles:
@@ -248,7 +299,7 @@ TempSP2 = $+1
 	
 DrawTile_Clipped:
 	ld	(BackupIY), iy
-DrawTile_Clipped_Height = $+1
+DrawTile_Clipped_Height2 = $+1
 	ld	a, 0
 	lea	de, iy
 	ld	bc, 2
