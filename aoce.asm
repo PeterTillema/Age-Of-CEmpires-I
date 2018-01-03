@@ -148,14 +148,6 @@ RunProgram:
 	call	gfx_SetColor
 	pop	hl
     
-	ld	ix, puppetStack
-	ld	(ix+puppetType), 0
-	ld	(ix+puppetEvent), 1
-	ld	(ix+puppetX), 0
-	ld	(ix+puppetY), 0
-	ld	(ix+puppetHealth), 100
-	ld	(ix+puppetHitpoints), 3
-    
 	ld	ix, saveSScreen+21000
 	xor	a, a
 	ld	(ix+OFFSET_X), a

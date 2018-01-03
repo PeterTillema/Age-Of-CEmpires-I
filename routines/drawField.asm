@@ -93,7 +93,12 @@ DisplayTile:
 	or	a, (hl)			; Get the tile index
 	jp	z, SkipDrawingOfTile
 	exx				; Here are the main registers active
-	ld	c, a
+	cp	a, TILE_STONE_2 + 1
+	jr	c, +_
+	cp	a, TILE_TREE
+	jp	nc, DisplayTileWithTree
+	jp	DisplayBuilding
+_:	ld	c, a
 	ld	b, 3
 	mlt	bc
 	ld	hl, TilePointers - 3
@@ -323,6 +328,21 @@ DrawTile_Clipped_Height = $+1
 StopDrawingTile:
 _:	ld	iy, 0
 BackupIY = $-3
+	exx
+	jp	SkipDrawingOfTile
+	
+DisplayTileWithTree:
+	ld	hl, TreePointers
+	sub	a, TILE_TREE
+	ld	c, a
+	ld	b, 3
+	mlt	bc
+	add	hl, bc
+	ld	hl, (hl)
+	exx
+	jp	SkipDrawingOfTile
+	
+DisplayBuilding:
 	exx
 	jp	SkipDrawingOfTile
 DrawFieldEnd:

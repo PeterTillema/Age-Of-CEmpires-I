@@ -37,7 +37,7 @@ TILE_GOLD_1                 .equ 4
 TILE_GOLD_2                 .equ 5
 TILE_STONE_1                .equ 6
 TILE_STONE_2                .equ 7
-TILE_TREE                   .equ 5
+TILE_TREE                   .equ 8
 
 ;;; Puppet struct
 puppetType                  .equ 0

@@ -9,7 +9,6 @@ GenerateMap:
 	call	srand
 	ld	b, 0
 PlaceTreesLoop:
-#if 1 == 0				; We don't want trees yet
 	ld	ixh, b
 	randInt(MAP_SIZE)
 	push	hl
@@ -24,7 +23,6 @@ PlaceTreesLoop:
 	ld	(hl), TILE_TREE
 	ld	b, ixh
 	djnz	PlaceTreesLoop
-#endif
 	ld	ixh, 3			; Food, stone, gold
 PlaceAllResourceTypesLoop:
 	ld	b, 15			; Place 15 resources of each
