@@ -2,10 +2,6 @@ drawfield_loc = $
 relocate(cursorImage)
 
 DrawField:
-	ld	de, mpShaData
-	ld	hl, DrawIsometricTile
-	ld	bc, DrawIsometricTileEnd - DrawIsometricTile
-	ldir
 	ld	b, (ix + OFFSET_X)	; We start with the shadow registers active
 	bit	4, b
 	ld	a, 16
@@ -16,13 +12,15 @@ DrawField:
 _:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
-	ld	hl, mpShaData
+	ld	hl, (DrawTile_Unclipped - TileDrawingRoutinePtr1 - 2) & 0FFh << 8 + 18h		; Write JR <offset>
 	ld	(TileDrawingRoutinePtr1), hl
+	ld	hl, (DrawTile_Unclipped - TileDrawingRoutinePtr2 - 2) & 0FFh << 8 + 18h		; Write JR <offset>
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, TilePointersEnd - 3
 	ld	(TilePointersSMC), hl
 
 	ld	a, (ix + OFFSET_Y)
+	ld	e, a
 	cpl
 	and	a, 4
 	add	a, 12
@@ -30,7 +28,7 @@ _:	ld	(TopRowLeftOrRight), a
 	sub	a, 8
 	ld	(DrawTile_Clipped_Height1), a
 	ld	a, 7
-	cp	a, (ix + OFFSET_Y)
+	cp	a, e
 	adc	a, -3
 	ld	(TileHowManyRowsClipped1), a
 	dec	a
@@ -38,8 +36,8 @@ _:	ld	(TopRowLeftOrRight), a
 	dec	a
 	ld	(TileHowManyRowsClipped3), a
 	
-	ld	a, (ix + OFFSET_Y)	; Point to the output
-	add	a, 16			; Point to the row of the bottom right pixel
+	ld	a, 16			; Point to the output
+	add	a, e			; Point to the row of the bottom right pixel
 	ld	e, a
 	ld	d, 160
 	mlt	de
@@ -110,22 +108,27 @@ DisplayTile:
 	;jp	nc, DisplayTileWithTree
 	;jp	DisplayBuilding
 _:	ld	c, a
-	ld	b, 3
-	mlt	bc
+	ld	b, 0
 TilePointersSMC = $+1
 	ld	hl, TilePointersEnd - 3
 	add	hl, bc
+	add	hl, bc
+	add	hl, bc
 	ld	hl, (hl)		; Pointer to the tile
-TileDrawingRoutinePtr1 = $+1
-	jp	mpShaData		; This will be modified to the clipped version after X rows
+TileDrawingRoutinePtr1 = $
+	jr	DrawTile_Unclipped	; This will be modified to the clipped version after X rows
+	.db	0
+	.db	DrawTile_Clipped >> 16
 	
 TileIsOutOfField:
 	exx
 	ld	hl, blackBuffer
-TileDrawingRoutinePtr2 = $+1
-	jp	mpShaData		; This will be modified to the clipped version after X rows
+TileDrawingRoutinePtr2 = $
+	jr	DrawTile_Unclipped	; This will be modified to the clipped version after X rows
+	.db	0
+	.db	DrawTile_Clipped >> 16
 	
-DrawIsometricTile:
+DrawTile_Unclipped:
 	ld	sp, -322
 	lea	de, iy
 	ld	bc, 2
@@ -165,15 +168,6 @@ DrawIsometricTile:
 	add	hl, sp
 	add	hl, bc
 	ex	de, hl
-	jp	DrawIsometricTileSecondPart
-DrawIsometricTileEnd:
-
-.echo "mpShaData size (1): ", $ - DrawIsometricTile
-#if $ - DrawIsometricTile > 64
-.error "mpShaData too large!"
-#endif
-
-DrawIsometricTileSecondPart:
 	lddr
 	ld	c, 30
 	ex	de, hl
@@ -266,7 +260,7 @@ TileHowManyRowsClipped2 = $+1
 	cp	a, 0
 	jr	nz, +_
 	ld	sp, 320
-	ld	bc, DrawTile_Clipped
+	ld	bc, DrawTile_Clipped & 0FFFFh << 8 + 0C3h
 	ld	(TileDrawingRoutinePtr1), bc
 	ld	(TileDrawingRoutinePtr2), bc
 	ld	iy, (startingPosition)
@@ -290,19 +284,12 @@ DrawTile_Clipped_Height1 = $+1
 _:	dec	a
 	jp	DisplayEachRowLoop
 StopDisplayTiles:
-	ld	de, mpShaData
-	ld	hl, DrawScreenBorderStart
-	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
-	ldir
 	ld	de, (currDrawingBuffer)
 	ld	hl, _resources \.r2
 	ld	bc, _resources_size
 	ldir
 	ld	hl, blackBuffer
 	ld	bc, lcdWidth * 13 + 32
-	jp	mpShaData
-	
-DrawScreenBorderStart:
 	ldir
 	or	a, a			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	sbc	hl, hl
@@ -353,12 +340,6 @@ _:	add	hl, bc
 TempSP2 = $+1
 	ld	sp, 0
 	ret
-DrawScreenBorderEnd:
-	
-.echo "mpShaData size (2): ", $ - DrawScreenBorderStart
-#if $ - DrawScreenBorderStart > 64
-.error "mpShaData too large!"
-#endif
 	
 DrawTile_Clipped:
 	ld	(BackupIY), iy
@@ -531,10 +512,10 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 	jp	SkipDrawingOfTile
 DrawFieldEnd:
 
-.echo "cursorImage size: ", $ - DrawField
+.echo $ - DrawField
 
 #if $ - DrawField > 1024
-.error "cursorImage data too large!"
+.error "cursorImage data too large: ",$-DrawField," bytes!"
 #endif
     
 endrelocate()
