@@ -1,3 +1,5 @@
+#define s8(x) 1*((x)|(((x)&80h)<<1))
+
 ;;; Variables
 MAP_SIZE                    .equ 128
 OFFSET_X                    .equ 0
@@ -31,13 +33,17 @@ kpEnter                     .equ 0
 ;;; Tiles
 TILE_EMPTY                  .equ 0
 TILE_GRASS                  .equ 1
-TILE_FOOD_1                 .equ 2
-TILE_FOOD_2                 .equ 3
-TILE_GOLD_1                 .equ 4
-TILE_GOLD_2                 .equ 5
-TILE_STONE_1                .equ 6
-TILE_STONE_2                .equ 7
-TILE_TREE                   .equ 8
+TILE_STUMP_1                .equ 2
+TILE_STUMP_2                .equ 3
+TILE_CUT_1                  .equ 4
+TILE_CUT_2                  .equ 5
+TILE_FOOD_1                 .equ 6
+TILE_FOOD_2                 .equ 7
+TILE_GOLD_1                 .equ 8
+TILE_GOLD_2                 .equ 9
+TILE_STONE_1                .equ 10
+TILE_STONE_2                .equ 11
+TILE_TREE                   .equ 12
 
 ;;; Puppet struct
 puppetType                  .equ 0

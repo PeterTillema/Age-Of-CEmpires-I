@@ -6,6 +6,10 @@ TilePointers:
 	.dl	_gold_2 \ .r2
 	.dl	_stone_1 \ .r2
 	.dl	_stone_2 \ .r2
+	.dl	_tree_stump_1 \ .r2
+	.dl	_tree_stump_2 \ .r2
+	.dl	_tree_cut_1 \ .r2
+	.dl	_tree_cut_2 \ .r2
 	
 TreePointers:
 	.dl	_tree_1 \ .r2

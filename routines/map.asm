@@ -7,9 +7,8 @@ GenerateMap:
 	printString(GeneratingMapMessage, 5, 112)
 	ld	hl, (0F30044h)
 	call	srand
-	ld	b, 0
+	ld	ixh, 0
 PlaceTreesLoop:
-	ld	ixh, b
 	randInt(MAP_SIZE)
 	push	hl
 	randInt(MAP_SIZE)
@@ -20,9 +19,14 @@ PlaceTreesLoop:
 	add	hl, de
 	ld	de, screenBuffer
 	add	hl, de
-	ld	(hl), TILE_TREE
-	ld	b, ixh
-	djnz	PlaceTreesLoop
+	push	hl
+	randInt(4)
+	ld	a, l
+	add	a, TILE_TREE
+	pop	hl
+	ld	(hl), a
+	dec	ixh
+	jr	nz, PlaceTreesLoop
 	ld	ixh, 3			; Food, stone, gold
 PlaceAllResourceTypesLoop:
 	ld	b, 15			; Place 15 resources of each
