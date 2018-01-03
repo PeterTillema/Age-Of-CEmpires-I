@@ -16,6 +16,8 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	hl, (DrawTile_Unclipped - TileDrawingRoutinePtr2 - 2) & 0FFh << 8 + 18h		; Write JR <offset>
 	ld	(TileDrawingRoutinePtr2), hl
+	ld	hl, TilePointersEnd - 3
+	ld	(TilePointersSMC), hl
 
 	ld	a, (ix + OFFSET_Y)
 	cpl
@@ -107,7 +109,8 @@ DisplayTile:
 _:	ld	c, a
 	ld	b, 3
 	mlt	bc
-	ld	hl, TilePointers - 3
+TilePointersSMC = $+1
+	ld	hl, TilePointersEnd - 3
 	add	hl, bc
 	ld	hl, (hl)		; Pointer to the tile
 TileDrawingRoutinePtr1 = $
@@ -262,6 +265,8 @@ TileHowManyRowsClipped2 = $+1
 	ld	bc, -lcdWidth * 16
 	add	iy, bc
 	ld	(startingPosition), iy
+	ld	bc, TilePointersStart - 3
+	ld	(TilePointersSMC), bc
 	dec	a
 	jp	DisplayEachRowLoop
 TileHowManyRowsClipped3 = $+1
@@ -275,7 +280,7 @@ DrawTile_Clipped_Height1 = $+1
 	dec	a
 	jp	DisplayEachRowLoop
 _:	dec	a
-	jp	nz, DisplayEachRowLoop
+	jp	DisplayEachRowLoop
 StopDisplayTiles:
 	ld	de, (currDrawingBuffer)
 	ld	hl, _resources \.r2
