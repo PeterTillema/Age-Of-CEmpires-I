@@ -23,6 +23,7 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(TilePointersSMC), hl
 
 	ld	a, (ix + OFFSET_Y)
+	ld	e, a
 	cpl
 	and	a, 4
 	add	a, 12
@@ -30,7 +31,7 @@ _:	ld	(TopRowLeftOrRight), a
 	sub	a, 8
 	ld	(DrawTile_Clipped_Height1), a
 	ld	a, 7
-	cp	a, (ix + OFFSET_Y)
+	cp	a, e
 	adc	a, -3
 	ld	(TileHowManyRowsClipped1), a
 	dec	a
@@ -38,7 +39,7 @@ _:	ld	(TopRowLeftOrRight), a
 	dec	a
 	ld	(TileHowManyRowsClipped3), a
 	
-	ld	a, (ix + OFFSET_Y)	; Point to the output
+	ld	a, e
 	add	a, 16			; Point to the row of the bottom right pixel
 	ld	e, a
 	ld	d, 160
