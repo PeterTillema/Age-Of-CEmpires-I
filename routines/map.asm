@@ -163,9 +163,22 @@ LoadMap:
 	ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
 	ldir
 	pop	hl ;
-	inc	hl
-	inc	hl
 	ld	(hl), TILE_TREE_1
+	inc	hl
+	inc	hl
+	inc	hl
+	inc	hl
+	ld	(hl), TILE_TREE_2
+	inc	hl
+	inc	hl
+	inc	hl
+	inc	hl
+	ld	(hl), TILE_TREE_3
+	inc	hl
+	inc	hl
+	inc	hl
+	inc	hl
+	ld	(hl), TILE_TREE_4
 	ret
         
 prng24:

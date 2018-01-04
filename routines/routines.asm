@@ -273,9 +273,9 @@ __setstateloop:
 _RLETSprite:
 ; Draws a sprite with RLE transparency with clipping.
 ; Arguments:
-;  arg0 : pointer to sprite structure
-;  arg1 : x-coordinate
-;  arg2 : y-coordinate
+;  arg0 : x-coordinate
+;  arg1 : y-coordinate
+;  arg2 : pointer to sprite structure
 ; Returns:
 ;  None
 	ld	iy, 0
@@ -546,9 +546,9 @@ _RLETSprite_EnterLeft_Trans_Jr_SMC = $-1
 _RLETSprite_NoClip:
 ; Draws a sprite with RLE transparency without clipping.
 ; Arguments:
-;  arg0 : pointer to sprite structure
-;  arg1 : x-coordinate
-;  arg2 : y-coordinate
+;  arg0 : x-coordinate
+;  arg1 : y-coordinate
+;  arg2 : pointer to sprite structure
 ; Returns:
 ;  None
 	ld	iy, 0
@@ -565,7 +565,7 @@ _RLETSprite_NoClip:
 	ex	de, hl			; de = top-left corner of sprite in buffer
 ; Read the sprite width and height.
 	ld	hl, (iy+9)		; hl = sprite struct
-	ld	iy, (hl)			; iyh = height, iyl = width
+	ld	iy, (hl)		; iyh = height, iyl = width
 	ld	a, (hl)			; a = width
 	inc	hl
 	inc	hl			; hl = sprite data

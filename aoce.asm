@@ -270,3 +270,5 @@ _:	ld	(currDrawingBuffer), de
 	.dw	0FFFFh
 #include "relocation_table2.asm"
 	.dw	0FFFFh
+	
+.echo "Total size: ", $ - start, " bytes"

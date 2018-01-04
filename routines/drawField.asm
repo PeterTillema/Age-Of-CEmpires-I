@@ -480,26 +480,26 @@ TempSP3 = $+1
 	ld	l, a
 	push	hl			; Y coordinate
 	ld	a, (saveSScreen+21000 + OFFSET_X)
-	ld	l, a
+	ld	e, a
 	ld	a, 9
 	exx
 	sub	a, b
 	exx
-	ld	e, a
-	ld	d, 32
-	mlt	de
-	bit	4, l
-	ld	h, 0
+	ld	l, a
+	ld	h, 32
+	mlt	hl
+	ld	d, 0
 	add.s	hl, de
-	ld	de, 16
+	bit	0, c
+	jr	nz, ++_
+	bit	4, e
+	ld	bc, 16
 	jr	z, +_
-	ld	de, -16
-_:	bit	0, c
-	jr	nz, +_
-	or	a, a
-	adc	hl, de
+	ld	bc, -16
+_:	or	a, a
+	adc	hl, bc
 	jr	z, DontDisplayTree
-_:	push	hl
+_:	push	hl			; X coordinate
 	call	_RLETSprite
 DontDisplayTree:
 	ld	sp, 320			; No need to pop

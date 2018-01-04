@@ -3,7 +3,7 @@ Opened convpng.ini
 --- Global Palette main_pal.png ---
 Building palette with [256] available indices ...
 Built palette with [256] indices.
-Palette quality : 92.21%
+Palette quality : 91.68%
 Wrote palette image (bin/main_pal.png)
 
 --- Group main_gfx (ASM) ---
@@ -36,92 +36,83 @@ Using defined palette bin/main_pal.png ...
 
 --- Group trees_gfx (ASM) ---
 Using defined palette bin/main_pal.png ...
-Transparent Color Index : 255
-Transparent Color : 0x0000
-8:
+1:
  tree_1 : converted!
- tree_2 : converted!
- tree_3 : converted!
- tree_4 : converted!
- tree_cut_1 : converted!
- tree_cut_2 : converted!
- tree_stump_1 : converted!
- tree_stump_2 : converted!
 
 --- Group age_1 (ASM) ---
 Using defined palette bin/main_pal.png ...
 Transparent Color Index : 255
 Transparent Color : 0x0000
 24:
- barracks_1 : converted! (6764 > 4501 bytes)
- farm_1 : converted! (4804 > 1669 bytes)
- house_1 : converted! (3104 > 1814 bytes)
- lumbercamp_1 : converted! (3764 > 1779 bytes)
- mill_1 : converted! (3038 > 2043 bytes)
- miningcamp_1 : converted! (2708 > 1652 bytes)
- foundation_1_1 : converted! (706 > 335 bytes)
- foundation_1_2 : converted! (834 > 430 bytes)
- foundation_1_3 : converted! (834 > 565 bytes)
- foundation_2_1 : converted! (2642 > 812 bytes)
- foundation_2_2 : converted! (2840 > 1034 bytes)
- foundation_2_3 : converted! (2840 > 1438 bytes)
- foundation_3_1 : converted! (5392 > 1186 bytes)
- foundation_3_2 : converted! (5686 > 1615 bytes)
- foundation_3_3 : converted! (5686 > 2295 bytes)
- foundation_4_1 : converted! (9232 > 1760 bytes)
- foundation_4_2 : converted! (9622 > 2204 bytes)
- foundation_4_3 : converted! (9622 > 3357 bytes)
- rubble_1 : converted! (578 > 419 bytes)
- rubble_2 : converted! (2246 > 1453 bytes)
- rubble_3 : converted! (5000 > 2756 bytes)
- rubble_4 : converted! (8452 > 4668 bytes)
- outpost_1 : converted! (1826 > 1363 bytes)
- towncenter_1 : converted! (10142 > 4553 bytes)
+ barracks_1 : converted! (6764 > 4464 bytes)
+ farm_1 : converted! (4804 > 1702 bytes)
+ house_1 : converted! (3104 > 1802 bytes)
+ lumbercamp_1 : converted! (3764 > 1746 bytes)
+ mill_1 : converted! (3038 > 2048 bytes)
+ miningcamp_1 : converted! (2708 > 1606 bytes)
+ foundation_1_1 : converted! (706 > 305 bytes)
+ foundation_1_2 : converted! (834 > 400 bytes)
+ foundation_1_3 : converted! (834 > 532 bytes)
+ foundation_2_1 : converted! (2642 > 769 bytes)
+ foundation_2_2 : converted! (2840 > 965 bytes)
+ foundation_2_3 : converted! (2840 > 1310 bytes)
+ foundation_3_1 : converted! (5392 > 1149 bytes)
+ foundation_3_2 : converted! (5686 > 1539 bytes)
+ foundation_3_3 : converted! (5686 > 2160 bytes)
+ foundation_4_1 : converted! (9232 > 1762 bytes)
+ foundation_4_2 : converted! (9622 > 2214 bytes)
+ foundation_4_3 : converted! (9622 > 3291 bytes)
+ rubble_1 : converted! (578 > 400 bytes)
+ rubble_2 : converted! (2246 > 1425 bytes)
+ rubble_3 : converted! (5000 > 2715 bytes)
+ rubble_4 : converted! (8452 > 4679 bytes)
+ outpost_1 : converted! (1826 > 1310 bytes)
+ towncenter_1 : converted! (10142 > 4624 bytes)
 
 --- Group age_2 (ASM) ---
 Using defined palette bin/main_pal.png ...
 Transparent Color Index : 255
 Transparent Color : 0x0000
 9:
- archery_2 : converted! (7940 > 3858 bytes)
- barracks_2 : converted! (7548 > 4470 bytes)
- blacksmith_2 : converted! (5980 > 3755 bytes)
- house_2 : converted! (3500 > 2062 bytes)
- market_2 : converted! (13522 > 6537 bytes)
- mill_2 : converted! (3698 > 2191 bytes)
- stable_2 : converted! (5980 > 3287 bytes)
- tower_2 : converted! (1954 > 1497 bytes)
- towncenter_2 : converted! (10922 > 5670 bytes)
+ archery_2 : converted! (7940 > 3939 bytes)
+ barracks_2 : converted! (7548 > 4537 bytes)
+ blacksmith_2 : converted! (5980 > 3728 bytes)
+ house_2 : converted! (3500 > 2044 bytes)
+ market_2 : converted! (13522 > 6773 bytes)
+ mill_2 : converted! (3698 > 2227 bytes)
+ stable_2 : converted! (5980 > 3358 bytes)
+ tower_2 : converted! (1954 > 1524 bytes)
+ towncenter_2 : converted! (10922 > 5858 bytes)
 
 --- Group age_3 (ASM) ---
 Using defined palette bin/main_pal.png ...
 Transparent Color Index : 255
 Transparent Color : 0x0000
 13:
- archery_3 : converted! (7940 > 4114 bytes)
- barracks_3 : converted! (7842 > 4817 bytes)
- blacksmith_3 : converted! (5980 > 3518 bytes)
- castle_3 : converted! (17032 > 12580 bytes)
- house_3 : converted! (3764 > 2199 bytes)
- market_3 : converted! (13912 > 7397 bytes)
- mill_3 : converted! (3698 > 2215 bytes)
- monastery_3 : converted! (10488 > 6384 bytes)
- siegeworkshop_3 : converted! (10792 > 5956 bytes)
- stable_3 : converted! (7548 > 4210 bytes)
- tower_3 : converted! (2210 > 1770 bytes)
- towncenter_3 : converted! (11052 > 5643 bytes)
- university_3 : converted! (10272 > 6042 bytes)
+ archery_3 : converted! (7940 > 4198 bytes)
+ barracks_3 : converted! (7842 > 4915 bytes)
+ blacksmith_3 : converted! (5980 > 3612 bytes)
+ castle_3 : converted! (17032 > 12962 bytes)
+ house_3 : converted! (3764 > 2210 bytes)
+ market_3 : converted! (13912 > 7613 bytes)
+ mill_3 : converted! (3698 > 2249 bytes)
+ monastery_3 : converted! (10488 > 6471 bytes)
+ siegeworkshop_3 : converted! (10792 > 6157 bytes)
+ stable_3 : converted! (7548 > 4262 bytes)
+ tower_3 : converted! (2210 > 1774 bytes)
+ towncenter_3 : converted! (11052 > 5873 bytes)
+ university_3 : converted! (10272 > 6147 bytes)
 
 --- Group age_4 (ASM) ---
 Using defined palette bin/main_pal.png ...
 Transparent Color Index : 255
 Transparent Color : 0x0000
 3:
- market_4 : converted! (12742 > 6396 bytes)
- towncenter_4 : converted! (11052 > 5995 bytes)
- university_4 : converted! (11962 > 6571 bytes)
+ market_4 : converted! (12742 > 6512 bytes)
+ towncenter_4 : converted! (11052 > 6104 bytes)
+ university_4 : converted! (11962 > 6523 bytes)
 
-Converted in 6 s
+Converted in 14 s
 
 [warning] image quality might be too low.
 please try grouping similar images, reducing image colors, 
