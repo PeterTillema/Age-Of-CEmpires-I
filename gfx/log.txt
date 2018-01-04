@@ -1,0 +1,128 @@
+ConvPNG 6.2 by M.Waltz
+
+Opened convpng.ini
+
+--- Global Palette main_pal.png ---
+Building palette with [256] available indices ...
+Built palette with [256] indices.
+Palette quality : 97.23%
+Wrote palette image (bin/main_pal.png)
+
+--- Group main_gfx (ASM) ---
+Using built-in xlibc palette ...
+7:
+ AoCEI : converted! (18022 > 6889 bytes)
+ intro : converted! (30627 > 9815 bytes)
+ newloadgame : converted! (15248 > 3342 bytes)
+ playhelpquit : converted! (9128 > 2730 bytes)
+ pointer : converted! (807 > 236 bytes)
+ singlemultiplayer : converted! (17264 > 3987 bytes)
+ soldier : converted! (23312 > 7010 bytes)
+
+--- Group gameplay_gfx (ASM) ---
+Using defined palette bin/main_pal.png ...
+2:
+ cursor : converted!
+ resources : converted!
+
+--- Group tiles_gfx (ASM) ---
+Using defined palette bin/main_pal.png ...
+7:
+ bush_1 : converted!
+ bush_2 : converted!
+ gold_1 : converted!
+ gold_2 : converted!
+ grass : converted!
+ stone_1 : converted!
+ stone_2 : converted!
+
+--- Group trees_gfx (ASM) ---
+Using defined palette bin/main_pal.png ...
+8:
+ tree_1 : converted!
+ tree_2 : converted!
+ tree_3 : converted!
+ tree_4 : converted!
+ tree_cut_1 : converted!
+ tree_cut_2 : converted!
+ tree_stump_1 : converted!
+ tree_stump_2 : converted!
+
+--- Group age_1 (ASM) ---
+Using defined palette bin/main_pal.png ...
+24:
+ barracks_1 : converted! (6434 > 3692 bytes)
+ farm_1 : converted! (4804 > 1846 bytes)
+ foundation_1_1 : converted! (706 > 311 bytes)
+ foundation_1_2 : converted! (834 > 411 bytes)
+ foundation_1_3 : converted! (834 > 544 bytes)
+ foundation_2_1 : converted! (2642 > 778 bytes)
+ foundation_2_2 : converted! (2840 > 982 bytes)
+ foundation_2_3 : converted! (2840 > 1316 bytes)
+ foundation_3_1 : converted! (5392 > 1171 bytes)
+ foundation_3_2 : converted! (5686 > 1564 bytes)
+ foundation_3_3 : converted! (5686 > 2168 bytes)
+ foundation_4_1 : converted! (9232 > 1786 bytes)
+ foundation_4_2 : converted! (9622 > 2256 bytes)
+ foundation_4_3 : converted! (9622 > 3314 bytes)
+ house_1 : converted! (3236 > 1866 bytes)
+ lumbercamp_1 : converted! (3764 > 1506 bytes)
+ mill_1 : converted! (3038 > 1747 bytes)
+ miningcamp_1 : converted! (2708 > 1441 bytes)
+ Rubble1x1 : converted! (578 > 331 bytes)
+ Rubble2x2 : converted! (2246 > 1121 bytes)
+ Rubble3x3 : converted! (5000 > 2105 bytes)
+ Rubble4x4 : converted! (8452 > 3760 bytes)
+ outpost_1 : converted! (1826 > 1173 bytes)
+ towncenter_1 : converted! (10142 > 4216 bytes)
+
+--- Group age_2 (ASM) ---
+Using defined palette bin/main_pal.png ...
+Transparent Color Index : 255
+Transparent Color : 0x0000
+9:
+ archery_2 : converted! (7778 > 3336 bytes)
+ barracks_2 : converted! (7202 > 3647 bytes)
+ blacksmith_2 : converted! (5762 > 3085 bytes)
+ house_2 : converted! (3236 > 1852 bytes)
+ market_2 : converted! (13652 > 5462 bytes)
+ mill_2 : converted! (3698 > 1803 bytes)
+ stable_2 : converted! (5762 > 2641 bytes)
+ tower_2 : converted! (1954 > 1106 bytes)
+ towncenter_2 : converted! (10922 > 5456 bytes)
+
+--- Group age_3 (ASM) ---
+Using defined palette bin/main_pal.png ...
+Transparent Color Index : 255
+Transparent Color : 0x0000
+13:
+ archery_3 : converted! (7586 > 3444 bytes)
+ barracks_3 : converted! (7778 > 4182 bytes)
+ blacksmith_3 : converted! (5762 > 2869 bytes)
+ castle_3 : converted! (17032 > 9663 bytes)
+ house_3 : converted! (3830 > 2032 bytes)
+ market_3 : converted! (14042 > 6286 bytes)
+ mill_3 : converted! (3698 > 1877 bytes)
+ monastery_3 : converted! (10082 > 5079 bytes)
+ siegeworkshop_3 : converted! (10792 > 4843 bytes)
+ stable_3 : converted! (7490 > 3520 bytes)
+ tower_3 : converted! (2210 > 1477 bytes)
+ towncenter_3 : converted! (11052 > 5454 bytes)
+ university_3 : converted! (10272 > 5198 bytes)
+
+--- Group age_4 (ASM) ---
+Using defined palette bin/main_pal.png ...
+Transparent Color Index : 255
+Transparent Color : 0x0000
+3:
+ market_4 : converted! (12742 > 5462 bytes)
+ towncenter_4 : converted! (11182 > 5769 bytes)
+ university_4 : converted! (11962 > 5778 bytes)
+
+Converted in 5 s
+
+[warning] image quality might be too low.
+please try grouping similar images, reducing image colors, 
+or selecting a better palette if conversion is not ideal.
+
+Finished!
