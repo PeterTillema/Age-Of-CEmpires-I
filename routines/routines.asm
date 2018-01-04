@@ -38,6 +38,8 @@ LoadGraphicsAppvar:
 	call	_Mov9ToOP1
 	call	_ChkFindSym
 	jr	nc, +_
+	ld	a, 0D0h
+	ld	mb, a
 	ld	hl, GraphicsAppvarNotFound
 	call	_PutS
 	call	_NewLine

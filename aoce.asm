@@ -107,6 +107,8 @@ backupSP = $+1
 	ld	sp, 0
 	pop	ix
 	di
+	ld	a, 0D1h
+	ld	mb, a
 	call.lis fLockFlash & 0FFFFh
 	ld	a, 0D0h
 	ld	mb, a
