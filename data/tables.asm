@@ -11,9 +11,10 @@ TilePointersEnd:
 	.dl	_stone_1 + _stone_1_size - 1 \ .r2
 	.dl	_stone_2 + _stone_2_size - 1 \ .r2
 	.dl	0
-	.dl	0
-	.dl	0
-	.dl	0
+	.dl	_tree_1 \ .r2
+	.dl	_tree_2 \ .r2
+	.dl	_tree_3 \ .r2
+	.dl	_tree_4 \ .r2
 	
 TilePointersStart:
 	.dl	_grass \.r2
@@ -28,19 +29,10 @@ TilePointersStart:
 	.dl	_stone_1 \ .r2
 	.dl	_stone_2 \ .r2
 	.dl	0
-	.dl	0
-	.dl	0
-	.dl	0
-	
-TreePointers:
 	.dl	_tree_1 \ .r2
 	.dl	_tree_2 \ .r2
 	.dl	_tree_3 \ .r2
 	.dl	_tree_4 \ .r2
-	.dl	_tree_cut_1 \ .r2
-	.dl	_tree_cut_2 \ .r2
-	.dl	_tree_stump_1 \ .r2
-	.dl	_tree_stump_2 \ .r2
 	
 ResourcesType1:
 	.db	0, 1, 0

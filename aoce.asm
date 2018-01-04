@@ -151,7 +151,7 @@ RunProgram:
 	ld	ix, saveSScreen+21000
 	xor	a, a
 	ld	(ix+OFFSET_X), a
-	ld	(ix+OFFSET_Y), 8
+	ld	(ix+OFFSET_Y), a
 	ld	hl, drawfield_loc
 	ld	de, DrawField
 	ld	bc, DrawFieldEnd - DrawField

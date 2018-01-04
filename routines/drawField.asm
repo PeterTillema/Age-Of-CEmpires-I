@@ -69,6 +69,7 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	ix, (_IYOffsets + TopLeftYTile)
 	ld	a, 29			; 29 rows
 	ld	(TempSP2), sp
+	ld	(TempSP3), sp
 DisplayEachRowLoop:
 ; Registers:
 ;   BC  = length of row tile
@@ -105,20 +106,18 @@ DisplayTile:
 	or	a, (hl)			; Get the tile index
 	jp	z, SkipDrawingOfTile
 	exx				; Here are the main registers active
-	;cp	a, TILE_STONE_2 + 1
-	;jr	c, +_
-	;cp	a, TILE_TREE
-	;jp	nc, DisplayTileWithTree
-	;jp	DisplayBuilding
-_:	ld	c, a
+	ld	c, a
 	ld	b, 3
 	mlt	bc
 TilePointersSMC = $+1
 	ld	hl, TilePointersEnd - 3
 	add	hl, bc
-	ld	hl, (hl)		; Pointer to the tile
+	ld	hl, (hl)		; Pointer to the tile/tree/building
+	cp	a, TILE_BUILDING
 TileDrawingRoutinePtr1 = $+1
-	jp	mpShaData		; This will be modified to the clipped version after X rows
+	jp	c, mpShaData		; This will be modified to the clipped version after X rows
+	jp	z, DisplayBuilding
+	jp	DisplayTileWithTree
 	
 TileIsOutOfField:
 	exx
@@ -296,7 +295,7 @@ StopDisplayTiles:
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
 	ld	de, (currDrawingBuffer)
-	ld	hl, _resources \.r2
+	ld	hl, _resources \ .r2
 	ld	bc, _resources_size
 	ldir
 	ld	hl, blackBuffer
@@ -447,95 +446,76 @@ BackupIY = $-3
 	jp	SkipDrawingOfTile
 	
 DisplayTileWithTree:
-	ld	hl, TreePointers
-	sub	a, TILE_TREE
-	ld	c, a
-	ld	b, 3
-	mlt	bc
-	add	hl, bc
-	ld	hl, (hl)
-	jr	_RLETSprite_NoClip
+; Inputs:
+;   A' = row index
+;   B' = column index
+;   HL = pointer to tree sprite
+
+; Y coordinate: A' * 8 + 17 - tree_height
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
+
+	ld	(BackupIY2), iy
+TempSP3 = $+1
+	ld	sp, 0
+	push	hl			; Sprite struct
+	ex	af, af'
+	ld	c, a			; C = row index
+	ex	af, af'
+	ld	a, (saveSScreen+21000 + OFFSET_Y)
+	ld	e, a
+	ld	a, 30
+	sub	a, c
+	add	a, a
+	add	a, a
+	add	a, a
+	add	a, e
+	ld	e, a
+	inc	hl
+	ld	a, (hl)
+	sub	a, 17
+	ld	b, a
+	ld	a, e
+	sub	a, b
+	sbc	hl, hl
+	ld	l, a
+	push	hl			; Y coordinate
+	ld	a, (saveSScreen+21000 + OFFSET_X)
+	ld	l, a
+	ld	a, 9
 	exx
-	jp	SkipDrawingOfTile
+	sub	a, b
+	exx
+	ld	e, a
+	ld	d, 32
+	mlt	de
+	bit	4, l
+	ld	h, 0
+	add.s	hl, de
+	ld	de, 16
+	jr	z, +_
+	ld	de, -16
+_:	bit	0, c
+	jr	nz, +_
+	or	a, a
+	adc	hl, de
+	jr	z, DontDisplayTree
+_:	push	hl
+	call	_RLETSprite
+DontDisplayTree:
+	ld	sp, 320			; No need to pop
+BackupIY2 = $+2
+	ld	iy, 0
 	
 DisplayBuilding:
 	exx
 	jp	SkipDrawingOfTile
 	
-	
-_RLETSprite_NoClip:
-; This routine is a slightly modified version of the routine in the GRAPHX library, because the screen pointer is already given
-; Inputs:
-;  IY = pointer to screen
-;  HL = pointer to sprite
-	ld	a, 2
-	ld	(-1), a
-	lea	de, iy			; de = screen pointer
-	ld	iy, (hl)		; iyh = height, iyl = width
-	ld	a, (hl)			; a = width
-	inc	hl
-	inc	hl			; hl = sprite data
-; Initialize values for looping.
-	ld	b, 0			; b = 0
-	dec	de			; decrement buffer pointer (negate inc)
-_RLETSprite_NoClip_Begin:
-; Generate the code to advance the buffer pointer to the start of the next row.
-	cpl				; a = 255-width
-	add	a, lcdWidth-255		; a = (lcdWidth-width)&0FFh
-	rra				; a = (lcdWidth-width)/2
-	ld	(_RLETSprite_NoClip_HalfRowDelta_SMC), a
-	sbc	a, a
-	sub	a, s8(_RLETSprite_NoClip_LoopJr_SMC+1-_RLETSprite_NoClip_Row_WidthEven)
-	ld	(_RLETSprite_NoClip_LoopJr_SMC), a
-; Row loop (if sprite width is odd)
-_RLETSprite_NoClip_Row_WidthOdd:
-	inc	de			; increment buffer pointer
-; Row loop (if sprite width is even) {
-_RLETSprite_NoClip_Row_WidthEven:
-	ld	a, iyl			; a = width
-;; Data loop {
-_RLETSprite_NoClip_Trans:
-;;; Read the length of a transparent run and skip that many bytes in the buffer.
-	ld	c, (hl)			; bc = trans run length
-	inc	hl
-	sub	a, c			; a = width remaining after trans run
-	ex	de, hl			; de = sprite, hl = buffer
-_RLETSprite_NoClip_TransSkip:
-	add	hl, bc			; skip trans run
-;;; Break out of data loop if width remaining == 0.
-	jr	z, _RLETSprite_NoClip_RowEnd ; z ==> width remaining == 0
-	ex	de, hl			; de = buffer, hl = sprite
-_RLETSprite_NoClip_Opaque:
-;;; Read the length of an opaque run and copy it to the buffer.
-	ld	c, (hl)			; bc = opaque run length
-	inc	hl
-	sub	a, c			; a = width remaining after opqaue run
-_RLETSprite_NoClip_OpaqueCopy:
-	ldir				; copy opaque run
-;;; Continue data loop while width remaining != 0.
-	jr	nz, _RLETSprite_NoClip_Trans ; nz ==> width remaining != 0
-	ex	de, hl			; de = sprite, hl = buffer
-;; }
-_RLETSprite_NoClip_RowEnd:
-;; Advance buffer pointer to the next row (minus one if width is odd).
-	ld	c, 0			; c = (lcdWidth-width)/2
-_RLETSprite_NoClip_HalfRowDelta_SMC = $-1
-	add	hl, bc			; advance buffer to next row
-	add	hl, bc
-	ex	de, hl			; de = buffer, hl = sprite
-;; Decrement height remaining. Continue row loop while not zero.
-	dec	iyh			; decrement height remaining
-	jr	nz, _RLETSprite_NoClip_Row_WidthEven ; nz ==> height remaining != 0
-_RLETSprite_NoClip_LoopJr_SMC = $-1
-; }
-; Done.
-	jp	SkipDrawingOfTile
 DrawFieldEnd:
 
 .echo "cursorImage size: ", $ - DrawField
 
 #if $ - DrawField > 1024
-.error "cursorImage data too large!"
+.error "cursorImage data too large: ", $ - DrawField, " bytes!"
 #endif
     
 endrelocate()

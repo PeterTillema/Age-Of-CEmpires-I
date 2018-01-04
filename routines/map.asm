@@ -22,7 +22,7 @@ PlaceTreesLoop:
 	push	hl
 	randInt(4)
 	ld	a, l
-	add	a, TILE_TREE
+	add	a, TILE_TREE_1
 	pop	hl
 	ld	(hl), a
 	dec	ixh
@@ -154,8 +154,7 @@ LoadMap:
 	call	_ChkInRAM
 	call	c, _Arc_Unarc
 	ld	hl, mapAddress
-	; =========================
-	ld	(hl), 2
+	push	hl ;
 	inc	hl
 	ex	de, hl
 	inc	hl
@@ -163,6 +162,10 @@ LoadMap:
 	inc	hl
 	ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
 	ldir
+	pop	hl ;
+	inc	hl
+	inc	hl
+	ld	(hl), TILE_TREE_1
 	ret
         
 prng24:
