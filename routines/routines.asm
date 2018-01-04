@@ -87,10 +87,9 @@ fadeOut:
 	ld	hl, fadeOutSub
 	jr	fadeLcd
 fadeOutSub:
-	ld	a, c
-	sub	a, 32
-	neg
-	ld	c,a
+	ld	a, 32
+	sub	a, c
+	ld	c, a
 	ret
 
 fadeLcd:
