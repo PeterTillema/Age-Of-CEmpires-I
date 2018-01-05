@@ -55,8 +55,6 @@ _IYOffsets:
 
 TopLeftXTile:            .dl -10
 TopLeftYTile:            .dl -3
-;TopLeftXTile:            .dl 0
-;TopLeftYTile:            .dl 0
 CursorX:                 .dl 160-12
 CursorY:                 .db 120-16
 SelectedAreaStartX:      .dl 0

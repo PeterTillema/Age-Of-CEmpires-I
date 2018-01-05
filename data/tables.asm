@@ -34,6 +34,17 @@ TilePointersStart:
 	.dl	_tree_3 \ .r2
 	.dl	_tree_4 \ .r2
 	
+FieldRowActionTable:
+	.dl	StopDisplayTiles
+	.dl	DoNothing
+	.dl	DoNothing
+	.dl	DoNothing
+	.dl	DoNothing
+	.dl	DoNothing
+	.dl	SetOnlyTreesRoutine
+	.dl	SetClippedRoutine2
+	.dl	SetClippedRoutine
+	
 ResourcesType1:
 	.db	0, 1, 0
 	.db	0, 1, 1

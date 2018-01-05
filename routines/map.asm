@@ -29,9 +29,8 @@ PlaceTreesLoop:
 	jr	nz, PlaceTreesLoop
 	ld	ixh, 3			; Food, stone, gold
 PlaceAllResourceTypesLoop:
-	ld	b, 15			; Place 15 resources of each
+	ld	ixl, 15			; Place 15 resources of each
 PlaceResourceTypeLoop:
-	ld	ixl, b
 	randInt(7)			; 7 types of different groups for resources
 	push	hl
 	pop	de
@@ -104,8 +103,7 @@ _:	inc	hl
 	ld	b, a
 	djnz	PlaceResource
 DontDrawResource:
-	ld	b, ixl
-	dec	b
+	dec	ixl
 	jp	nz, PlaceResourceTypeLoop
 	ld	hl, ResourceType
 	inc	(hl)			; Next resource type
@@ -155,14 +153,14 @@ LoadMap:
 	call	c, _Arc_Unarc
 	ld	hl, mapAddress
 	push	hl ;
-	inc	hl
 	ex	de, hl
-	inc	hl
 	inc	hl
 	inc	hl
 	ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
 	ldir
 	pop	hl ;
+	ld	de, MAP_SIZE * 17 + 10
+	add	hl, de
 	ld	(hl), TILE_TREE_1
 	inc	hl
 	inc	hl

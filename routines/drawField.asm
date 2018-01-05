@@ -22,8 +22,14 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	hl, TilePointersEnd - 3
 	ld	(TilePointersSMC), hl
 
-	ld	a, (ix + OFFSET_Y)
-	ld	e, a
+	ld	e, (ix + OFFSET_Y)
+	xor	a, a
+	ld	(TileWhichAction), a	; Write "nop"
+	bit	3, e
+	jr	z, +_
+	ld	a, 00Dh
+	ld	(TileWhichAction), a	; Write "dec c"
+_:	ld	a, e
 	cpl
 	and	a, 4
 	add	a, 12
@@ -32,12 +38,8 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(DrawTile_Clipped_Height1), a
 	ld	a, 7
 	cp	a, e
-	adc	a, -3
-	ld	(TileHowManyRowsClipped1), a
-	dec	a
-	ld	(TileHowManyRowsClipped2), a
-	dec	a
-	ld	(TileHowManyRowsClipped3), a
+	adc	a, 3
+	ld	(TileHowManyRowsClipped), a
 	
 	ld	a, e
 	add	a, 16			; Point to the row of the bottom right pixel
@@ -67,7 +69,7 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	bc, mapAddress
 	add	hl, bc
 	ld	ix, (_IYOffsets + TopLeftYTile)
-	ld	a, 29			; 29 rows
+	ld	a, 35			; 35 rows, but last 6 rows only trees
 	ld	(TempSP2), sp
 	ld	(TempSP3), sp
 DisplayEachRowLoop:
@@ -236,6 +238,7 @@ DrawIsometricTileSecondPart:
 	add	hl, bc
 	ex	de, hl
 	lddr
+SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
 	lea	iy, iy + 32		; Skip to next tile
@@ -259,35 +262,49 @@ _:	ex	de, hl
 	ld	bc, (MAP_SIZE * 10 - 9) * 2
 	add	hl, bc
 	lea	ix, ix+9+1
-TileHowManyRowsClipped1 = $+1
+TileHowManyRowsClipped = $+1
 	cp	a, 0
-	jr	nc, ++_
-TileHowManyRowsClipped2 = $+1
-	cp	a, 0
-	jr	nz, +_
-	ld	sp, 320
-	ld	bc, DrawTile_Clipped
-	ld	(TileDrawingRoutinePtr1), bc
-	ld	(TileDrawingRoutinePtr2), bc
-	ld	iy, (startingPosition)
-	ld	bc, -lcdWidth * 16
-	add	iy, bc
-	ld	(startingPosition), iy
-	ld	bc, TilePointersStart - 3
-	ld	(TilePointersSMC), bc
 	dec	a
+	jp	nc, DisplayEachRowLoop
+	exx
+	ld	c, a
+TileWhichAction = $
+	nop				; Can be SMC'd into a "dec c"
+	ld	b, 3
+	mlt	bc
+	ld	hl, FieldRowActionTable
+	add	hl, bc
+	ld	hl, (hl)
+	jp	(hl)
+	
+	
+SetClippedRoutine:
+	ld	sp, 320
+	ld	hl, DrawTile_Clipped
+	ld	(TileDrawingRoutinePtr1), hl
+	ld	(TileDrawingRoutinePtr2), hl
+	ld	hl, (startingPosition)
+	ld	bc, -lcdWidth * 16
+	add	hl, bc
+	ld	(startingPosition), hl
+	ld	hl, TilePointersStart - 3
+	ld	(TilePointersSMC), hl
+	exx
 	jp	DisplayEachRowLoop
-TileHowManyRowsClipped3 = $+1
-_:	cp	a, 0
-	jr	nz, StopDisplayTiles
+SetClippedRoutine2:
 	ld	c, a
 DrawTile_Clipped_Height1 = $+1
 	ld	a, 0
 	ld	(DrawTile_Clipped_Height2), a
 	ld	a, c
-	dec	a
+	exx
 	jp	DisplayEachRowLoop
-_:	dec	a
+SetOnlyTreesRoutine:
+	ld	hl, SkipDrawingOfTileExx
+	ld	(TileDrawingRoutinePtr1), hl
+	ld	(TileDrawingRoutinePtr2), hl
+DoNothing:
+	exx
 	jp	DisplayEachRowLoop
 StopDisplayTiles:
 	ld	de, mpShaData
@@ -455,32 +472,28 @@ DisplayTileWithTree:
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 
 	ld	(BackupIY2), iy
+	ld	iy, saveSScreen+21000
 TempSP3 = $+1
 	ld	sp, 0
 	push	hl			; Sprite struct
 	ex	af, af'
 	ld	c, a			; C = row index
 	ex	af, af'
-	ld	a, (saveSScreen+21000 + OFFSET_Y)
-	ld	e, a
-	ld	a, 30
+	ld	a, 36
 	sub	a, c
-	add	a, a
-	add	a, a
-	add	a, a
-	add	a, e
 	ld	e, a
+	ld	d, 8
+	mlt	de
 	inc	hl
 	ld	a, (hl)
-	sub	a, 17
-	ld	b, a
-	ld	a, e
-	sub	a, b
-	sbc	hl, hl
-	ld	l, a
-	push	hl			; Y coordinate
-	ld	a, (saveSScreen+21000 + OFFSET_X)
+	ld	hl, 17
+	add	hl, de
+	ld	e, (iy + OFFSET_Y)
+	ld	d, 0
+	add	hl, de
 	ld	e, a
+	sbc	hl, de
+	push	hl			; Y coordinate
 	ld	a, 9
 	exx
 	sub	a, b
@@ -488,6 +501,7 @@ TempSP3 = $+1
 	ld	l, a
 	ld	h, 32
 	mlt	hl
+	ld	e, (iy + OFFSET_X)
 	ld	d, 0
 	add.s	hl, de
 	bit	0, c
