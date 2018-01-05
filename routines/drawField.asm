@@ -24,12 +24,11 @@ _:	ld	(TopRowLeftOrRight), a
 
 	ld	e, (ix + OFFSET_Y)
 	xor	a, a
-	ld	(TileWhichAction), a	; Write "nop"
 	bit	3, e
 	jr	z, +_
 	ld	a, 00Dh
-	ld	(TileWhichAction), a	; Write "dec c"
-_:	ld	a, e
+_:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
+	ld	a, e
 	cpl
 	and	a, 4
 	add	a, 12
