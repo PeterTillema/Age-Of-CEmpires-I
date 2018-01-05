@@ -162,7 +162,7 @@ RunProgram:
 	ld	(currDrawingBuffer), hl
 	ld	(mpLcdBase), hl
 	ld	de, mpLcdPalette
-	ld	hl, _age_1_pal
+	ld	hl, _age_1_fixed_pal
 	ld	bc, 256*2
 	ldir
 	
@@ -259,7 +259,7 @@ _:	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
 	jp	MainGameLoop
     
-#include "gfx/bin/age_1.asm"
+#include "gfx/bin/age_1_fixed.asm"
 #include "data/tables.asm"
 #include "data/data.asm"
 #include "routines/map.asm"

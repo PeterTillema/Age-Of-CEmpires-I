@@ -1,3 +1,4 @@
 #define db .db
 #define equ .equ
-#include "age_4.inc"
+.dw	0FFFFh
+#include "age_4_temp.inc"
