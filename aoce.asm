@@ -123,6 +123,8 @@ _:	call	_Mov9ToOP1
 	ld	e, (hl)
 	add	hl, de
 	inc	hl
+	inc	hl
+	inc	hl
 	ex	de, hl
 	ld	a, 6
 	sub	a, iyh
@@ -202,6 +204,9 @@ AppvarsPointersTable:
 NewStartAddr:
 .org $D00002 + 18
 	ld	(backupSP), sp
+	ld	hl, RelocationTable1
+	ld	bc, (0D00002h)
+	call	ModifyRelocationTable
 	ld	hl, (curRow)		; gfx_Begin sets curRow and curCol to 0, which is just code, so save that
 	push	hl
 	call	gfx_Begin
@@ -213,8 +218,7 @@ NewStartAddr:
 	ex	(sp), hl
 	call	gfx_SetTransparentColor
 	pop	hl
-	;call	MainMenu
-	call	GenerateMap
+	call	MainMenu
 	ld	l, 0F8h
 	push	hl
 	call	gfx_SetTransparentColor

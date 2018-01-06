@@ -81,7 +81,7 @@ DisplayEachRowLoop:
 ;   DE' = x index tile
 ;   HL' = pointer to map data
 ;   IX  = y index tile
-;   ;;;;;IY  = pointer to output
+;   IY  = pointer to output
 ;   SP  = SCREEN_WIDTH
 
 startingPosition = $+2			; Here are the shadow registers active

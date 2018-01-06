@@ -90,7 +90,7 @@ _:	sub	a, 4
 	ld	hl, x
 	push	hl
 #ENDIF
-	ld	de, plotSScreen
+	ld	de, 0D20000h
 	push	de
 	ld	hl, sprite \.r1
 	call	dzx7_Turbo

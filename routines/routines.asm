@@ -579,3 +579,24 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 ; }
 ; Done.
 	ret
+	
+ModifyRelocationTable:
+	push	hl
+	ld	hl, (hl)
+	ld	a, h
+	and	a, l
+	inc	a
+	jr	z, +_
+	push	hl
+	ld	hl, (hl)
+	add	hl, bc
+	ex	de, hl
+	pop	hl
+	ld	(hl), de
+	pop	hl
+	inc	hl
+	inc	hl
+	inc	hl
+	jr	ModifyRelocationTable
+_:	pop	hl
+	ret

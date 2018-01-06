@@ -32,7 +32,7 @@ SelectLoopDrawPlayHelpQuit:
 	jr	z, DisplayHelp
 	dec	c
 	jr	nz, SelectedPlay
-_:	jp	ForceStopProgram
+_:	jp	ForceStopProgramFadeOut
     
 DisplayHelp:
 	call	EraseArea
