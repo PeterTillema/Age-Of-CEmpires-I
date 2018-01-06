@@ -45,6 +45,16 @@ FieldRowActionTable:
 	.dl	SetClippedRoutine2
 	.dl	SetClippedRoutine
 	
+BuildingsAge1Pointers:
+	.dl	_farm_1_compressed
+	.dl	_lumbercamp_1_compressed
+	.dl	_miningcamp_1_compressed
+	.dl	_outpost_1_compressed
+	.dl	_barracks_1_compressed
+	.dl	_house_1_compressed
+	.dl	_mill_1_compressed
+	.dl	_towncenter_1_compressed
+	
 ResourcesType1:
 	.db	0, 1, 0
 	.db	0, 1, 1

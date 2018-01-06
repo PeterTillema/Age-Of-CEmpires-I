@@ -115,7 +115,7 @@ DontDrawResource:
 	call	_Mov9ToOP1
 	ld	hl, MAP_SIZE*MAP_SIZE*2
 	call	_EnoughMem
-	jp	c, ForceStopProgram
+	jp	c, ForceStopProgramNormalNoFadeOut
 	ex	de, hl
 	call	_CreateAppvar
 	ld	hl, screenBuffer

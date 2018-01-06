@@ -3,6 +3,10 @@
 #include "includes/macros.inc"
 #include "bin/AOCEGFX1.lab"
 #include "bin/AOCEGFX2.lab"
+#include "bin/AGE1.lab"
+#include "bin/AGE2.lab"
+#include "bin/AGE3.lab"
+#include "bin/AGE4.lab"
 #include "includes/relocation.inc"
 
 .db tExtTok, tAsm84CECmp
@@ -98,30 +102,53 @@ Main:
 	call	_ClrLCDFull
 	call	_RunIndicOff
 	push	ix
-	ld	(backupSP), sp
+	ld	(backupSP1), sp
+	ld	(backupSP2), sp
 	jr	RunProgram
-ForceStopProgramWithFadeOut:
+	
+ForceStopProgramNormal:
 	call	fadeOut
-ForceStopProgram:
-backupSP = $+1
+ForceStopProgramNormalNoFadeOut:
+backupSP1 = $+1
 	ld	sp, 0
-	pop	ix
-	di
-	ld	a, 0D1h
-	ld	mb, a
-	call.lis fLockFlash & 0FFFFh
-	ld	a, 0D0h
-	ld	mb, a
+	call	fadeOut
 	call	gfx_End
 	ld	iy, flags
 	jp	_DrawStatusBar
+
+ForceStopProgramRestoreRAM:
+CleanupCode:
+	scf
+	sbc	hl, hl
+	ld	(hl), 2
+	call.lis fLockFlash & 0FFFFh
+	ld	de, cursorImage
+	ld	hl, CleanupCode
+	ld	bc, CleanupCodeEnd - CleanupCode
+	ldir
+	jp	cursorImage + $ + 4 - CleanupCode
+	call	gfx_End
+	ld	iy, flags
+	call	_DrawStatusBar
+	ld	de, 0D80000h
+	ld	hl, 03C0000h
+	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
+	ldir
+	ld	de, heapBot + 008000h			; Prevent crashing because memory protector
+	ld	hl, vRAM - (stackTop - heapBot)
+	push	hl
+	ld	bc, stackTop - heapBot
+	ldir
+	pop	hl
+	ld	de, 03C0000h + (vRAM - ramStart) - (stackTop - heapBot)
+	ld	bc, stackTop - heapBot
+	ldir
+backupSP2 = $+1
+	ld	sp, 0
+	ret
+CleanupCodeEnd:
+
 RunProgram:
-	di
-	ld.sis	sp, stackBot & 0FFFFh
-	ld	a, FlashMbaseStart
-	ld	mb, a
-	call.lis fUnlockFlash & 0FFFFh
-	
 	ld	hl, AoCEMapAppvar
 	call	_Mov9ToOP1
 	call	_ChkFindSym
@@ -149,7 +176,30 @@ RunProgram:
 	ex	(sp), hl
 	call	gfx_SetColor
 	pop	hl
-    
+	
+; Backup RAM
+	di
+	ld.sis	sp, stackBot & 0FFFFh
+	ld	a, FlashMbaseStart
+	ld	mb, a
+	call.lis fUnlockFlash & 0FFFFh
+	call	BackupRAM
+	
+; Backup stack
+	ld	hl, heapBot
+	ld	de, vRAM - (stackTop - heapBot)
+	ld	bc, stackTop - heapBot
+	ldir
+	
+; Copy AoCE to $D00002
+	ld	de, 0D00002h
+	ld	hl, UserMem
+	ld	bc, (asm_prgm_size)
+	ldir
+	jp	NewStartAddr - start + 0D00002h
+	
+NewStartAddr:
+.org 0D00002h
 	ld	ix, saveSScreen+21000
 	xor	a, a
 	ld	(ix+OFFSET_X), a
@@ -166,7 +216,7 @@ RunProgram:
 	ld	bc, 256*2
 	ldir
 	
-#if 1 == 1				; Easier debugging if you have a full pink background
+#if 1 == 0				; Easier debugging if you have a full pink background
 	ld	hl, screenBuffer
 	ld	(hl), 255
 	push	hl
@@ -175,6 +225,7 @@ RunProgram:
 	ld	bc, 320*240-1
 	ldir
 #endif
+
 	scf
 	sbc	hl, hl
 	ld	(hl), 2
@@ -228,7 +279,7 @@ CheckKey7:
 CheckClearEnter:
 	ld	l, 01Ch
 	bit	kpClear, (hl)
-	jp	nz, ForceStopProgram
+	jp	nz, ForceStopProgramRestoreRAM
 	bit	kpEnter, (hl)
 	jr	z, CheckReleaseEnterKey
 	bit	holdDownEnterKey, (iy+AoCEFlags1)
@@ -260,14 +311,14 @@ _:	ld	(currDrawingBuffer), de
 	jp	MainGameLoop
     
 #include "gfx/bin/age_1_fixed.asm"
-#include "data/tables.asm"
-#include "data/data.asm"
 #include "routines/map.asm"
 #include "routines/mainmenu.asm"
 #include "routines/pathfinding.asm"
 #include "routines/routines.asm"
 #include "routines/drawField.asm"
 #include "routines/flash.asm"
+#include "data/tables.asm"
+#include "data/data.asm"
 #include "relocation_table1.asm"
 	.dw	0FFFFh
 #include "relocation_table2.asm"

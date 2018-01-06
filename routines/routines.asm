@@ -47,7 +47,7 @@ LoadGraphicsAppvar:
 	inc	hl
 	call	_PutS
 	call	_GetKey
-	jp	ForceStopProgram
+	jp	ForceStopProgramNormalNoFadeOut
 _:	pop	hl
 	call	_ChkInRAM
 	call	c, _Arc_Unarc
