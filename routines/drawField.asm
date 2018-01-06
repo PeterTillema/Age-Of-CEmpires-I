@@ -65,7 +65,7 @@ _:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
 	ld	de, (_IYOffsets + TopLeftXTile)
 	add	hl, de
 	add	hl, hl			; Each tile is 2 bytes worth
-	ld	bc, mapAddress
+	ld	bc, (MapDataPtr)
 	add	hl, bc
 	ld	ix, (_IYOffsets + TopLeftYTile)
 	ld	a, 35			; 35 rows, but last 6 rows only trees

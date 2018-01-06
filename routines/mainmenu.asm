@@ -32,7 +32,7 @@ SelectLoopDrawPlayHelpQuit:
 	jr	z, DisplayHelp
 	dec	c
 	jr	nz, SelectedPlay
-_:	jp	ForceStopProgramNormal
+_:	jp	ForceStopProgram
     
 DisplayHelp:
 	call	EraseArea
@@ -56,16 +56,16 @@ SelectedPlay:
 	call	GetKeyAnyFast
 	jr	SelectedPlay
 SelectedSinglePlayer:
-	ld	hl, AoCEMapAppvar
-	call	_Mov9ToOP1
-	call	_ChkFindSym
-	jr	c, +_
-	call	EraseArea
-	dispCompressedImage(_newloadgame_compressed, 50, 110)
-	call	SelectMenu
-	jp	c, SelectedPlay
-	dec	c
-	jp	z, LoadMap
+	;ld	hl, AoCEMapAppvar
+	;call	_Mov9ToOP1
+	;call	_ChkFindSym
+	;jr	c, +_
+	;call	EraseArea
+	;dispCompressedImage(_newloadgame_compressed, 50, 110)
+	;call	SelectMenu
+	;jp	c, SelectedPlay
+	;dec	c
+	;jp	z, LoadMap
 _:	jp	GenerateMap
 
 EraseArea:

@@ -101,81 +101,40 @@ Main:
 	call	_HomeUp
 	call	_ClrLCDFull
 	call	_RunIndicOff
+	ld	hl, LoadingMessage
+	call	_PutS
 	push	ix
-	ld	(backupSP1), sp
-	ld	(backupSP2), sp
-	jr	RunProgram
 	
-ForceStopProgramNormal:
-	call	fadeOut
-ForceStopProgramNormalNoFadeOut:
-backupSP1 = $+1
-	ld	sp, 0
-	call	fadeOut
-	call	gfx_End
-	ld	iy, flags
-	jp	_DrawStatusBar
-
-ForceStopProgramRestoreRAM:
-CleanupCode:
-	scf
-	sbc	hl, hl
-	ld	(hl), 2
-	call.lis fLockFlash & 0FFFFh
-	ld	de, cursorImage
-	ld	hl, CleanupCode
-	ld	bc, CleanupCodeEnd - CleanupCode
-	ldir
-	jp	cursorImage + $ + 4 - CleanupCode
-	call	gfx_End
-	ld	iy, flags
-	call	_DrawStatusBar
-	ld	de, 0D80000h
-	ld	hl, 03C0000h
-	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
-	ldir
-	ld	de, heapBot + 008000h			; Prevent crashing because memory protector
-	ld	hl, vRAM - (stackTop - heapBot)
+; Check if all the appvars exists
+	ld	hl, GraphicsAppvar1_
+	ld	iyh, 6
+_:	call	_Mov9ToOP1
 	push	hl
-	ld	bc, stackTop - heapBot
-	ldir
-	pop	hl
-	ld	de, 03C0000h + (vRAM - ramStart) - (stackTop - heapBot)
-	ld	bc, stackTop - heapBot
-	ldir
-backupSP2 = $+1
-	ld	sp, 0
-	ret
-CleanupCodeEnd:
-
-RunProgram:
-	ld	hl, AoCEMapAppvar
-	call	_Mov9ToOP1
 	call	_ChkFindSym
-	call	nc, _DelVarArc
-	ld	hl, GraphicsAppvar1
-	ld	de, RelocationTable1
-	call	LoadGraphicsAppvar
-	call	gfx_Begin
-	ld	l, 254
-	push	hl
-	call	gfx_SetTextFGColor
-	ld	l, 255
-	ex	(sp), hl
-	call	gfx_SetTransparentColor
+	jr	c, AppvarNotFound
 	pop	hl
-	;call	MainMenu
-	call	GenerateMap
-	ld	hl, GraphicsAppvar2
-	ld	de, RelocationTable2
-	call	LoadGraphicsAppvar
-	ld	l, 0F8h
 	push	hl
-	call	gfx_SetTransparentColor
-	ld	l, 0FFh
-	ex	(sp), hl
-	call	gfx_SetColor
+	call	_ChkInRAM
+	call	nc, _Arc_Unarc
+	call	_ChkFindSym
+	ex	de, hl
+	ld	de, 9
+	add	hl, de
+	ld	e, (hl)
+	add	hl, de
+	inc	hl
+	ex	de, hl
+	ld	a, 6
+	sub	a, iyh
+	ld	c, a
+	ld	b, 3
+	mlt	bc
+	ld	hl, AppvarsPointersTable
+	add	hl, bc
+	ld	(hl), de
 	pop	hl
+	dec	iyh
+	jr	nz, -_
 	
 ; Backup RAM
 	di
@@ -192,14 +151,78 @@ RunProgram:
 	ldir
 	
 ; Copy AoCE to $D00002
+	ld	hl, (asm_prgm_size)
+	ld	de, AppvarsPointersTable - start
+	or	a, a
+	sbc	hl, de
+	push	hl
+	pop	bc
 	ld	de, 0D00002h
-	ld	hl, UserMem
-	ld	bc, (asm_prgm_size)
+	ld	hl, AppvarsPointersTable
 	ldir
-	jp	NewStartAddr - start + 0D00002h
+	ld	(MapDataPtr), de
+	jp	0D00002h + 18
+	
+AppvarNotFound:
+	call	_HomeUp
+	call	_ClrLCDFull
+	ld	hl, GraphicsAppvar1
+	call	_PutS
+	call	_NewLine
+	pop	hl
+	inc	hl
+	call	_PutS
+_:	call	_GetCSC
+	or	a, a
+	jr	z, -_
+	jp	ForceStopProgram
+	
+#include "routines/flash.asm"
+	
+GraphicsAppvar1_:
+	.db	AppVarObj, "AOCEGFX1"
+	.db	AppVarObj, "AOCEGFX2"
+	.db	AppVarObj, "AGE1", 0,0,0,0
+	.db	AppVarObj, "AGE2", 0,0,0,0
+	.db	AppVarObj, "AGE3", 0,0,0,0
+	.db	AppVarObj, "AGE4", 0,0,0,0
+GraphicsAppvarNotFound_:
+	.db	"Can't find appvar:", 0
+MissingAppVar:
+	.db	"Need"
+LibLoadAppVar:
+	.db	" LibLoad", 0
+	.db	"tiny.cc/clibs", 0
+LoadingMessage:
+	.db	"Loading..."
+	
+AppvarsPointersTable:
+	.block	18
 	
 NewStartAddr:
-.org 0D00002h
+.org $D00002 + 18
+	ld	(backupSP), sp
+	ld	hl, (curRow)		; gfx_Begin sets curRow and curCol to 0, which is just code, so save that
+	push	hl
+	call	gfx_Begin
+	ld	l, 254
+	ex	(sp), hl
+	ld	(curRow), hl
+	call	gfx_SetTextFGColor
+	ld	l, 255
+	ex	(sp), hl
+	call	gfx_SetTransparentColor
+	pop	hl
+	;call	MainMenu
+	call	GenerateMap
+	ld	l, 0F8h
+	push	hl
+	call	gfx_SetTransparentColor
+	ld	l, 0FFh
+	ex	(sp), hl
+	call	gfx_SetColor
+	pop	hl
+	
 	ld	ix, saveSScreen+21000
 	xor	a, a
 	ld	(ix+OFFSET_X), a
@@ -212,11 +235,11 @@ NewStartAddr:
 	ld	(currDrawingBuffer), hl
 	ld	(mpLcdBase), hl
 	ld	de, mpLcdPalette
-	ld	hl, _age_1_fixed_pal
-	ld	bc, 256*2
+	ld	hl, _pal_gfx_pal
+	ld	bc, _pal_gfx_pal_size
 	ldir
 	
-#if 1 == 0				; Easier debugging if you have a full pink background
+#if 1 == 1				; Easier debugging if you have a full pink background
 	ld	hl, screenBuffer
 	ld	(hl), 255
 	push	hl
@@ -225,10 +248,6 @@ NewStartAddr:
 	ld	bc, 320*240-1
 	ldir
 #endif
-
-	scf
-	sbc	hl, hl
-	ld	(hl), 2
     
 MainGameLoop:
 	call	DrawField
@@ -279,7 +298,7 @@ CheckKey7:
 CheckClearEnter:
 	ld	l, 01Ch
 	bit	kpClear, (hl)
-	jp	nz, ForceStopProgramRestoreRAM
+	jp	nz, ForceStopProgram
 	bit	kpEnter, (hl)
 	jr	z, CheckReleaseEnterKey
 	bit	holdDownEnterKey, (iy+AoCEFlags1)
@@ -309,14 +328,47 @@ CheckStop:
 _:	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
 	jp	MainGameLoop
+	
+ForceStopProgramFadeOut:
+	call	fadeOut
+ForceStopProgram:
+backupSP = $+1
+	ld	sp, 0
+	pop	ix
+	call.lis fLockFlash & 0FFFFh
+CleanupCode:
+	ld	de, cursorImage
+	ld	hl, CleanupCode
+	ld	bc, CleanupCodeEnd - CleanupCode
+	ldir
+	jp	cursorImage + $ + 4 - CleanupCode
+	ld	a, 0D0h
+	ld	mb, a
+	call	gfx_End
+	ld	de, 0D80000h
+	ld	hl, 03C0000h
+	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
+	ldir
+	ld	de, heapBot + 008000h			; Prevent crashing because memory protector
+	ld	hl, vRAM - (stackTop - heapBot)
+	push	hl
+	ld	bc, stackTop - heapBot
+	ldir
+	pop	de
+	ld	hl, 03C0000h + (vRAM - ramStart) - (stackTop - heapBot)
+	ld	bc, stackTop - heapBot
+	ldir
+	ld	iy, flags
+	call	_DrawStatusBar
+	ret
+CleanupCodeEnd:
     
-#include "gfx/bin/age_1_fixed.asm"
+#include "gfx/bin/pal_gfx.asm"
 #include "routines/map.asm"
 #include "routines/mainmenu.asm"
 #include "routines/pathfinding.asm"
 #include "routines/routines.asm"
 #include "routines/drawField.asm"
-#include "routines/flash.asm"
 #include "data/tables.asm"
 #include "data/data.asm"
 #include "relocation_table1.asm"
@@ -324,4 +376,6 @@ _:	ld	(currDrawingBuffer), de
 #include "relocation_table2.asm"
 	.dw	0FFFFh
 	
-.echo "Total size: ", $ - start, " bytes"
+AoCEEnd:
+	
+.echo "Total size: ", AoCEEnd - 0D00002h + NewStartAddr - start, " bytes"

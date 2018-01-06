@@ -110,17 +110,10 @@ DontDrawResource:
 	inc	(hl)
 	dec	ixh
 	jp	nz, PlaceAllResourceTypesLoop
-; All the resources are now placed, so copy them to the map appvar
-	ld	hl, AoCEMapAppvar
-	call	_Mov9ToOP1
-	ld	hl, MAP_SIZE*MAP_SIZE*2
-	call	_EnoughMem
-	jp	c, ForceStopProgramNormalNoFadeOut
-	ex	de, hl
-	call	_CreateAppvar
+	
+; All the resources are now placed, so copy them to the map data
+	ld	de, (MapDataPtr)
 	ld	hl, screenBuffer
-	inc	de
-	inc	de
 	ld	ixh, MAP_SIZE
 CopyMapToNewAppvarLoop:
 	ld	b, MAP_SIZE
@@ -142,23 +135,23 @@ _:	ld	(de), a
 	add	hl, bc
 	dec	ixh
 	jr	nz, CopyMapToNewAppvarLoop
-	call	_OP4ToOP1
+	
 LoadMap:
-	call	EraseArea
-	printString(LoadingMapMessage, 5, 112)
-	ld	hl, AoCEMapAppvar
-	call	_Mov9ToOP1
-	call	_ChkFindSym
-	call	_ChkInRAM
-	call	c, _Arc_Unarc
-	ld	hl, mapAddress
-	push	hl ;
-	ex	de, hl
-	inc	hl
-	inc	hl
-	ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
-	ldir
-	pop	hl ;
+	;call	EraseArea
+	;printString(LoadingMapMessage, 5, 112)
+	;ld	hl, AoCEMapAppvar
+	;call	_Mov9ToOP1
+	;call	_ChkFindSym
+	;call	_ChkInRAM
+	;call	c, _Arc_Unarc
+	ld	hl, (MapDataPtr)
+	;push	hl
+	;ex	de, hl
+	;inc	hl
+	;inc	hl
+	;ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
+	;ldir
+	;pop	hl
 	ld	de, MAP_SIZE * 17 + 10
 	add	hl, de
 	ld	(hl), TILE_TREE_1
