@@ -600,3 +600,31 @@ ModifyRelocationTable:
 	jr	ModifyRelocationTable
 _:	pop	hl
 	ret
+	
+LoadAgeGraphicsAppvar:
+	inc	c
+	ld	b, 3
+	mlt	bc
+	ld	hl, 0D00002h
+	add	hl, bc
+	ld	hl, (hl)
+	ld	de, (FixedBuildingsPtr)
+	ld	bc, 0
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	inc	hl
+	push	bc
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	inc	hl
+	push	de
+	ex	de, hl
+	add	hl, bc
+	ld	(FixedBuildingsPtr), hl
+	ex	de, hl
+	pop	de
+	pop	bc
+	ldir
+	ret

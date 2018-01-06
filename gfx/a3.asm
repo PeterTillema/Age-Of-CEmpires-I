@@ -1,5 +1,6 @@
 #define db .db
 #define equ .equ
+.dw	startTempBuildings3 - $
 #include "age_3_fixed.inc"
-.dw	0FFFFh
+startTempBuildings3:
 #include "age_3_temp.inc"

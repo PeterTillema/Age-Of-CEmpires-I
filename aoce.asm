@@ -109,6 +109,7 @@ Main:
 	ld	hl, GraphicsAppvar1_
 	ld	iyh, 6
 _:	call	_Mov9ToOP1
+	inc	hl
 	push	hl
 	call	_ChkFindSym
 	jp	c, AppvarNotFound
@@ -184,26 +185,29 @@ _:	call	_Mov9ToOP1
 AppvarNotFound:
 	call	_HomeUp
 	call	_ClrLCDFull
-	ld	hl, GraphicsAppvar1
+	ld	hl, GraphicsAppvarNotFound_
 	call	_PutS
 	call	_NewLine
 	pop	hl
-	inc	hl
+	ld	de, -9
+	add	hl, de
 	call	_PutS
 _:	call	_GetCSC
 	or	a, a
 	jr	z, -_
-	jp	ForceStopProgram
+	pop	ix
+	ld	iy, flags
+	ret
 	
 #include "routines/flash.asm"
 	
 GraphicsAppvar1_:
-	.db	AppVarObj, "AOCEGFX1"
-	.db	AppVarObj, "AOCEGFX2"
-	.db	AppVarObj, "AGE1", 0,0,0,0
-	.db	AppVarObj, "AGE2", 0,0,0,0
-	.db	AppVarObj, "AGE3", 0,0,0,0
-	.db	AppVarObj, "AGE4", 0,0,0,0
+	.db	AppVarObj, "AOCEGFX1", 0
+	.db	AppVarObj, "AOCEGFX2", 0
+	.db	AppVarObj, "AGE1", 0,0,0,0,0
+	.db	AppVarObj, "AGE2", 0,0,0,0,0
+	.db	AppVarObj, "AGE3", 0,0,0,0,0
+	.db	AppVarObj, "AGE4", 0
 GraphicsAppvarNotFound_:
 	.db	"Can't find appvar:", 0
 MissingAppVar:
@@ -245,6 +249,9 @@ NewStartAddr:
 	ex	(sp), hl
 	call	gfx_SetColor
 	pop	hl
+	
+	ld	c, 1
+	call	LoadAgeGraphicsAppvar
 	
 	ld	ix, saveSScreen+21000
 	xor	a, a
@@ -389,7 +396,7 @@ CleanupCodeEnd:
 #include "gfx/bin/pal_gfx.asm"
 #include "routines/map.asm"
 #include "routines/mainmenu.asm"
-#include "routines/pathfinding.asm"
+;#include "routines/pathfinding.asm"
 #include "routines/routines.asm"
 #include "routines/drawField.asm"
 #include "data/tables.asm"
