@@ -45,6 +45,8 @@ AmountOfBuildings:
 	.db	0
 MapDataPtr:
 	.dl	0
+FixedBuildingsPtr:
+	.dl	0
 
 TempData1:
 	.block	8

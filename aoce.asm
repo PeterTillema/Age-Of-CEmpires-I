@@ -111,7 +111,7 @@ Main:
 _:	call	_Mov9ToOP1
 	push	hl
 	call	_ChkFindSym
-	jr	c, AppvarNotFound
+	jp	c, AppvarNotFound
 	pop	hl
 	push	hl
 	call	_ChkInRAM
@@ -122,8 +122,6 @@ _:	call	_Mov9ToOP1
 	add	hl, de
 	ld	e, (hl)
 	add	hl, de
-	inc	hl
-	inc	hl
 	inc	hl
 	ex	de, hl
 	ld	a, 6
@@ -162,7 +160,25 @@ _:	call	_Mov9ToOP1
 	ld	de, 0D00002h
 	ld	hl, AppvarsPointersTable
 	ldir
+	
+; Set some pointers
 	ld	(MapDataPtr), de
+	ld	hl, MAP_SIZE * MAP_SIZE * 2
+	add	hl, de
+	push	hl
+	ex	de, hl
+	ld	hl, (0D00005h)
+	ld	bc, 0
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	inc	hl
+	ldir
+	ld	(FixedBuildingsPtr), de
+	pop	bc
+	ld	hl, RelocationTable2
+	call	ModifyRelocationTable
+	
 	jp	0D00002h + 18
 	
 AppvarNotFound:
@@ -206,6 +222,8 @@ NewStartAddr:
 	ld	(backupSP), sp
 	ld	hl, RelocationTable1
 	ld	bc, (0D00002h)
+	inc	bc			; Skip size bytes
+	inc	bc
 	call	ModifyRelocationTable
 	ld	hl, (curRow)		; gfx_Begin sets curRow and curCol to 0, which is just code, so save that
 	push	hl
@@ -218,7 +236,8 @@ NewStartAddr:
 	ex	(sp), hl
 	call	gfx_SetTransparentColor
 	pop	hl
-	call	MainMenu
+	;call	MainMenu
+	call	GenerateMap
 	ld	l, 0F8h
 	push	hl
 	call	gfx_SetTransparentColor

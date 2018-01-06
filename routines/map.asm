@@ -29,7 +29,7 @@ PlaceTreesLoop:
 	jr	nz, PlaceTreesLoop
 	ld	ixh, 3			; Food, stone, gold
 PlaceAllResourceTypesLoop:
-	ld	ixl, 15			; Place 15 resources of each
+	ld	ixl, 20			; Place max 20 resources of each
 PlaceResourceTypeLoop:
 	randInt(7)			; 7 types of different groups for resources
 	push	hl
@@ -152,8 +152,6 @@ LoadMap:
 	;ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
 	;ldir
 	;pop	hl
-	ld	de, MAP_SIZE * 17 + 10
-	add	hl, de
 	ld	(hl), TILE_TREE_1
 	inc	hl
 	inc	hl

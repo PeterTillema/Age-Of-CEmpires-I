@@ -20,7 +20,6 @@ spasm -E -T -L aoce.asm bin\AOCE.bin
 convhex -x bin\AOCE.bin
 del bin\AGE?.lab
 del bin\AOCEGFX?.lab
-del bin\AOCE.bin
 pause
 exit
 
