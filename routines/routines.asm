@@ -224,6 +224,7 @@ __setstateloop:
 ; Changes:
 ;   Use the screen bounds directly
 ;   Shuffle the arguments
+;   Optimized a few things, because known bounds
 
 _RLETSprite:
 ; Draws a sprite with RLE transparency with clipping.
@@ -260,8 +261,7 @@ _RLETSprite_SkipClipBottom:
 	jp	p, _RLETSprite_SkipClipTop ; p ==> y >= ymin ==> fully on-screen
 	add	hl, bc			; hl = y-ymin+height = height on-screen
 	ret	nc			; nc ==> height on-screen < 0 ==> fully off-screen
-	ld	a, l			; a = height on-screen
-	or	a, a
+	or	a, l			; a = height on-screen
 	ret	z			; z ==> height on-screen == 0 ==> fully off-screen
 	ld	a, c
 	sub	a, l			; a = height off-screen
@@ -277,7 +277,8 @@ _RLETSprite_SkipClipTop:
 	ld	hl, (iy+9)		; hl = sprite struct
 	ld	e, (hl)			; de = width
 	ld	hl, (iy+3)		; hl = x
-	ld	bc, 32			; bc = xmin
+	ld	b, d			; d = b = 0
+	ld	c, 32			; bc = xmin
 	sbc	hl, bc			; hl = x-xmin
 	ret	pe			; v ==> x ~ int_min ==> fully off-screen
 	jp	p, _RLETSprite_SkipClipLeft ; p ==> x >= xmin ==> fully on-screen
@@ -298,7 +299,7 @@ _RLETSprite_SkipClipLeft:
 ; Clip right
 	add	hl, bc			; hl = x (clipped)
 	ld	(iy+3), hl		; write back clipped x
-	ld	bc, lcdWidth - 32	; bc = xmax
+	inc	b			; bc = xmax (bc was 32, now it's 32+256=288 = lcdWidth - 32)
 	sbc	hl, bc			; hl = x-xmax
 	ret	nc			; nc ==> x >= xmax ==> fully off-screen
 	ld	a, d			; a[0] = clip left?
