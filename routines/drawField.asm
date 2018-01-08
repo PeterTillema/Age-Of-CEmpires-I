@@ -16,11 +16,17 @@ DrawField:
 _:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
+	
 	ld	hl, DrawIsometricTile
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, TilePointersEnd - 3
 	ld	(TilePointersSMC), hl
+	ld	hl, 0ED39FDh		; add iy, sp \ lea de, iy + X
+	ld	(DrawTile_Clipped_Stop1), hl
+	ld	(DrawTile_Clipped_Stop2), hl
+	ld	(DrawTile_Clipped_Stop3), hl
+	ld	(DrawTile_Clipped_Stop4), hl
 
 	ld	e, (ix + OFFSET_Y)
 	xor	a, a
@@ -29,12 +35,26 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	a, 00Dh
 _:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
 	ld	a, e
-	cpl
 	and	a, 4
-	add	a, 12
-	ld	(DrawTile_Clipped_Height2), a
-	sub	a, 8
-	ld	(DrawTile_Clipped_Height1), a
+	exx
+	ld	hl, DrawTile_Clipped_Stop4
+	ld	de, DrawTile_Clipped_Stop2
+	ld	c, StopDrawingTile - DrawTile_Clipped_Stop4 - 2
+	ld	b, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
+	jr	z, +_
+	ld	hl, DrawTile_Clipped_Stop3
+	ld	de, DrawTile_Clipped_Stop1
+	ld	c, StopDrawingTile - DrawTile_Clipped_Stop3 - 2
+	ld	b, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
+_:	ld	(hl), 018h		; Write "jr"
+	inc	hl
+	ld	(hl), c
+	ld	(DrawTile_Clipped_SetJRSMC), de
+	ld	hl, DrawTile_Clipped_SetJRStop
+	ld	(hl), 018h		; Write "jr"
+	inc	hl
+	ld	(hl), b
+	exx
 	ld	a, 7
 	cp	a, e
 	adc	a, 3
@@ -201,7 +221,7 @@ SkipDrawingOfTile:
 	dec	a
 	jp	nz, DisplayTile
 	ex	af, af'
-IncrementRowXOrNot1:
+IncrementRowXOrNot1 = $
 	jr	nz, +_			; The zero flag is still set/reset from the "bit 0, a"
 	inc	de
 	add	hl, bc
@@ -243,9 +263,10 @@ SetClippedRoutine:
 	jp	DisplayEachRowLoop
 	
 SetClippedRoutine2:
-	ld	hl, DrawTile_Clipped_Height2
-DrawTile_Clipped_Height1 = $+1
-	ld	(hl), 0
+DrawTile_Clipped_SetJRStop = $+1
+	ld	hl, 0
+DrawTile_Clipped_SetJRSMC = $+1
+	ld	(0), hl
 	exx
 	jp	DisplayEachRowLoop
 	
@@ -330,8 +351,6 @@ DrawScreenBorderEnd:
 	
 DrawTile_Clipped:
 	ld	(BackupIY), iy
-DrawTile_Clipped_Height2 = $+1
-	ld	a, 0
 	lea	de, iy
 	ld	bc, 2
 	ldir
@@ -347,8 +366,7 @@ DrawTile_Clipped_Height2 = $+1
 	lea	de, iy-6
 	ld	c, 14
 	ldir
-	sub	a, 4
-	jp	z, StopDrawingTile
+DrawTile_Clipped_Stop1 = $
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
@@ -365,8 +383,7 @@ DrawTile_Clipped_Height2 = $+1
 	lea	de, iy-14
 	ld	c, 30
 	ldir
-	sub	a, 4
-	jr	z, StopDrawingTile
+DrawTile_Clipped_Stop2 = $
 	add	iy, sp
 	lea	de, iy-16
 	ld	c, 34
@@ -383,8 +400,7 @@ DrawTile_Clipped_Height2 = $+1
 	lea	de, iy-10
 	ld	c, 22
 	ldir
-	sub	a, 4
-	jr	z, StopDrawingTile
+DrawTile_Clipped_Stop3 = $
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
@@ -401,13 +417,13 @@ DrawTile_Clipped_Height2 = $+1
 	lea	de, iy-2
 	ld	c, 6
 	ldir
-	sub	a, 4
-	jr	z, StopDrawingTile
+DrawTile_Clipped_Stop4 = $
 	add	iy, sp
 	lea	de, iy-0
 	ldi
 	ldi
 StopDrawingTile:
+.echo $ - DrawTile_Clipped_Stop1 - 2
 _:	ld	iy, 0
 BackupIY = $-3
 	exx
