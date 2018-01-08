@@ -2,8 +2,8 @@ drawfield_loc = $
 relocate(cursorImage)
 
 DrawField:
-	ld	de, mpShaData
-	ld	hl, DrawIsometricTile
+	ld	de, DrawIsometricTile
+	ld	hl, drawisometrictile_loc
 	ld	bc, DrawIsometricTileEnd - DrawIsometricTile
 	ldir
 	ld	b, (ix + OFFSET_X)	; We start with the shadow registers active
@@ -116,7 +116,7 @@ TilePointersSMC = $+1
 	ld	hl, (hl)		; Pointer to the tile/tree/building
 	cp	a, TILE_BUILDING
 TileDrawingRoutinePtr1 = $+1
-	jp	c, mpShaData		; This will be modified to the clipped version after X rows
+	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
 	jp	z, DisplayBuilding
 	jp	DisplayTileWithTree
 	
@@ -124,55 +124,7 @@ TileIsOutOfField:
 	exx
 	ld	hl, blackBuffer
 TileDrawingRoutinePtr2 = $+1
-	jp	mpShaData		; This will be modified to the clipped version after X rows
-	
-DrawIsometricTile:
-	ld	sp, -322
-	lea	de, iy
-	ld	bc, 2
-	lddr
-	ld	c, 6
-	ex	de, hl
-	add	hl, sp
-	add	hl, bc
-	ex	de, hl
-	lddr
-	ld	c, 10
-	ex	de, hl
-	add	hl, sp
-	add	hl, bc
-	ex	de, hl
-	lddr
-	ld	c, 14
-	ex	de, hl
-	add	hl, sp
-	add	hl, bc
-	ex	de, hl
-	lddr
-	ld	c, 18
-	ex	de, hl
-	add	hl, sp
-	add	hl, bc
-	ex	de, hl
-	lddr
-	ld	c, 22
-	ex	de, hl
-	add	hl, sp
-	add	hl, bc
-	ex	de, hl
-	lddr
-	ld	c, 26
-	ex	de, hl
-	add	hl, sp
-	add	hl, bc
-	ex	de, hl
-	jp	DrawIsometricTileSecondPart
-DrawIsometricTileEnd:
-
-.echo "mpShaData size (1): ", $ - DrawIsometricTile
-#if $ - DrawIsometricTile > 64
-.error "mpShaData too large!"
-#endif
+	jp	DrawIsometricTile	; This will be modified to the clipped version after X rows
 
 DrawIsometricTileSecondPart:
 	lddr
@@ -531,4 +483,58 @@ DrawFieldEnd:
 .error "cursorImage data too large: ", $ - DrawField, " bytes!"
 #endif
     
+endrelocate()
+
+drawisometrictile_loc = $
+
+relocate(mpShaData)
+
+DrawIsometricTile:
+	ld	sp, -322
+	lea	de, iy
+	ld	bc, 2
+	lddr
+	ld	c, 6
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
+	ld	c, 10
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
+	ld	c, 14
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
+	ld	c, 18
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
+	ld	c, 22
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	lddr
+	ld	c, 26
+	ex	de, hl
+	add	hl, sp
+	add	hl, bc
+	ex	de, hl
+	jp	DrawIsometricTileSecondPart
+DrawIsometricTileEnd:
+
+.echo "mpShaData size (1): ", $ - DrawIsometricTile
+#if $ - DrawIsometricTile > 64
+.error "mpShaData too large!"
+#endif
+
 endrelocate()
