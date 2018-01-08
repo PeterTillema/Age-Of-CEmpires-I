@@ -16,7 +16,7 @@ DrawField:
 _:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
-	ld	hl, mpShaData
+	ld	hl, DrawIsometricTile
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, TilePointersEnd - 3
