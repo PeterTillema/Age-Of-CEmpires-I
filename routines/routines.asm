@@ -277,7 +277,7 @@ _RLETSprite_SkipClipTop:
 	ld	hl, (iy+9)		; hl = sprite struct
 	ld	e, (hl)			; de = width
 	ld	hl, (iy+3)		; hl = x
-	ld	bc, 33			; bc = xmin
+	ld	bc, 32			; bc = xmin
 	sbc	hl, bc			; hl = x-xmin
 	ret	pe			; v ==> x ~ int_min ==> fully off-screen
 	jp	p, _RLETSprite_SkipClipLeft ; p ==> x >= xmin ==> fully on-screen
@@ -298,7 +298,7 @@ _RLETSprite_SkipClipLeft:
 ; Clip right
 	add	hl, bc			; hl = x (clipped)
 	ld	(iy+3), hl		; write back clipped x
-	ld	bc, lcdWidth - 33	; bc = xmax
+	ld	bc, lcdWidth - 32	; bc = xmax
 	sbc	hl, bc			; hl = x-xmax
 	ret	nc			; nc ==> x >= xmax ==> fully off-screen
 	ld	a, d			; a[0] = clip left?

@@ -41,18 +41,16 @@ PlaceResourceTypeLoop:
 	ld	de, ResourcesType1
 	add	hl, de
 	push	hl
-	randInt(MAP_SIZE - 10 - 10)	; X
-	ld	a, l
-	add	a, 10
-	ld	l, a
+	randInt(MAP_SIZE - 2 - 2)	; X
+	inc	hl
+	inc	hl
 	ld	h, 160
 	mlt	hl
 	add	hl, hl
 	push	hl
-	randInt(MAP_SIZE - 10 - 10)	; Y
-	ld	a, l
-	add	a, 10
-	ld	l, a
+	randInt(MAP_SIZE - 2 - 2)	; Y
+	inc	hl
+	inc	hl
 	pop	de
 	add	hl, de
 	ld	de, screenBuffer

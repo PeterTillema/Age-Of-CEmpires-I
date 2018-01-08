@@ -250,7 +250,7 @@ SkipDrawingOfTile:
 	jp	nz, DisplayTile
 	ex	af, af'
 IncrementRowXOrNot1:
-	jr	nz, +_
+	jr	nz, +_			; The zero flag is still set/reset from the "bit 0, a"
 	inc	de
 	add	hl, bc
 	dec	ix
@@ -276,9 +276,8 @@ TileWhichAction = $
 	ld	hl, (hl)
 	jp	(hl)
 	
-	
 SetClippedRoutine:
-	ld	sp, 320
+	ld	sp, lcdWidth
 	ld	hl, DrawTile_Clipped
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
@@ -290,14 +289,14 @@ SetClippedRoutine:
 	ld	(TilePointersSMC), hl
 	exx
 	jp	DisplayEachRowLoop
+	
 SetClippedRoutine2:
-	ld	c, a
+	ld	hl, DrawTile_Clipped_Height2
 DrawTile_Clipped_Height1 = $+1
-	ld	a, 0
-	ld	(DrawTile_Clipped_Height2), a
-	ld	a, c
+	ld	(hl), 0
 	exx
 	jp	DisplayEachRowLoop
+	
 SetOnlyTreesRoutine:
 	ld	hl, SkipDrawingOfTileExx
 	ld	(TileDrawingRoutinePtr1), hl
@@ -305,6 +304,7 @@ SetOnlyTreesRoutine:
 DoNothing:
 	exx
 	jp	DisplayEachRowLoop
+	
 StopDisplayTiles:
 	ld	de, mpShaData
 	ld	hl, DrawScreenBorderStart
@@ -327,8 +327,8 @@ DrawScreenBorderStart:
 	ld	bc, 320
 	dec	hl
 _:	add	hl, bc
-	ld	(hl),e
-	ld	sp,hl
+	ld	(hl), e
+	ld	sp, hl
 	push	de
 	push	de
 	push	de
@@ -352,7 +352,7 @@ _:	add	hl, bc
 	push	de
 	dec	a
 	jr	nz, -_
-	ld	bc, lcdWidth - 32 + 1
+	ld	bc, lcdWidth - 32 + 2
 	add	hl, bc			; Clear the last row of the right edge
 	ld	sp, hl
 	push	de
