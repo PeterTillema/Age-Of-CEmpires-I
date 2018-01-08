@@ -151,7 +151,7 @@ dzx7t_len_size_loop:
         add     a, a
         call    z, dzx7t_load_bits
         jr      nc, dzx7t_len_size_loop
-        jp      dzx7t_len_value_start
+        jr      dzx7t_len_value_start
 dzx7t_len_value_loop:
         add     a, a
         call    z, dzx7t_load_bits
@@ -580,6 +580,30 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 ; Done.
 	ret
 	
+LoadAgeGraphicsAppvar:
+	push	hl
+	inc	c
+	ld	b, 3
+	mlt	bc
+	ld	hl, 0D00002h
+	add	hl, bc
+	ld	hl, (hl)
+	inc	hl
+	inc	hl
+	ld	de, (FixedBuildingsPtr)
+	push	de
+	call	dzx7_Turbo
+	pop	hl
+	ld	bc, 0
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	inc	hl
+	push	hl
+	add	hl, bc
+	ld	(FixedBuildingsPtr), hl
+	pop	bc
+	pop	hl
 ModifyRelocationTable:
 	push	hl
 	ld	hl, (hl)
@@ -599,32 +623,4 @@ ModifyRelocationTable:
 	inc	hl
 	jr	ModifyRelocationTable
 _:	pop	hl
-	ret
-	
-LoadAgeGraphicsAppvar:
-	inc	c
-	ld	b, 3
-	mlt	bc
-	ld	hl, 0D00002h
-	add	hl, bc
-	ld	hl, (hl)
-	ld	de, (FixedBuildingsPtr)
-	ld	bc, 0
-	ld	c, (hl)
-	inc	hl
-	ld	b, (hl)
-	inc	hl
-	push	bc
-	ld	c, (hl)
-	inc	hl
-	ld	b, (hl)
-	inc	hl
-	push	de
-	ex	de, hl
-	add	hl, bc
-	ld	(FixedBuildingsPtr), hl
-	ex	de, hl
-	pop	de
-	pop	bc
-	ldir
 	ret

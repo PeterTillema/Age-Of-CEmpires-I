@@ -151,14 +151,14 @@ _:	call	_Mov9ToOP1
 	ld	bc, stackTop - heapBot
 	ldir
 	
-; Copy AoCE to $D00002
+; Copy AoCE to $D80002 (mirror of $D00002)
 	ld	hl, (asm_prgm_size)
 	ld	de, AppvarsPointersTable - start
 	or	a, a
 	sbc	hl, de
 	push	hl
 	pop	bc
-	ld	de, 0D00002h
+	ld	de, 0D80002h
 	ld	hl, AppvarsPointersTable
 	ldir
 	
@@ -251,6 +251,7 @@ NewStartAddr:
 	pop	hl
 	
 	ld	c, 1
+	ld	hl, RelocationTable3
 	call	LoadAgeGraphicsAppvar
 	
 	ld	ix, saveSScreen+21000
@@ -404,6 +405,8 @@ CleanupCodeEnd:
 #include "relocation_table1.asm"
 	.dw	0FFFFh
 #include "relocation_table2.asm"
+	.dw	0FFFFh
+#include "relocation_table3.asm"
 	.dw	0FFFFh
 	
 AoCEEnd:

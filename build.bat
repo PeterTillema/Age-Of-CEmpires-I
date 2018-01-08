@@ -1,7 +1,6 @@
 @echo off
 setlocal EnableDelayedExpansion
 if not exist bin mkdir bin
-del relocation_table?.asm
 cd gfx
 if not exist bin mkdir bin && convpng
 spasm -E -L -I bin\ appvar1.asm ..\bin\AOCEGFX1.8xv
@@ -18,11 +17,12 @@ for /L %%a in (1,1,4) do call :editFile AGE%%a.lab
 cd ..
 spasm -E -T -L aoce.asm bin\AOCE.bin
 convhex -x bin\AOCE.bin
-for /L %%a in (1,1,4) do convhex -m 80000 -c bin\AGE%%a.bin
+for /L %%a in (1,1,4) do convhex -c -v bin\AGE%%a.bin
 del bin\AGE?.lab
 del bin\AOCEGFX?.lab
 del bin\AOCE.bin
 del bin\AGE?.bin
+del relocation_table?.asm
 pause
 exit
 

@@ -52,3 +52,13 @@ FieldRowActionTable:
 	.dl	SetOnlyTreesRoutine
 	.dl	SetClippedRoutine2
 	.dl	SetClippedRoutine
+	
+BuildingsAge1:
+	.dl	_farm_1 \ .r3
+	.dl	_lumbercamp_1 \ .r3
+	.dl	_miningcamp_1 \ .r3
+	.dl	_outpost_1 \ .r3
+	.dl	_barracks_1 \ .r3
+	.dl	_house_1 \ .r3
+	.dl	_mill_1 \ .r3
+	.dl	_towncenter_1 \ .r3
