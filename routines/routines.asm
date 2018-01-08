@@ -594,12 +594,12 @@ LoadAgeGraphicsAppvar:
 	push	de
 	call	dzx7_Turbo
 	pop	hl
+	push	hl
 	ld	bc, 0
 	ld	c, (hl)
 	inc	hl
 	ld	b, (hl)
 	inc	hl
-	push	hl
 	add	hl, bc
 	ld	(FixedBuildingsPtr), hl
 	pop	bc

@@ -223,7 +223,14 @@ AppvarsPointersTable:
 	
 NewStartAddr:
 .org $D00002 + 18
-	ld	(backupSP), sp
+	or	a, a
+	sbc	hl, hl
+	add	hl, sp
+	ld	(backupSP), hl
+	ld	de, vRAM - stackTop
+	add	hl, de
+	ld	sp, hl
+	
 	ld	hl, RelocationTable1
 	ld	bc, (0D00002h)
 	inc	bc			; Skip size bytes
@@ -407,6 +414,12 @@ CleanupCodeEnd:
 #include "relocation_table2.asm"
 	.dw	0FFFFh
 #include "relocation_table3.asm"
+	.dw	0FFFFh
+#include "relocation_table4.asm"
+	.dw	0FFFFh
+#include "relocation_table5.asm"
+	.dw	0FFFFh
+#include "relocation_table6.asm"
 	.dw	0FFFFh
 	
 AoCEEnd:

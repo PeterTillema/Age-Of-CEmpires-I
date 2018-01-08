@@ -9,10 +9,6 @@ for /L %%a in (1,1,4) do spasm -E -L -I bin\ a%%a.asm ..\bin\AGE%%a.bin
 cd ..\bin
 call :editFile AOCEGFX1.lab
 call :editFile AOCEGFX2.lab
-call :editFile AGE1.lab
-call :editFile AGE2.lab
-call :editFile AGE3.lab
-call :editFile AGE4.lab
 for /L %%a in (1,1,4) do call :editFile AGE%%a.lab
 cd ..
 spasm -E -T -L aoce.asm bin\AOCE.bin
