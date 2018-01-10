@@ -155,17 +155,17 @@ LoadMap:
 	inc	hl
 	inc	hl
 	inc	hl
-	ld	(hl), TILE_TREE_2
+	;ld	(hl), TILE_TREE_2
 	inc	hl
 	inc	hl
 	inc	hl
 	inc	hl
-	ld	(hl), TILE_TREE_3
+	;ld	(hl), TILE_TREE_3
 	inc	hl
 	inc	hl
 	inc	hl
 	inc	hl
-	ld	(hl), TILE_TREE_4
+	;ld	(hl), TILE_TREE_4
 	ret
         
 prng24:

@@ -66,7 +66,7 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	add	hl, de
 	ld	d, 0
 	ld	a, b
-	add	a, 17			; We start at column 17 (bottom right pixel)
+	add	a, 15			; We start at column 17 (bottom right pixel)
 	ld	e, a
 	add	hl, de
 	ld	(startingPosition), hl
@@ -153,19 +153,16 @@ DrawIsometricTileSecondPart:
 	add	hl, bc
 	ex	de, hl
 	lddr
-	ld	c, 34
-	ex	de, hl
-	add	hl, sp
-	add	hl, bc
-	ex	de, hl
-	lddr
-	ld	sp, -318
+	inc	sp
+	inc	sp
 	ld	c, 30
 	ex	de, hl
 	add	hl, sp
 	add	hl, bc
 	ex	de, hl
 	lddr
+	inc	sp
+	inc	sp
 	ld	c, 26
 	ex	de, hl
 	add	hl, sp
@@ -283,10 +280,11 @@ StopDisplayTiles:
 	ld	bc, _resources_size
 	ldir
 	ld	hl, blackBuffer
-	ld	bc, lcdWidth * 13 + 32
+	ld	b, lcdWidth * 13 + 32 >> 8
 	jp	mpShaData
 	
 DrawScreenBorderStart:
+	ld	c, lcdWidth * 13 + 32 & 255
 	ldir
 	sbc	hl, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ex	de, hl
