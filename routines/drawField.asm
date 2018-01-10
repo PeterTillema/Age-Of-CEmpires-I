@@ -26,7 +26,6 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(DrawTile_Clipped_Stop1), hl
 	ld	(DrawTile_Clipped_Stop2), hl
 	ld	(DrawTile_Clipped_Stop3), hl
-	ld	(DrawTile_Clipped_Stop4), hl
 
 	ld	e, (ix + OFFSET_Y)
 	xor	a, a
@@ -37,19 +36,16 @@ _:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
 	ld	a, e
 	and	a, 4
 	exx
-	ld	hl, DrawTile_Clipped_Stop4
 	ld	de, DrawTile_Clipped_Stop2
-	ld	c, StopDrawingTile - DrawTile_Clipped_Stop4 - 2
 	ld	b, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
 	jr	z, +_
 	ld	hl, DrawTile_Clipped_Stop3
-	ld	de, DrawTile_Clipped_Stop1
-	ld	c, StopDrawingTile - DrawTile_Clipped_Stop3 - 2
-	ld	b, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
-_:	ld	(hl), 018h		; Write "jr"
+	ld	(hl), 018h		; Write "jr"
 	inc	hl
-	ld	(hl), c
-	ld	(DrawTile_Clipped_SetJRSMC), de
+	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
+	ld	de, DrawTile_Clipped_Stop1
+	ld	b, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
+_:	ld	(DrawTile_Clipped_SetJRSMC), de
 	ld	hl, DrawTile_Clipped_SetJRStop
 	ld	(hl), 018h		; Write "jr"
 	inc	hl
@@ -91,6 +87,9 @@ _:	ld	(hl), 018h		; Write "jr"
 	ld	a, 35			; 35 rows, but last 6 rows only trees
 	ld	(TempSP2), sp
 	ld	(TempSP3), sp
+	exx
+DisplayEachRowLoopExx:
+	exx
 DisplayEachRowLoop:
 ; Registers:
 ;   BC  = length of row tile
@@ -125,7 +124,7 @@ DisplayTile:
 	or	a, ixh
 	jr	nz, TileIsOutOfField
 	or	a, (hl)			; Get the tile index
-	jp	z, SkipDrawingOfTile
+	jp	z, SkipDrawingOfTile	; Tile is part of the building, which will be overwritten later
 	exx				; Here are the main registers active
 	ld	c, a
 	ld	b, 3
@@ -259,24 +258,20 @@ SetClippedRoutine:
 	ld	(startingPosition), hl
 	ld	hl, TilePointersStart - 3
 	ld	(TilePointersSMC), hl
-	exx
-	jp	DisplayEachRowLoop
+	jp	DisplayEachRowLoopExx
 	
 SetClippedRoutine2:
 DrawTile_Clipped_SetJRStop = $+1
 	ld	hl, 0
 DrawTile_Clipped_SetJRSMC = $+1
 	ld	(0), hl
-	exx
-	jp	DisplayEachRowLoop
+	jp	DisplayEachRowLoopExx
 	
 SetOnlyTreesRoutine:
 	ld	hl, SkipDrawingOfTileExx
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
-DoNothing:
-	exx
-	jp	DisplayEachRowLoop
+	jp	DisplayEachRowLoopExx
 	
 StopDisplayTiles:
 	ld	de, mpShaData
@@ -293,8 +288,7 @@ StopDisplayTiles:
 	
 DrawScreenBorderStart:
 	ldir
-	or	a, a			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
-	sbc	hl, hl
+	sbc	hl, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ex	de, hl
 	ld	a, lcdHeight - 15 - 13 - 1
 	ld	bc, 320
@@ -417,14 +411,8 @@ DrawTile_Clipped_Stop3 = $
 	lea	de, iy-2
 	ld	c, 6
 	ldir
-DrawTile_Clipped_Stop4 = $
-	add	iy, sp
-	lea	de, iy-0
-	ldi
-	ldi
 StopDrawingTile:
-.echo $ - DrawTile_Clipped_Stop1 - 2
-_:	ld	iy, 0
+	ld	iy, 0
 BackupIY = $-3
 	exx
 	jp	SkipDrawingOfTile

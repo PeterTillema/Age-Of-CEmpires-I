@@ -44,11 +44,11 @@ TilePointersStart:
 	
 FieldRowActionTable:
 	.dl	StopDisplayTiles
-	.dl	DoNothing
-	.dl	DoNothing
-	.dl	DoNothing
-	.dl	DoNothing
-	.dl	DoNothing
+	.dl	DisplayEachRowLoopExx
+	.dl	DisplayEachRowLoopExx
+	.dl	DisplayEachRowLoopExx
+	.dl	DisplayEachRowLoopExx
+	.dl	DisplayEachRowLoopExx
 	.dl	SetOnlyTreesRoutine
 	.dl	SetClippedRoutine2
 	.dl	SetClippedRoutine
