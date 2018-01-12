@@ -18,7 +18,6 @@ TilePointersEnd:
 	.dl	_gold_2 + _gold_2_size - 1 \ .r2
 	.dl	_stone_1 + _stone_1_size - 1 \ .r2
 	.dl	_stone_2 + _stone_2_size - 1 \ .r2
-	.dl	0
 	.dl	_tree_1 \ .r2
 	.dl	_tree_2 \ .r2
 	.dl	_tree_3 \ .r2
@@ -36,7 +35,6 @@ TilePointersStart:
 	.dl	_gold_2 \ .r2
 	.dl	_stone_1 \ .r2
 	.dl	_stone_2 \ .r2
-	.dl	0
 	.dl	_tree_1 \ .r2
 	.dl	_tree_2 \ .r2
 	.dl	_tree_3 \ .r2

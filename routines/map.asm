@@ -167,7 +167,7 @@ LoadMap:
 	ld	(hl), 0
 	inc	hl
 	inc	hl
-	ld	(hl), TILE_BUILDING + 1
+	ld	(hl), TILE_BUILDING + 7
 	ret
         
 prng24:
