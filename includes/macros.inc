@@ -23,21 +23,21 @@
 #endmacro
 
 #macro ScrollFieldRight()
-	ld	a, (ix+OFFSET_X)
+	ld	a, (iy+OFFSET_X)
 	or	a, a
 	jr	nz, +_
 	ScrollRight()
 	ScrollUp()
 _:	sub	a, 4
 	and	a, %00011111
-	ld	(ix+OFFSET_X), a
+	ld	(iy+OFFSET_X), a
 #endmacro
 
 #macro ScrollFieldLeft()
-	ld	a, (ix+OFFSET_X)
+	ld	a, (iy+OFFSET_X)
 	add	a, 4
 	and	a, %00011111
-	ld	(ix+OFFSET_X), a
+	ld	(iy+OFFSET_X), a
 	jr	nz, +_
 	ScrollLeft()
 	ScrollDown()
@@ -45,10 +45,10 @@ _:
 #endmacro
 
 #macro ScrollFieldUp()
-	ld	a, (ix+OFFSET_Y)
+	ld	a, (iy+OFFSET_Y)
 	add	a, 4
 	and	a, %00001111
-	ld	(ix+OFFSET_Y), a
+	ld	(iy+OFFSET_Y), a
 	jr	nz, +_
 	ScrollLeft()
 	ScrollUp()
@@ -56,14 +56,14 @@ _:
 #endmacro
 
 #macro ScrollFieldDown()
-	ld	a, (ix+OFFSET_Y)
+	ld	a, (iy+OFFSET_Y)
 	or	a, a
 	jr	nz, +_
 	ScrollRight()
 	ScrollDown()
 _:	sub	a, 4
 	and	a, %00001111
-	ld	(ix+OFFSET_Y), a
+	ld	(iy+OFFSET_Y), a
 #endmacro
 
 #macro printString(message, x, y)

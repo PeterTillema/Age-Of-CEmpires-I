@@ -2,15 +2,12 @@
 
 ;;; Variables
 MAP_SIZE                    .equ 128
-OFFSET_X                    .equ 0
-OFFSET_Y                    .equ 1
 
 ;;; Pointers
 currDrawingBuffer           .equ 0E30014h
 screenBuffer                .equ vRAM+(320*240)
 puppetStack                 .equ pixelShadow+(MAP_SIZE*MAP_SIZE*2)
 blackBuffer                 .equ 0E50000h
-variables                   .equ saveSScreen+21000
 
 ;;; Keypresses
 kp1                         .equ 1

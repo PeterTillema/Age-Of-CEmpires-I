@@ -261,7 +261,7 @@ NewStartAddr:
 	ld	hl, RelocationTable3
 	call	LoadAgeGraphicsAppvar
 	
-	ld	ix, saveSScreen+21000
+	ld	iy, _IYOffsets
 	xor	a, a
 	ld	(ix+OFFSET_X), a
 	ld	(ix+OFFSET_Y), a
@@ -290,7 +290,6 @@ NewStartAddr:
 MainGameLoop:
 	call	DrawField
 	call	GetKeyFast
-	ld	ix, variables
 	ld	iy, _IYOffsets
 CheckKeys369:				; Check [3], [6], [9]
 	ld	l, 01Ah

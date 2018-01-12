@@ -54,7 +54,6 @@ PathFindingData:
 	.block	20
 	
 _IYOffsets:
-#define prevAddr eval($)
 .org 0
 
 TopLeftXTile:			.dl -10
@@ -65,8 +64,10 @@ SelectedAreaStartX:		.dl 0
 SelectedAreaStartY:		.db 0
 TempData2:			.block 12
 AoCEFlags1:			.db 0
+OFFSET_X:			.db 0
+OFFSET_Y:			.db 0
 
-.org $+prevAddr
+.org $ + _IYOffsets
 
 ResourcesType1:
 	.db	0, 1, 0

@@ -1,3 +1,8 @@
+#define AMOUNT_OF_COLUMNS 11
+#define AMOUNT_OF_ROWS 35
+#define TILE_WIDTH 32
+#define TILE_HEIGHT 16
+
 drawfield_loc = $
 relocate(cursorImage)
 
@@ -6,12 +11,12 @@ DrawField:
 	ld	hl, drawisometrictile_loc
 	ld	bc, DrawIsometricTileEnd - DrawIsometricTile
 	ldir
-	ld	b, (ix + OFFSET_X)	; We start with the shadow registers active
+	ld	b, (iy + OFFSET_X)	; We start with the shadow registers active
 	bit	4, b
-	ld	a, 16
+	ld	a, TILE_WIDTH / 2
 	ld	c, 028h
 	jr	z, +_
-	ld	a, -16
+	neg
 	ld	c, 020h
 _:	ld	(TopRowLeftOrRight), a
 	ld	a, c
@@ -27,14 +32,13 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(DrawTile_Clipped_Stop2), hl
 	ld	(DrawTile_Clipped_Stop3), hl
 
-	ld	e, (ix + OFFSET_Y)
+	ld	e, (iy + OFFSET_Y)
 	xor	a, a
 	bit	3, e
 	jr	z, +_
 	ld	a, 00Dh
 _:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
-	ld	a, e
-	and	a, 4
+	bit	2, e
 	exx
 	ld	de, DrawTile_Clipped_Stop2
 	ld	b, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
@@ -56,17 +60,15 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	adc	a, 3
 	ld	(TileHowManyRowsClipped), a
 	
-	ld	a, e
-	add	a, 16			; Point to the row of the bottom right pixel
-	ld	e, a
-	ld	d, 160
+	set	4, e			; Point to the row of the bottom right pixel
+	ld	d, lcdWidth / 2
 	mlt	de
 	ld	hl, (currDrawingBuffer)
 	add	hl, de
 	add	hl, de
 	ld	d, 0
 	ld	a, b
-	add	a, 15			; We start at column 17 (bottom right pixel)
+	add	a, TILE_WIDTH / 2 - 1	; We start at column 17 (bottom right pixel)
 	ld	e, a
 	add	hl, de
 	ld	(startingPosition), hl
@@ -84,7 +86,7 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	ld	bc, (MapDataPtr)
 	add	hl, bc
 	ld	ix, (_IYOffsets + TopLeftYTile)
-	ld	a, 35			; 35 rows, but last 6 rows only trees
+	ld	a, AMOUNT_OF_ROWS	; Last X rows only trees/buildings
 	ld	(TempSP2), sp
 	ld	(TempSP3), sp
 	exx
@@ -105,16 +107,20 @@ DisplayEachRowLoop:
 
 startingPosition = $+2			; Here are the shadow registers active
 	ld	iy, 0
-	ld	bc, 8 * lcdWidth
+	ld	bc, (TILE_HEIGHT / 2) * lcdWidth
 	add	iy, bc
 	ld	(startingPosition), iy
 	bit	0, a
 	jr	nz, +_
 TopRowLeftOrRight = $+2
-	lea	iy, iy+0
+	lea	iy, iy + 0
 _:	ex	af, af'
-	ld	a, 9
+	ld	a, AMOUNT_OF_COLUMNS
 DisplayTile:
+	cp	a, AMOUNT_OF_COLUMNS + 1
+	jr	nc, TileOnlyDisplayBuilding
+	cp	a, 3
+	jr	c, TileOnlyDisplayBuilding
 	ld	b, a
 	ld	a, e
 	or	a, ixl
@@ -124,7 +130,7 @@ DisplayTile:
 	or	a, ixh
 	jr	nz, TileIsOutOfField
 	or	a, (hl)			; Get the tile index
-	jp	z, SkipDrawingOfTile	; Tile is part of the building, which will be overwritten later
+	jp	z, SkipDrawingOfTile	; Tile is part of a building, which will be overwritten later
 	exx				; Here are the main registers active
 	ld	c, a
 	ld	b, 3
@@ -144,6 +150,17 @@ TileIsOutOfField:
 	ld	hl, blackBuffer
 TileDrawingRoutinePtr2 = $+1
 	jp	DrawIsometricTile	; This will be modified to the clipped version after X rows
+	
+TileOnlyDisplayBuilding:
+	ld	b, a
+	ld	a, e
+	or	a, ixl
+	add	a, a
+	sbc	a, a
+	or	a, d
+	or	a, ixh
+	jp	nz, SkipDrawingOfTile
+	jp	SkipDrawingOfTile
 
 DrawIsometricTileSecondPart:
 	lddr
@@ -208,7 +225,7 @@ DrawIsometricTileSecondPart:
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
-	lea	iy, iy + 32		; Skip to next tile
+	lea	iy, iy + TILE_WIDTH	; Skip to next tile
 	inc	de
 	dec	ix
 	ld	a, b
@@ -223,12 +240,12 @@ IncrementRowXOrNot1 = $
 	add	hl, bc
 	dec	ix
 _:	ex	de, hl
-	ld	c, -9
+	ld	c, -AMOUNT_OF_COLUMNS
 	add	hl, bc
 	ex	de, hl
-	ld	bc, (MAP_SIZE * 10 - 9) * 2
+	ld	bc, (MAP_SIZE * (AMOUNT_OF_COLUMNS + 1) - AMOUNT_OF_COLUMNS) * 2
 	add	hl, bc
-	lea	ix, ix+9+1
+	lea	ix, ix + AMOUNT_OF_COLUMNS + 1
 TileHowManyRowsClipped = $+1
 	cp	a, 0
 	dec	a
@@ -250,7 +267,7 @@ SetClippedRoutine:
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, (startingPosition)
-	ld	bc, -lcdWidth * 16
+	ld	bc, -lcdWidth * TILE_HEIGHT
 	add	hl, bc
 	ld	(startingPosition), hl
 	ld	hl, TilePointersStart - 3
@@ -280,16 +297,16 @@ StopDisplayTiles:
 	ld	bc, _resources_size
 	ldir
 	ld	hl, blackBuffer
-	ld	b, lcdWidth * 13 + 32 >> 8
+	ld	b, lcdWidth * 13 + TILE_WIDTH >> 8
 	jp	mpShaData
 	
 DrawScreenBorderStart:
-	ld	c, lcdWidth * 13 + 32 & 255
+	ld	c, lcdWidth * 13 + TILE_WIDTH & 255
 	ldir
 	sbc	hl, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ex	de, hl
 	ld	a, lcdHeight - 15 - 13 - 1
-	ld	bc, 320
+	ld	bc, lcdWidth
 	dec	hl
 _:	add	hl, bc
 	ld	(hl), e
@@ -317,7 +334,7 @@ _:	add	hl, bc
 	push	de
 	dec	a
 	jr	nz, -_
-	ld	bc, lcdWidth - 32 + 2
+	ld	bc, lcdWidth - TILE_WIDTH + 2
 	add	hl, bc			; Clear the last row of the right edge
 	ld	sp, hl
 	push	de
@@ -425,17 +442,17 @@ DisplayTileWithTree:
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 
 	ld	(BackupIY2), iy
-	ld	iy, saveSScreen+21000
+	ld	iy, _IYOffsets
 TempSP3 = $+1
 	ld	sp, 0
 	push	hl			; Sprite struct
 	ex	af, af'
 	ld	c, a			; C = row index
 	ex	af, af'
-	ld	a, 36
+	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c
 	ld	e, a
-	ld	d, 8
+	ld	d, TILE_HEIGHT / 2
 	mlt	de
 	inc	hl
 	ld	a, (hl)
@@ -447,12 +464,12 @@ TempSP3 = $+1
 	ld	e, a
 	sbc	hl, de
 	push	hl			; Y coordinate
-	ld	a, 9
+	ld	a, AMOUNT_OF_COLUMNS
 	exx
 	sub	a, b
 	exx
 	ld	l, a
-	ld	h, 32
+	ld	h, TILE_WIDTH
 	mlt	hl
 	ld	e, (iy + OFFSET_X)
 	ld	d, 0
@@ -460,16 +477,16 @@ TempSP3 = $+1
 	bit	0, c
 	jr	nz, ++_
 	bit	4, e
-	ld	bc, 16
+	ld	bc, TILE_WIDTH / 2
 	jr	z, +_
-	ld	bc, -16
+	ld	bc, -TILE_WIDTH / 2
 _:	or	a, a
 	adc	hl, bc
-	jr	z, DontDisplayTree
+	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
 _:	push	hl			; X coordinate
 	call	_RLETSprite
 DontDisplayTree:
-	ld	sp, 320			; No need to pop
+	ld	sp, lcdWidth		; No need to pop
 BackupIY2 = $+2
 	ld	iy, 0
 	
@@ -492,7 +509,7 @@ drawisometrictile_loc = $
 relocate(mpShaData)
 
 DrawIsometricTile:
-	ld	sp, -322
+	ld	sp, -lcdWidth - 2
 	lea	de, iy
 	ld	bc, 2
 	lddr
