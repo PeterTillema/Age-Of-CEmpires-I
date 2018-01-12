@@ -1,3 +1,11 @@
+; Map structure:
+;  Field size: 128x128
+;  Each tile is 2 bytes worth:
+;   - If it's grass or a stump, the first byte is the type; the second byte is not used
+;   - If it's a tree or resource, the first byte is the type; the second byte is how full the tree/resource is
+;   - If it's a building, the first byte is the type; the second byte is the index in the buildings array, with more information like health etc
+;   - If it's a unit or more units, the first byte is the type from the ground, like grass, with the highest bit set; the second byte is the index in the units array, with a linked list to eventually other units at the same tile
+
 GenerateMap:
 	call	EraseArea
 	ld	de, screenBuffer
@@ -150,22 +158,16 @@ LoadMap:
 	;ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
 	;ldir
 	;pop	hl
-	ld	(hl), TILE_TREE_1
+	ld	(hl), 0
 	inc	hl
 	inc	hl
+	ld	(hl), 0
+	ld	bc, MAP_SIZE * 2 - 2
+	add	hl, bc
+	ld	(hl), 0
 	inc	hl
 	inc	hl
-	ld	(hl), TILE_TREE_2
-	inc	hl
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	(hl), TILE_TREE_3
-	inc	hl
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	(hl), TILE_TREE_4
+	ld	(hl), TILE_BUILDING + 1
 	ret
         
 prng24:

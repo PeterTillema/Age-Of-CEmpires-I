@@ -89,6 +89,7 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	ld	a, AMOUNT_OF_ROWS	; Last X rows only trees/buildings
 	ld	(TempSP2), sp
 	ld	(TempSP3), sp
+	ld	(TempSP4), sp
 	exx
 DisplayEachRowLoopExx:
 	exx
@@ -139,11 +140,12 @@ TilePointersSMC = $+1
 	ld	hl, TilePointersEnd - 3
 	add	hl, bc
 	ld	hl, (hl)		; Pointer to the tile/tree/building
-	cp	a, TILE_BUILDING
+	cp	a, TILE_TREE_1
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
-	jp	z, DisplayBuilding
-	jp	DisplayTileWithTree
+	cp	a, TILE_BUILDING
+	jp	c, DisplayTileWithTree
+	jp	DisplayBuilding
 	
 TileIsOutOfField:
 	exx
@@ -160,7 +162,10 @@ TileOnlyDisplayBuilding:
 	or	a, d
 	or	a, ixh
 	jp	nz, SkipDrawingOfTile
-	jp	SkipDrawingOfTile
+	ld	a, (hl)
+	cp	a, TILE_BUILDING
+	jp	c, SkipDrawingOfTile
+	jp	DisplayBuildingExx
 
 DrawIsometricTileSecondPart:
 	lddr
@@ -303,51 +308,50 @@ StopDisplayTiles:
 DrawScreenBorderStart:
 	ld	c, lcdWidth * 13 + TILE_WIDTH & 255
 	ldir
-	sbc	hl, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
-	ex	de, hl
+	ex	de, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ld	a, lcdHeight - 15 - 13 - 1
-	ld	bc, lcdWidth
+	ld	de, lcdWidth
 	dec	hl
-_:	add	hl, bc
-	ld	(hl), e
+_:	add	hl, de
+	ld	(hl), c
 	ld	sp, hl
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
 	dec	a
 	jr	nz, -_
-	ld	bc, lcdWidth - TILE_WIDTH + 2
-	add	hl, bc			; Clear the last row of the right edge
+	ld	de, lcdWidth - TILE_WIDTH + 2
+	add	hl, de			; Clear the last row of the right edge
 	ld	sp, hl
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
-	push	de
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
+	push	bc
 TempSP2 = $+1
 	ld	sp, 0
 	ret
@@ -489,10 +493,79 @@ DontDisplayTree:
 	ld	sp, lcdWidth		; No need to pop
 BackupIY2 = $+2
 	ld	iy, 0
+	jp	SkipDrawingOfTileExx
 	
-DisplayBuilding:
+DisplayBuildingExx
 	exx
-	jp	SkipDrawingOfTile
+DisplayBuilding:
+; Inputs:
+;   A' = row index
+;   B' = column index
+;   A  = building index
+
+; Y coordinate: A' * 8 + 17 - building_height
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 32) / 2
+	sub	a, TILE_BUILDING
+	ld	c, a
+	ld	b, 3
+	mlt	bc
+BuildingsTablePointer = $+1		; Yay, ages! :D
+	ld	hl, BuildingsAge1
+	add	hl, bc
+	ld	hl, (hl)
+	ld	(BackupIY3), iy
+	ld	(BuildingStructWidth), hl
+	ld	iy, _IYOffsets
+TempSP4 = $+1
+	ld	sp, 0
+	push	hl			; Sprite struct
+	ex	af, af'
+	ld	c, a			; C = row index
+	ex	af, af'
+	ld	a, AMOUNT_OF_ROWS + 1
+	sub	a, c
+	ld	e, a
+	ld	d, TILE_HEIGHT / 2
+	mlt	de
+	inc	hl
+	ld	a, (hl)
+	ld	hl, 17
+	add	hl, de
+	ld	e, (iy + OFFSET_Y)
+	ld	d, 0
+	add	hl, de
+	ld	e, a
+	sbc	hl, de
+	push	hl			; Y coordinate
+	ld	a, AMOUNT_OF_COLUMNS
+	exx
+	sub	a, b
+	exx
+	ld	l, a
+	ld	h, TILE_WIDTH
+	mlt	hl
+	ld	e, (iy + OFFSET_X)
+	ld	d, 0
+	add.s	hl, de
+	bit	0, c
+	jr	nz, ++_
+	bit	4, e
+	ld	bc, TILE_WIDTH / 2
+	jr	z, +_
+	ld	bc, -TILE_WIDTH / 2
+_:	add	hl, bc
+_:	ld	a, (0)			; Substract the width from the X coordinate
+BuildingStructWidth = $-3
+	sub	a, 32
+	srl	a
+	ld	e, a
+	sbc	hl, de
+	push	hl			; X coordinate
+	call	_RLETSprite
+	ld	sp, lcdWidth		; No need to pop
+BackupIY3 = $+2
+	ld	iy, 0
+	jp	SkipDrawingOfTileExx
 	
 DrawFieldEnd:
 
