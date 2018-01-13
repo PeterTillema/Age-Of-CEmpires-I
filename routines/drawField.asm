@@ -73,7 +73,7 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	add	hl, de
 	ld	(startingPosition), hl
 	ld	ix, (iy + TopLeftYTile)
-	lea	ix, ix + 2
+	lea	ix, ix + 2		; Remember the 2 columns at the left
 	lea	hl, ix			; Y * MAP_SIZE + X, point to the map data
 	add	hl, hl
 	add	hl, hl
@@ -270,7 +270,6 @@ TileWhichAction = $
 	jp	(hl)
 	
 SetClippedRoutine:
-	ld	sp, lcdWidth
 	ld	hl, DrawTile_Clipped
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
@@ -367,6 +366,7 @@ DrawScreenBorderEnd:
 	
 DrawTile_Clipped:
 	ld	(BackupIY), iy
+	ld	sp, lcdWidth
 	lea	de, iy
 	ld	bc, 2
 	ldir
@@ -491,11 +491,10 @@ _:	or	a, a
 	adc	hl, bc
 	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
 _:	push	hl			; X coordinate
-	call	_RLETSprite
+	call	_RLETSprite		; No need to pop
 DontDisplayTree:
-	ld	sp, lcdWidth		; No need to pop
-BackupIY2 = $+2
 	ld	iy, 0
+BackupIY2 = $-3
 	jp	SkipDrawingOfTileExx
 	
 DisplayBuildingExx
@@ -569,8 +568,7 @@ BuildingStructWidth = $-3
 	ld	e, a
 	sbc	hl, de
 	push	hl			; X coordinate
-	call	_RLETSprite
-	ld	sp, lcdWidth		; No need to pop
+	call	_RLETSprite		; No need to pop
 BackupIY3 = $+2
 	ld	iy, 0
 	jp	SkipDrawingOfTileExx

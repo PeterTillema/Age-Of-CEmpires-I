@@ -101,7 +101,7 @@ _:	sub	a, 4
 #endmacro
 
 #macro randInt(x)
-	call	prng24
+	call	_rand
 	ld	bc, x			; 7 types of resources group
 	call	__idvrmu
 #endmacro

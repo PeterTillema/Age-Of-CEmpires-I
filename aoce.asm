@@ -65,7 +65,7 @@ NotFound:
 	call	_NewLine
 	jp	_PutS
 RelocationStart:
-    .db 0C0h, "GRAPHX", 0, 4
+    .db 0C0h, "GRAPHX", 0, 8
 gfx_Begin:
 	jp	0
 gfx_End:
