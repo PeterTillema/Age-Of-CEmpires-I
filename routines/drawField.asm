@@ -72,9 +72,9 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	ld	de, (currDrawingBuffer)
 	add	hl, de
 	ld	(startingPosition), hl
-	ld	hl, (_IYOffsets + TopLeftYTile) ; Y*MAP_SIZE+X, point to the map data
-	inc	hl			; Remember the 2 columns at the left
-	inc	hl
+	ld	ix, (iy + TopLeftYTile)
+	lea	ix, ix + 2
+	lea	hl, ix			; Y * MAP_SIZE + X, point to the map data
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
@@ -82,15 +82,13 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	de, (_IYOffsets + TopLeftXTile)
+	ld	de, (iy + TopLeftXTile)
 	dec	de			; Remember the 2 columns at the left
 	dec	de
 	add	hl, de
 	add	hl, hl			; Each tile is 2 bytes worth
 	ld	bc, (MapDataPtr)
 	add	hl, bc
-	ld	ix, (_IYOffsets + TopLeftYTile)
-	lea	ix, ix + 2
 	ld	a, AMOUNT_OF_ROWS	; Last X rows only trees/buildings
 	ld	(TempSP2), sp
 	ld	(TempSP3), sp
