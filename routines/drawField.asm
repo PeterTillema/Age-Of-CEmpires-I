@@ -506,7 +506,7 @@ DisplayBuilding:
 ;   A  = building index
 
 ; Y coordinate: A' * 8 + 17 - building_height
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 32) / 2
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
 	sub	a, TILE_BUILDING
 	ld	c, a
 	ld	b, 3
@@ -563,7 +563,7 @@ TempSP4 = $+1
 _:	add	hl, bc
 _:	ld	a, (0)			; Substract the width from the X coordinate
 BuildingStructWidth = $-3
-	sub	a, 32
+	sub	a, 30
 	srl	a
 	ld	e, a
 	sbc	hl, de

@@ -369,19 +369,15 @@ _:	ld	(currDrawingBuffer), de
 ForceStopProgramFadeOut:
 	call	fadeOut
 ForceStopProgram:
-backupSP = $+1
-	ld	sp, 0
-	pop	ix
-	call.lis fLockFlash & 0FFFFh
 CleanupCode:
 	ld	de, cursorImage
 	ld	hl, CleanupCode
 	ld	bc, CleanupCodeEnd - CleanupCode
 	ldir
 	jp	cursorImage + $ + 4 - CleanupCode
-	ld	a, 0D0h
-	ld	mb, a
-	call	gfx_End
+backupSP = $+1
+	ld	sp, 0
+	pop	ix
 	ld	de, 0D80000h
 	ld	hl, 03C0000h
 	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
@@ -391,6 +387,10 @@ CleanupCode:
 	push	hl
 	ld	bc, stackTop - heapBot
 	ldir
+	call	gfx_End
+	call.lis fLockFlash & 0FFFFh
+	ld	a, 0D0h
+	ld	mb, a
 	pop	de
 	ld	hl, 03C0000h + (vRAM - ramStart) - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
