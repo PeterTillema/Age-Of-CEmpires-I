@@ -1,4 +1,4 @@
-#define AMOUNT_OF_COLUMNS 11
+#define AMOUNT_OF_COLUMNS 13
 #define AMOUNT_OF_ROWS 35
 #define TILE_WIDTH 32
 #define TILE_HEIGHT 16
@@ -63,16 +63,18 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	set	4, e			; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2
 	mlt	de
-	ld	hl, (currDrawingBuffer)
-	add	hl, de
-	add	hl, de
-	ld	d, 0
 	ld	a, b
-	add	a, TILE_WIDTH / 2 - 1	; We start at column 17 (bottom right pixel)
-	ld	e, a
+	sub	a, TILE_WIDTH * 2 - (TILE_WIDTH / 2 - 1)	; We start at column 17 (bottom right pixel), but 2 tiles to the left
+	sbc	hl, hl
+	ld	l, a
+	add	hl, de
+	add	hl, de
+	ld	de, (currDrawingBuffer)
 	add	hl, de
 	ld	(startingPosition), hl
 	ld	hl, (_IYOffsets + TopLeftYTile) ; Y*MAP_SIZE+X, point to the map data
+	inc	hl			; Remember the 2 columns at the left
+	inc	hl
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
@@ -81,11 +83,14 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), de
 	add	hl, hl
 	add	hl, hl
 	ld	de, (_IYOffsets + TopLeftXTile)
+	dec	de			; Remember the 2 columns at the left
+	dec	de
 	add	hl, de
 	add	hl, hl			; Each tile is 2 bytes worth
 	ld	bc, (MapDataPtr)
 	add	hl, bc
 	ld	ix, (_IYOffsets + TopLeftYTile)
+	lea	ix, ix + 2
 	ld	a, AMOUNT_OF_ROWS	; Last X rows only trees/buildings
 	ld	(TempSP2), sp
 	ld	(TempSP3), sp
@@ -118,7 +123,7 @@ TopRowLeftOrRight = $+2
 _:	ex	af, af'
 	ld	a, AMOUNT_OF_COLUMNS
 DisplayTile:
-	cp	a, AMOUNT_OF_COLUMNS + 1
+	cp	a, AMOUNT_OF_COLUMNS - 1
 	jr	nc, TileOnlyDisplayBuilding
 	cp	a, 3
 	jr	c, TileOnlyDisplayBuilding
@@ -468,7 +473,7 @@ TempSP3 = $+1
 	ld	e, a
 	sbc	hl, de
 	push	hl			; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS
+	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
 	sub	a, b
 	exx
@@ -537,16 +542,21 @@ TempSP4 = $+1
 	ld	e, a
 	sbc	hl, de
 	push	hl			; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS
+	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
 	sub	a, b
 	exx
+	sbc	hl, hl
 	ld	l, a
-	ld	h, TILE_WIDTH
-	mlt	hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
 	ld	e, (iy + OFFSET_X)
-	ld	d, 0
-	add.s	hl, de
+	ld	d, 1
+	mlt	de
+	add	hl, de
 	bit	0, c
 	jr	nz, ++_
 	bit	4, e

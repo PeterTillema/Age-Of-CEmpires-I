@@ -158,15 +158,6 @@ LoadMap:
 	;ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
 	;ldir
 	;pop	hl
-	ld	(hl), 0
-	inc	hl
-	inc	hl
-	ld	(hl), 0
-	ld	bc, MAP_SIZE * 2 - 2
-	add	hl, bc
-	ld	(hl), 0
-	inc	hl
-	inc	hl
 	ld	(hl), TILE_BUILDING + 7
 	ret
         
