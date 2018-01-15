@@ -231,15 +231,17 @@ CheckKeys369:				; Check [3], [6], [9]
 	ld	l, 01Ah
 	ld	a, (hl)
 	and	a, (1 << kp3) | (1 << kp6) | (1 << kp9)
-	jr	z, CheckKeys28
+	jp	z, CheckKeys28
 	ScrollFieldRight()
 CheckKey3:
 	bit	kp3, (hl)
 	jr	z, CheckKey9
+	ScrollFieldRight()
 	ScrollFieldDown()
 CheckKey9:
 	bit	kp9, (hl)
 	jr	z, CheckKeys28
+	ScrollFieldRight()
 	ScrollFieldUp()
 CheckKeys28:				; Check [2], [8]
 	ld	l, 018h
@@ -258,15 +260,17 @@ CheckKeys147:				; Check [1], [4], [7]
 	ld	l, 016h
 	ld	a, (hl)
 	and	a, (1 << kp1) | (1 << kp4) | (1 << kp7)
-	jr	z, CheckClearEnter
+	jp	z, CheckClearEnter
 	ScrollFieldLeft()
 CheckKey1:
 	bit	kp1, (hl)
 	jr	z, CheckKey7
+	ScrollFieldLeft()
 	ScrollFieldDown()
 CheckKey7:
 	bit	kp7, (hl)
 	jr	z, CheckClearEnter
+	ScrollFieldLeft()
 	ScrollFieldUp()
 CheckClearEnter:
 	ld	l, 01Ch
