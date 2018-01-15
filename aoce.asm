@@ -34,70 +34,6 @@ start:
 	.db	081h,081h,040h,040h,000h,000h,000h,000h,021h,029h,04Ah,04Ah,04Ah,06Bh,029h,000h
 	.db	"Age of CEmpires I - By Peter \"PT_\" Tillema", 0
 AoCEStart:
-	ld	hl, LibLoadAppVar
-	call	_Mov9ToOP1
-	ld	a, AppVarObj
-	ld	(OP1), a
-_:	call	_ChkFindSym
-	jr	c, NotFound
-	call	_ChkInRAM
-	jr	nz, InArc
-	call	_PushOP1
-	call	_Arc_UnArc
-	call	_PopOP1
-	jr	-_
-InArc:
-	ex	de, hl
-	ld	de, 9
-	add	hl, de
-	ld	e, (hl)
-	add	hl, de
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	de, RelocationStart
-	jp	(hl)
-NotFound:
-	call	_ClrScrn
-	call	_HomeUp
-	ld	hl, MissingAppVar
-	call	_PutS
-	call	_NewLine
-	jp	_PutS
-RelocationStart:
-    .db 0C0h, "GRAPHX", 0, 8
-gfx_Begin:
-	jp	0
-gfx_End:
-	jp	3
-gfx_SetColor:
-	jp	6
-gfx_SetDraw:
-	jp	27
-gfx_SwapDraw:
-	jp	30
-gfx_PrintChar:
-	jp	42
-gfx_PrintUInt:
-	jp	48
-gfx_PrintStringXY:
-	jp	54
-gfx_SetTextXY:
-	jp	57
-gfx_SetTextFGColor:
-	jp	63
-gfx_Rectangle_NoClip:
-	jp	123
-gfx_FillRectangle_NoClip:
-	jp	126
-gfx_Sprite_NoClip:
-	jp	177
-gfx_TransparentSprite_NoClip:
-	jp	180
-gfx_SetTransparentColor:
-	jp	225
-    
-Main:
 	call	_HomeUp
 	call	_ClrLCDFull
 	call	_RunIndicOff
@@ -223,6 +159,7 @@ AppvarsPointersTable:
 	
 NewStartAddr:
 .org $D00002 + 18
+; Use the moved stack
 	or	a, a
 	sbc	hl, hl
 	add	hl, sp
@@ -231,32 +168,23 @@ NewStartAddr:
 	add	hl, de
 	ld	sp, hl
 	
+; Get the sprites of the homescreen
 	ld	hl, RelocationTable1
 	ld	bc, (0D00002h)
 	inc	bc			; Skip size bytes
 	inc	bc
 	call	ModifyRelocationTable
-	ld	hl, (curRow)		; gfx_Begin sets curRow and curCol to 0, which is just code, so save that
-	push	hl
-	call	gfx_Begin
-	ld	l, 254
-	ex	(sp), hl
-	ld	(curRow), hl
-	call	gfx_SetTextFGColor
-	ld	l, 255
-	ex	(sp), hl
-	call	gfx_SetTransparentColor
-	pop	hl
+	
+; Setup some variables and start the game!
+	xor	a, a
+	ld	(_FillColor), a
+	dec	a
+	ld	(_FGColor), a
+	call	_Begin
 	;call	MainMenu
 	call	GenerateMap
-	ld	l, 0F8h
-	push	hl
-	call	gfx_SetTransparentColor
-	ld	l, 0FFh
-	ex	(sp), hl
-	call	gfx_SetColor
-	pop	hl
 	
+; Of course, we start with age 1
 	ld	c, 1
 	ld	hl, RelocationTable3
 	call	LoadAgeGraphicsAppvar
@@ -265,10 +193,14 @@ NewStartAddr:
 	xor	a, a
 	ld	(ix+OFFSET_X), a
 	ld	(ix+OFFSET_Y), a
+	
+; Copy to cursorImage
 	ld	hl, drawfield_loc
 	ld	de, DrawField
 	ld	bc, DrawFieldEnd - DrawField
 	ldir
+	
+; Set some variables and palette
 	ld	hl, vRAM+(320*240)
 	ld	(currDrawingBuffer), hl
 	ld	(mpLcdBase), hl
@@ -289,6 +221,7 @@ NewStartAddr:
     
 MainGameLoop:
 	call	DrawField
+	;call	DrawGame
 	call	GetKeyFast
 	ld	iy, _IYOffsets
 CheckKeys369:				; Check [3], [6], [9]
@@ -375,9 +308,7 @@ CleanupCode:
 	ld	bc, CleanupCodeEnd - CleanupCode
 	ldir
 	jp	cursorImage + $ + 4 - CleanupCode
-backupSP = $+1
-	ld	sp, 0
-	pop	ix
+	call	_End
 	ld	de, 0D80000h
 	ld	hl, 03C0000h
 	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
@@ -387,22 +318,24 @@ backupSP = $+1
 	push	hl
 	ld	bc, stackTop - heapBot
 	ldir
-	call	gfx_End
 	call.lis fLockFlash & 0FFFFh
+	pop	de
+backupSP = $+1
+	ld	sp, 0
+	pop	ix
 	ld	a, 0D0h
 	ld	mb, a
-	pop	de
 	ld	hl, 03C0000h + (vRAM - ramStart) - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
 	ldir
 	ld	iy, flags
-	call	_DrawStatusBar
-	ret
+	jp	_DrawStatusBar
 CleanupCodeEnd:
     
 #include "gfx/bin/pal_gfx.asm"
 #include "routines/map.asm"
 #include "routines/mainmenu.asm"
+#include "routines/drawGame.asm"
 ;#include "routines/pathfinding.asm"
 #include "routines/routines.asm"
 #include "routines/drawField.asm"

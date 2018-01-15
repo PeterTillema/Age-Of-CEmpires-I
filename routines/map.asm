@@ -20,7 +20,7 @@ PlaceTreesLoop:
 	randInt(MAP_SIZE)
 	push	hl
 	randInt(MAP_SIZE)
-	ld	h, 160
+	ld	h, lcdWidth / 2
 	mlt	hl
 	add	hl, hl
 	pop	de
@@ -94,7 +94,7 @@ PlaceResourceRowLoop:
 	ld	a, (de)
 	or	a, a
 	jr	z, +_
-	ld	a, r
+	ld	a, r			; I like it
 	and	a, 1
 ResourceType = $+1
 	add	a, TILE_FOOD_1
@@ -104,7 +104,7 @@ _:	inc	hl
 	djnz	PlaceResourceRowLoop
 	ld	a, c
 	inc	b
-	ld	c, lcdWidth - 256 - 3
+	ld	c, (lcdWidth & 0FFh) - 3
 	add	hl, bc
 	ld	b, a
 	djnz	PlaceResource
@@ -132,31 +132,28 @@ _:	ld	(de), a
 	inc	de
 	dec	a
 	jr	z, +_
-	ld	a, 200			; Each resource has 200 in it
+	ld	a, RESOURCE_MAX
 _:	ld	(de), a
 	inc	hl
 	inc	de
 	djnz	CopyRowLoop
-	ld	bc, 320 - MAP_SIZE
+	ld	bc, lcdWidth - MAP_SIZE
 	add	hl, bc
 	dec	ixh
 	jr	nz, CopyMapToNewAppvarLoop
 	
 LoadMap:
-	;call	EraseArea
-	;printString(LoadingMapMessage, 5, 112)
-	;ld	hl, AoCEMapAppvar
-	;call	_Mov9ToOP1
-	;call	_ChkFindSym
-	;call	_ChkInRAM
-	;call	c, _Arc_Unarc
+	call	EraseArea
+	printString(LoadingMapMessage, 5, 112)
 	ld	hl, (MapDataPtr)
-	;push	hl
-	;ex	de, hl
-	;inc	hl
-	;inc	hl
-	;ld	bc, MAP_SIZE * MAP_SIZE * 2 - 1
-	;ldir
-	;pop	hl
-	ld	(hl), TILE_BUILDING + 3
+	ld	(hl), 0
+	inc	hl
+	inc	hl
+	ld	(hl), 0
+	ld	bc, (MAP_SIZE - 1) * 2
+	add	hl, bc
+	ld	(hl), 0
+	inc	hl
+	inc	hl
+	ld	(hl), TILE_BUILDING + 5
 	ret

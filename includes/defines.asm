@@ -2,11 +2,11 @@
 
 ;;; Variables
 MAP_SIZE                    .equ 128
+RESOURCE_MAX                .equ 200
 
 ;;; Pointers
 currDrawingBuffer           .equ 0E30014h
 screenBuffer                .equ vRAM+(320*240)
-puppetStack                 .equ pixelShadow+(MAP_SIZE*MAP_SIZE*2)
 blackBuffer                 .equ 0E50000h
 
 ;;; Keypresses

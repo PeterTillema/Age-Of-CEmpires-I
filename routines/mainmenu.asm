@@ -77,7 +77,7 @@ EraseArea:
 	push	hl
 	ld	l, 0
 	push	hl
-	call	gfx_FillRectangle_NoClip ; gfx_FillRectangle_NoClip(0, 110, 210, 130);
+	call	_FillRectangle_NoClip
 	pop	hl
 	pop	hl
 	pop	hl
@@ -99,7 +99,7 @@ SelectLoop:
 	push	de
 	ld	hl, _pointer_compressed \.r1
 	call	dzx7_Turbo
-	call	gfx_Sprite_NoClip	; gfx_Sprite_NoClip(_pointer_compressed, 10, 110+40*C);
+	call	_Sprite_NoClip
 	pop	hl
 	pop	hl
 	pop	hl
@@ -144,7 +144,7 @@ EraseCursor:
 	push	hl
 	ld	hl, 10
 	push	hl
-	call	gfx_FillRectangle_NoClip ; gfx_FillRectangle_NoClip(10, 110+40*B, 25, 36);
+	call	_FillRectangle_NoClip
 	pop	hl
 	pop	hl
 	pop	hl

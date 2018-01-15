@@ -73,7 +73,7 @@ _:	sub	a, 4
 	push	hl
 	ld	hl, message
 	push	hl
-	call	gfx_PrintStringXY
+	call	_PrintStringXY
 	pop	hl
 	pop	hl
 	pop	hl
@@ -94,7 +94,7 @@ _:	sub	a, 4
 	push	de
 	ld	hl, sprite \.r1
 	call	dzx7_Turbo
-	call	gfx_Sprite_NoClip
+	call	_Sprite_NoClip
 	pop	de
 	pop	hl
 	pop	hl

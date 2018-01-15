@@ -1,3 +1,4 @@
+;-------------------------------------------------------------------------------
 GetKeyFast:
 	ld	hl, 0F50200h
 	ld	(hl), h
@@ -5,7 +6,8 @@ GetKeyFast:
 _:	cp	a, (hl)
 	jr	nz, -_
 	ret
-    
+
+;-------------------------------------------------------------------------------
 GetKeyAnyFast:
 	call	GetKeyFast
 	ld	l, 012h
@@ -31,7 +33,8 @@ GetKeyAnyFast:
 	jr	z, GetKeyAnyFast
 	ld	a, 20
 	jp	_DelayTenTimesAms
-    
+	
+;-------------------------------------------------------------------------------
 fadeIn:
 	ld	hl, fadeInSub
 	jr	fadeLcd
@@ -135,6 +138,7 @@ Wait2Loop:
 	jr	nz,flOuter
 	ret
 
+;-------------------------------------------------------------------------------
 dzx7_Turbo:
         ld      a, 128
 dzx7t_copy_byte_loop:
@@ -558,6 +562,7 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 ; Done.
 	ret
 	
+;-------------------------------------------------------------------------------
 LoadAgeGraphicsAppvar:
 	push	hl
 	inc	c
@@ -602,7 +607,8 @@ ModifyRelocationTable:
 	jr	ModifyRelocationTable
 _:	pop	hl
 	ret
-	
+
+;-------------------------------------------------------------------------------
 _srand:
 	xor	a, a
 __setstate:
@@ -667,3 +673,243 @@ __state:
 	.db	0Ch, 0Bh, 0Ah, 09h
 	.db	08h, 07h, 06h, 05h
 	.db	04h, 03h, 02h, 01h
+	
+;-------------------------------------------------------------------------------
+_Begin:
+	ld	hl, vRAM
+	ld	(hl), 255
+	ld	de, vRAM + 1
+	ld	bc, lcdWidth * lcdHeight * 2 - 1
+	ldir
+	ld	a, lcdBpp8
+	ld	hl, currDrawingBuffer
+_:	ld	de, vRAM
+	ld	(hl), de
+	ld	(mpLcdCtrl), a
+	ld	l, mpLcdIcr & 0FFh
+	ld	(hl), 4
+	ld	hl, pal_sprites
+	ld	de, mpLcdPalette
+	ld	bc, 256 * 2
+	ldir
+	ret
+
+;-------------------------------------------------------------------------------
+_End:
+	ld	hl, vRAM
+	ld	(hl), 255
+	ld	de, vRAM + 1
+	ld	bc, lcdWidth * lcdHeight * 2 - 1
+	ldir
+	ld	hl, mpLcdBase
+	ld	a, lcdBpp16
+	jr	-_
+	
+;-------------------------------------------------------------------------------
+_SetTextXY:
+	pop	de
+	pop	hl
+	ld	(TextXPos_SMC), hl
+	ex	(sp), hl
+	ld	(TextYPos_SMC), hl
+	push	hl
+	ex	de, hl
+_indcallHL_ASM:
+	jp	(hl)
+
+;-------------------------------------------------------------------------------
+_PrintUInt:
+
+;-------------------------------------------------------------------------------
+_PrintStringXY:
+	ld	hl, 9
+	add	hl, sp
+	ld	a, (hl)
+	ld	(TextYPos_SMC), a
+	dec	hl
+	dec	hl
+	ld	de, TextXPos_SMC + 1
+	ldd
+	ldd
+	dec	hl
+	dec	hl
+	ld	hl, (hl)
+	jr	NextCharLoop
+	
+;-------------------------------------------------------------------------------
+_PrintString:
+	pop	de
+	pop	hl
+	push	hl
+	push	de
+NextCharLoop:
+	ld	a, (hl)
+	or	a, a
+	ret	z
+	call	_PrintChar_ASM
+	inc	hl
+	jr	NextCharLoop
+	
+;-------------------------------------------------------------------------------
+_PrintChar:
+; Places a character at the current cursor position
+; Arguments:
+;  arg0 : Character to draw
+; Returns:
+;  None
+	pop	hl
+	pop	de
+	push	de
+	push	hl
+	ld	a, e
+_PrintChar_ASM:
+	push	ix
+	push	hl
+	ld	e, a
+	or	a, a
+	sbc	hl, hl
+	ld	l, e
+	ld	bc, DefaultCharSpacing_ASM
+	add	hl, bc
+	ld	a, (hl)
+TextXPos_SMC = $+1
+	ld	bc, 0
+	sbc	hl, hl
+	ld	l, a
+	ld	ixh, a
+	ld	h, 1
+	mlt	hl
+	add	hl, bc
+	ld	(TextXPos_SMC), hl
+TextYPos_SMC = $+1
+	ld	hl, 0
+	ld	h, lcdWidth/2
+	mlt	hl
+	add	hl, hl
+	add	hl, bc
+	ld	bc, (currDrawingBuffer)
+	add	hl, bc
+	ex	de, hl
+	ld	a, l
+	sbc	hl, hl
+	ld	l, a
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	ld	bc, DefaultTextData_ASM
+	add	hl, bc
+	ld	iy, 0
+	ld	ixl, 8
+CharLoop:
+	ld	c, (hl)
+	add	iy, de
+	lea	de, iy
+	ld	b, ixh
+	ld	a, 255
+NextPixel:
+_FGColor = $-1
+	rlc	c
+	jr	nc, IsTransparent
+	ld	(de), a
+IsTransparent:
+	inc	de
+	djnz	NextPixel
+	ld	de, lcdwidth
+	inc	hl
+	dec	ixl
+	jr	nz, CharLoop
+	pop	hl
+	pop	ix
+	ret
+
+;-------------------------------------------------------------------------------
+_FillRectangle_NoClip:
+	ld	iy, 0
+	add	iy, sp
+	ld	a, (iy+12)
+	ld	bc, (iy+9)
+	ld	hl, (iy+3)
+	ld	e, (iy+6)
+	ld	d, lcdWidth / 2
+	mlt	de
+	add	hl, de
+	add	hl, de
+	ld	de, (currDrawingBuffer)
+	add	hl, de
+_FillColor = $+1
+	ld	(hl), 0
+	push	hl
+	pop	de
+	inc	de
+	ld	(_RectangleWidth1_SMC), bc
+	ld	(_RectangleWidth2_SMC), bc
+	dec	bc
+	ldir
+	dec	a
+	ret	z
+	inc	b
+	ld	c, 040h
+_RectangleLoop_NoClip:
+	add	hl, bc
+	dec	de
+	ex	de, hl
+_RectangleWidth1_SMC = $+1
+	ld	bc, 0
+	lddr
+	dec	a
+	ret	z
+	ld	bc, 2 * lcdWidth + 1
+	add	hl, bc
+	inc	de
+	ex	de, hl
+_RectangleWidth2_SMC = $+1
+	ld	bc, 0
+	ldir
+	ld	bc, 2 * lcdWidth - 1
+	dec	a
+	jr	nz, _RectangleLoop_NoClip
+	ret
+
+;-------------------------------------------------------------------------------
+_Sprite_NoClip:
+	ld	iy, 0
+	add	iy, sp
+	ld	hl, (currDrawingBuffer)
+	ld	bc, (iy+6)
+	add	hl, bc
+	ld	d, lcdWidth / 2
+	ld	e, (iy+9)
+	mlt	de
+	add	hl, de
+	add	hl, de
+	ex	de, hl
+	ld	hl, (iy+3)
+	ld	c, (hl)
+	inc	hl
+	ld	iyh, c
+	xor	a, a
+	ld	b, a
+	srl	c
+	sbc	a, SprNcJrStep - SprNcLpEvenW
+	ld	(SprNcJrStep - 1), a
+	ld	a, lcdWidth / 2
+	sub	a, c
+	ld	iyl, a
+	ld	a, (hl)
+	inc	hl
+	jr	SprNcLpStart
+SprNcLpOddW:
+	dec	de
+SprNcLpEvenW:
+	ld	c, iyl
+	ex	de, hl
+	add	hl, bc
+	add	hl, bc
+	ex	de, hl
+SprNcLpStart:
+	ld	c, iyh
+	ldir
+	dec	a
+	jr	nz, SprNcLpOddW
+SprNcJrStep:
+	ret
