@@ -707,18 +707,44 @@ _End:
 	
 ;-------------------------------------------------------------------------------
 _SetTextXY:
-	pop	de
-	pop	hl
-	ld	(TextXPos_SMC), hl
-	ex	(sp), hl
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
 	ld	(TextYPos_SMC), hl
-	push	hl
-	ex	de, hl
-_indcallHL_ASM:
-	jp	(hl)
+	ld	(TextXPos_SMC), de
+	ret
+	
+;-------------------------------------------------------------------------------
+_SetTextX:
+	ld	(TextXPos_SMC), hl
+	ret
 
 ;-------------------------------------------------------------------------------
 _PrintUInt:
+	ld	(Offset_SMC),a
+Offset_SMC = $+1
+	jr	$
+	ld	bc, -10000000
+	call	Num1
+	ld	bc, -1000000
+	call	Num1
+	ld	bc, -100000
+	call	Num1
+	ld	bc, -10000
+	call	Num1
+	ld	bc, -1000
+	call	Num1
+	ld	bc, -100
+	call	Num1
+	ld	bc, -10
+	call	Num1
+	ld	bc, -1
+Num1:	ld	a, '0'-1
+Num2:	inc	a
+	add	hl, bc
+	jr	c, Num2
+	sbc	hl, bc
+	jr	_PrintChar
 
 ;-------------------------------------------------------------------------------
 _PrintStringXY:
@@ -746,23 +772,12 @@ NextCharLoop:
 	ld	a, (hl)
 	or	a, a
 	ret	z
-	call	_PrintChar_ASM
+	call	_PrintChar
 	inc	hl
 	jr	NextCharLoop
 	
 ;-------------------------------------------------------------------------------
 _PrintChar:
-; Places a character at the current cursor position
-; Arguments:
-;  arg0 : Character to draw
-; Returns:
-;  None
-	pop	hl
-	pop	de
-	push	de
-	push	hl
-	ld	a, e
-_PrintChar_ASM:
 	push	ix
 	push	hl
 	ld	e, a
@@ -805,7 +820,7 @@ CharLoop:
 	add	iy, de
 	lea	de, iy
 	ld	b, ixh
-	ld	a, 255
+	ld	a, 0
 NextPixel:
 _FGColor = $-1
 	rlc	c

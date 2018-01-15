@@ -1,77 +1,35 @@
 DrawGame:
-	ld	hl, 4
-	push	hl
-	ld	l, 17
-	push	hl
+	ld	de, 17
+	ld	a, 4
 	call	_SetTextXY
-	ld	l, 5
-	push	hl
+	ld	a, (8 - 5) * 8
 	ld	hl, (AmountOfWood)
-	push	hl
 	call	_PrintUInt
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	l, 78
-	push	hl
-	call	_SetTextXY
-	ld	l, 5
-	push	hl
+	ld	hl, 78
+	ld	(TextXPos_SMC), hl
+	ld	a, (8 - 5) * 8
 	ld	hl, (AmountOfFood)
-	push	hl
 	call	_PrintUInt
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	l, 144
-	push	hl
-	call	_SetTextXY
-	ld	l, 5
-	push	hl
+	ld	hl, 144
+	ld	(TextXPos_SMC), hl
+	ld	a, (8 - 5) * 8
 	ld	hl, (AmountOfGold)
-	push	hl
 	call	_PrintUInt
-	pop	hl
-	pop	hl
-	pop	hl
-	ld	l, 200
-	push	hl
-	call	_SetTextXY
-	ld	l, 5
-	push	hl
-	ld	hl, (AmountOfGold)
-	push	hl
+	ld	hl, 200
+	ld	(TextXPos_SMC), hl
+	ld	a, (8 - 5) * 8
+	ld	hl, (AmountOfStone)
 	call	_PrintUInt
-	pop	hl
-	pop	hl
-	pop	hl
-	inc	h
-	ld	l, 5
-	push	hl
-	call	_SetTextXY
-	ld	l, 3
-	push	hl
+	ld	hl, 261
+	ld	(TextXPos_SMC), hl
 	ld	a, (AmountOfPeople)
-	sbc	hl, hl
-	ld	l, a
-	push	hl
-	call	_PrintUInt
-	pop	hl
-	pop	hl
-	ld	l, '/'
-	push	hl
-	call	_PrintChar
-	pop	hl
-	ld	l, 3
-	push	hl
-	ld	a, (AmountOfMaxPeople)
 	or	a, a
 	sbc	hl, hl
 	ld	l, a
-	push	hl
+	ld	a, (8 - 3) * 8
 	call	_PrintUInt
-	pop	hl
-	pop	hl
-	pop	hl
-	pop	hl
-	ret
+	ld	a, '/'
+	call	_PrintChar
+	ld	a, (8 - 3) * 8
+	ld	hl, MAX_AMOUNT_PEOPLE
+	jp	_PrintUInt

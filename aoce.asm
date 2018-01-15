@@ -178,7 +178,7 @@ NewStartAddr:
 ; Setup some variables and start the game!
 	xor	a, a
 	ld	(_FillColor), a
-	dec	a
+	ld	a, 254
 	ld	(_FGColor), a
 	call	_Begin
 	;call	MainMenu
@@ -221,7 +221,10 @@ NewStartAddr:
     
 MainGameLoop:
 	call	DrawField
-	;call	DrawGame
+	call	DrawGame
+	ld	hl, (AmountOfWood)
+	inc	hl
+	ld	(AmountOfWood), hl
 	call	GetKeyFast
 	ld	iy, _IYOffsets
 CheckKeys369:				; Check [3], [6], [9]

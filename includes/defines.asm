@@ -3,6 +3,7 @@
 ;;; Variables
 MAP_SIZE                    .equ 128
 RESOURCE_MAX                .equ 200
+MAX_AMOUNT_PEOPLE           .equ 120
 
 ;;; Pointers
 currDrawingBuffer           .equ 0E30014h
