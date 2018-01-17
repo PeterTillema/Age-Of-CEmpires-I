@@ -273,7 +273,7 @@ SetClippedRoutine:
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, (startingPosition)
-	ld	bc, -lcdWidth * TILE_HEIGHT - 1		; -1 because we start at the left pixel of the top row, not the right one
+	ld	bc, -lcdWidth * (TILE_HEIGHT - 1) - 1	; -1 because we start at the left pixel of the top row, not the right one
 	add	hl, bc
 	ld	(startingPosition), hl
 	ld	hl, TilePointersStart - 3
@@ -400,10 +400,6 @@ DrawTile_Clipped_Stop1 = $
 	ldir
 DrawTile_Clipped_Stop2 = $
 	add	iy, sp
-	lea	de, iy-16
-	ld	c, 34
-	ldir
-	add	iy, sp
 	lea	de, iy-14
 	ld	c, 30
 	ldir
@@ -415,11 +411,11 @@ DrawTile_Clipped_Stop2 = $
 	lea	de, iy-10
 	ld	c, 22
 	ldir
-DrawTile_Clipped_Stop3 = $
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
 	ldir
+DrawTile_Clipped_Stop3 = $
 	add	iy, sp
 	lea	de, iy-6
 	ld	c, 14
