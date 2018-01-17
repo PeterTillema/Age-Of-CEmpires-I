@@ -713,33 +713,24 @@ _SetTextXY:
 	ld	(TextYPos_SMC), hl
 	ld	(TextXPos_SMC), de
 	ret
-	
-;-------------------------------------------------------------------------------
-_SetTextX:
-	ld	(TextXPos_SMC), hl
-	ret
 
 ;-------------------------------------------------------------------------------
-_PrintUInt:
-	ld	(Offset_SMC),a
+;_PrintUInt:
+	ld	(Offset_SMC), a
 Offset_SMC = $+1
 	jr	$
-	ld	bc, -10000000
-	call	Num1
-	ld	bc, -1000000
-	call	Num1
-	ld	bc, -100000
-	call	Num1
+_PrintUInt_5:
 	ld	bc, -10000
 	call	Num1
 	ld	bc, -1000
 	call	Num1
+_PrintUInt_3:
 	ld	bc, -100
 	call	Num1
 	ld	bc, -10
 	call	Num1
 	ld	bc, -1
-Num1:	ld	a, '0'-1
+Num1:	ld	a, '0' - 1
 Num2:	inc	a
 	add	hl, bc
 	jr	c, Num2
@@ -778,7 +769,6 @@ NextCharLoop:
 	
 ;-------------------------------------------------------------------------------
 _PrintChar:
-	push	ix
 	push	hl
 	ld	e, a
 	or	a, a
@@ -815,14 +805,14 @@ TextYPos_SMC = $+1
 	add	hl, bc
 	ld	iy, 0
 	ld	ixl, 8
+	ld	a, 0
+_FGColor = $-1
 CharLoop:
 	ld	c, (hl)
 	add	iy, de
 	lea	de, iy
 	ld	b, ixh
-	ld	a, 0
 NextPixel:
-_FGColor = $-1
 	rlc	c
 	jr	nc, IsTransparent
 	ld	(de), a
@@ -834,7 +824,6 @@ IsTransparent:
 	dec	ixl
 	jr	nz, CharLoop
 	pop	hl
-	pop	ix
 	ret
 
 ;-------------------------------------------------------------------------------
