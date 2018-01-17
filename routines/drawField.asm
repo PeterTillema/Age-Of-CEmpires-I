@@ -273,7 +273,7 @@ SetClippedRoutine:
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, (startingPosition)
-	ld	bc, -lcdWidth * TILE_HEIGHT
+	ld	bc, -lcdWidth * TILE_HEIGHT - 1		; -1 because we start at the left pixel of the top row, not the right one
 	add	hl, bc
 	ld	(startingPosition), hl
 	ld	hl, TilePointersStart - 3
@@ -513,8 +513,8 @@ BuildingsTablePointer = $+1		; Yay, ages! :D
 	ld	hl, BuildingsAge1
 	add	hl, bc
 	ld	hl, (hl)
+	ld	b, (hl)
 	ld	(BackupIY3), iy
-	ld	(BuildingStructWidth), hl
 	ld	iy, _IYOffsets
 TempSP4 = $+1
 	ld	sp, 0
@@ -548,20 +548,19 @@ TempSP4 = $+1
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
+	ld	de, 0
 	ld	e, (iy + OFFSET_X)
-	ld	d, 1
-	mlt	de
 	add	hl, de
+	ld	a, b
 	bit	0, c
-	jr	nz, ++_
+	jr	nz, +_
 	bit	4, e
-	ld	bc, TILE_WIDTH / 2
+	ld	e, TILE_WIDTH / 2
+	add	hl, de
 	jr	z, +_
-	ld	bc, -TILE_WIDTH / 2
-_:	add	hl, bc
-_:	ld	a, (0)			; Substract the width from the X coordinate
-BuildingStructWidth = $-3
-	sub	a, 30
+	sla	e
+	sbc	hl, de
+_:	sub	a, 30			; Substract the width from the X coordinate
 	srl	a
 	ld	e, a
 	sbc	hl, de
