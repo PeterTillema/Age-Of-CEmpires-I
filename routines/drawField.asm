@@ -475,15 +475,15 @@ TempSP3 = $+1
 	mlt	hl
 	ld	e, (iy + OFFSET_X)
 	ld	d, 0
-	add.s	hl, de
+	add	hl, de
 	bit	0, c
-	jr	nz, ++_
+	jr	nz, +_
 	bit	4, e
-	ld	bc, TILE_WIDTH / 2
+	ld	e, TILE_WIDTH / 2
+	add	hl, de
 	jr	z, +_
-	ld	bc, -TILE_WIDTH / 2
-_:	or	a, a
-	adc	hl, bc
+	sla	e
+	sbc	hl, de
 	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
 _:	push	hl			; X coordinate
 	call	_RLETSprite		; No need to pop
