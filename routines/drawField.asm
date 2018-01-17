@@ -121,11 +121,11 @@ TopRowLeftOrRight = $+2
 _:	ex	af, af'
 	ld	a, AMOUNT_OF_COLUMNS
 DisplayTile:
+	ld	b, a
 	cp	a, AMOUNT_OF_COLUMNS - 1
 	jr	nc, TileOnlyDisplayBuilding
 	cp	a, 3
 	jr	c, TileOnlyDisplayBuilding
-	ld	b, a
 	ld	a, e
 	or	a, ixl
 	add	a, a
@@ -143,10 +143,10 @@ TilePointersSMC = $+1
 	ld	hl, TilePointersEnd - 3
 	add	hl, bc
 	ld	hl, (hl)		; Pointer to the tile/tree/building
-	cp	a, TILE_TREE_1
+	sub	a, TILE_TREE_1
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
-	cp	a, TILE_BUILDING
+	sub	a, TILE_BUILDING - TILE_TREE_1
 	jp	c, DisplayTileWithTree
 	jp	DisplayBuilding
 	
@@ -157,7 +157,6 @@ TileDrawingRoutinePtr2 = $+1
 	jp	DrawIsometricTile	; This will be modified to the clipped version after X rows
 	
 TileOnlyDisplayBuilding:
-	ld	b, a
 	ld	a, e
 	or	a, ixl
 	add	a, a
@@ -507,7 +506,6 @@ DisplayBuilding:
 
 ; Y coordinate: A' * 8 + 17 - building_height
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
-	sub	a, TILE_BUILDING
 	ld	c, a
 	ld	b, 3
 	mlt	bc

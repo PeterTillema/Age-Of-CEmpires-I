@@ -178,7 +178,7 @@ NewStartAddr:
 ; Setup some variables and start the game!
 	xor	a, a
 	ld	(_FillColor), a
-	ld	a, 254
+	ld	a, 12
 	ld	(_FGColor), a
 	call	_Begin
 	;call	MainMenu
@@ -191,8 +191,8 @@ NewStartAddr:
 	
 	ld	iy, _IYOffsets
 	xor	a, a
-	ld	(ix+OFFSET_X), a
-	ld	(ix+OFFSET_Y), a
+	ld	(iy + OFFSET_X), a
+	ld	(iy + OFFSET_Y), a
 	
 ; Copy to cursorImage
 	ld	hl, drawfield_loc
