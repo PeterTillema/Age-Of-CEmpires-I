@@ -39,22 +39,20 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	a, 00Dh
 _:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
 	bit	2, e
-	exx
-	ld	de, DrawTile_Clipped_Stop2
-	ld	b, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
+	ld	hl, DrawTile_Clipped_Stop2
+	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
 	jr	z, +_
 	ld	hl, DrawTile_Clipped_Stop3
 	ld	(hl), 018h		; Write "jr"
 	inc	hl
 	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
-	ld	de, DrawTile_Clipped_Stop1
-	ld	b, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
-_:	ld	(DrawTile_Clipped_SetJRSMC), de
+	ld	hl, DrawTile_Clipped_Stop1
+	ld	d, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
+_:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	ld	hl, DrawTile_Clipped_SetJRStop
 	ld	(hl), 018h		; Write "jr"
 	inc	hl
-	ld	(hl), b
-	exx
+	ld	(hl), d
 	ld	a, 7
 	cp	a, e
 	adc	a, 3
@@ -165,7 +163,7 @@ TileOnlyDisplayBuilding:
 	or	a, ixh
 	jp	nz, SkipDrawingOfTile
 	ld	a, (hl)
-	cp	a, TILE_BUILDING
+	sub	a, TILE_BUILDING
 	jp	c, SkipDrawingOfTile
 	jp	DisplayBuildingExx
 
