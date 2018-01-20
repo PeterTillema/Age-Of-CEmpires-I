@@ -118,6 +118,7 @@ TopRowLeftOrRight = $+2
 	lea	iy, iy + 0
 _:	ex	af, af'
 	ld	a, AMOUNT_OF_COLUMNS
+	ld	bc, (-MAP_SIZE + 1) * 2
 DisplayTile:
 	ld	b, a
 	cp	a, AMOUNT_OF_COLUMNS - 1
@@ -234,7 +235,7 @@ SkipDrawingOfTile:
 	inc	de
 	dec	ix
 	ld	a, b
-	ld	bc, (-MAP_SIZE + 1) * 2
+	ld	b, 255			; (((-MAP_SIZE + 1) * 2) / 256) % 256
 	add	hl, bc
 	dec	a
 	jp	nz, DisplayTile
@@ -542,7 +543,6 @@ TempSP4 = $+1
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	de, 0
 	ld	e, (iy + OFFSET_X)
 	add	hl, de
 	ld	a, b
