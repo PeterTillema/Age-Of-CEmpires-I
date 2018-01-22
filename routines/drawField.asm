@@ -146,8 +146,8 @@ TilePointersSMC = $+1
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
 	sub	a, TILE_BUILDING - TILE_TREE_1
-	jp	c, DisplayTileWithTree
-	jp	DisplayBuilding
+	jr	c, DisplayTileWithTree
+	jr	DisplayBuilding
 	
 TileIsOutOfField:
 	exx
@@ -166,7 +166,137 @@ TileOnlyDisplayBuilding:
 	ld	a, (hl)
 	sub	a, TILE_BUILDING
 	jp	c, SkipDrawingOfTile
-	jp	DisplayBuildingExx
+	
+DisplayTileWithTree:
+; Inputs:
+;   A' = row index
+;   B' = column index
+;   HL = pointer to tree sprite
+
+; Y coordinate: A' * 8 + 17 - tree_height
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
+
+	ld	(BackupIY2), iy
+	ld	iy, _IYOffsets
+TempSP3 = $+1
+	ld	sp, 0
+	push	hl			; Sprite struct
+	ex	af, af'
+	ld	c, a			; C = row index
+	ex	af, af'
+	ld	a, AMOUNT_OF_ROWS + 1
+	sub	a, c
+	ld	e, a
+	ld	d, TILE_HEIGHT / 2
+	mlt	de
+	inc	hl
+	ld	a, (hl)
+	ld	hl, 17
+	add	hl, de
+	ld	e, (iy + OFFSET_Y)
+	ld	d, 0
+	add	hl, de
+	ld	e, a
+	sbc	hl, de
+	push	hl			; Y coordinate
+	ld	a, AMOUNT_OF_COLUMNS - 2
+	exx
+	sub	a, b
+	exx
+	ld	l, a
+	ld	h, TILE_WIDTH
+	mlt	hl
+	ld	e, (iy + OFFSET_X)
+	ld	d, 0
+	add	hl, de
+	bit	0, c
+	jr	nz, +_
+	bit	4, e
+	ld	e, TILE_WIDTH / 2
+	add	hl, de
+	jr	z, +_
+	sla	e
+	sbc	hl, de
+	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
+_:	push	hl			; X coordinate
+	call	_RLETSprite		; No need to pop
+DontDisplayTree:
+	ld	iy, 0
+BackupIY2 = $-3
+	jp	SkipDrawingOfTileExx
+	
+DisplayBuildingExx
+	exx
+DisplayBuilding:
+; Inputs:
+;   A' = row index
+;   B' = column index
+;   A  = building index
+
+; Y coordinate: A' * 8 + 17 - building_height
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
+	ld	c, a
+	ld	b, 3
+	mlt	bc
+BuildingsTablePointer = $+1		; Yay, ages! :D
+	ld	hl, BuildingsAge1
+	add	hl, bc
+	ld	hl, (hl)
+	ld	b, (hl)
+	ld	(BackupIY3), iy
+	ld	iy, _IYOffsets
+TempSP4 = $+1
+	ld	sp, 0
+	push	hl			; Sprite struct
+	ex	af, af'
+	ld	c, a			; C = row index
+	ex	af, af'
+	ld	a, AMOUNT_OF_ROWS + 1
+	sub	a, c
+	ld	e, a
+	ld	d, TILE_HEIGHT / 2
+	mlt	de
+	inc	hl
+	ld	a, (hl)
+	ld	hl, 17
+	add	hl, de
+	ld	e, (iy + OFFSET_Y)
+	ld	d, 0
+	add	hl, de
+	ld	e, a
+	sbc	hl, de
+	push	hl			; Y coordinate
+	ld	a, AMOUNT_OF_COLUMNS - 2
+	exx
+	sub	a, b
+	exx
+	sbc	hl, hl
+	ld	l, a
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	ld	e, (iy + OFFSET_X)
+	add	hl, de
+	ld	a, b
+	bit	0, c
+	jr	nz, +_
+	bit	4, e
+	ld	e, TILE_WIDTH / 2
+	add	hl, de
+	jr	z, +_
+	sla	e
+	sbc	hl, de
+_:	sub	a, 30			; Substract the width from the X coordinate
+	srl	a
+	ld	e, a
+	sbc	hl, de
+	push	hl			; X coordinate
+	call	_RLETSprite		; No need to pop
+BackupIY3 = $+2
+	ld	iy, 0
+	jp	SkipDrawingOfTileExx
 
 DrawIsometricTileSecondPart:
 	lddr
@@ -235,7 +365,7 @@ SkipDrawingOfTile:
 	inc	de
 	dec	ix
 	ld	a, b
-	ld	b, 255			; (((-MAP_SIZE + 1) * 2) / 256) % 256
+	ld	b, 255			; BC still holds (-MAP_SIZE + 1) * 2)
 	add	hl, bc
 	dec	a
 	jp	nz, DisplayTile
@@ -432,137 +562,6 @@ StopDrawingTile:
 BackupIY = $-3
 	exx
 	jp	SkipDrawingOfTile
-	
-DisplayTileWithTree:
-; Inputs:
-;   A' = row index
-;   B' = column index
-;   HL = pointer to tree sprite
-
-; Y coordinate: A' * 8 + 17 - tree_height
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
-
-	ld	(BackupIY2), iy
-	ld	iy, _IYOffsets
-TempSP3 = $+1
-	ld	sp, 0
-	push	hl			; Sprite struct
-	ex	af, af'
-	ld	c, a			; C = row index
-	ex	af, af'
-	ld	a, AMOUNT_OF_ROWS + 1
-	sub	a, c
-	ld	e, a
-	ld	d, TILE_HEIGHT / 2
-	mlt	de
-	inc	hl
-	ld	a, (hl)
-	ld	hl, 17
-	add	hl, de
-	ld	e, (iy + OFFSET_Y)
-	ld	d, 0
-	add	hl, de
-	ld	e, a
-	sbc	hl, de
-	push	hl			; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS - 2
-	exx
-	sub	a, b
-	exx
-	ld	l, a
-	ld	h, TILE_WIDTH
-	mlt	hl
-	ld	e, (iy + OFFSET_X)
-	ld	d, 0
-	add	hl, de
-	bit	0, c
-	jr	nz, +_
-	bit	4, e
-	ld	e, TILE_WIDTH / 2
-	add	hl, de
-	jr	z, +_
-	sla	e
-	sbc	hl, de
-	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
-_:	push	hl			; X coordinate
-	call	_RLETSprite		; No need to pop
-DontDisplayTree:
-	ld	iy, 0
-BackupIY2 = $-3
-	jp	SkipDrawingOfTileExx
-	
-DisplayBuildingExx
-	exx
-DisplayBuilding:
-; Inputs:
-;   A' = row index
-;   B' = column index
-;   A  = building index
-
-; Y coordinate: A' * 8 + 17 - building_height
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
-	ld	c, a
-	ld	b, 3
-	mlt	bc
-BuildingsTablePointer = $+1		; Yay, ages! :D
-	ld	hl, BuildingsAge1
-	add	hl, bc
-	ld	hl, (hl)
-	ld	b, (hl)
-	ld	(BackupIY3), iy
-	ld	iy, _IYOffsets
-TempSP4 = $+1
-	ld	sp, 0
-	push	hl			; Sprite struct
-	ex	af, af'
-	ld	c, a			; C = row index
-	ex	af, af'
-	ld	a, AMOUNT_OF_ROWS + 1
-	sub	a, c
-	ld	e, a
-	ld	d, TILE_HEIGHT / 2
-	mlt	de
-	inc	hl
-	ld	a, (hl)
-	ld	hl, 17
-	add	hl, de
-	ld	e, (iy + OFFSET_Y)
-	ld	d, 0
-	add	hl, de
-	ld	e, a
-	sbc	hl, de
-	push	hl			; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS - 2
-	exx
-	sub	a, b
-	exx
-	sbc	hl, hl
-	ld	l, a
-	add	hl, hl
-	add	hl, hl
-	add	hl, hl
-	add	hl, hl
-	add	hl, hl
-	ld	e, (iy + OFFSET_X)
-	add	hl, de
-	ld	a, b
-	bit	0, c
-	jr	nz, +_
-	bit	4, e
-	ld	e, TILE_WIDTH / 2
-	add	hl, de
-	jr	z, +_
-	sla	e
-	sbc	hl, de
-_:	sub	a, 30			; Substract the width from the X coordinate
-	srl	a
-	ld	e, a
-	sbc	hl, de
-	push	hl			; X coordinate
-	call	_RLETSprite		; No need to pop
-BackupIY3 = $+2
-	ld	iy, 0
-	jp	SkipDrawingOfTileExx
 	
 DrawFieldEnd:
 
