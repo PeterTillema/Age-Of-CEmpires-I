@@ -105,7 +105,7 @@ DisplayEachRowLoop:
 ;   HL' = pointer to map data
 ;   IX  = y index tile
 ;   IY  = pointer to output
-;   SP  = SCREEN_WIDTH
+;   SP  = -SCREEN_WIDTH + offset
 
 startingPosition = $+2			; Here are the shadow registers active
 	ld	iy, 0
@@ -125,7 +125,7 @@ DisplayTile:
 	jr	nc, TileOnlyDisplayBuilding
 	cp	a, 3
 	jr	c, TileOnlyDisplayBuilding
-	ld	a, e
+	ld	a, e			; Check out of field: DE and IX < MAP_SIZE
 	or	a, ixl
 	add	a, a
 	sbc	a, a
