@@ -166,6 +166,7 @@ TileOnlyDisplayBuilding:
 	ld	a, (hl)
 	sub	a, TILE_BUILDING
 	jp	c, SkipDrawingOfTile
+	jr	DisplayBuilding
 	
 DisplayTileWithTree:
 ; Inputs:
