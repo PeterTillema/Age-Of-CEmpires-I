@@ -8,7 +8,7 @@ MainMenu:
 	ld	de, vRAM+1
 	ld	bc, 320*240-1
 	ldir
-	dispCompressedImage(_intro_compressed, 72, 32)
+	dispCompressedImage(intro_compressed_offset, 72, 32)
 	call	fadeIn
 	ld	a, 200
 	call	_DelayTenTimesAms
@@ -17,13 +17,13 @@ MainMenu:
 	ld	hl, blackBuffer
 	ld	bc, 320*240*2
 	ldir
-	dispCompressedImage(_AoCEI_compressed, 5, 5)
-	dispCompressedImage(_soldier_compressed, 215, 5)
+	dispCompressedImage(AoCEI_compressed_offset, 5, 5)
+	dispCompressedImage(soldier_compressed_offset, 215, 5)
 	printString(MadeByMessage, 18, 94)
 	call	fadeIn
 SelectLoopDrawPlayHelpQuit:
 	call	EraseArea
-	dispCompressedImage(_playhelpquit_compressed, 50, 110)
+	dispCompressedImage(playhelpquit_compressed_offset, 50, 110)
 	ld	hl, SelectMenuMax
 	ld	(hl), 2
 	call	SelectMenu
@@ -43,7 +43,7 @@ DisplayHelp:
 	jp	SelectLoopDrawPlayHelpQuit
 SelectedPlay:
 	call	EraseArea
-	dispCompressedImage(_singlemultiplayer_compressed, 50, 110)
+	dispCompressedImage(singlemultiplayer_compressed_offset, 50, 110)
 	ld	hl, SelectMenuMax
 	ld	(hl), 1
 	call	SelectMenu
@@ -97,7 +97,7 @@ SelectLoop:
 	push	hl
 	ld	de, plotSScreen
 	push	de
-	ld	hl, _pointer_compressed \.r1
+	ld	hl, pointer_compressed_offset \.r1
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	hl

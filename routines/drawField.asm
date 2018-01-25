@@ -429,8 +429,8 @@ StopDisplayTiles:
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
 	ld	de, (currDrawingBuffer)
-	ld	hl, _resources \ .r2
-	ld	bc, _resources_size
+	ld	hl, resources_offset \ .r2
+	ld	bc, lcdWidth * 15
 	ldir
 	ld	hl, blackBuffer
 	ld	b, lcdWidth * 13 + TILE_WIDTH >> 8
