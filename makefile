@@ -8,16 +8,21 @@ COPY = cp
 RM = rm -f
 endif
 
-FLAGS     := -E -T -L -I $(call NATIVEPATH,gfx\bin)
-AS        := spasm
+ASFLAGS   := -E -T -L -I $(call NATIVEPATH, gfx\bin)
+CONVFLAGS := -x
+ASSEMBLER := spasm
+CONVHEX   := convhex
 SRC       := aoce.asm
 TARGET    := AOCE.bin
 OUTPUTDIR := bin
 CREATEDIR := mkdir
+RELOCASM  := $(call NATIVEPATH, relocation_table*.asm)
  
 all: $(OUTPUTDIR)/$(TARGET)
  
 $(OUTPUTDIR)/$(TARGET): $(SRC)
-	$(AS) $(FLAGS) $< $(call NATIVEPATH,$@)
+	$(ASSEMBLER) $(ASFLAGS) $< $(call NATIVEPATH, $@)
+	$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH, $(OUTPUTDIR)/$(TARGET))
+	$(RM) $(RELOCASM) $(call NATIVEPATH, $(OUTPUTDIR)/$(TARGET))
  
 .PHONY: all
