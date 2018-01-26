@@ -17,12 +17,14 @@ SHELL = cmd.exe
 COPY = xcopy /s /y /q
 RM = del /q /f
 GFXOUTDIR := $(GFXDIR)\bin
+APPVARS   := $(GFXOUTDIR)\\*.8xv
 TARGET := $(OUTPUTDIR)\$(BINTARGET)
 else
 COPY = cp
 RM = rm -f
 GFXOUTDIR := $(GFXDIR)/bin
-TARGET := $(OUTPUTDIR)/$(BINTARGET)
+APPVARS   := $(GFXOUTDIR)/*.8xv
+TARGET    := $(OUTPUTDIR)/$(BINTARGET)
 endif
 
 all: ${OUTPUTDIR} $(OUTPUTDIR)/$(BINTARGET)
@@ -31,7 +33,7 @@ $(OUTPUTDIR)/$(BINTARGET):$(SRC)
 	@$(ASSEMBLER) $(ASFLAGS) $< $@
 	@$(CONVHEX) $(CONVFLAGS) $(TARGET)
 	@$(RM) $(RELOCASM) $(TARGET)
-	@$(COPY) $(GFXOUTDIR)\\*.8xv $(OUTPUTDIR)
+	@$(COPY) $(APPVARS) $(OUTPUTDIR)
 
 convpng: ${GFXOUTDIR}
 	@cd $(GFXDIR) && $(CONVPNG)
@@ -42,4 +44,4 @@ ${OUTPUTDIR}:
 ${GFXOUTDIR}:
 	@mkdir $(GFXOUTDIR)
 
-.PHONY: all
+.PHONY: all convpng
