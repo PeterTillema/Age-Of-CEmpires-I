@@ -25,8 +25,8 @@ GFXOUTDIR := $(call NATIVEPATH,$(GFXDIR)\bin)
 RELOCASM  := $(call NATIVEPATH,relocation_table*.asm)
 
 all: ${OUTPUTDIR} $(OUTPUTDIR)/$(BINTARGET)
- 
-$(OUTPUTDIR)/$(BINTARGET): $(SRC)
+
+$(OUTPUTDIR)/$(BINTARGET):$(SRC)
 	@$(ASSEMBLER) $(ASFLAGS) $< $(call NATIVEPATH,$@)
 	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$(OUTPUTDIR)/$(BINTARGET))
 	@$(RM) $(RELOCASM) $(call NATIVEPATH,$(OUTPUTDIR)/$(BINTARGET))
@@ -34,11 +34,11 @@ $(OUTPUTDIR)/$(BINTARGET): $(SRC)
 
 convpng: ${GFXOUTDIR}
 	@cd $(GFXDIR) && $(CONVPNG)
-	
+
 ${OUTPUTDIR}:
 	@mkdir $(OUTPUTDIR)
-	
+
 ${GFXOUTDIR}:
 	@mkdir $(GFXOUTDIR)
-	
+
 .PHONY: all
