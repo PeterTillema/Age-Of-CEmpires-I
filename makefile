@@ -6,6 +6,7 @@ RM = del /f 2>nul
 else
 COPY = cp
 RM = rm -f
+NATIVEPATH = $(1)
 endif
 
 ASFLAGS   := -E -T -L -I $(call NATIVEPATH, gfx\bin)
