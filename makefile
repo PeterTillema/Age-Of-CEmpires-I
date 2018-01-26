@@ -1,12 +1,3 @@
-ifeq ($(OS),Windows_NT)
-SHELL = cmd.exe
-COPY = xcopy /s /y /q
-RM = del /q /f
-else
-COPY = cp
-RM = rm -f
-endif
-
 ASFLAGS   := -E -T -L -I gfx/bin
 CONVFLAGS := -x
 ASSEMBLER := spasm
@@ -19,15 +10,27 @@ GFXTARGET := AGE1.inc
 PNGINI    := convpng.ini
 OUTPUTDIR := bin
 GFXDIR    := gfx
-GFXOUTDIR := $(GFXDIR)\bin
 RELOCASM  := relocation_table*.asm
+
+ifeq ($(OS),Windows_NT)
+SHELL = cmd.exe
+COPY = xcopy /s /y /q
+RM = del /q /f
+GFXOUTDIR := $(GFXDIR)\bin
+TARGET := $(OUTPUTDIR)\$(BINTARGET)
+else
+COPY = cp
+RM = rm -f
+GFXOUTDIR := $(GFXDIR)/bin
+TARGET := $(OUTPUTDIR)/$(BINTARGET)
+endif
 
 all: ${OUTPUTDIR} $(OUTPUTDIR)/$(BINTARGET)
 
 $(OUTPUTDIR)/$(BINTARGET):$(SRC)
 	@$(ASSEMBLER) $(ASFLAGS) $< $@
-	@$(CONVHEX) $(CONVFLAGS) $(OUTPUTDIR)/$(BINTARGET)
-	@$(RM) $(RELOCASM) $(OUTPUTDIR)\$(BINTARGET)
+	@$(CONVHEX) $(CONVFLAGS) $(TARGET)
+	@$(RM) $(RELOCASM) $(TARGET)
 	@$(COPY) $(GFXOUTDIR)\\*.8xv $(OUTPUTDIR)
 
 convpng: ${GFXOUTDIR}
