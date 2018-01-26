@@ -1,15 +1,13 @@
 ifeq ($(OS),Windows_NT)
 SHELL = cmd.exe
-NATIVEPATH = $(subst /,\,$(1))
 COPY = xcopy /s /y /q
-RM = del /f 2>nul
+RM = del /q /f
 else
 COPY = cp
 RM = rm -f
-NATIVEPATH = $(1)
 endif
 
-ASFLAGS   := -E -T -L -I $(call NATIVEPATH,gfx\bin)
+ASFLAGS   := -E -T -L -I gfx/bin
 CONVFLAGS := -x
 ASSEMBLER := spasm
 CONVHEX   := convhex
@@ -19,17 +17,17 @@ SRC       := aoce.asm
 BINTARGET := AOCE.bin
 GFXTARGET := AGE1.inc
 PNGINI    := convpng.ini
-OUTPUTDIR := $(call NATIVEPATH,bin)
-GFXDIR    := $(call NATIVEPATH,gfx)
-GFXOUTDIR := $(call NATIVEPATH,$(GFXDIR)\bin)
-RELOCASM  := $(call NATIVEPATH,relocation_table*.asm)
+OUTPUTDIR := bin
+GFXDIR    := gfx
+GFXOUTDIR := $(GFXDIR)\bin
+RELOCASM  := relocation_table*.asm
 
 all: ${OUTPUTDIR} $(OUTPUTDIR)/$(BINTARGET)
 
 $(OUTPUTDIR)/$(BINTARGET):$(SRC)
-	@$(ASSEMBLER) $(ASFLAGS) $< $(call NATIVEPATH,$@)
-	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$(OUTPUTDIR)/$(BINTARGET))
-	@$(RM) $(RELOCASM) $(call NATIVEPATH,$(OUTPUTDIR)/$(BINTARGET))
+	@$(ASSEMBLER) $(ASFLAGS) $< $@
+	@$(CONVHEX) $(CONVFLAGS) $(OUTPUTDIR)/$(BINTARGET)
+	@$(RM) $(RELOCASM) $(OUTPUTDIR)\$(BINTARGET)
 	@$(COPY) $(GFXOUTDIR)\\*.8xv $(OUTPUTDIR)
 
 convpng: ${GFXOUTDIR}
