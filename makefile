@@ -1,59 +1,68 @@
 # Commands and tools
-ASSEMBLER := spasm
-CONVHEX   := convhex
-CONVPNG   := convpng
-CREATEDIR := mkdir
+ASSEMBLER ?= spasm
+CONVHEX   ?= convhex
+CONVPNG   ?= convpng
 
 # Flags
-ASFLAGS   := -E -T -L -I gfx/bin
-CONVFLAGS := -x
+ASFLAGS   ?= -E -T -L -I gfx/bin
+CONVFLAGS ?= -x
 
 # Sources
-SRC       := aoce.asm
-BINTARGET := AOCE.bin
-GFXTARGET := AGE1.inc
-RELOCASM  := relocation_table*.asm
+SRC       ?= aoce.asm
+TARGETBIN ?= AOCE.bin
+TARGET8XP ?= AOCE.8xp
+TARGETGFX ?= AGE1.inc
 
 # Directories
-OUTPUTDIR := bin
-GFXDIR    := gfx
+BINDIR    ?= bin
+GFXDIR    ?= gfx
 
 # Windows and Linux differences
 ifeq ($(OS),Windows_NT)
-SHELL = cmd.exe
-COPY  = xcopy /s /y /q
-RM    = del /q /f
-GFXOUTDIR := $(GFXDIR)\bin
-APPVARS   := $(GFXOUTDIR)\\*.8xv
-TARGET    := $(OUTPUTDIR)\$(BINTARGET)
+SHELL      = cmd.exe
+NATIVEPATH = $(subst /,\,$(1))
+COPY       = xcopy /s /y /q
+RM         = del /q /f
+MKDIR      = mkdir
+CD         = cd
+WINCHKDIR  = if not exist
+WINCHKPATH = $(NATIVEPATH)
 else
-COPY = cp
-RM   = rm -f
-GFXOUTDIR := $(GFXDIR)/bin
-APPVARS   := $(GFXOUTDIR)/*.8xv
-TARGET    := $(OUTPUTDIR)/$(BINTARGET)
+NATIVEPATH = $(subst \,/,$(1))
+COPY       = cp -r
+RM         = rm -f
+MKDIR      = mkdir -p
+CD         = cd
 endif
 
+APPVARS   := $(call NATIVEPATH,$(wildcard $(GFXDIR)/$(BINDIR)/*.8xv))
+RELOCASM  := relocation_table*.asm
+
 # Check dependecies
-all: ${OUTPUTDIR} $(OUTPUTDIR)/$(BINTARGET)
+all: $(BINDIR) $(BINDIR)/$(TARGET8XP)
+
+$(BINDIR)/$(TARGET8XP): $(BINDIR)/$(TARGETBIN)
+	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$<) && \
+	$(RM) $(RELOCASM)
 
 # Build the source
-$(OUTPUTDIR)/$(BINTARGET):$(SRC)
-	@$(ASSEMBLER) $(ASFLAGS) $< $@
-	@$(CONVHEX) $(CONVFLAGS) $(TARGET)
-	@$(RM) $(RELOCASM) $(TARGET)
-	@$(COPY) $(APPVARS) $(OUTPUTDIR)
+$(BINDIR)/$(TARGETBIN): $(SRC)
+	@$(ASSEMBLER) $(ASFLAGS) $(call NATIVEPATH,$<) $(call NATIVEPATH,$@)
 
 # ConvPNG the graphics
-convpng: ${GFXOUTDIR}
-	@cd $(GFXDIR) && $(CONVPNG)
+gfx: $(GFXDIR)/$(BINDIR)
+	@$(CD) $(GFXDIR) && $(CONVPNG) && $(CD) .. && \
+	$(COPY) $(APPVARS) $(call NATIVEPATH,$(BINDIR)/)
 
 # Create the bin/ folder
-${OUTPUTDIR}:
-	@mkdir $(OUTPUTDIR)
+$(OUTPUTDIR):
+	@$(WINNCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
 
-# Create the gfx/bin/ folder
-${GFXOUTDIR}:
-	@mkdir $(GFXOUTDIR)
+# Create the gfx/bin folder
+$(GFXDIR)/$(OUTPUTDIR):
+	@$(WINNCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
 
-.PHONY: all convpng
+clean:
+	@$(RM) $(RELOCASM) $(call NATIVEPATH,$(addprefix $(BINDIR)/,$(TARGET8XP) $(TARGETBIN) *.8xv *.lst *.lab))
+
+.PHONY: all gfx clean
