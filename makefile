@@ -35,7 +35,7 @@ MKDIR      = mkdir -p
 CD         = cd
 endif
 
-APPVARS   := $(call NATIVEPATH,$(wildcard $(GFXDIR)/$(BINDIR)/*.8xv))
+APPVARS   := $(call NATIVEPATH,$(GFXDIR)/$(BINDIR)/*.8xv)
 RELOCASM  := relocation_table*.asm
 
 # Check dependecies
