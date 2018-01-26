@@ -55,14 +55,14 @@ gfx: $(GFXDIR)/$(BINDIR)
 	$(COPY) $(APPVARS) $(call NATIVEPATH,$(BINDIR)/)
 
 # Create the bin/ folder
-$(OUTPUTDIR):
-	@$(WINNCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
+$(BINDIR):
+	@$(WINCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
 
 # Create the gfx/bin folder
-$(GFXDIR)/$(OUTPUTDIR):
-	@$(WINNCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
+$(GFXDIR)/$(BINDIR):
+	@$(WINCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
 
 clean:
-	@$(RM) $(RELOCASM) $(call NATIVEPATH,$(addprefix $(BINDIR)/,$(TARGET8XP) $(TARGETBIN) *.8xv *.lst *.lab))
+	@$(RM) $(call NATIVEPATH,$(addprefix $(BINDIR)/,$(TARGET8XP) $(TARGETBIN) *.8xv *.lst *.lab))
 
 .PHONY: all gfx clean
