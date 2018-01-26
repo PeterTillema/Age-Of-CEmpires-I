@@ -9,7 +9,7 @@ RM = rm -f
 NATIVEPATH = $(1)
 endif
 
-ASFLAGS   := -E -T -L -I $(call NATIVEPATH, gfx\bin)
+ASFLAGS   := -E -T -L -I $(call NATIVEPATH,gfx\bin)
 CONVFLAGS := -x
 ASSEMBLER := spasm
 CONVHEX   := convhex
@@ -19,17 +19,17 @@ SRC       := aoce.asm
 BINTARGET := AOCE.bin
 GFXTARGET := AGE1.inc
 PNGINI    := convpng.ini
-OUTPUTDIR := $(call NATIVEPATH, bin)
-GFXDIR    := $(call NATIVEPATH, gfx)
-GFXOUTDIR := $(call NATIVEPATH, $(GFXDIR)\bin)
-RELOCASM  := $(call NATIVEPATH, relocation_table*.asm)
+OUTPUTDIR := $(call NATIVEPATH,bin)
+GFXDIR    := $(call NATIVEPATH,gfx)
+GFXOUTDIR := $(call NATIVEPATH,$(GFXDIR)\bin)
+RELOCASM  := $(call NATIVEPATH,relocation_table*.asm)
 
 all: ${OUTPUTDIR} $(OUTPUTDIR)/$(BINTARGET)
  
 $(OUTPUTDIR)/$(BINTARGET): $(SRC)
-	@$(ASSEMBLER) $(ASFLAGS) $< $(call NATIVEPATH, $@)
-	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH, $(OUTPUTDIR)/$(BINTARGET))
-	@$(RM) $(RELOCASM) $(call NATIVEPATH, $(OUTPUTDIR)/$(BINTARGET))
+	@$(ASSEMBLER) $(ASFLAGS) $< $(call NATIVEPATH,$@)
+	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$(OUTPUTDIR)/$(BINTARGET))
+	@$(RM) $(RELOCASM) $(call NATIVEPATH,$(OUTPUTDIR)/$(BINTARGET))
 	@$(COPY) $(GFXOUTDIR)\\*.8xv $(OUTPUTDIR)
 
 convpng: ${GFXOUTDIR}
