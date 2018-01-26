@@ -565,6 +565,7 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 ;-------------------------------------------------------------------------------
 LoadAgeGraphicsAppvar:
 	push	hl
+	push	de
 	inc	c
 	ld	b, 3
 	mlt	bc
@@ -578,14 +579,10 @@ LoadAgeGraphicsAppvar:
 	call	dzx7_Turbo
 	pop	hl
 	push	hl
-	ld	bc, 0
-	ld	c, (hl)
-	inc	hl
-	ld	b, (hl)
-	inc	hl
-	add	hl, bc
-	ld	(FixedBuildingsPtr), hl
 	pop	bc
+	pop	de
+	add	hl, de
+	ld	(FixedBuildingsPtr), hl
 	pop	hl
 ModifyRelocationTable:
 	push	hl

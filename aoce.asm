@@ -1,13 +1,14 @@
 #include "includes/ti84pce.inc"
 #include "includes/defines.asm"
 #include "includes/macros.inc"
-#include "bin/AOCEGFX1.lab"
-#include "bin/AOCEGFX2.lab"
-#include "bin/AGE1.lab"
-#include "bin/AGE2.lab"
-#include "bin/AGE3.lab"
-#include "bin/AGE4.lab"
 #include "includes/relocation.inc"
+
+#include "gfx/bin/AOCEGFX1.inc"
+#include "gfx/bin/AOCEGFX2.inc"
+#include "gfx/bin/AGE1.inc"
+#include "gfx/bin/AGE2.inc"
+#include "gfx/bin/AGE3.inc"
+#include "gfx/bin/AGE4.inc"
 
 .db tExtTok, tAsm84CECmp
 .org UserMem
@@ -178,7 +179,7 @@ NewStartAddr:
 ; Setup some variables and start the game!
 	xor	a, a
 	ld	(_FillColor), a
-	ld	a, 12
+	ld	a, 11
 	ld	(_FGColor), a
 	call	_Begin
 	;call	MainMenu
@@ -187,6 +188,7 @@ NewStartAddr:
 ; Of course, we start with age 1
 	ld	c, 1
 	ld	hl, RelocationTable3
+	ld	de, barracks_1_offset
 	call	LoadAgeGraphicsAppvar
 	
 	ld	iy, _IYOffsets
