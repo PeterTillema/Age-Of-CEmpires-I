@@ -20,6 +20,7 @@ If you found a bug in the latest AoCE from the master branch, be sure to create 
 - [x] Display trees
 - [x] Display buildings
 - [ ] Display units
+- [ ] Team (colors)
 - [ ] Gameplay GUI (minimap etc.)
 - [ ] Move units
 - [ ] Create units
