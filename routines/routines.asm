@@ -712,10 +712,6 @@ _SetTextXY:
 	ret
 
 ;-------------------------------------------------------------------------------
-;_PrintUInt:
-	ld	(Offset_SMC), a
-Offset_SMC = $+1
-	jr	$
 _PrintUInt_5:
 	ld	bc, -10000
 	call	Num1
@@ -827,10 +823,10 @@ IsTransparent:
 _FillRectangle_NoClip:
 	ld	iy, 0
 	add	iy, sp
-	ld	a, (iy+12)
-	ld	bc, (iy+9)
-	ld	hl, (iy+3)
-	ld	e, (iy+6)
+	ld	a, (iy + 12)
+	ld	bc, (iy + 9)
+	ld	hl, (iy + 3)
+	ld	e, (iy + 6)
 	ld	d, lcdWidth / 2
 	mlt	de
 	add	hl, de
@@ -876,10 +872,10 @@ _Sprite_NoClip:
 	ld	iy, 0
 	add	iy, sp
 	ld	hl, (currDrawingBuffer)
-	ld	bc, (iy+6)
+	ld	bc, (iy + 6)
 	add	hl, bc
 	ld	d, lcdWidth / 2
-	ld	e, (iy+9)
+	ld	e, (iy + 9)
 	mlt	de
 	add	hl, de
 	add	hl, de
