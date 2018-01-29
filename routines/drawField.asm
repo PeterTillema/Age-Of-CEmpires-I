@@ -94,7 +94,7 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	exx
 DisplayEachRowLoopExx:
 	exx
-DisplayEachRowLoop:
+DisplayEachRowLoop:			; Display X rows
 ; Registers:
 ;   BC  = length of row tile
 ;   DE  = pointer to output
@@ -119,7 +119,7 @@ TopRowLeftOrRight = $+2
 _:	ex	af, af'
 	ld	a, AMOUNT_OF_COLUMNS
 	ld	bc, (-MAP_SIZE + 1) * 2
-DisplayTile:
+DisplayTile:				; Display X tiles in a row
 	ld	b, a
 	cp	a, AMOUNT_OF_COLUMNS - 1
 	jr	nc, TileOnlyDisplayBuilding
@@ -145,8 +145,10 @@ TilePointersSMC = $+1
 	sub	a, TILE_TREE_1
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
-	sub	a, TILE_BUILDING - TILE_TREE_1
+	sub	a, TILE_UNIT - TILE_TREE_1
 	jr	c, DisplayTileWithTree
+	sub	a, TILE_BUILDING - TILE_UNIT
+	jp	c, DisplayUnit
 	jr	DisplayBuilding
 	
 TileIsOutOfField:
@@ -297,7 +299,9 @@ _:	sub	a, 30			; Substract the width from the X coordinate
 	call	_RLETSprite		; No need to pop
 BackupIY3 = $+2
 	ld	iy, 0
-	jp	SkipDrawingOfTileExx
+	jr	SkipDrawingOfTileExx
+	
+DisplayUnit:
 
 DrawIsometricTileSecondPart:
 	lddr
@@ -563,7 +567,6 @@ StopDrawingTile:
 BackupIY = $-3
 	exx
 	jp	SkipDrawingOfTile
-	
 DrawFieldEnd:
 
 .echo "cursorImage size: ", $ - DrawField

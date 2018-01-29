@@ -220,7 +220,7 @@ NewStartAddr:
 	ld	bc, 320*240-1
 	ldir
 #endif
-    
+
 MainGameLoop:
 	call	DrawField
 	call	DrawGame
