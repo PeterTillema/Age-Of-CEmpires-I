@@ -306,6 +306,11 @@ CheckStop:
 	ld	hl, vRAM+(320*240)
 _:	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
+	ld	hl, mpLcdIcr
+	set	2, (hl)
+	ld	l, mpLcdRis & 0FFh
+_:	bit	2, (hl)
+	jr	z, -_
 	jp	MainGameLoop
 	
 ForceStopProgramFadeOut:
