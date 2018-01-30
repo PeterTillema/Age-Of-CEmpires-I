@@ -179,7 +179,7 @@ NewStartAddr:
 ; Setup some variables and start the game!
 	xor	a, a
 	ld	(_FillColor), a
-	ld	a, 11
+	inc	a
 	ld	(_FGColor), a
 	call	_Begin
 	;call	MainMenu
