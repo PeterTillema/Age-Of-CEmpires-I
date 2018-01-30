@@ -4,7 +4,8 @@
 MAP_SIZE                    .equ 128
 RESOURCE_MAX                .equ 200
 MAX_AMOUNT_PEOPLE           .equ 120
-AMOUNT_OF_BUILDINGS         .equ 18
+AMOUNT_OF_TREES             .equ 4
+AMOUNT_OF_UNITS             .equ 1
 MAX_AMOUNT_BUILDINGS        .equ 120
 
 ;;; Pointers
@@ -42,12 +43,9 @@ TILE_GOLD_1                 .equ 8
 TILE_GOLD_2                 .equ 9
 TILE_STONE_1                .equ 10
 TILE_STONE_2                .equ 11
-TILE_TREE_1                 .equ 12
-TILE_TREE_2                 .equ 13
-TILE_TREE_3                 .equ 14
-TILE_TREE_4                 .equ 15
-TILE_UNIT                   .equ 16
-TILE_BUILDING               .equ 255 - AMOUNT_OF_BUILDINGS
+TILE_TREE                   .equ 12
+TILE_UNIT                   .equ TILE_TREE + AMOUNT_OF_TREES
+TILE_BUILDING               .equ TILE_UNIT + AMOUNT_OF_UNITS
 
 ;;; Puppet struct
 puppetType                  .equ 0

@@ -28,9 +28,9 @@ PlaceTreesLoop:
 	ld	de, screenBuffer
 	add	hl, de
 	push	hl
-	randInt(4)
+	randInt(AMOUNT_OF_TREES)
 	ld	a, l
-	add	a, TILE_TREE_1
+	add	a, TILE_TREE
 	pop	hl
 	ld	(hl), a
 	dec	ixh

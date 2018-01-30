@@ -142,10 +142,10 @@ TilePointersSMC = $+1
 	ld	hl, TilePointersEnd - 3
 	add	hl, bc
 	ld	hl, (hl)		; Pointer to the tile/tree/building
-	sub	a, TILE_TREE_1
+	sub	a, TILE_TREE
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
-	sub	a, TILE_UNIT - TILE_TREE_1
+	sub	a, TILE_UNIT - TILE_TREE
 	jr	c, DisplayTileWithTree
 	sub	a, TILE_BUILDING - TILE_UNIT
 	jp	c, DisplayUnit
@@ -168,7 +168,7 @@ TileOnlyDisplayBuilding:
 	ld	a, (hl)
 	sub	a, TILE_BUILDING
 	jp	c, SkipDrawingOfTile
-	jr	DisplayBuilding
+	jr	DisplayBuildingExx
 	
 DisplayTileWithTree:
 ; Inputs:
