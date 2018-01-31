@@ -33,11 +33,15 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(DrawTile_Clipped_Stop3), hl
 
 	ld	e, (iy + OFFSET_Y)
+	ld	d, 10
 	xor	a, a
 	bit	3, e
 	jr	z, +_
+	inc	d
 	ld	a, 00Dh
 _:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
+	ld	a, d
+	ld	(TileHowManyRowsClipped), a
 	bit	2, e
 	ld	hl, DrawTile_Clipped_Stop2
 	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
@@ -53,10 +57,6 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	ld	(hl), 018h		; Write "jr"
 	inc	hl
 	ld	(hl), d
-	ld	a, 7
-	cp	a, e
-	adc	a, 3
-	ld	(TileHowManyRowsClipped), a
 	
 	set	4, e			; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2
@@ -191,35 +191,35 @@ TempSP3 = $+1
 	sub	a, c
 	ld	e, a
 	ld	d, TILE_HEIGHT / 2
-	mlt	de
+	mlt	de			; A' * 8...
 	inc	hl
 	ld	a, (hl)
 	ld	hl, 17
-	add	hl, de
+	add	hl, de			; + 17...
 	ld	e, (iy + OFFSET_Y)
 	ld	d, 0
-	add	hl, de
+	add	hl, de			; + Y_offset...
 	ld	e, a
-	sbc	hl, de
+	sbc	hl, de			; - tree_height = 
 	push	hl			; Y coordinate
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
-	sub	a, b
+	sub	a, b			; B' = column index
 	exx
 	ld	l, a
 	ld	h, TILE_WIDTH
-	mlt	hl
+	mlt	hl			; B' * 32...
 	ld	e, (iy + OFFSET_X)
 	ld	d, 0
-	add	hl, de
+	add	hl, de			; + X_offset...
 	bit	0, c
-	jr	nz, +_
+	jr	nz, +_			; + !(A' & 1) ...
 	bit	4, e
 	ld	e, TILE_WIDTH / 2
-	add	hl, de
+	add	hl, de			; + 16
 	jr	z, +_
 	sla	e
-	sbc	hl, de
+	sbc	hl, de			; - 16 = ...
 	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
 _:	push	hl			; X coordinate
 	call	_RLETSprite		; No need to pop
@@ -258,16 +258,16 @@ TempSP4 = $+1
 	sub	a, c
 	ld	e, a
 	ld	d, TILE_HEIGHT / 2
-	mlt	de
+	mlt	de			; A' * 8...
 	inc	hl
 	ld	a, (hl)
 	ld	hl, 17
-	add	hl, de
+	add	hl, de			; + 17...
 	ld	e, (iy + OFFSET_Y)
 	ld	d, 0
-	add	hl, de
+	add	hl, de			; + Y_offset
 	ld	e, a
-	sbc	hl, de
+	sbc	hl, de			; - building_height = 
 	push	hl			; Y coordinate
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
@@ -279,22 +279,22 @@ TempSP4 = $+1
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	add	hl, hl
+	add	hl, hl			; B' * 32...
 	ld	e, (iy + OFFSET_X)
-	add	hl, de
+	add	hl, de			; + X_offset...
 	ld	a, b
 	bit	0, c
-	jr	nz, +_
+	jr	nz, +_			; + !(A' & 1)
 	bit	4, e
 	ld	e, TILE_WIDTH / 2
-	add	hl, de
+	add	hl, de			; + 16...
 	jr	z, +_
 	sla	e
-	sbc	hl, de
-_:	sub	a, 30			; Substract the width from the X coordinate
+	sbc	hl, de			; - 16...
+_:	sub	a, 30
 	srl	a
 	ld	e, a
-	sbc	hl, de
+	sbc	hl, de			; - (building_width - 30) / 2 = 
 	push	hl			; X coordinate
 	call	_RLETSprite		; No need to pop
 BackupIY3 = $+2
@@ -370,7 +370,7 @@ SkipDrawingOfTile:
 	inc	de
 	dec	ix
 	ld	a, b
-	ld	b, 255			; BC still holds (-MAP_SIZE + 1) * 2)
+	ld	b, 255			; BCU and C still holds (-MAP_SIZE + 1) * 2)
 	add	hl, bc
 	dec	a
 	jp	nz, DisplayTile
@@ -434,20 +434,21 @@ StopDisplayTiles:
 	ldir
 	ld	de, (currDrawingBuffer)
 	ld	hl, resources_offset \ .r2
-	ld	bc, lcdWidth * 15
+	ld	bc, resources_width * resources_height
 	ldir
 	ld	hl, blackBuffer
-	ld	b, lcdWidth * 13 + TILE_WIDTH >> 8
+	ld	b, (lcdWidth * 13 + TILE_WIDTH) >> 8
 	jp	mpShaData
 	
 DrawScreenBorderStart:
-	ld	c, lcdWidth * 13 + TILE_WIDTH & 255
+	ld	c, (lcdWidth * 13 + TILE_WIDTH) & 255
 	ldir
 	ex	de, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ld	a, lcdHeight - 15 - 13 - 1
 	ld	de, lcdWidth
 	dec	hl
-_:	add	hl, de
+FillBorderLoop:
+	add	hl, de
 	ld	(hl), c
 	ld	sp, hl
 	push	bc
@@ -472,7 +473,7 @@ _:	add	hl, de
 	push	bc
 	push	bc
 	dec	a
-	jr	nz, -_
+	jr	nz, FillBorderLoop
 	ld	de, lcdWidth - TILE_WIDTH + 2
 	add	hl, de			; Clear the last row of the right edge
 	ld	sp, hl

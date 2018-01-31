@@ -5,7 +5,7 @@ CONVPNG   ?= convpng
 
 # Flags
 ASFLAGS   ?= -E -T -L -I gfx/bin
-CONVFLAGS ?= -x
+CONVFLAGS ?= -x -a
 
 # Sources
 SRC       ?= aoce.asm
