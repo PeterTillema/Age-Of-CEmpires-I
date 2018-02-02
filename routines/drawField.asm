@@ -189,18 +189,19 @@ TempSP3 = $+1
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c
+	inc	hl
 	ld	e, a
-	ld	d, TILE_HEIGHT / 2
-	mlt	de			; A' * 8...
+	ld	d, TILE_HEIGHT / 2 / 2
+	mlt	de
 	inc	hl
 	ld	a, (hl)
 	ld	hl, 17
-	add	hl, de			; + 17...
+	add	hl, de
+	add	hl, de
 	ld	e, (iy + OFFSET_Y)
-	ld	d, 0
-	add	hl, de			; + Y_offset...
+	add	hl, de
 	ld	e, a
-	sbc	hl, de			; - tree_height = 
+	sbc	hl, de
 	push	hl			; Y coordinate
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
@@ -208,18 +209,17 @@ TempSP3 = $+1
 	exx
 	ld	l, a
 	ld	h, TILE_WIDTH
-	mlt	hl			; B' * 32...
+	mlt	hl
 	ld	e, (iy + OFFSET_X)
-	ld	d, 0
-	add	hl, de			; + X_offset...
+	add	hl, de
 	bit	0, c
-	jr	nz, +_			; + !(A' & 1) ...
+	jr	nz, +_
 	bit	4, e
 	ld	e, TILE_WIDTH / 2
-	add	hl, de			; + 16
+	add	hl, de
 	jr	z, +_
 	sla	e
-	sbc	hl, de			; - 16 = ...
+	sbc	hl, de
 	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
 _:	push	hl			; X coordinate
 	call	_RLETSprite		; No need to pop
@@ -257,17 +257,17 @@ TempSP4 = $+1
 	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c
 	ld	e, a
-	ld	d, TILE_HEIGHT / 2
-	mlt	de			; A' * 8...
+	ld	d, TILE_HEIGHT / 2 / 2
+	mlt	de
 	inc	hl
 	ld	a, (hl)
 	ld	hl, 17
-	add	hl, de			; + 17...
+	add	hl, de
+	add	hl, de
 	ld	e, (iy + OFFSET_Y)
-	ld	d, 0
-	add	hl, de			; + Y_offset
+	add	hl, de
 	ld	e, a
-	sbc	hl, de			; - building_height = 
+	sbc	hl, de
 	push	hl			; Y coordinate
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
@@ -279,22 +279,22 @@ TempSP4 = $+1
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	add	hl, hl			; B' * 32...
+	add	hl, hl
 	ld	e, (iy + OFFSET_X)
-	add	hl, de			; + X_offset...
+	add	hl, de
 	ld	a, b
 	bit	0, c
-	jr	nz, +_			; + !(A' & 1)
+	jr	nz, +_
 	bit	4, e
 	ld	e, TILE_WIDTH / 2
-	add	hl, de			; + 16...
+	add	hl, de
 	jr	z, +_
 	sla	e
-	sbc	hl, de			; - 16...
+	sbc	hl, de
 _:	sub	a, 30
 	srl	a
 	ld	e, a
-	sbc	hl, de			; - (building_width - 30) / 2 = 
+	sbc	hl, de
 	push	hl			; X coordinate
 	call	_RLETSprite		; No need to pop
 BackupIY3 = $+2
