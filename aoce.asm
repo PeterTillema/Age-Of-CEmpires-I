@@ -224,6 +224,18 @@ NewStartAddr:
 MainGameLoop:
 	call	DrawField
 	call	DrawGame
+; Swap buffers
+	ld	hl, vRAM
+	ld	de, (mpLcdBase)
+	or	a, a
+	sbc	hl, de
+	add	hl, de
+	jr	nz, +_
+	ld	hl, vRAM+(320*240)
+_:	ld	(currDrawingBuffer), de
+	ld	(mpLcdBase), hl
+	ld	hl, mpLcdIcr
+	set	2, (hl)
 	ld	hl, (AmountOfWood)
 	inc	hl
 	ld	(AmountOfWood), hl
@@ -296,19 +308,7 @@ CheckReleaseEnterKey:
 ParseSelectedArea:
 ; Yay #not :P
 CheckStop:
-; Swap buffers
-	ld	hl, vRAM
-	ld	de, (mpLcdBase)
-	or	a, a
-	sbc	hl, de
-	add	hl, de
-	jr	nz, +_
-	ld	hl, vRAM+(320*240)
-_:	ld	(currDrawingBuffer), de
-	ld	(mpLcdBase), hl
-	ld	hl, mpLcdIcr
-	set	2, (hl)
-	ld	l, mpLcdRis & 0FFh
+	ld	hl, mpLcdRis
 _:	bit	2, (hl)
 	jr	z, -_
 	jp	MainGameLoop
