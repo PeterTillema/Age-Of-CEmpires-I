@@ -189,7 +189,6 @@ TempSP3 = $+1
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c
-	inc	hl
 	ld	e, a
 	ld	d, TILE_HEIGHT / 2 / 2
 	mlt	de
