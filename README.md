@@ -8,7 +8,7 @@ This is a TI-84 Plus CE clone of the popular game Age of Empires 2, written in A
 To build AoCE, be sure to download and install the [C toolchain](https://github.com/ce-programming/toolchain/releases/latest) and [MinGW](http://www.mingw.org/). The last step is to download [spasm](https://github.com/alberthdev/spasm-ng/releases) and put it in the main folder. After that, run `make gfx` from the command line to build the graphics, and then `make` to build AoCE.
 
 ## Run
-To run AoCE, copy `AGE1.8xv`, `AGE2.8xv`, `AGE3.8xv`, `AGE4.8xv`, `AOCE.8xp`, `AOCEGFX1.8xv` and `AOCEGFX2.8xv` to either CEmu or drag them into TI-Connect CE. In both cases, be sure to put them all in archive! The appvars are quite large, so they don't fix all in RAM. From the homescreen, run `Asm(prgmAOCE)` to run AoCE.
+To run AoCE, copy `AGE1.8xv`, `AGE2.8xv`, `AGE3.8xv`, `AGE4.8xv`, `AOCE.8xp`, `AOCEGFX1.8xv` and `AOCEGFX2.8xv` to either CEmu or drag them into TI-Connect CE. In both cases, be sure to put them all in archive! The appvars are quite large, so they don't all fit in RAM. From the homescreen, run `Asm(prgmAOCE)` to run AoCE.
 
 ## Bugs
 If you found a bug in the latest AoCE from the master branch, be sure to create an issue [here](https://github.com/PeterTillema/Age-Of-CEmpires-I/issues). Note that other branches might not be stable!
