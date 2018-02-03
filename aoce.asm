@@ -5,10 +5,12 @@
 
 #include "gfx/bin/AOCEGFX1.inc"
 #include "gfx/bin/AOCEGFX2.inc"
-#include "gfx/bin/AGE1.inc"
-#include "gfx/bin/AGE2.inc"
-#include "gfx/bin/AGE3.inc"
-#include "gfx/bin/AGE4.inc"
+#include "gfx/bin/AOCEAGE1.inc"
+#include "gfx/bin/AOCEAGE2.inc"
+#include "gfx/bin/AOCEAGE3.inc"
+#include "gfx/bin/AOCEAGE4.inc"
+#include "gfx/bin/AOCEUNI1.inc"
+#include "gfx/bin/AOCEUNI2.inc"
 
 .db tExtTok, tAsm84CECmp
 .org UserMem
@@ -101,10 +103,12 @@ _:	call	_GetCSC
 GraphicsAppvar1_:
 	.db	AppVarObj, "AOCEGFX1", 0
 	.db	AppVarObj, "AOCEGFX2", 0
-	.db	AppVarObj, "AGE1", 0,0,0,0,0
-	.db	AppVarObj, "AGE2", 0,0,0,0,0
-	.db	AppVarObj, "AGE3", 0,0,0,0,0
-	.db	AppVarObj, "AGE4", 0
+	.db	AppVarObj, "AOCEAGE1", 0
+	.db	AppVarObj, "AOCEAGE2", 0
+	.db	AppVarObj, "AOCEAGE3", 0
+	.db	AppVarObj, "AOCEAGE4", 0
+	.db	AppVarObj, "AOCEUNI1", 0
+	.db	AppVarObj, "AOCEUNI2", 0
 GraphicsAppvarNotFound_:
 	.db	"Can't find appvar:", 0
 MissingAppVar:
