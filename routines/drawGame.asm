@@ -8,7 +8,7 @@ DrawGame:
 	ld	(TextXPos_SMC), hl
 	ld	hl, (AmountOfFood)
 	call	_PrintUInt_5
-	ld	hl, 144
+	ld	hl, 142
 	ld	(TextXPos_SMC), hl
 	ld	hl, (AmountOfGold)
 	call	_PrintUInt_5
