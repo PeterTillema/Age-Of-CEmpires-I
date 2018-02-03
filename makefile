@@ -1,10 +1,9 @@
 # Commands and tools
-ASSEMBLER ?= spasm
+ASSEMBLER ?= fasmg
 CONVHEX   ?= convhex
 CONVPNG   ?= convpng
 
 # Flags
-ASFLAGS   ?= -E -T -L -I gfx/bin
 CONVFLAGS ?= -x -a
 
 # Sources
@@ -53,7 +52,7 @@ $(BINDIR)/$(TARGET8XP): $(BINDIR)/$(TARGETBIN)
 
 # Build the source
 $(BINDIR)/$(TARGETBIN): $(SRC) $(ROTSRCS) $(DATSRCS) $(INCSRCS)
-	@$(ASSEMBLER) $(ASFLAGS) $(call NATIVEPATH,$<) $(call NATIVEPATH,$@)
+	@$(ASSEMBLER) $(call NATIVEPATH,$<) $(call NATIVEPATH,$@)
 
 # ConvPNG the graphics
 gfx: $(GFXDIR)/$(BINDIR)
