@@ -67,57 +67,19 @@ _:	call	_Mov9ToOP1
 	ld	c, a
 	ld	b, 3
 	mlt	bc
-	ld	hl, AppvarsPointersTable
+	ld	hl, cursorImage		; aka AppvarsPointersTable
 	add	hl, bc
 	ld	(hl), de
 	pop	hl
 	dec	iyh
 	jr	nz, -_
 	
-; Backup RAM
-	di
-	ld.sis	sp, stackBot & 0FFFFh
-	ld	a, FlashMbaseStart
-	ld	mb, a
-	call.lis fUnlockFlash & 0FFFFh
-	call	BackupRAM
-	
-; Backup stack
-	ld	hl, heapBot
-	ld	de, vRAM - (stackTop - heapBot)
-	ld	bc, stackTop - heapBot
+; Remove AoCE from UserMem to prevent memory leak, even when crashing
+	ld	hl, NewStartAddr1
+	ld	de, NewStartAddr2
+	ld	bc, AoCEEnd - NewStartAddr4 + NewStartAddr3 - NewStartAddr2
 	ldir
-	
-; Copy AoCE to $D80002 (mirror of $D00002)
-	ld	hl, (asm_prgm_size)
-	ld	de, AppvarsPointersTable - start
-	or	a, a
-	sbc	hl, de
-	push	hl
-	pop	bc
-	ld	de, 0D80002h
-	ld	hl, AppvarsPointersTable
-	ldir
-	
-; Set some pointers
-	ld	(MapDataPtr), de
-	ld	hl, MAP_SIZE * MAP_SIZE * 2
-	add	hl, de
-	push	hl
-	ex	de, hl
-	ld	hl, (0D00005h)
-	ld	bc, 0
-	ld	c, (hl)
-	inc	hl
-	ld	b, (hl)
-	inc	hl
-	ldir
-	ld	(FixedBuildingsPtr), de
-	pop	bc
-	ld	hl, RelocationTable2
-	call	ModifyRelocationTable
-	
-	jp	0D00002h + 18
+	jp	NewStartAddr2
 	
 AppvarNotFound:
 	call	_HomeUp
@@ -136,8 +98,6 @@ _:	call	_GetCSC
 	ld	iy, flags
 	ret
 	
-#include "routines/flash.asm"
-	
 GraphicsAppvar1_:
 	.db	AppVarObj, "AOCEGFX1", 0
 	.db	AppVarObj, "AOCEGFX2", 0
@@ -153,13 +113,46 @@ LibLoadAppVar:
 	.db	" LibLoad", 0
 	.db	"tiny.cc/clibs", 0
 LoadingMessage:
-	.db	"Loading..."
+	.db	"Loading...", 0
 	
-AppvarsPointersTable:
-	.block	18
+NewStartAddr1:
+.org plotSScreen
+NewStartAddr2:
+; Backup RAM
+	ld	de, (asm_prgm_size)
+	ld	hl, UserMem
+	call	_DelMem
+	or	a, a
+	sbc	hl, hl
+	ld	(asm_prgm_size), hl
+	di
+	ld.sis	sp, stackBot & 0FFFFh
+	call.lis fUnlockFlash & 0FFFFh
+	call	BackupRAM
+	ld	hl, NewStartAddr3
+	ld	de, NewStartAddr4 + 080000h	; Mirror of RAM
+	ld	bc, AoCEEnd - NewStartAddr4
+	ldir
+	ld	(MapDataPtr), de
+	jp	NewStartAddr4
 	
-NewStartAddr:
+#include "routines/flash.asm"
+	
+NewStartAddr3:
 .org $D00002 + 18
+NewStartAddr4:
+; Copy AppvarsPointersTable to $D00002
+	ld	de, 0D00002h
+	ld	hl, cursorImage
+	ld	bc, 18
+	ldir
+	
+; Backup stack
+	ld	hl, heapBot
+	ld	de, vRAM - (stackTop - heapBot)
+	ld	bc, stackTop - heapBot
+	ldir
+	
 ; Use the moved stack
 	or	a, a
 	sbc	hl, hl
@@ -168,6 +161,24 @@ NewStartAddr:
 	ld	de, vRAM - stackTop
 	add	hl, de
 	ld	sp, hl
+	
+; Set some pointers
+	ld	hl, (MapDataPtr)
+	ld	de, MAP_SIZE * MAP_SIZE * 2
+	add	hl, de
+	push	hl
+	ex	de, hl
+	ld	hl, (0D00005h)
+	ld	bc, 0
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	inc	hl
+	ldir
+	ld	(FixedBuildingsPtr), de
+	pop	bc
+	ld	hl, RelocationTable2
+	call	ModifyRelocationTable
 	
 ; Get the sprites of the homescreen
 	ld	hl, RelocationTable1
@@ -337,8 +348,6 @@ CleanupCode:
 backupSP = $+1
 	ld	sp, 0
 	pop	ix
-	ld	a, 0D0h
-	ld	mb, a
 	ld	hl, 03C0000h + (vRAM - ramStart) - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
 	ldir
@@ -355,6 +364,7 @@ CleanupCodeEnd:
 #include "routines/drawField.asm"
 #include "data/tables.asm"
 #include "data/data.asm"
+
 #include "relocation_table1.asm"
 	.dw	0FFFFh
 #include "relocation_table2.asm"
@@ -370,4 +380,4 @@ CleanupCodeEnd:
 	
 AoCEEnd:
 	
-.echo "Total size: ", AoCEEnd - 0D00002h + NewStartAddr - start, " bytes"
+.echo "Total size: ", AoCEEnd - NewStartAddr4 + NewStartAddr3 - NewStartAddr2 + NewStartAddr1 - start, " bytes"
