@@ -1,4 +1,4 @@
-include 'includes/ti84pce.inc'
+include 'includes/ti84pceg.inc'
 include 'includes/defines.asm'
 include 'includes/macros.inc'
 include 'includes/relocation.inc'
