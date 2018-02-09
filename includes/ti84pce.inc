@@ -8,6 +8,10 @@
 ;- tr1p1ea
 ;- Kerm Martian
 ;- Texas Instruments (ti83plus.inc)
+.nolist
+
+#ifndef TI84PCE
+#define TI84PCE
 
 ; Included for Assembler Compatibility
 ;------------------------------------
@@ -2505,16 +2509,6 @@ _usb_ClrEndpointConfig     equ 0000634h
 _usb_SetFifoConfig         equ 0000638h
 ;                          equ 000063Ch
 
-__swapClipBoards	   equ 008A90Eh
-__MaybePushMul             equ 00888DFh
-__FetchFP                  equ 008768Eh
-__HLMinus6                 equ 006EA2Ch
-__PutColon                 equ 0092481h
-__FetchLastOP              equ 0089425h
-__ChkValidLetter           equ 008982Eh
-__ChkValidLetterNumber     equ 00878DFh
-__FetchLblGotoName         equ 0034CD5h
-
 ;RAM Equates
 ;--------------------------------
 ramStart		equ 0D00000h
@@ -2677,9 +2671,6 @@ errOffset		equ 0D008E3h
 
 entryString		equ 0D008E6h
 entryResult		equ 0D008EAh
-
-clipBoard1		equ 0D00BE6h
-clipBoard2		equ 0D00C7Eh
 
 statVarsOffset		equ 0D0117Fh
 asm_prgm_size		equ 0D0118Ch
@@ -6488,3 +6479,5 @@ putMapUseColor		equ 4		;1 = use custom color
 graphDispFlags		equ 4Bh
 backgroundValid		equ 4		;1 = items in graph background are still valid
 ;----------------------------------------------------------------------
+#endif
+.list

@@ -21,7 +21,7 @@ macro private
 		else match =~ right, expr
 			assign name, not right
 		else
-			name? := expr
+			name? = expr
 		end match
 	end macro
 	struc (name) equ? expr&
@@ -54,4 +54,9 @@ include 'ti84pce.inc'
 
 restruc equ?
 purge Ld
+purge .list?
+purge .nolist?
 purge #define?
+purge #ifdef?
+purge #ifndef?
+purge #endif?
