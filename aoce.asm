@@ -2,7 +2,7 @@ include 'includes/ti84pce.inc'
 include 'includes/defines.asm'
 include 'includes/macros.inc'
 include 'includes/relocation.inc'
-
+include 'includes/app.inc'
 include 'gfx/bin/AOCEGFX1.inc'
 include 'gfx/bin/AOCEGFX2.inc'
 include 'gfx/bin/AOCEAGE1.inc'
@@ -11,6 +11,7 @@ include 'gfx/bin/AOCEAGE3.inc'
 include 'gfx/bin/AOCEAGE4.inc'
 include 'gfx/bin/AOCEUNI1.inc'
 include 'gfx/bin/AOCEUNI2.inc'
+format ti executable 'EXECLIB'
 
 .db tExtTok, tAsm84CECmp
 .org UserMem
@@ -37,6 +38,14 @@ start:
 	.db	081h,081h,040h,040h,000h,000h,000h,000h,021h,029h,04Ah,04Ah,04Ah,06Bh,029h,000h
 	.db	"Age of CEmpires I - By Peter \"PT_\" Tillema", 0
 AoCEStart:
+	app_create
+	
+	ret	nz
+	call	_ChkFindSym
+	jp	_DelVarArc		; delete installer code
+	
+	app_start 'AoCE', '(C) 2017 Peter Tillema', '0.0.0.1', 1
+	
 	call	_HomeUp
 	call	_ClrLCDFull
 	call	_RunIndicOff
