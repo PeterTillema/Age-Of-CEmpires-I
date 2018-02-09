@@ -227,7 +227,7 @@ DontDisplayTree:
 BackupIY2 = $-3
 	jp	SkipDrawingOfTileExx
 	
-DisplayBuildingExx
+DisplayBuildingExx:
 	exx
 DisplayBuilding:
 ; Inputs:
