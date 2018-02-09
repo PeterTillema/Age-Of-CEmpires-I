@@ -54,9 +54,4 @@ include 'ti84pce.inc'
 
 restruc equ?
 purge Ld
-purge .list?
-purge .nolist?
 purge #define?
-purge #ifdef?
-purge #ifndef?
-purge #endif?

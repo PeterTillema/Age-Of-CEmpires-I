@@ -11,7 +11,7 @@ include 'gfx/bin/AOCEAGE3.inc'
 include 'gfx/bin/AOCEAGE4.inc'
 include 'gfx/bin/AOCEUNI1.inc'
 include 'gfx/bin/AOCEUNI2.inc'
-format ti executable 'EXECLIB'
+format ti executable 'AoCE'
 
 db tExtTok, tAsm84CECmp
 .org UserMem
