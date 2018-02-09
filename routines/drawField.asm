@@ -3,14 +3,10 @@
 #define TILE_WIDTH 32
 #define TILE_HEIGHT 16
 
-drawfield_loc = $
-relocate(cursorImage)
+relocate DrawField, cursorImage
 
 DrawField:
-	ld	de, DrawIsometricTile
-	ld	hl, drawisometrictile_loc
-	ld	bc, DrawIsometricTileEnd - DrawIsometricTile
-	ldir
+	DrawIsometricTile.copy
 	ld	b, (iy + OFFSET_X)	; We start with the shadow registers active
 	bit	4, b
 	ld	a, TILE_WIDTH / 2
@@ -567,19 +563,10 @@ StopDrawingTile:
 BackupIY = $-3
 	exx
 	jp	SkipDrawingOfTile
-DrawFieldEnd:
 
-.echo "cursorImage size: ", $ - DrawField
+end relocate
 
-#if $ - DrawField > 1024
-.error "cursorImage data too large: ", $ - DrawField, " bytes!"
-#endif
-    
-endrelocate()
-
-drawisometrictile_loc = $
-
-relocate(mpShaData)
+reloate DrawIsometricTile, mpShaData
 
 DrawIsometricTile:
 	ld	sp, -lcdWidth - 2
@@ -624,9 +611,4 @@ DrawIsometricTile:
 	jp	DrawIsometricTileSecondPart
 DrawIsometricTileEnd:
 
-.echo "mpShaData size (1): ", $ - DrawIsometricTile
-#if $ - DrawIsometricTile > 64
-.error "mpShaData too large!"
-#endif
-
-endrelocate()
+end relocate

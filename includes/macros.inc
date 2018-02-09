@@ -1,72 +1,72 @@
-#macro ScrollLeft()
+macro ScrollLeft
 	ld	de, (iy+TopLeftXTile)
 	dec	de
 	ld	(iy+TopLeftXTile), de
-#endmacro
+end macro
 
-#macro ScrollRight()
+macro ScrollRight
 	ld	de, (iy+TopLeftXTile)
 	inc	de
 	ld	(iy+TopLeftXTile), de
-#endmacro
+end macro
 
-#macro ScrollUp()
+macro ScrollUp
 	ld	de, (iy+TopLeftYTile)
 	dec	de
 	ld	(iy+TopLeftYTile), de
-#endmacro
+end macro
 
-#macro ScrollDown()
+macro ScrollDown
 	ld	de, (iy+TopLeftYTile)
 	inc	de
 	ld	(iy+TopLeftYTile), de
-#endmacro
+end macro
 
-#macro ScrollFieldRight()
+macro ScrollFieldRight
 	ld	a, (iy+OFFSET_X)
 	or	a, a
 	jr	nz, +_
-	ScrollRight()
-	ScrollUp()
+	ScrollRight
+	ScrollUp
 _:	sub	a, 4
 	and	a, %00011111
 	ld	(iy+OFFSET_X), a
-#endmacro
+end macro
 
-#macro ScrollFieldLeft()
+macro ScrollFieldLeft
 	ld	a, (iy+OFFSET_X)
 	add	a, 4
 	and	a, %00011111
 	ld	(iy+OFFSET_X), a
 	jr	nz, +_
-	ScrollLeft()
-	ScrollDown()
+	ScrollLeft
+	ScrollDown
 _:
-#endmacro
+end macro
 
-#macro ScrollFieldUp()
+macro ScrollFieldUp
 	ld	a, (iy+OFFSET_Y)
 	add	a, 4
 	and	a, %00001111
 	ld	(iy+OFFSET_Y), a
 	jr	nz, +_
-	ScrollLeft()
-	ScrollUp()
+	ScrollLeft
+	ScrollUp
 _:
-#endmacro
+end macro
 
-#macro ScrollFieldDown()
+macro ScrollFieldDown
 	ld	a, (iy+OFFSET_Y)
 	or	a, a
 	jr	nz, +_
-	ScrollRight()
-	ScrollDown()
+	ScrollRight
+	ScrollDown
 _:	sub	a, 4
 	and	a, %00001111
 	ld	(iy+OFFSET_Y), a
-#endmacro
+end macro
 
-#macro printString(message, x, y)
+macro printString message, x, y
 	ld	l, y
 	push	hl
 	ld	hl, x
@@ -77,19 +77,19 @@ _:	sub	a, 4
 	pop	hl
 	pop	hl
 	pop	hl
-#endmacro
+end macro
 
-#macro dispCompressedImage(sprite, x, y)
-#IF x==y
+macro dispCompressedImage sprite, x, y
+if x==y
 	ld	hl, x
 	push	hl
 	push	hl
-#ELSE
+else
 	ld	l, y
 	push	hl
 	ld	hl, x
 	push	hl
-#ENDIF
+end if
 	ld	de, 0D20000h
 	push	de
 	ld	hl, sprite \.r1
@@ -98,10 +98,10 @@ _:	sub	a, 4
 	pop	de
 	pop	hl
 	pop	hl
-#endmacro
+end macro
 
-#macro randInt(x)
+macro randInt x
 	call	_rand
 	ld	bc, x			; 7 types of resources group
 	call	__idvrmu
-#endmacro
+end macro

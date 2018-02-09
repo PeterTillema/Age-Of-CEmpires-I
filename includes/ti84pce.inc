@@ -8,10 +8,6 @@
 ;- tr1p1ea
 ;- Kerm Martian
 ;- Texas Instruments (ti83plus.inc)
-.nolist
-
-#ifndef TI84PCE
-#define TI84PCE
 
 ; Included for Assembler Compatibility
 ;------------------------------------
@@ -6492,5 +6488,3 @@ putMapUseColor		equ 4		;1 = use custom color
 graphDispFlags		equ 4Bh
 backgroundValid		equ 4		;1 = items in graph background are still valid
 ;----------------------------------------------------------------------
-#endif
-.list

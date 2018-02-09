@@ -1,16 +1,16 @@
-#include "includes/ti84pce.inc"
-#include "includes/defines.asm"
-#include "includes/macros.inc"
-#include "includes/relocation.inc"
+include 'includes/ti84pce.inc'
+include 'includes/defines.asm'
+include 'includes/macros.inc'
+include 'includes/relocation.inc'
 
-#include "gfx/bin/AOCEGFX1.inc"
-#include "gfx/bin/AOCEGFX2.inc"
-#include "gfx/bin/AOCEAGE1.inc"
-#include "gfx/bin/AOCEAGE2.inc"
-#include "gfx/bin/AOCEAGE3.inc"
-#include "gfx/bin/AOCEAGE4.inc"
-#include "gfx/bin/AOCEUNI1.inc"
-#include "gfx/bin/AOCEUNI2.inc"
+include 'gfx/bin/AOCEGFX1.inc'
+include 'gfx/bin/AOCEGFX2.inc'
+include 'gfx/bin/AOCEAGE1.inc'
+include 'gfx/bin/AOCEAGE2.inc'
+include 'gfx/bin/AOCEAGE3.inc'
+include 'gfx/bin/AOCEAGE4.inc'
+include 'gfx/bin/AOCEUNI1.inc'
+include 'gfx/bin/AOCEUNI2.inc'
 
 .db tExtTok, tAsm84CECmp
 .org UserMem
@@ -212,10 +212,7 @@ NewStartAddr4:
 	ld	(iy + OFFSET_Y), a
 	
 ; Copy to cursorImage
-	ld	hl, drawfield_loc
-	ld	de, DrawField
-	ld	bc, DrawFieldEnd - DrawField
-	ldir
+	DrawField.copy
 	
 ; Set some variables and palette
 	ld	hl, vRAM+(320*240)
@@ -361,7 +358,7 @@ CleanupCodeEnd:
     
 #include "gfx/bin/pal_gfx.asm"
 #include "routines/map.asm"
-#include "routines/mainmenu.asm"
+;#include "routines/mainmenu.asm"
 #include "routines/drawGame.asm"
 ;#include "routines/pathfinding.asm"
 #include "routines/routines.asm"
@@ -369,18 +366,13 @@ CleanupCodeEnd:
 #include "data/tables.asm"
 #include "data/data.asm"
 
-#include "relocation_table1.asm"
-	.dw	0FFFFh
-#include "relocation_table2.asm"
-	.dw	0FFFFh
-#include "relocation_table3.asm"
-	.dw	0FFFFh
-#include "relocation_table4.asm"
-	.dw	0FFFFh
-#include "relocation_table5.asm"
-	.dw	0FFFFh
-#include "relocation_table6.asm"
-	.dw	0FFFFh
+repeat 6
+RelocationTable#%:
+	irpv relocation, relocation_table#%
+		dl relocation
+	end irpv
+	dw $FFFF
+end repeat
 	
 AoCEEnd:
 	
