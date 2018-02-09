@@ -3,6 +3,8 @@ include 'includes/defines.asm'
 include 'includes/macros.inc'
 include 'includes/relocation.inc'
 include 'includes/app.inc'
+include 'includes/tiformat.inc'
+include 'includes/ez80.inc'
 include 'gfx/bin/AOCEGFX1.inc'
 include 'gfx/bin/AOCEGFX2.inc'
 include 'gfx/bin/AOCEAGE1.inc'
@@ -12,9 +14,6 @@ include 'gfx/bin/AOCEAGE4.inc'
 include 'gfx/bin/AOCEUNI1.inc'
 include 'gfx/bin/AOCEUNI2.inc'
 format ti executable 'AoCE'
-
-db tExtTok, tAsm84CECmp
-.org UserMem
 
 start:
 	jp	AoCEStart
