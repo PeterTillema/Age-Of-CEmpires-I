@@ -52,17 +52,22 @@
 #endmacro
 #define .r6 relocate6()
 
-#macro relocate(addr)
-	#define old_addr eval($)
-	.org addr
-	#define new_addr eval($)
-#endmacro
-
-#macro endrelocate()
-	.org $-new_addr+old_addr
-	#undefine old_addr
-	#undefine new_addr
-#endmacro
+macro relocate? name, address*
+	name.source? := $
+	name.destination? := address
+	org name.destination?
+	macro name.copy?
+		ld	hl, name.source?
+		ld	de, name.destination?
+		ld	bc, name.length?
+		ldir
+	end macro
+	macro end?.relocate?
+		name.length? := $ - name.destination?
+		org name.source? + name.length?
+		purge end?.relocate?
+	end macro
+end macro
 
 .echo >> relocation_table1.asm "RelocationTable1:\n"
 .echo >> relocation_table2.asm "RelocationTable2:\n"
