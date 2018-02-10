@@ -68,7 +68,7 @@ CheckGraphicsAppvarsLoop:
 ; Remove AoCE from UserMem to prevent memory leak, even when crashing
 	ld	hl, NewStartAddr1
 	ld	de, NewStartAddr2
-	;ld	bc, AoCEEnd - NewStartAddr4 + NewStartAddr3 - NewStartAddr2
+	ld	bc, AoCEEnd - NewStartAddr4 + NewStartAddr3 - NewStartAddr2
 	ldir
 	jp	NewStartAddr2
 	
@@ -88,7 +88,7 @@ WaitKeyLoop:
 	jr	z, WaitKeyLoop
 	pop	ix
 	ld	iy, flags
-	ret
+	jp	_JForceCmdNoChar
 	
 GraphicsAppvar1_:
 	db	AppVarObj, "AOCEGFX1", 0
@@ -125,9 +125,9 @@ NewStartAddr2:
 	call	BackupRAM
 	ld	hl, NewStartAddr3
 	ld	de, NewStartAddr4 + 080000h	; Mirror of RAM
-	;ld	bc, AoCEEnd - NewStartAddr4
+	ld	bc, AoCEEnd - NewStartAddr4
 	ldir
-	;ld	(MapDataPtr), de
+	ld	(MapDataPtr), de
 	jp	NewStartAddr4
 	
 #include "routines/flash.asm"
@@ -343,7 +343,8 @@ backupSP = $+1
 	ld	bc, stackTop - heapBot
 	ldir
 	ld	iy, flags
-	jp	_DrawStatusBar
+	call	_DrawStatusBar
+	jp	_JForceCmdNoChar
 CleanupCodeEnd:
     
 include "gfx/bin/pal_gfx.asm"
@@ -365,5 +366,4 @@ RelocationTable#%:
 end repeat
 
 	app_data
-	
 AoCEEnd:
