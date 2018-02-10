@@ -44,11 +44,9 @@ INCSRCS   := $(call NATIVEPATH,$(wildcard $(INCDIR)/*.asm))
 
 # Check dependecies
 all: $(BINDIR) $(BINDIR)/$(TARGET8XP)
- 
-$(BINDIR)/$(TARGET8XP): $(BINDIR)/$(TARGETBIN)
-	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$<)
+
 # Build the source
-$(BINDIR)/$(TARGETBIN): $(SRC) $(ROTSRCS) $(DATSRCS) $(INCSRCS)
+$(BINDIR)/$(TARGET8XP): $(SRC) $(ROTSRCS) $(DATSRCS) $(INCSRCS)
 	@$(ASSEMBLER) $(call NATIVEPATH,$<) $(call NATIVEPATH,$@)
 
 # ConvPNG the graphics
@@ -65,6 +63,6 @@ $(GFXDIR)/$(BINDIR):
 	@$(WINCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
 
 clean:
-	@$(RM) $(call NATIVEPATH,$(addprefix $(BINDIR)/,$(TARGET8XP) $(TARGETBIN) *.8xv *.lst *.lab))
+	@$(RM) $(call NATIVEPATH,$(addprefix $(BINDIR)/,$(TARGET8XP) *.8xv *.lst *.lab))
 
 .PHONY: all gfx clean

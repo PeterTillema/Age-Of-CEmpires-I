@@ -1,11 +1,10 @@
-include 'includes/app.inc'
-include 'includes/defines.asm'
 include 'includes/ez80.inc'
+include 'includes/ti84pceg.inc'
+include 'includes/tiformat.inc'
+include 'includes/defines.asm'
 include 'includes/macros.inc'
 include 'includes/relocation.inc'
 include 'includes/symbol_table.inc'
-include 'includes/ti84pceg.inc'
-include 'includes/tiformat.inc'
 include 'gfx/bin/AOCEGFX1.inc'
 include 'gfx/bin/AOCEGFX2.inc'
 include 'gfx/bin/AOCEAGE1.inc'
@@ -16,30 +15,9 @@ include 'gfx/bin/AOCEUNI1.inc'
 include 'gfx/bin/AOCEUNI2.inc'
 
 format ti executable 'AOCE'
+include 'includes/app.inc'
 
-org UserMem
 start:
-	jp	AoCEStart
-	db	1
-	db	16,16				; Cesium icon, made by Pieman7373
-	db	000h,000h,000h,000h,020h,061h,081h,0A1h,0A1h,0A0h,0A0h,040h,001h,000h,000h,000h
-	db	000h,000h,000h,020h,061h,0A2h,0C2h,0C1h,0C0h,0A0h,0C0h,061h,021h,021h,021h,000h
-	db	000h,000h,020h,061h,0A1h,0C1h,0A1h,0A0h,061h,0A1h,0C1h,062h,029h,029h,021h,021h
-	db	000h,000h,061h,0A1h,0A1h,0A0h,061h,081h,061h,061h,082h,08Ch,04Ah,04Ah,029h,021h
-	db	000h,020h,060h,0C1h,0A0h,060h,040h,069h,06Ah,06Ah,08Bh,094h,094h,04Ah,049h,021h
-	db	000h,020h,0A0h,0C2h,081h,040h,021h,06Bh,06Bh,094h,0D6h,0B5h,0B5h,06Bh,049h,021h
-	db	000h,020h,081h,0C1h,081h,040h,04Ah,04Bh,04Bh,094h,0DEh,0DEh,094h,06Bh,04Ah,021h
-	db	000h,020h,060h,0A1h,081h,020h,04Bh,04Ah,04Ah,06Bh,0B6h,0DEh,0B5h,06Bh,04Ah,021h
-	db	000h,020h,040h,060h,060h,041h,06Bh,02Ah,02Ah,04Bh,0B4h,0B5h,0B5h,0B5h,06Ch,029h
-	db	000h,020h,060h,0A0h,080h,041h,094h,06Bh,04Ah,029h,049h,06Ch,094h,06Bh,04Ah,06Bh
-	db	000h,0FFh,0FFh,0FFh,0A0h,040h,04Ah,04Ah,04Bh,06Bh,029h,021h,001h,000h,029h,06Bh
-	db	020h,080h,0FFh,0C0h,0A0h,040h,021h,04Ah,04Ah,06Bh,06Bh,08Ch,06Bh,06Ch,08Ch,029h
-	db	040h,0A0h,0FFh,0A0h,080h,020h,000h,04Ah,04Ah,04Bh,04Ah,06Bh,06Bh,08Ch,06Bh,000h
-	db	061h,0A1h,0FFh,060h,040h,000h,000h,021h,04Ah,04Ah,06Bh,08Ch,08Ch,0B4h,06Bh,000h
-	db	081h,0FFh,0FFh,0FFh,020h,000h,000h,021h,04Ah,04Ah,04Bh,094h,0B5h,0D6h,06Bh,000h
-	db	081h,081h,040h,040h,000h,000h,000h,000h,021h,029h,04Ah,04Ah,04Ah,06Bh,029h,000h
-	db	"Age of CEmpires I - By Peter \"PT_\" Tillema", 0
-AoCEStart:
 	app_create
 	
 	ret	nz
@@ -47,7 +25,7 @@ AoCEStart:
 	jp	_DelVarArc		; delete installer code
 	
 	app_start 'AoCE', '(C) 2017 Peter Tillema', '0.0.0.1', 1
-	
+
 	call	_HomeUp
 	call	_ClrLCDFull
 	call	_RunIndicOff
