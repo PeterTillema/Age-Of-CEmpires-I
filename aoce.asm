@@ -13,7 +13,6 @@ include 'gfx/bin/AOCEAGE3.inc'
 include 'gfx/bin/AOCEAGE4.inc'
 include 'gfx/bin/AOCEUNI1.inc'
 include 'gfx/bin/AOCEUNI2.inc'
-
 format ti executable 'AOCE'
 include 'includes/app.inc'
 
