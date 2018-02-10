@@ -365,5 +365,6 @@ RelocationTable#%:
 	dw $FFFF
 end repeat
 
-	app_data
 AoCEEnd:
+
+	app_data
