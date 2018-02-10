@@ -1,37 +1,69 @@
 macro ScrollLeft
-	ld	de, (iy+TopLeftXTile)
+	ld	de, (TopLeftXTile)
 	dec	de
-	ld	(iy+TopLeftXTile), de
+	ld	(TopLeftXTile), de
 end macro
 
 macro ScrollRight
-	ld	de, (iy+TopLeftXTile)
+	ld	de, (TopLeftXTile)
 	inc	de
-	ld	(iy+TopLeftXTile), de
+	ld	(TopLeftXTile), de
 end macro
 
 macro ScrollUp
-	ld	de, (iy+TopLeftYTile)
+	ld	de, (TopLeftYTile)
 	dec	de
-	ld	(iy+TopLeftYTile), de
+	ld	(TopLeftYTile), de
 end macro
 
 macro ScrollDown
-	ld	de, (iy+TopLeftYTile)
+	ld	de, (TopLeftYTile)
 	inc	de
-	ld	(iy+TopLeftYTile), de
+	ld	(TopLeftYTile), de
 end macro
 
 macro ScrollFieldRight
+	ld	a, (OFFSET_X)
+	or	a, a
+	jr	nz, .jump1
+	ScrollRight
+	ScrollUp
+.jump1:	sub	a, 4
+	and	a, 000011111b
+	ld	(OFFSET_X), a
 end macro
 
 macro ScrollFieldLeft
+	ld	a, (OFFSET_X)
+	add	a, 4
+	and	a, 000011111b
+	ld	(OFFSET_X), a
+	jr	nz, .jump2
+	ScrollLeft
+	ScrollDown
+.jump2:
 end macro
 
 macro ScrollFieldUp
+	ld	a, (OFFSET_Y)
+	add	a, 4
+	and	a, 000001111b
+	ld	(OFFSET_Y), a
+	jr	nz, .jump3
+	ScrollLeft
+	ScrollUp
+.jump3:
 end macro
 
 macro ScrollFieldDown
+	ld	a, (OFFSET_Y)
+	or	a, a
+	jr	nz, .jump4
+	ScrollRight
+	ScrollDown
+.jump4:	sub	a, 4
+	and	a, 000001111b
+	ld	(OFFSET_Y), a
 end macro
 
 macro printString message, x, y
