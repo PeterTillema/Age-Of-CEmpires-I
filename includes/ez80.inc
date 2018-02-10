@@ -84,12 +84,28 @@ macro @ez80.classify @val, @ind*, @arg&
 end macro
 
 long? = 3
-macro dl? @values*&
-	emit long?: @values
+; FIXME: dup
+macro dw? @values*&
+	if @ez80.adl
+		emit word?: @values
+	else
+		iterate @value, @values
+			@ez80.word @value
+		end iterate
+	end if
 end macro
-iterate @name, dl, rl
-	struc @name? @values*&
-		label .: long?
+macro dl? @values*&
+	if @ez80.adl
+		iterate @value, @values
+			@ez80.word @value
+		end iterate
+	else
+		emit long?: @values
+	end if
+end macro
+iterate @name, dw, rw, dl, rl
+	struc (name) @name? @values*&
+		label name: long?
 		@name? @values
 	end struc
 end iterate
@@ -209,11 +225,11 @@ macro inst! @name*, @params&
 	end virtual
 	esc macro @name? @params
 		local before, after, noerr
-		before:
+		label before
 		eval @temp
 end macro
 macro end?.inst!
-		after:
+		label after
 		if ~defined noerr & before = after
 			err 'invalid arguments'
 		end if

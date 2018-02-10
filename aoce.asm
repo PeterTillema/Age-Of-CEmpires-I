@@ -1,11 +1,11 @@
+include 'includes/app.inc'
 include 'includes/defines.asm'
+include 'includes/ez80.inc'
 include 'includes/macros.inc'
 include 'includes/relocation.inc'
-include 'includes/ez80.inc'
+include 'includes/symbol_table.inc'
 include 'includes/ti84pceg.inc'
 include 'includes/tiformat.inc'
-format ti executable 'AOCE'
-include 'includes/app.inc'
 include 'gfx/bin/AOCEGFX1.inc'
 include 'gfx/bin/AOCEGFX2.inc'
 include 'gfx/bin/AOCEAGE1.inc'
@@ -14,6 +14,8 @@ include 'gfx/bin/AOCEAGE3.inc'
 include 'gfx/bin/AOCEAGE4.inc'
 include 'gfx/bin/AOCEUNI1.inc'
 include 'gfx/bin/AOCEUNI2.inc'
+
+format ti executable 'AOCE'
 
 org UserMem
 start:
