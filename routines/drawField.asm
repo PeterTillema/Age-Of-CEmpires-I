@@ -1,20 +1,20 @@
-#define AMOUNT_OF_COLUMNS 13
-#define AMOUNT_OF_ROWS 35
-#define TILE_WIDTH 32
-#define TILE_HEIGHT 16
+AMOUNT_OF_COLUMNS = 13
+AMOUNT_OF_ROWS    = 35
+TILE_WIDTH        = 32
+TILE_HEIGHT       = 16
 
 relocate DrawField, cursorImage
 
 DrawField:
 	DrawIsometricTile.copy
-	ld	b, (iy + OFFSET_X)	; We start with the shadow registers active
+	ld	b, (OFFSET_X)		; We start with the shadow registers active
 	bit	4, b
 	ld	a, TILE_WIDTH / 2
 	ld	c, 028h
-	jr	z, +_
+	jr	z, .jump1
 	neg
 	ld	c, 020h
-_:	ld	(TopRowLeftOrRight), a
+.jump1:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
 	
@@ -28,27 +28,27 @@ _:	ld	(TopRowLeftOrRight), a
 	ld	(DrawTile_Clipped_Stop2), hl
 	ld	(DrawTile_Clipped_Stop3), hl
 
-	ld	e, (iy + OFFSET_Y)
+	ld	e, (OFFSET_Y)
 	ld	d, 10
 	xor	a, a
 	bit	3, e
-	jr	z, +_
+	jr	z, .jump2
 	inc	d
 	ld	a, 00Dh
-_:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
+.jump2:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
 	bit	2, e
 	ld	hl, DrawTile_Clipped_Stop2
 	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
-	jr	z, +_
+	jr	z, .jump3
 	ld	hl, DrawTile_Clipped_Stop3
 	ld	(hl), 018h		; Write "jr"
 	inc	hl
 	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
 	ld	hl, DrawTile_Clipped_Stop1
 	ld	d, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
-_:	ld	(DrawTile_Clipped_SetJRSMC), hl
+.jump3:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	ld	hl, DrawTile_Clipped_SetJRStop
 	ld	(hl), 018h		; Write "jr"
 	inc	hl
@@ -66,7 +66,7 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	ld	de, (currDrawingBuffer)
 	add	hl, de
 	ld	(startingPosition), hl
-	ld	ix, (iy + TopLeftYTile)
+	ld	ix, (TopLeftYTile)
 	lea	ix, ix + 2		; Remember the 2 columns at the left
 	lea	hl, ix			; Y * MAP_SIZE + X, point to the map data
 	add	hl, hl
@@ -76,7 +76,7 @@ _:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	de, (iy + TopLeftXTile)
+	ld	de, (TopLeftXTile)
 	dec	de			; Remember the 2 columns at the left
 	dec	de
 	add	hl, de
@@ -109,10 +109,11 @@ startingPosition = $+2			; Here are the shadow registers active
 	add	iy, bc
 	ld	(startingPosition), iy
 	bit	0, a
-	jr	nz, +_
+	jr	nz, NoOffsetAtStart
 TopRowLeftOrRight = $+2
 	lea	iy, iy + 0
-_:	ex	af, af'
+NoOffsetAtStart:
+	ex	af, af'
 	ld	a, AMOUNT_OF_COLUMNS
 	ld	bc, (-MAP_SIZE + 1) * 2
 DisplayTile:				; Display X tiles in a row
@@ -176,7 +177,7 @@ DisplayTileWithTree:
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 
 	ld	(BackupIY2), iy
-	ld	iy, _IYOffsets
+	ld	iy, iy_base
 TempSP3 = $+1
 	ld	sp, 0
 	push	hl			; Sprite struct
@@ -193,7 +194,7 @@ TempSP3 = $+1
 	ld	hl, 17
 	add	hl, de
 	add	hl, de
-	ld	e, (iy + OFFSET_Y)
+	ld	e, (OFFSET_Y)
 	add	hl, de
 	ld	e, a
 	sbc	hl, de
@@ -205,25 +206,25 @@ TempSP3 = $+1
 	ld	l, a
 	ld	h, TILE_WIDTH
 	mlt	hl
-	ld	e, (iy + OFFSET_X)
+	ld	e, (OFFSET_X)
 	add	hl, de
 	bit	0, c
-	jr	nz, +_
+	jr	nz, .jump
 	bit	4, e
 	ld	e, TILE_WIDTH / 2
 	add	hl, de
-	jr	z, +_
+	jr	z, .jump
 	sla	e
 	sbc	hl, de
 	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
-_:	push	hl			; X coordinate
+.jump:	push	hl			; X coordinate
 	call	_RLETSprite		; No need to pop
 DontDisplayTree:
 	ld	iy, 0
 BackupIY2 = $-3
 	jp	SkipDrawingOfTileExx
 	
-DisplayBuildingExx
+DisplayBuildingExx:
 	exx
 DisplayBuilding:
 ; Inputs:
@@ -242,7 +243,7 @@ BuildingsTablePointer = $+1		; Yay, ages! :D
 	ld	hl, (hl)
 	ld	b, (hl)
 	ld	(BackupIY3), iy
-	ld	iy, _IYOffsets
+	ld	iy, iy_base
 TempSP4 = $+1
 	ld	sp, 0
 	push	hl			; Sprite struct
@@ -259,7 +260,7 @@ TempSP4 = $+1
 	ld	hl, 17
 	add	hl, de
 	add	hl, de
-	ld	e, (iy + OFFSET_Y)
+	ld	e, (OFFSET_Y)
 	add	hl, de
 	ld	e, a
 	sbc	hl, de
@@ -275,18 +276,18 @@ TempSP4 = $+1
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	e, (iy + OFFSET_X)
+	ld	e, (OFFSET_X)
 	add	hl, de
 	ld	a, b
 	bit	0, c
-	jr	nz, +_
+	jr	nz, .jump
 	bit	4, e
 	ld	e, TILE_WIDTH / 2
 	add	hl, de
-	jr	z, +_
+	jr	z, .jump
 	sla	e
 	sbc	hl, de
-_:	sub	a, 30
+.jump:	sub	a, 30
 	srl	a
 	ld	e, a
 	sbc	hl, de
@@ -371,11 +372,12 @@ SkipDrawingOfTile:
 	jp	nz, DisplayTile
 	ex	af, af'
 IncrementRowXOrNot1 = $
-	jr	nz, +_			; The zero flag is still set/reset from the "bit 0, a"
+	jr	nz, NoExtraColumnChange	; The zero flag is still set/reset from the "bit 0, a"
 	inc	de
 	add	hl, bc
 	dec	ix
-_:	ex	de, hl
+NoExtraColumnChange:
+	ex	de, hl
 	ld	c, -AMOUNT_OF_COLUMNS
 	add	hl, bc
 	ex	de, hl
@@ -428,15 +430,15 @@ StopDisplayTiles:
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
 	ld	de, (currDrawingBuffer)
-	ld	hl, resources_offset \ .r2
+	r2 ld	hl, resources_offset
 	ld	bc, resources_width * resources_height
 	ldir
 	ld	hl, blackBuffer
-	ld	b, (lcdWidth * 13 + TILE_WIDTH) >> 8
+	ld	b, (lcdWidth * 13 + TILE_WIDTH) shr 8
 	jp	mpShaData
 	
 DrawScreenBorderStart:
-	ld	c, (lcdWidth * 13 + TILE_WIDTH) & 255
+	ld	c, (lcdWidth * 13 + TILE_WIDTH) and 255
 	ldir
 	ex	de, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ld	a, lcdHeight - 15 - 13 - 1
@@ -487,11 +489,6 @@ TempSP2 = $+1
 	ld	sp, 0
 	ret
 DrawScreenBorderEnd:
-	
-.echo "mpShaData size (2): ", $ - DrawScreenBorderStart
-#if $ - DrawScreenBorderStart > 64
-.error "mpShaData too large!"
-#endif
 	
 DrawTile_Clipped:
 	ld	(BackupIY), iy
@@ -566,7 +563,7 @@ BackupIY = $-3
 
 end relocate
 
-reloate DrawIsometricTile, mpShaData
+relocate DrawIsometricTile, mpShaData
 
 DrawIsometricTile:
 	ld	sp, -lcdWidth - 2

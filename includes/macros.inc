@@ -23,47 +23,15 @@ macro ScrollDown
 end macro
 
 macro ScrollFieldRight
-	ld	a, (iy+OFFSET_X)
-	or	a, a
-	jr	nz, +_
-	ScrollRight
-	ScrollUp
-_:	sub	a, 4
-	and	a, %00011111
-	ld	(iy+OFFSET_X), a
 end macro
 
 macro ScrollFieldLeft
-	ld	a, (iy+OFFSET_X)
-	add	a, 4
-	and	a, %00011111
-	ld	(iy+OFFSET_X), a
-	jr	nz, +_
-	ScrollLeft
-	ScrollDown
-_:
 end macro
 
 macro ScrollFieldUp
-	ld	a, (iy+OFFSET_Y)
-	add	a, 4
-	and	a, %00001111
-	ld	(iy+OFFSET_Y), a
-	jr	nz, +_
-	ScrollLeft
-	ScrollUp
-_:
 end macro
 
 macro ScrollFieldDown
-	ld	a, (iy+OFFSET_Y)
-	or	a, a
-	jr	nz, +_
-	ScrollRight
-	ScrollDown
-_:	sub	a, 4
-	and	a, %00001111
-	ld	(iy+OFFSET_Y), a
 end macro
 
 macro printString message, x, y
@@ -80,7 +48,7 @@ macro printString message, x, y
 end macro
 
 macro dispCompressedImage sprite, x, y
-if x==y
+if x = y
 	ld	hl, x
 	push	hl
 	push	hl
@@ -92,7 +60,7 @@ else
 end if
 	ld	de, 0D20000h
 	push	de
-	ld	hl, sprite \.r1
+	r1 ld	hl, sprite
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	de

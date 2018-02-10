@@ -1,5 +1,5 @@
 # Commands and tools
-ASSEMBLER ?= fasmg
+ASSEMBLER ?= fasmg -e 500
 CONVHEX   ?= convhex
 CONVPNG   ?= convpng
 

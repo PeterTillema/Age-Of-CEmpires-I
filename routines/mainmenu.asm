@@ -8,7 +8,7 @@ MainMenu:
 	ld	de, vRAM+1
 	ld	bc, 320*240-1
 	ldir
-	dispCompressedImage(intro_compressed_offset, 72, 32)
+	dispCompressedImage intro_compressed_offset, 72, 32
 	call	fadeIn
 	ld	a, 200
 	call	_DelayTenTimesAms
@@ -17,33 +17,33 @@ MainMenu:
 	ld	hl, blackBuffer
 	ld	bc, 320*240*2
 	ldir
-	dispCompressedImage(AoCEI_compressed_offset, 5, 5)
-	dispCompressedImage(soldier_compressed_offset, 215, 5)
-	printString(MadeByMessage, 18, 94)
+	dispCompressedImage AoCEI_compressed_offset, 5, 5
+	dispCompressedImage soldier_compressed_offset, 215, 5
+	printString MadeByMessage, 18, 94
 	call	fadeIn
 SelectLoopDrawPlayHelpQuit:
 	call	EraseArea
-	dispCompressedImage(playhelpquit_compressed_offset, 50, 110)
+	dispCompressedImage playhelpquit_compressed_offset, 50, 110
 	ld	hl, SelectMenuMax
 	ld	(hl), 2
 	call	SelectMenu
-	jr	c, +_
+	jr	c, .jump
 	dec	c
 	jr	z, DisplayHelp
 	dec	c
 	jr	nz, SelectedPlay
-_:	jp	ForceStopProgramFadeOut
+.jump:	jp	ForceStopProgramFadeOut
     
 DisplayHelp:
 	call	EraseArea
-	printString(GetHelp1, 5, 112)
-	printString(GetHelp2, 5, 122)
-	printString(GetHelp3, 5, 132)
+	printString GetHelp1, 5, 112
+	printString GetHelp2, 5, 122
+	printString GetHelp3, 5, 132
 	call	GetKeyAnyFast
 	jp	SelectLoopDrawPlayHelpQuit
 SelectedPlay:
 	call	EraseArea
-	dispCompressedImage(singlemultiplayer_compressed_offset, 50, 110)
+	dispCompressedImage singlemultiplayer_compressed_offset, 50, 110
 	ld	hl, SelectMenuMax
 	ld	(hl), 1
 	call	SelectMenu
@@ -51,8 +51,8 @@ SelectedPlay:
 	dec	c
 	jr	nz, SelectedSinglePlayer
 	call	EraseArea
-	printString(NoMultiplayer1, 5, 112)
-	printString(NoMultiplayer2, 5, 122)
+	printString NoMultiplayer1, 5, 112
+	printString NoMultiplayer2, 5, 122
 	call	GetKeyAnyFast
 	jr	SelectedPlay
 SelectedSinglePlayer:
@@ -66,7 +66,7 @@ SelectedSinglePlayer:
 	;jp	c, SelectedPlay
 	;dec	c
 	;jp	z, LoadMap
-_:	jp	GenerateMap
+	jp	GenerateMap
 
 EraseArea:
 	ld	hl, 130
@@ -97,7 +97,7 @@ SelectLoop:
 	push	hl
 	ld	de, plotSScreen
 	push	de
-	ld	hl, pointer_compressed_offset \.r1
+	r1 ld	hl, pointer_compressed_offset
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	hl
@@ -109,24 +109,24 @@ KeyLoop:
 	call	GetKeyAnyFast
 	ld	l, 01Eh
 	bit	kpDown, (hl)
-	jr	z, +_
+	jr	z, .jump1
 	ld	a, c
 SelectMenuMax = $+1
 	cp	a, 2
-	jr	z, +_
+	jr	z, .jump1
 	inc	c
 	jr	EraseCursor
-_:	bit	kpUp, (hl)
-	jr	z, +_
+.jump1:	bit	kpUp, (hl)
+	jr	z, .jump2
 	ld	a, c
 	or	a, a
-	jr	z, +_
+	jr	z, .jump2
 	dec	c
 	jr	EraseCursor
-_:	ld	l, 01Ch
+.jump2:	ld	l, 01Ch
 	bit	kpEnter, (hl)
 	ret	nz
-_:	bit	kpClear, (hl)
+	bit	kpClear, (hl)
 	jr	z, KeyLoop
 	scf
 	ret
