@@ -1,72 +1,72 @@
-#macro ScrollLeft()
-	ld	de, (iy+TopLeftXTile)
+macro ScrollLeft
+	ld	de, (TopLeftXTile)
 	dec	de
-	ld	(iy+TopLeftXTile), de
-#endmacro
+	ld	(TopLeftXTile), de
+end macro
 
-#macro ScrollRight()
-	ld	de, (iy+TopLeftXTile)
+macro ScrollRight
+	ld	de, (TopLeftXTile)
 	inc	de
-	ld	(iy+TopLeftXTile), de
-#endmacro
+	ld	(TopLeftXTile), de
+end macro
 
-#macro ScrollUp()
-	ld	de, (iy+TopLeftYTile)
+macro ScrollUp
+	ld	de, (TopLeftYTile)
 	dec	de
-	ld	(iy+TopLeftYTile), de
-#endmacro
+	ld	(TopLeftYTile), de
+end macro
 
-#macro ScrollDown()
-	ld	de, (iy+TopLeftYTile)
+macro ScrollDown
+	ld	de, (TopLeftYTile)
 	inc	de
-	ld	(iy+TopLeftYTile), de
-#endmacro
+	ld	(TopLeftYTile), de
+end macro
 
-#macro ScrollFieldRight()
-	ld	a, (iy+OFFSET_X)
+macro ScrollFieldRight
+	ld	a, (OFFSET_X)
 	or	a, a
-	jr	nz, +_
-	ScrollRight()
-	ScrollUp()
-_:	sub	a, 4
-	and	a, %00011111
-	ld	(iy+OFFSET_X), a
-#endmacro
+	jr	nz, .jump1
+	ScrollRight
+	ScrollUp
+.jump1:	sub	a, 4
+	and	a, 000011111b
+	ld	(OFFSET_X), a
+end macro
 
-#macro ScrollFieldLeft()
-	ld	a, (iy+OFFSET_X)
+macro ScrollFieldLeft
+	ld	a, (OFFSET_X)
 	add	a, 4
-	and	a, %00011111
-	ld	(iy+OFFSET_X), a
-	jr	nz, +_
-	ScrollLeft()
-	ScrollDown()
-_:
-#endmacro
+	and	a, 000011111b
+	ld	(OFFSET_X), a
+	jr	nz, .jump2
+	ScrollLeft
+	ScrollDown
+.jump2:
+end macro
 
-#macro ScrollFieldUp()
-	ld	a, (iy+OFFSET_Y)
+macro ScrollFieldUp
+	ld	a, (OFFSET_Y)
 	add	a, 4
-	and	a, %00001111
-	ld	(iy+OFFSET_Y), a
-	jr	nz, +_
-	ScrollLeft()
-	ScrollUp()
-_:
-#endmacro
+	and	a, 000001111b
+	ld	(OFFSET_Y), a
+	jr	nz, .jump3
+	ScrollLeft
+	ScrollUp
+.jump3:
+end macro
 
-#macro ScrollFieldDown()
-	ld	a, (iy+OFFSET_Y)
+macro ScrollFieldDown
+	ld	a, (OFFSET_Y)
 	or	a, a
-	jr	nz, +_
-	ScrollRight()
-	ScrollDown()
-_:	sub	a, 4
-	and	a, %00001111
-	ld	(iy+OFFSET_Y), a
-#endmacro
+	jr	nz, .jump4
+	ScrollRight
+	ScrollDown
+.jump4:	sub	a, 4
+	and	a, 000001111b
+	ld	(OFFSET_Y), a
+end macro
 
-#macro printString(message, x, y)
+macro printString message, x, y
 	ld	l, y
 	push	hl
 	ld	hl, x
@@ -77,31 +77,31 @@ _:	sub	a, 4
 	pop	hl
 	pop	hl
 	pop	hl
-#endmacro
+end macro
 
-#macro dispCompressedImage(sprite, x, y)
-#IF x==y
+macro dispCompressedImage sprite, x, y
+if x = y
 	ld	hl, x
 	push	hl
 	push	hl
-#ELSE
+else
 	ld	l, y
 	push	hl
 	ld	hl, x
 	push	hl
-#ENDIF
+end if
 	ld	de, 0D20000h
 	push	de
-	ld	hl, sprite \.r1
+	r1 ld	hl, sprite
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	de
 	pop	hl
 	pop	hl
-#endmacro
+end macro
 
-#macro randInt(x)
+macro randInt x
 	call	_rand
 	ld	bc, x			; 7 types of resources group
 	call	__idvrmu
-#endmacro
+end macro

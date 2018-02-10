@@ -1,6 +1,6 @@
-.assume ADL=0
+assume ADL=0
 
-#define FlashMbaseStart ($ & $FF0000) >> 16
+FlashMbaseStart equ ($ and $FF0000) shr 16
 fUnlockFlash:
 	ld	a, 08Ch
 	out0	(024h), a
@@ -32,11 +32,7 @@ fLockFlash:
 	ld	a, 0D1h
 	out0	(03Ch), a
 	ret.l
-.assume ADL=1
-
-#if ($ & $FF0000) >> 16 != FlashMbaseStart
-.error "Warning: flash routines should be at same page!"
-#endif
+assume ADL=1
 
 BackupRAM:
 	ld	a, 03Fh

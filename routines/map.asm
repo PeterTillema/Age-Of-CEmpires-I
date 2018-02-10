@@ -12,14 +12,14 @@ GenerateMap:
 	ld	hl, blackBuffer
 	ld	bc, lcdWidth * lcdHeight
 	ldir
-	printString(GeneratingMapMessage, 5, 112)
+	printString GeneratingMapMessage, 5, 112
 	ld	hl, (0F30044h)
 	call	_srand
 	ld	ixh, 0
 PlaceTreesLoop:
-	randInt(MAP_SIZE)
+	randInt MAP_SIZE
 	push	hl
-	randInt(MAP_SIZE)
+	randInt MAP_SIZE
 	ld	h, lcdWidth / 2
 	mlt	hl
 	add	hl, hl
@@ -28,7 +28,7 @@ PlaceTreesLoop:
 	ld	de, screenBuffer
 	add	hl, de
 	push	hl
-	randInt(AMOUNT_OF_TREES)
+	randInt AMOUNT_OF_TREES
 	ld	a, l
 	add	a, TILE_TREE
 	pop	hl
@@ -39,7 +39,7 @@ PlaceTreesLoop:
 PlaceAllResourceTypesLoop:
 	ld	ixl, 20			; Place max 20 resources of each
 PlaceResourceTypeLoop:
-	randInt(7)			; 7 types of different groups for resources
+	randInt 7			; 7 types of different groups for resources
 	push	hl
 	pop	de
 	add	hl, hl
@@ -49,14 +49,14 @@ PlaceResourceTypeLoop:
 	ld	de, ResourcesType1
 	add	hl, de
 	push	hl
-	randInt(MAP_SIZE - 2 - 2)	; X
+	randInt MAP_SIZE - 2 - 2	; X
 	inc	hl
 	inc	hl
 	ld	h, 160
 	mlt	hl
 	add	hl, hl
 	push	hl
-	randInt(MAP_SIZE - 2 - 2)	; Y
+	randInt MAP_SIZE - 2 - 2	; Y
 	inc	hl
 	inc	hl
 	pop	de
@@ -93,18 +93,19 @@ PlaceResource:
 PlaceResourceRowLoop:
 	ld	a, (de)
 	or	a, a
-	jr	z, +_
+	jr	z, DontDisplayResource
 	ld	a, r			; I like it
 	and	a, 1
 ResourceType = $+1
 	add	a, TILE_FOOD_1
 	ld	(hl), a
-_:	inc	hl
+DontDisplayResource:
+	inc	hl
 	inc	de
 	djnz	PlaceResourceRowLoop
 	ld	a, c
 	inc	b
-	ld	c, (lcdWidth & 0FFh) - 3
+	ld	c, (lcdWidth and 0FFh) - 3
 	add	hl, bc
 	ld	b, a
 	djnz	PlaceResource
@@ -126,14 +127,16 @@ CopyMapToNewAppvarLoop:
 CopyRowLoop:
 	ld	a, (hl)
 	or	a, a
-	jr	nz, +_
+	jr	nz, TileIsNonEmpty
 	inc	a
-_:	ld	(de), a
+TileIsNonEmpty:
+	ld	(de), a
 	inc	de
 	dec	a
-	jr	z, +_
+	jr	z, TileIsResource
 	ld	a, RESOURCE_MAX
-_:	ld	(de), a
+TileIsResource:
+	ld	(de), a
 	inc	hl
 	inc	de
 	djnz	CopyRowLoop
@@ -144,7 +147,7 @@ _:	ld	(de), a
 	
 LoadMap:
 	call	EraseArea
-	printString(LoadingMapMessage, 5, 112)
+	printString LoadingMapMessage, 5, 112
 	ld	hl, (MapDataPtr)
 	ld	(hl), 0
 	inc	hl

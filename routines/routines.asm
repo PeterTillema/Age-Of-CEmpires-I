@@ -3,8 +3,9 @@ GetKeyFast:
 	ld	hl, 0F50200h
 	ld	(hl), h
 	xor	a, a
-_:	cp	a, (hl)
-	jr	nz, -_
+WaitGetKeyFastLoop:
+	cp	a, (hl)
+	jr	nz, WaitGetKeyFastLoop
 	ret
 
 ;-------------------------------------------------------------------------------
@@ -64,20 +65,20 @@ __flSubCalc = $+1
 	call	0000000h
 	ld	hl, 0
         ; red
-	ld	a,(ix+1)
+	ld	a, (ix+1)
 	rrca
 	rrca
-	and	a, %00011111
+	and	a, 00011111b
 	sub	a, c
-	jr	nc,flSkipR
+	jr	nc, flSkipR
 	xor	a, a
 flSkipR:
 	rlca
 	rlca
-	ld	l,a
+	ld	l, a
         ; green
-	ld	e,(ix+1)
-	ld	d,(ix)
+	ld	e, (ix+1)
+	ld	d, (ix)
 	sla	d
 	rl	e
 	sla	d
@@ -85,13 +86,13 @@ flSkipR:
 	sla	d
 	rl	e
 	ld	a, e
-	and	a, %00011111
+	and	a, 00011111b
 	sub	a, c
-	jr	nc,flSkipG
+	jr	nc, flSkipG
 	xor	a, a
 flSkipG:
-	ld	d,0
-	ld	e,a
+	ld	d, 0
+	ld	e, a
 	srl	e
 	rr	d
 	srl	e
@@ -105,10 +106,10 @@ flSkipG:
 	or	a, d
 	ld	h, a
         ; blue
-	ld	a,(ix)
-	and	a, %00011111
+	ld	a, (ix)
+	and	a, 00011111b
 	sub	a, c
-	jr	nc,flSkipB
+	jr	nc, flSkipB
 	xor	a, a
 flSkipB:
 	or	a, h
@@ -355,7 +356,7 @@ _RLETSprite_ClipTop_End:		; a = 0, hl = start of (clipped) sprite data
 	sbc	a, a
 	djnz	_RLETSprite_ClipLeftMiddleClipRight
 _RLETSprite_MiddleClipRight:
-	sub	a, s8(_RLETSprite_ClipRight_LoopJr_SMC+1-_RLETSprite_Middle_Row_WidthEven)
+	sub	a, _RLETSprite_ClipRight_LoopJr_SMC+1-_RLETSprite_Middle_Row_WidthEven
 	ld	(_RLETSprite_ClipRight_LoopJr_SMC), a
 _RLETSprite_Middle_Row_WidthOdd:
 	inc	de			; increment buffer pointer
@@ -425,19 +426,19 @@ _RLETSprite_ClipRight_LoopJr_SMC = $-1
 
 _RLETSprite_ClipLeftMiddleClipRight:
 	dec	b			; b = 0
-	sub	a, s8(_RLETSprite_ClipRight_LoopJr_SMC+1-_RLETSprite_ClipLeft_Row_WidthEven)
+	sub	a, _RLETSprite_ClipRight_LoopJr_SMC+1-_RLETSprite_ClipLeft_Row_WidthEven
 	ld	(_RLETSprite_ClipRight_LoopJr_SMC), a
-	ld	a, s8(_RLETSprite_Middle_OpaqueCopy-(_RLETSprite_EnterLeft_Opaque_Jr_SMC+1))
-	ld	c, s8(_RLETSprite_Middle_TransSkip-(_RLETSprite_EnterLeft_Trans_Jr_SMC+1))
+	ld	a, _RLETSprite_Middle_OpaqueCopy-(_RLETSprite_EnterLeft_Opaque_Jr_SMC+1)
+	ld	c, _RLETSprite_Middle_TransSkip-(_RLETSprite_EnterLeft_Trans_Jr_SMC+1)
 	jr	_RLETSprite_ClipLeftMiddle_DoSMC
 
 _RLETSprite_ClipLeftMiddle:
 	ld	(_RLETSprite_NoClip_HalfRowDelta_SMC), a
 	sbc	a, a
-	sub	a, s8(_RLETSprite_NoClip_LoopJr_SMC+1-_RLETSprite_ClipLeft_Row_WidthEven)
+	sub	a, _RLETSprite_NoClip_LoopJr_SMC+1-_RLETSprite_ClipLeft_Row_WidthEven
 	ld	(_RLETSprite_NoClip_LoopJr_SMC), a
-	ld	a, s8(_RLETSprite_NoClip_OpaqueCopy-(_RLETSprite_EnterLeft_Opaque_Jr_SMC+1))
-	ld	c, s8(_RLETSprite_NoClip_TransSkip-(_RLETSprite_EnterLeft_Trans_Jr_SMC+1))
+	ld	a, _RLETSprite_NoClip_OpaqueCopy-(_RLETSprite_EnterLeft_Opaque_Jr_SMC+1)
+	ld	c, _RLETSprite_NoClip_TransSkip-(_RLETSprite_EnterLeft_Trans_Jr_SMC+1)
 _RLETSprite_ClipLeftMiddle_DoSMC:
 	ld	(_RLETSprite_EnterLeft_Opaque_Jr_SMC), a
 	ld	a, c
@@ -516,7 +517,7 @@ _RLETSprite_NoClip_Begin:
 	rra				; a = (lcdWidth-width)/2
 	ld	(_RLETSprite_NoClip_HalfRowDelta_SMC), a
 	sbc	a, a
-	sub	a, s8(_RLETSprite_NoClip_LoopJr_SMC+1-_RLETSprite_NoClip_Row_WidthEven)
+	sub	a, _RLETSprite_NoClip_LoopJr_SMC+1-_RLETSprite_NoClip_Row_WidthEven
 	ld	(_RLETSprite_NoClip_LoopJr_SMC), a
 ; Row loop (if sprite width is odd)
 _RLETSprite_NoClip_Row_WidthOdd:
@@ -590,7 +591,7 @@ ModifyRelocationTable:
 	ld	a, h
 	and	a, l
 	inc	a
-	jr	z, +_
+	jr	z, StopModifying
 	push	hl
 	ld	hl, (hl)
 	add	hl, bc
@@ -602,7 +603,8 @@ ModifyRelocationTable:
 	inc	hl
 	inc	hl
 	jr	ModifyRelocationTable
-_:	pop	hl
+StopModifying:
+	pop	hl
 	ret
 
 ;-------------------------------------------------------------------------------
@@ -666,10 +668,10 @@ _rand:
 	ret
 	
 __state:
-	.db	10h, 0Fh, 0Eh, 0Dh
-	.db	0Ch, 0Bh, 0Ah, 09h
-	.db	08h, 07h, 06h, 05h
-	.db	04h, 03h, 02h, 01h
+	db	10h, 0Fh, 0Eh, 0Dh
+	db	0Ch, 0Bh, 0Ah, 09h
+	db	08h, 07h, 06h, 05h
+	db	04h, 03h, 02h, 01h
 	
 ;-------------------------------------------------------------------------------
 _Begin:
@@ -680,10 +682,11 @@ _Begin:
 	ldir
 	ld	a, lcdBpp8
 	ld	hl, currDrawingBuffer
-_:	ld	de, vRAM
+SetPointersAndPalette:
+	ld	de, vRAM
 	ld	(hl), de
 	ld	(mpLcdCtrl), a
-	ld	l, mpLcdIcr & 0FFh
+	ld	l, mpLcdIcr and 0FFh
 	ld	(hl), 4
 	ld	hl, pal_sprites
 	ld	de, mpLcdPalette
@@ -700,7 +703,7 @@ _End:
 	ldir
 	ld	hl, mpLcdBase
 	ld	a, lcdBpp16
-	jr	-_
+	jr	SetPointersAndPalette
 	
 ;-------------------------------------------------------------------------------
 _SetTextXY:

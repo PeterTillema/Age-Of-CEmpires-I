@@ -1,42 +1,30 @@
-#include "includes/ti84pce.inc"
-#include "includes/defines.asm"
-#include "includes/macros.inc"
-#include "includes/relocation.inc"
-
-#include "gfx/bin/AOCEGFX1.inc"
-#include "gfx/bin/AOCEGFX2.inc"
-#include "gfx/bin/AOCEAGE1.inc"
-#include "gfx/bin/AOCEAGE2.inc"
-#include "gfx/bin/AOCEAGE3.inc"
-#include "gfx/bin/AOCEAGE4.inc"
-#include "gfx/bin/AOCEUNI1.inc"
-#include "gfx/bin/AOCEUNI2.inc"
-
-.db tExtTok, tAsm84CECmp
-.org UserMem
+include 'includes/ez80.inc'
+include 'includes/ti84pceg.inc'
+include 'includes/tiformat.inc'
+include 'includes/defines.asm'
+include 'includes/macros.inc'
+include 'includes/relocation.inc'
+include 'includes/symbol_table.inc'
+include 'gfx/bin/AOCEGFX1.inc'
+include 'gfx/bin/AOCEGFX2.inc'
+include 'gfx/bin/AOCEAGE1.inc'
+include 'gfx/bin/AOCEAGE2.inc'
+include 'gfx/bin/AOCEAGE3.inc'
+include 'gfx/bin/AOCEAGE4.inc'
+include 'gfx/bin/AOCEUNI1.inc'
+include 'gfx/bin/AOCEUNI2.inc'
+format ti executable 'AOCE'
+include 'includes/app.inc'
 
 start:
-	jp	AoCEStart
-	.db	1
-	.db	16,16				; Cesium icon, made by Pieman7373
-	.db	000h,000h,000h,000h,020h,061h,081h,0A1h,0A1h,0A0h,0A0h,040h,001h,000h,000h,000h
-	.db	000h,000h,000h,020h,061h,0A2h,0C2h,0C1h,0C0h,0A0h,0C0h,061h,021h,021h,021h,000h
-	.db	000h,000h,020h,061h,0A1h,0C1h,0A1h,0A0h,061h,0A1h,0C1h,062h,029h,029h,021h,021h
-	.db	000h,000h,061h,0A1h,0A1h,0A0h,061h,081h,061h,061h,082h,08Ch,04Ah,04Ah,029h,021h
-	.db	000h,020h,060h,0C1h,0A0h,060h,040h,069h,06Ah,06Ah,08Bh,094h,094h,04Ah,049h,021h
-	.db	000h,020h,0A0h,0C2h,081h,040h,021h,06Bh,06Bh,094h,0D6h,0B5h,0B5h,06Bh,049h,021h
-	.db	000h,020h,081h,0C1h,081h,040h,04Ah,04Bh,04Bh,094h,0DEh,0DEh,094h,06Bh,04Ah,021h
-	.db	000h,020h,060h,0A1h,081h,020h,04Bh,04Ah,04Ah,06Bh,0B6h,0DEh,0B5h,06Bh,04Ah,021h
-	.db	000h,020h,040h,060h,060h,041h,06Bh,02Ah,02Ah,04Bh,0B4h,0B5h,0B5h,0B5h,06Ch,029h
-	.db	000h,020h,060h,0A0h,080h,041h,094h,06Bh,04Ah,029h,049h,06Ch,094h,06Bh,04Ah,06Bh
-	.db	000h,0FFh,0FFh,0FFh,0A0h,040h,04Ah,04Ah,04Bh,06Bh,029h,021h,001h,000h,029h,06Bh
-	.db	020h,080h,0FFh,0C0h,0A0h,040h,021h,04Ah,04Ah,06Bh,06Bh,08Ch,06Bh,06Ch,08Ch,029h
-	.db	040h,0A0h,0FFh,0A0h,080h,020h,000h,04Ah,04Ah,04Bh,04Ah,06Bh,06Bh,08Ch,06Bh,000h
-	.db	061h,0A1h,0FFh,060h,040h,000h,000h,021h,04Ah,04Ah,06Bh,08Ch,08Ch,0B4h,06Bh,000h
-	.db	081h,0FFh,0FFh,0FFh,020h,000h,000h,021h,04Ah,04Ah,04Bh,094h,0B5h,0D6h,06Bh,000h
-	.db	081h,081h,040h,040h,000h,000h,000h,000h,021h,029h,04Ah,04Ah,04Ah,06Bh,029h,000h
-	.db	"Age of CEmpires I - By Peter \"PT_\" Tillema", 0
-AoCEStart:
+	app_create
+	
+	ret	nz
+	call	_ChkFindSym
+	jp	_DelVarArc		; delete installer code
+	
+	app_start 'AoCE', '(C) 2017 Peter Tillema', '0.0.0.1', 1
+
 	call	_HomeUp
 	call	_ClrLCDFull
 	call	_RunIndicOff
@@ -47,7 +35,8 @@ AoCEStart:
 ; Check if all the appvars exists
 	ld	hl, GraphicsAppvar1_
 	ld	iyh, 6
-_:	call	_Mov9ToOP1
+CheckGraphicsAppvarsLoop:
+	call	_Mov9ToOP1
 	inc	hl
 	push	hl
 	call	_ChkFindSym
@@ -74,7 +63,7 @@ _:	call	_Mov9ToOP1
 	ld	(hl), de
 	pop	hl
 	dec	iyh
-	jr	nz, -_
+	jr	nz, CheckGraphicsAppvarsLoop
 	
 ; Remove AoCE from UserMem to prevent memory leak, even when crashing
 	ld	hl, NewStartAddr1
@@ -93,34 +82,35 @@ AppvarNotFound:
 	ld	de, -9
 	add	hl, de
 	call	_PutS
-_:	call	_GetCSC
+WaitKeyLoop:
+	call	_GetCSC
 	or	a, a
-	jr	z, -_
+	jr	z, WaitKeyLoop
 	pop	ix
 	ld	iy, flags
-	ret
+	jp	_JForceCmdNoChar
 	
 GraphicsAppvar1_:
-	.db	AppVarObj, "AOCEGFX1", 0
-	.db	AppVarObj, "AOCEGFX2", 0
-	.db	AppVarObj, "AOCEAGE1", 0
-	.db	AppVarObj, "AOCEAGE2", 0
-	.db	AppVarObj, "AOCEAGE3", 0
-	.db	AppVarObj, "AOCEAGE4", 0
-	.db	AppVarObj, "AOCEUNI1", 0
-	.db	AppVarObj, "AOCEUNI2", 0
+	db	AppVarObj, "AOCEGFX1", 0
+	db	AppVarObj, "AOCEGFX2", 0
+	db	AppVarObj, "AOCEAGE1", 0
+	db	AppVarObj, "AOCEAGE2", 0
+	db	AppVarObj, "AOCEAGE3", 0
+	db	AppVarObj, "AOCEAGE4", 0
+	db	AppVarObj, "AOCEUNI1", 0
+	db	AppVarObj, "AOCEUNI2", 0
 GraphicsAppvarNotFound_:
-	.db	"Can't find appvar:", 0
+	db	"Can't find appvar:", 0
 MissingAppVar:
-	.db	"Need"
+	db	"Need"
 LibLoadAppVar:
-	.db	" LibLoad", 0
-	.db	"tiny.cc/clibs", 0
+	db	" LibLoad", 0
+	db	"tiny.cc/clibs", 0
 LoadingMessage:
-	.db	"Loading...", 0
+	db	"Loading...", 0
 	
 NewStartAddr1:
-.org plotSScreen
+org plotSScreen
 NewStartAddr2:
 ; Backup RAM
 	ld	de, (asm_prgm_size)
@@ -130,8 +120,8 @@ NewStartAddr2:
 	sbc	hl, hl
 	ld	(asm_prgm_size), hl
 	di
-	ld.sis	sp, stackBot & 0FFFFh
-	call.lis fUnlockFlash & 0FFFFh
+	ld.sis	sp, stackBot and 0FFFFh
+	call.lis fUnlockFlash and 0FFFFh
 	call	BackupRAM
 	ld	hl, NewStartAddr3
 	ld	de, NewStartAddr4 + 080000h	; Mirror of RAM
@@ -143,7 +133,7 @@ NewStartAddr2:
 #include "routines/flash.asm"
 	
 NewStartAddr3:
-.org $D00002 + 18
+org $D00002 + 18
 NewStartAddr4:
 ; Copy AppvarsPointersTable to $D00002
 	ld	de, 0D00002h
@@ -206,16 +196,13 @@ NewStartAddr4:
 	ld	de, barracks_1_offset
 	call	LoadAgeGraphicsAppvar
 	
-	ld	iy, _IYOffsets
+	ld	iy, iy_base
 	xor	a, a
-	ld	(iy + OFFSET_X), a
-	ld	(iy + OFFSET_Y), a
+	ld	(OFFSET_X), a
+	ld	(OFFSET_Y), a
 	
 ; Copy to cursorImage
-	ld	hl, drawfield_loc
-	ld	de, DrawField
-	ld	bc, DrawFieldEnd - DrawField
-	ldir
+	DrawField.copy
 	
 ; Set some variables and palette
 	ld	hl, vRAM+(320*240)
@@ -226,7 +213,7 @@ NewStartAddr4:
 	ld	bc, _pal_gfx_pal_size
 	ldir
 	
-#if 1 == 1				; Easier debugging if you have a full pink background
+; Needs to be removed before final release :P
 	ld	hl, screenBuffer
 	ld	(hl), 255
 	push	hl
@@ -234,7 +221,6 @@ NewStartAddr4:
 	inc	de
 	ld	bc, 320*240-1
 	ldir
-#endif
 
 MainGameLoop:
 	call	DrawField
@@ -245,9 +231,9 @@ MainGameLoop:
 	or	a, a
 	sbc	hl, de
 	add	hl, de
-	jr	nz, +_
+	jr	nz, .jump
 	ld	hl, vRAM+(320*240)
-_:	ld	(currDrawingBuffer), de
+.jump:	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
 	ld	hl, mpLcdIcr
 	set	2, (hl)
@@ -255,77 +241,78 @@ _:	ld	(currDrawingBuffer), de
 	inc	hl
 	ld	(AmountOfWood), hl
 	call	GetKeyFast
-	ld	iy, _IYOffsets
+	ld	iy, iy_base
 CheckKeys369:				; Check [3], [6], [9]
 	ld	l, 01Ah
 	ld	a, (hl)
-	and	a, (1 << kp3) | (1 << kp6) | (1 << kp9)
+	and	a, (1 shl kp3) or (1 shl kp6) or (1 shl kp9)
 	jp	z, CheckKeys28
-	ScrollFieldRight()
+	ScrollFieldRight
 CheckKey3:
 	bit	kp3, (hl)
 	jr	z, CheckKey9
-	ScrollFieldRight()
-	ScrollFieldDown()
+	ScrollFieldRight
+	ScrollFieldDown
 CheckKey9:
 	bit	kp9, (hl)
 	jr	z, CheckKeys28
-	ScrollFieldRight()
-	ScrollFieldUp()
+	ScrollFieldRight
+	ScrollFieldUp
 CheckKeys28:				; Check [2], [8]
 	ld	l, 018h
 	ld	a, (hl)
-	and	a, (1 << kp2) | (1 << kp8)
+	and	a, (1 shl kp2) or (1 shl kp8)
 	jr	z, CheckKeys147
 CheckKey2:
 	bit	kp2, (hl)
 	jr	z, CheckKey8
-	ScrollFieldDown()
+	ScrollFieldDown
 CheckKey8:
 	bit	kp8, (hl)
 	jr	z, CheckKeys147
-	ScrollFieldUp()
+	ScrollFieldUp
 CheckKeys147:				; Check [1], [4], [7]
 	ld	l, 016h
 	ld	a, (hl)
-	and	a, (1 << kp1) | (1 << kp4) | (1 << kp7)
+	and	a, (1 shl kp1) or (1 shl kp4) or (1 shl kp7)
 	jp	z, CheckClearEnter
-	ScrollFieldLeft()
+	ScrollFieldLeft
 CheckKey1:
 	bit	kp1, (hl)
 	jr	z, CheckKey7
-	ScrollFieldLeft()
-	ScrollFieldDown()
+	ScrollFieldLeft
+	ScrollFieldDown
 CheckKey7:
 	bit	kp7, (hl)
 	jr	z, CheckClearEnter
-	ScrollFieldLeft()
-	ScrollFieldUp()
+	ScrollFieldLeft
+	ScrollFieldUp
 CheckClearEnter:
 	ld	l, 01Ch
 	bit	kpClear, (hl)
 	jp	nz, ForceStopProgram
 	bit	kpEnter, (hl)
 	jr	z, CheckReleaseEnterKey
-	bit	holdDownEnterKey, (iy+AoCEFlags1)
-	set	holdDownEnterKey, (iy+AoCEFlags1)
+	bit	holdDownEnterKey, (AoCEFlags1)
+	set	holdDownEnterKey, (AoCEFlags1)
 	jr	nz, CheckStop
 CreateNewSelectedArea:
-	ld	hl, (iy+CursorX)
-	ld	(iy+SelectedAreaStartX), hl
-	ld	l, (iy+CursorY)
-	ld	(iy+SelectedAreaStartY), l
+	ld	hl, (CursorX)
+	ld	(SelectedAreaStartX), hl
+	ld	l, (CursorY)
+	ld	(SelectedAreaStartY), l
 	jr	CheckStop
 CheckReleaseEnterKey:
-	bit	holdDownEnterKey, (iy+AoCEFlags1)
-	res	holdDownEnterKey, (iy+AoCEFlags1)
+	bit	holdDownEnterKey, (AoCEFlags1)
+	res	holdDownEnterKey, (AoCEFlags1)
 	jr	z, CheckStop
 ParseSelectedArea:
 ; Yay #not :P
 CheckStop:
 	ld	hl, mpLcdRis
-_:	bit	2, (hl)
-	jr	z, -_
+WaitLCDInterrupt:
+	bit	2, (hl)
+	jr	z, WaitLCDInterrupt
 	jp	MainGameLoop
 	
 ForceStopProgramFadeOut:
@@ -347,7 +334,7 @@ CleanupCode:
 	push	hl
 	ld	bc, stackTop - heapBot
 	ldir
-	call.lis fLockFlash & 0FFFFh
+	call.lis fLockFlash and 0FFFFh
 	pop	de
 backupSP = $+1
 	ld	sp, 0
@@ -356,32 +343,28 @@ backupSP = $+1
 	ld	bc, stackTop - heapBot
 	ldir
 	ld	iy, flags
-	jp	_DrawStatusBar
+	call	_DrawStatusBar
+	jp	_JForceCmdNoChar
 CleanupCodeEnd:
     
-#include "gfx/bin/pal_gfx.asm"
-#include "routines/map.asm"
-#include "routines/mainmenu.asm"
-#include "routines/drawGame.asm"
+include "gfx/bin/pal_gfx.asm"
+include "routines/map.asm"
+include "routines/mainmenu.asm"
+include "routines/drawGame.asm"
 ;#include "routines/pathfinding.asm"
-#include "routines/routines.asm"
-#include "routines/drawField.asm"
-#include "data/tables.asm"
-#include "data/data.asm"
+include "routines/routines.asm"
+include "routines/drawField.asm"
+include "data/tables.asm"
+include "data/data.asm"
 
-#include "relocation_table1.asm"
-	.dw	0FFFFh
-#include "relocation_table2.asm"
-	.dw	0FFFFh
-#include "relocation_table3.asm"
-	.dw	0FFFFh
-#include "relocation_table4.asm"
-	.dw	0FFFFh
-#include "relocation_table5.asm"
-	.dw	0FFFFh
-#include "relocation_table6.asm"
-	.dw	0FFFFh
-	
+repeat 6
+RelocationTable#%:
+	irpv relocation, relocation_table#%
+		dl relocation
+	end irpv
+	dw $FFFF
+end repeat
+
 AoCEEnd:
-	
-.echo "Total size: ", AoCEEnd - NewStartAddr4 + NewStartAddr3 - NewStartAddr2 + NewStartAddr1 - start, " bytes"
+
+	app_data

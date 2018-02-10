@@ -1,10 +1,9 @@
 # Commands and tools
-ASSEMBLER ?= spasm
+ASSEMBLER ?= fasmg
 CONVHEX   ?= convhex
 CONVPNG   ?= convpng
 
 # Flags
-ASFLAGS   ?= -E -T -L -I gfx/bin
 CONVFLAGS ?= -x -a
 
 # Sources
@@ -39,21 +38,16 @@ CD         = cd
 endif
 
 APPVARS   := $(call NATIVEPATH,$(GFXDIR)/$(BINDIR)/*.8xv)
-RELOCASM  := relocation_table*.asm
 ROTSRCS   := $(call NATIVEPATH,$(wildcard $(ROTDIR)/*.asm))
 DATSRCS   := $(call NATIVEPATH,$(wildcard $(DATDIR)/*.asm))
 INCSRCS   := $(call NATIVEPATH,$(wildcard $(INCDIR)/*.asm))
 
 # Check dependecies
 all: $(BINDIR) $(BINDIR)/$(TARGET8XP)
- 
-$(BINDIR)/$(TARGET8XP): $(BINDIR)/$(TARGETBIN)
-	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$<) && \
-	$(RM) $(RELOCASM)
 
 # Build the source
-$(BINDIR)/$(TARGETBIN): $(SRC) $(ROTSRCS) $(DATSRCS) $(INCSRCS)
-	@$(ASSEMBLER) $(ASFLAGS) $(call NATIVEPATH,$<) $(call NATIVEPATH,$@)
+$(BINDIR)/$(TARGET8XP): $(SRC) $(ROTSRCS) $(DATSRCS) $(INCSRCS)
+	@$(ASSEMBLER) $(call NATIVEPATH,$<) $(call NATIVEPATH,$@)
 
 # ConvPNG the graphics
 gfx: $(GFXDIR)/$(BINDIR)
@@ -69,6 +63,6 @@ $(GFXDIR)/$(BINDIR):
 	@$(WINCHKDIR) $(call WINCHKPATH,$@) $(MKDIR) $(call NATIVEPATH,$@)
 
 clean:
-	@$(RM) $(call NATIVEPATH,$(addprefix $(BINDIR)/,$(TARGET8XP) $(TARGETBIN) *.8xv *.lst *.lab))
+	@$(RM) $(call NATIVEPATH,$(addprefix $(BINDIR)/,$(TARGET8XP) *.8xv *.lst *.lab))
 
 .PHONY: all gfx clean
