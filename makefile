@@ -1,5 +1,5 @@
 # Commands and tools
-ASSEMBLER ?= fasmg -e 500
+ASSEMBLER ?= fasmg
 CONVHEX   ?= convhex
 CONVPNG   ?= convpng
 
@@ -38,7 +38,6 @@ CD         = cd
 endif
 
 APPVARS   := $(call NATIVEPATH,$(GFXDIR)/$(BINDIR)/*.8xv)
-RELOCASM  := relocation_table*.asm
 ROTSRCS   := $(call NATIVEPATH,$(wildcard $(ROTDIR)/*.asm))
 DATSRCS   := $(call NATIVEPATH,$(wildcard $(DATDIR)/*.asm))
 INCSRCS   := $(call NATIVEPATH,$(wildcard $(INCDIR)/*.asm))
@@ -47,9 +46,7 @@ INCSRCS   := $(call NATIVEPATH,$(wildcard $(INCDIR)/*.asm))
 all: $(BINDIR) $(BINDIR)/$(TARGET8XP)
  
 $(BINDIR)/$(TARGET8XP): $(BINDIR)/$(TARGETBIN)
-	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$<) && \
-	$(RM) $(RELOCASM)
-
+	@$(CONVHEX) $(CONVFLAGS) $(call NATIVEPATH,$<)
 # Build the source
 $(BINDIR)/$(TARGETBIN): $(SRC) $(ROTSRCS) $(DATSRCS) $(INCSRCS)
 	@$(ASSEMBLER) $(call NATIVEPATH,$<) $(call NATIVEPATH,$@)
