@@ -499,11 +499,11 @@ DrawTile_Clipped:
 	lea	de, iy-4
 	ld	c, 10
 	ldir
+DrawTile_Clipped_Stop1 = $
 	add	iy, sp
 	lea	de, iy-6
 	ld	c, 14
 	ldir
-DrawTile_Clipped_Stop1 = $
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
@@ -515,10 +515,6 @@ DrawTile_Clipped_Stop1 = $
 	add	iy, sp
 	lea	de, iy-12
 	ld	c, 26
-	ldir
-	add	iy, sp
-	lea	de, iy-14
-	ld	c, 30
 	ldir
 DrawTile_Clipped_Stop2 = $
 	add	iy, sp
@@ -526,6 +522,10 @@ DrawTile_Clipped_Stop2 = $
 	ld	c, 30
 	ldir
 	add	iy, sp
+	lea	de, iy-14
+	ld	c, 30
+	ldir
+	add	iy, sp
 	lea	de, iy-12
 	ld	c, 26
 	ldir
@@ -533,11 +533,11 @@ DrawTile_Clipped_Stop2 = $
 	lea	de, iy-10
 	ld	c, 22
 	ldir
+DrawTile_Clipped_Stop3 = $
 	add	iy, sp
 	lea	de, iy-8
 	ld	c, 18
 	ldir
-DrawTile_Clipped_Stop3 = $
 	add	iy, sp
 	lea	de, iy-6
 	ld	c, 14

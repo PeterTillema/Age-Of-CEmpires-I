@@ -1,11 +1,3 @@
-AppvarPointers:
-	dl	0
-	dl	0
-	dl	0
-	dl	0
-	dl	0
-	dl	0
-
 TilePointersEnd:
 	r2 dl	grass_offset + 256 - 1
 	r2 dl	tree_stump_1_offset + 256 - 1
