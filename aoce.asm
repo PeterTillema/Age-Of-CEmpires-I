@@ -33,7 +33,7 @@ start:
 	
 ; Check if all the appvars exists
 	ld	hl, GraphicsAppvar1_
-	ld	iyh, 6
+	ld	iyh, 8
 CheckGraphicsAppvarsLoop:
 	call	_Mov9ToOP1
 	inc	hl
@@ -52,7 +52,7 @@ CheckGraphicsAppvarsLoop:
 	add	hl, de
 	inc	hl
 	ex	de, hl
-	ld	a, 6
+	ld	a, 8
 	sub	a, iyh
 	ld	c, a
 	ld	b, 3
@@ -123,7 +123,7 @@ NewStartAddr2:
 	call.lis fUnlockFlash and 0FFFFh
 	call	BackupRAM
 	ld	hl, NewStartAddr3
-	ld	de, NewStartAddr4 + 080000h	; Mirror of RAM
+	ld	de, NewStartAddr4 + RAM_SIZE	; Mirror of RAM
 	ld	bc, AoCEEnd - NewStartAddr4
 	ldir
 	ld	(MapDataPtr), de
@@ -132,12 +132,12 @@ NewStartAddr2:
 #include "routines/flash.asm"
 	
 NewStartAddr3:
-org $D00002 + 18
+org AOCE_RAM_START + 24
 NewStartAddr4:
-; Copy AppvarsPointersTable to $D00002
-	ld	de, 0D00002h
+; Copy AppvarsPointersTable to AOCE_RAM_START
+	ld	de, AOCE_RAM_START
 	ld	hl, cursorImage
-	ld	bc, 18
+	ld	bc, 24
 	ldir
 	
 ; Backup stack
@@ -155,13 +155,16 @@ NewStartAddr4:
 	add	hl, de
 	ld	sp, hl
 	
+; Copy to cursorImage
+	DrawField.copy
+	
 ; Set some pointers
 	ld	hl, (MapDataPtr)
 	ld	de, MAP_SIZE * MAP_SIZE * 2
 	add	hl, de
 	push	hl
 	ex	de, hl
-	ld	hl, (0D00005h)
+	ld	hl, (AOCE_RAM_START + 3)
 	ld	bc, 0
 	ld	c, (hl)
 	inc	hl
@@ -175,7 +178,7 @@ NewStartAddr4:
 	
 ; Get the sprites of the homescreen
 	ld	hl, RelocationTable1
-	ld	bc, (0D00002h)
+	ld	bc, (AOCE_RAM_START + 0)
 	inc	bc			; Skip size bytes
 	inc	bc
 	call	ModifyRelocationTable
@@ -200,11 +203,8 @@ NewStartAddr4:
 	ld	(OFFSET_X), a
 	ld	(OFFSET_Y), a
 	
-; Copy to cursorImage
-	DrawField.copy
-	
 ; Set some variables and palette
-	ld	hl, vRAM+(320*240)
+	ld	hl, vRAM + (lcdWidth * lcdHeight)
 	ld	(currDrawingBuffer), hl
 	ld	(mpLcdBase), hl
 	ld	de, mpLcdPalette
@@ -218,7 +218,7 @@ NewStartAddr4:
 	push	hl
 	pop	de
 	inc	de
-	ld	bc, 320*240-1
+	ld	bc, lcdWidth * lcdHeight - 1
 	ldir
 
 MainGameLoop:
@@ -231,7 +231,7 @@ MainGameLoop:
 	sbc	hl, de
 	add	hl, de
 	jr	nz, .jump
-	ld	hl, vRAM+(320*240)
+	ld	hl, vRAM + (lcdWidth * lcdHeight)
 .jump:	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
 	ld	hl, mpLcdIcr
@@ -324,11 +324,11 @@ CleanupCode:
 	ldir
 	jp	cursorImage + $ + 4 - CleanupCode
 	call	_End
-	ld	de, 0D80000h
-	ld	hl, 03C0000h
+	ld	de, RAM_MIRROR
+	ld	hl, RAM_BACKUP
 	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
 	ldir
-	ld	de, heapBot + 008000h			; Prevent crashing because memory protector
+	ld	de, heapBot + RAM_SIZE			; Prevent crashing because memory protector
 	ld	hl, vRAM - (stackTop - heapBot)
 	push	hl
 	ld	bc, stackTop - heapBot
@@ -338,12 +338,12 @@ CleanupCode:
 backupSP = $+1
 	ld	sp, 0
 	pop	ix
-	ld	hl, 03C0000h + (vRAM - ramStart) - (stackTop - heapBot)
+	ld	hl, RAM_BACKUP + (vRAM - ramStart) - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
 	ldir
 	ld	iy, flags
 	call	_DrawStatusBar
-	jp	_JForceCmdNoChar
+	jp	_JForceCmdNoChar	; Return to TI-OS
 CleanupCodeEnd:
     
 include "gfx/bin/pal_gfx.asm"
@@ -366,4 +366,4 @@ end repeat
 
 AoCEEnd:
 
-	app_data
+	app_data			; Nope, we don't need have any bytes for you sadly :(

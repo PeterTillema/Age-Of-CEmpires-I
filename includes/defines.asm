@@ -1,3 +1,12 @@
+RAM_SIZE                    = 0080000h
+RAM_MIRROR                  = ramStart + RAM_SIZE
+AOCE_RAM_START              = ramStart + 2
+RAM_BACKUP                  = 03C0000h
+AMOUNT_OF_COLUMNS           = 13
+AMOUNT_OF_ROWS              = 35
+TILE_WIDTH                  = 32
+TILE_HEIGHT                 = 16
+
 ;;; Variables
 MAP_SIZE                    = 128
 RESOURCE_MAX                = 200

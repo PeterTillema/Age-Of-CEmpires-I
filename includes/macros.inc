@@ -24,6 +24,26 @@ macro relocate? name, address*
 	end macro
 end macro
 
+virtual
+	jr	z, $
+	load	jr_z: byte from $$
+end virtual
+
+virtual
+	jr	nz, $
+	load	jr_nz: byte from $$
+end virtual
+
+virtual
+	dec	c
+	load	dec_c: byte from $$
+end virtual
+
+virtual
+	jr	$
+	load	jr_: byte from $$
+end virtual
+
 macro ScrollLeft
 	ld	de, (TopLeftXTile)
 	dec	de
@@ -108,8 +128,7 @@ end macro
 macro dispCompressedImage sprite, x, y
 if x = y
 	ld	hl, x
-	push	hl
-	push	hl
+	push	hl, hl
 else
 	ld	l, y
 	push	hl
@@ -128,6 +147,6 @@ end macro
 
 macro randInt x
 	call	_rand
-	ld	bc, x			; 7 types of resources group
+	ld	bc, x
 	call	__idvrmu
 end macro

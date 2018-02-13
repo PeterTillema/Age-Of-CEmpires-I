@@ -52,7 +52,7 @@ PlaceResourceTypeLoop:
 	randInt MAP_SIZE - 2 - 2	; X
 	inc	hl
 	inc	hl
-	ld	h, 160
+	ld	h, lcdWidth / 2
 	mlt	hl
 	add	hl, hl
 	push	hl

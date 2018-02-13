@@ -1,13 +1,13 @@
 assume ADL=0
 
-FlashMbaseStart equ ($ and $FF0000) shr 16
+FlashMbaseStart equ $ shr 16
 fUnlockFlash:
 	ld	a, 08Ch
 	out0	(024h), a
 	ld	c, 4
-	in0	a, (6)
+	in0	a, (006h)
 	or	a, c
-	out0	(6), a
+	out0	(006h), a
 	out0	(028h), c
 ; Disable stack protector
 	xor	a, a
@@ -19,9 +19,9 @@ fUnlockFlash:
 fLockFlash:
 	xor	a, a
 	out0	(028h), a
-	in0	a, (6)
+	in0	a, (006h)
 	res	2, a
-	out0	(6), a
+	out0	(006h), a
 	ld	a, 088h
 	out0	(024h), a
 ; Restore stack protector
@@ -32,6 +32,7 @@ fLockFlash:
 	ld	a, 0D1h
 	out0	(03Ch), a
 	ret.l
+
 assume ADL=1
 
 BackupRAM:
@@ -43,11 +44,11 @@ BackupRAM:
 	call	EraseSector
 	ld	a, 03Ch
 	call	EraseSector
-	ld	hl, 0D00001h
-	ld	(hl), 0A5h
+	ld	hl, ramStart + 1
+	ld	(hl), 0A5h		; Magic bytes <3
 	dec	hl
 	ld	(hl), 05Ah
-	ld	de, 03C0000h
+	ld	de, RAM_BACKUP
 	ld	bc, 0040000h
 	jp	_WriteFlash
 	

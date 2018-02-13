@@ -47,9 +47,6 @@ MapDataPtr:
 	dl	0
 FixedBuildingsPtr:
 	dl	0
-ResourcesPtr:
-	r2 dl	resources_offset
-
 TempData1:
 	rb	8
 PathFindingData:

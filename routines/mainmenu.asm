@@ -5,8 +5,8 @@ MainMenu:
 	ldir
 	ld	hl, vRAM
 	ld	(hl), 094h
-	ld	de, vRAM+1
-	ld	bc, 320*240-1
+	ld	de, vRAM + 1
+	ld	bc, lcdWidth * lcdHeight - 1
 	ldir
 	dispCompressedImage intro_compressed_offset, 72, 32
 	call	fadeIn
@@ -15,7 +15,7 @@ MainMenu:
 	call	fadeOut
 	ld	de, vRAM
 	ld	hl, blackBuffer
-	ld	bc, 320*240*2
+	ld	bc, lcdWidth * lcdHeight * 2
 	ldir
 	dispCompressedImage AoCEI_compressed_offset, 5, 5
 	dispCompressedImage soldier_compressed_offset, 215, 5
