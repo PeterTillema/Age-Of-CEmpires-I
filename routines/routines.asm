@@ -1,6 +1,6 @@
 ;-------------------------------------------------------------------------------
 GetKeyFast:
-	ld	hl, 0F50200h
+	ld	hl, mpKeyRange + (keyModeScanOnce shl 8)
 	ld	(hl), h
 	xor	a, a
 WaitGetKeyFastLoop:
@@ -11,7 +11,7 @@ WaitGetKeyFastLoop:
 ;-------------------------------------------------------------------------------
 GetKeyAnyFast:
 	call	GetKeyFast
-	ld	l, 012h
+	ld	l, keyData + 2
 	ld	a, (hl)
 	inc	l
 	inc	l
@@ -77,7 +77,7 @@ flSkipR:
 	rlca
 	ld	l, a
         ; green
-	ld	e, (ix+1)
+	ld	e, (ix + 1)
 	ld	d, (ix)
 	sla	d
 	rl	e
@@ -115,7 +115,7 @@ flSkipB:
 	or	a, h
 	ld	h, a
 	ld	(iy), h
-	ld	(iy+1), l
+	ld	(iy + 1), l
 	inc	ix
 	inc	ix
 	inc	iy
@@ -220,11 +220,11 @@ _RLETSprite:
 	lea	bc, iy			; bc = 0
 	add	iy, sp			; iy = frame
 ; Clip bottom
-	ld	hl, (iy+9)		; hl = sprite struct
+	ld	hl, (iy + 9)		; hl = sprite struct
 	inc	hl
 	ld	c, (hl)			; bc = height
 	ld	hl, lcdHeight		; hl = ymax
-	ld	de, (iy+6)		; de = y
+	ld	de, (iy + 6)		; de = y
 	sbc	hl, de			; hl = ymax-y
 	ret	m			; m ==> ymax < y || y ~ int_min ==> fully off-screen
 	ret	z			; z ==> ymax == y ==> fully off-screen
@@ -253,12 +253,12 @@ _RLETSprite_SkipClipBottom:
 _RLETSprite_SkipClipTop:
 	ld	(_RLETSprite_Heights_SMC), bc
 	add	hl, de			; hl = y (clipped)
-	ld	(iy+6), l		; write back clipped y
+	ld	(iy + 6), l		; write back clipped y
 ; de = ymin => d = deu = 0
 ; Clip left
-	ld	hl, (iy+9)		; hl = sprite struct
+	ld	hl, (iy + 9)		; hl = sprite struct
 	ld	e, (hl)			; de = width
-	ld	hl, (iy+3)		; hl = x
+	ld	hl, (iy + 3)		; hl = x
 	ld	b, d			; d = b = 0
 	ld	c, 32			; bc = xmin
 	sbc	hl, bc			; hl = x-xmin
@@ -301,10 +301,10 @@ _RLETSprite_SkipClipLeft:
 _RLETSprite_SkipClipRight:
 ; Calculate the pointer to the top-left corner of the sprite in the buffer
 	ld	hl, (currDrawingBuffer)
-	ld	bc, (iy+3)		; bc = x (clipped)
+	ld	bc, (iy + 3)		; bc = x (clipped)
 	add	hl, bc
-	ld	c, (iy+6)		; c = y (clipped)
-	ld	b, lcdWidth/2
+	ld	c, (iy + 6)		; c = y (clipped)
+	ld	b, lcdWidth / 2
 	mlt	bc			; bc = y*160
 	add	hl, bc
 	add	hl, bc
@@ -315,7 +315,7 @@ _RLETSprite_SkipClipRight:
 _RLETSprite_Heights_SMC = $-3
 	ld	d, c
 	push	de			;     (sp) = (height on-screen)<<8|(width on-screen)
-	ld	hl, (iy+9)		; hl = sprite struct
+	ld	hl, (iy + 9)		; hl = sprite struct
 	ld	c, (hl)			; c = width
 	inc	hl
 	inc	hl			; hl = start of sprite data
@@ -348,7 +348,7 @@ _RLETSprite_ClipTop_End:		; a = 0, hl = start of (clipped) sprite data
 	ld	a, iyl			; a = width on-screen
 	jp	z, _RLETSprite_NoClip_Begin
 	cpl				; a = 255-(width on-screen)
-	add	a, lcdWidth-255		; a = (lcdWidth-(width on-screen))&0FFh
+	add	a, lcdWidth - 255	; a = (lcdWidth-(width on-screen))&0FFh
 	rra				; a = (lcdWidth-(width on-screen))/2
 	dec	b
 	jr	z, _RLETSprite_ClipLeftMiddle
@@ -356,7 +356,7 @@ _RLETSprite_ClipTop_End:		; a = 0, hl = start of (clipped) sprite data
 	sbc	a, a
 	djnz	_RLETSprite_ClipLeftMiddleClipRight
 _RLETSprite_MiddleClipRight:
-	sub	a, _RLETSprite_ClipRight_LoopJr_SMC+1-_RLETSprite_Middle_Row_WidthEven
+	sub	a, _RLETSprite_ClipRight_LoopJr_SMC + 1 - _RLETSprite_Middle_Row_WidthEven
 	ld	(_RLETSprite_ClipRight_LoopJr_SMC), a
 _RLETSprite_Middle_Row_WidthOdd:
 	inc	de			; increment buffer pointer
@@ -426,19 +426,19 @@ _RLETSprite_ClipRight_LoopJr_SMC = $-1
 
 _RLETSprite_ClipLeftMiddleClipRight:
 	dec	b			; b = 0
-	sub	a, _RLETSprite_ClipRight_LoopJr_SMC+1-_RLETSprite_ClipLeft_Row_WidthEven
+	sub	a, _RLETSprite_ClipRight_LoopJr_SMC  + 1 - _RLETSprite_ClipLeft_Row_WidthEven
 	ld	(_RLETSprite_ClipRight_LoopJr_SMC), a
-	ld	a, _RLETSprite_Middle_OpaqueCopy-(_RLETSprite_EnterLeft_Opaque_Jr_SMC+1)
-	ld	c, _RLETSprite_Middle_TransSkip-(_RLETSprite_EnterLeft_Trans_Jr_SMC+1)
+	ld	a, _RLETSprite_Middle_OpaqueCopy - (_RLETSprite_EnterLeft_Opaque_Jr_SMC + 1)
+	ld	c, _RLETSprite_Middle_TransSkip - (_RLETSprite_EnterLeft_Trans_Jr_SMC + 1)
 	jr	_RLETSprite_ClipLeftMiddle_DoSMC
 
 _RLETSprite_ClipLeftMiddle:
 	ld	(_RLETSprite_NoClip_HalfRowDelta_SMC), a
 	sbc	a, a
-	sub	a, _RLETSprite_NoClip_LoopJr_SMC+1-_RLETSprite_ClipLeft_Row_WidthEven
+	sub	a, _RLETSprite_NoClip_LoopJr_SMC + 1 - _RLETSprite_ClipLeft_Row_WidthEven
 	ld	(_RLETSprite_NoClip_LoopJr_SMC), a
-	ld	a, _RLETSprite_NoClip_OpaqueCopy-(_RLETSprite_EnterLeft_Opaque_Jr_SMC+1)
-	ld	c, _RLETSprite_NoClip_TransSkip-(_RLETSprite_EnterLeft_Trans_Jr_SMC+1)
+	ld	a, _RLETSprite_NoClip_OpaqueCopy - (_RLETSprite_EnterLeft_Opaque_Jr_SMC + 1)
+	ld	c, _RLETSprite_NoClip_TransSkip - (_RLETSprite_EnterLeft_Trans_Jr_SMC + 1)
 _RLETSprite_ClipLeftMiddle_DoSMC:
 	ld	(_RLETSprite_EnterLeft_Opaque_Jr_SMC), a
 	ld	a, c
@@ -493,16 +493,16 @@ _RLETSprite_NoClip:
 	add	iy, sp
 ; Calculate the pointer to the top-left corner of the sprite in the buffer.
 	ld	hl, (currDrawingBuffer)
-	ld	bc, (iy+3)		; bc = x
+	ld	bc, (iy + 3)		; bc = x
 	add	hl, bc
-	ld	c, (iy+6)		; c = y
-	ld	b, lcdWidth/2
+	ld	c, (iy + 6)		; c = y
+	ld	b, lcdWidth / 2
 	mlt	bc			; bc = y*160
 	add	hl, bc
 	add	hl, bc
 	ex	de, hl			; de = top-left corner of sprite in buffer
 ; Read the sprite width and height.
-	ld	hl, (iy+9)		; hl = sprite struct
+	ld	hl, (iy + 9)		; hl = sprite struct
 	ld	iy, (hl)		; iyh = height, iyl = width
 	ld	a, (hl)			; a = width
 	inc	hl
@@ -513,11 +513,11 @@ _RLETSprite_NoClip:
 _RLETSprite_NoClip_Begin:
 ; Generate the code to advance the buffer pointer to the start of the next row.
 	cpl				; a = 255-width
-	add	a, lcdWidth-255		; a = (lcdWidth-width)&0FFh
+	add	a, lcdWidth - 255	; a = (lcdWidth-width)&0FFh
 	rra				; a = (lcdWidth-width)/2
 	ld	(_RLETSprite_NoClip_HalfRowDelta_SMC), a
 	sbc	a, a
-	sub	a, _RLETSprite_NoClip_LoopJr_SMC+1-_RLETSprite_NoClip_Row_WidthEven
+	sub	a, _RLETSprite_NoClip_LoopJr_SMC + 1 - _RLETSprite_NoClip_Row_WidthEven
 	ld	(_RLETSprite_NoClip_LoopJr_SMC), a
 ; Row loop (if sprite width is odd)
 _RLETSprite_NoClip_Row_WidthOdd:
@@ -570,7 +570,7 @@ LoadAgeGraphicsAppvar:
 	inc	c
 	ld	b, 3
 	mlt	bc
-	ld	hl, 0D00002h
+	ld	hl, AOCE_RAM_START
 	add	hl, bc
 	ld	hl, (hl)
 	inc	hl
@@ -784,7 +784,7 @@ TextXPos_SMC = $+1
 	ld	(TextXPos_SMC), hl
 TextYPos_SMC = $+1
 	ld	hl, 0
-	ld	h, lcdWidth/2
+	ld	h, lcdWidth / 2
 	mlt	hl
 	add	hl, hl
 	add	hl, bc

@@ -1,8 +1,3 @@
-AMOUNT_OF_COLUMNS = 13
-AMOUNT_OF_ROWS    = 35
-TILE_WIDTH        = 32
-TILE_HEIGHT       = 16
-
 relocate DrawField, cursorImage
 
 DrawField:
@@ -10,10 +5,10 @@ DrawField:
 	ld	b, (OFFSET_X)		; We start with the shadow registers active
 	bit	4, b
 	ld	a, TILE_WIDTH / 2
-	ld	c, 028h
+	ld	c, jr_z
 	jr	z, .jump1
 	neg
-	ld	c, 020h
+	ld	c, jr_nz
 .jump1:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
@@ -34,7 +29,7 @@ DrawField:
 	bit	3, e
 	jr	z, .jump2
 	inc	d
-	ld	a, 00Dh
+	ld	a, dec_c
 .jump2:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
@@ -43,14 +38,14 @@ DrawField:
 	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
 	jr	z, .jump3
 	ld	hl, DrawTile_Clipped_Stop3
-	ld	(hl), 018h		; Write "jr"
+	ld	(hl), jr_
 	inc	hl
 	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
 	ld	hl, DrawTile_Clipped_Stop1
 	ld	d, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
 .jump3:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	ld	hl, DrawTile_Clipped_SetJRStop
-	ld	(hl), 018h		; Write "jr"
+	ld	(hl), jr_
 	inc	hl
 	ld	(hl), d
 	
@@ -430,7 +425,7 @@ StopDisplayTiles:
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
 	ld	de, (currDrawingBuffer)
-	ld	hl, (ResourcesPtr)
+	r2 ld	hl, resources_offset + 0
 	ld	bc, resources_width * resources_height
 	ldir
 	ld	hl, blackBuffer

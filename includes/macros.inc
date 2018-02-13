@@ -1,3 +1,49 @@
+repeat 6
+	macro r#% inst&
+		inst
+		local pc
+		pc := $
+		relocation_table#% equ pc - 3
+	end macro
+end repeat
+
+macro relocate? name, address*
+	name.source? := $
+	name.destination? := address
+	org name.destination?
+	macro name.copy?
+		ld	hl, name.source?
+		ld	de, name.destination?
+		ld	bc, name.length?
+		ldir
+	end macro
+	macro end?.relocate?
+		name.length? := $ - name.destination?
+		org name.source? + name.length?
+		purge end?.relocate?
+	end macro
+end macro
+
+virtual
+	jr	z, $
+	load	jr_z: byte from $$
+end virtual
+
+virtual
+	jr	nz, $
+	load	jr_nz: byte from $$
+end virtual
+
+virtual
+	dec	c
+	load	dec_c: byte from $$
+end virtual
+
+virtual
+	jr	$
+	load	jr_: byte from $$
+end virtual
+
 macro ScrollLeft
 	ld	de, (TopLeftXTile)
 	dec	de
@@ -82,8 +128,7 @@ end macro
 macro dispCompressedImage sprite, x, y
 if x = y
 	ld	hl, x
-	push	hl
-	push	hl
+	push	hl, hl
 else
 	ld	l, y
 	push	hl
@@ -102,6 +147,6 @@ end macro
 
 macro randInt x
 	call	_rand
-	ld	bc, x			; 7 types of resources group
+	ld	bc, x
 	call	__idvrmu
 end macro
