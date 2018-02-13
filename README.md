@@ -17,7 +17,7 @@ Here are some errors you might encounter during building, and respectively their
 * Anything else = redownload and rebuild this repo, or ask me on the EFnet IRC channel #aoce-dev (or #cemetech).
 
 ## Run
-To run AoCE, copy `AGE1.8xv`, `AGE2.8xv`, `AGE3.8xv`, `AGE4.8xv`, `AOCE.8xp`, `AOCEGFX1.8xv` and `AOCEGFX2.8xv` to either CEmu or drag them into TI-Connect CE. In both cases, be sure to put them all in archive! The appvars are quite large, so they don't all fit in RAM. From the homescreen, run `Asm(prgmAOCE)` to run AoCE.
+To run AoCE, copy `AOCE.8xp`, `AOCEAGE1.8xv`, `AOCEAGE2.8xv`, `AOCEAGE3.8xv`, `AOCEAGE4.8xv`, `AOCEGFX1.8xv`, `AOCEGFX2.8xv`, `AOCEUNI1.8xv` and `AOCEUNI2.8xv` to either CEmu or drag them into TI-Connect CE. In both cases, be sure to put them all in archive! The appvars are quite large, so they don't all fit in RAM. From the homescreen, run `Asm(prgmAOCE)` to run AoCE.
 
 ### Bugs
 If you found a bug in the latest AoCE from the master branch, be sure to create an issue [here](https://github.com/PeterTillema/Age-Of-CEmpires-I/issues). Note that other branches might not be stable!
