@@ -22,7 +22,7 @@ start:
 	call	_ChkFindSym
 	jp	_DelVarArc		; delete installer code
 	
-	app_start 'AoCE', '(C) 2017 Peter Tillema', '0.0.0.1', 1
+	app_start 'AoCE', '(C) 2017 Peter "PT_" Tillema', '0.0.0.1', 1
 
 	call	_HomeUp
 	call	_ClrLCDFull
