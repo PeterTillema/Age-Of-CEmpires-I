@@ -1,4 +1,4 @@
-relocate DrawField, cursorImage
+relocate DrawField, cursorImage, 1024
 
 DrawField:
 	DrawIsometricTile.copy
@@ -316,8 +316,11 @@ FindNextUnit:
 	mlt	bc
 	ld	iy, (UnitsStackPtr)
 	add	iy, bc
-	ld	a, (iy + UnitType)
-	ld	(hl), a
+	ld	bc, (iy + UnitOffsetX - 1)
+	ld	c, a
+	ld	(hl), bc
+	inc	hl
+	inc	hl
 	inc	hl
 	ld	a, (iy + UnitNext)
 	inc	a
@@ -595,7 +598,7 @@ BackupIY = $-3
 
 end relocate
 
-relocate DrawIsometricTile, mpShaData
+relocate DrawIsometricTile, mpShaData, 64
 
 DrawIsometricTile:
 	ld	sp, -lcdWidth - 2
@@ -638,6 +641,5 @@ DrawIsometricTile:
 	add	hl, bc
 	ex	de, hl
 	jp	DrawIsometricTileSecondPart
-DrawIsometricTileEnd:
 
 end relocate

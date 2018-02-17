@@ -7,7 +7,7 @@ repeat 6
 	end macro
 end repeat
 
-macro relocate? name, address*
+macro relocate? name, address*, maxSize*
 	name.source? := $
 	name.destination? := address
 	org name.destination?
@@ -19,6 +19,11 @@ macro relocate? name, address*
 	end macro
 	macro end?.relocate?
 		name.length? := $ - name.destination?
+		if name.length? > maxSize
+			repeat 1,x:name.length?
+				err 'Too much bytes relocated: ', `x, ' bytes'
+			end repeat
+		end if
 		org name.source? + name.length?
 		purge end?.relocate?
 	end macro

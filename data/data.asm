@@ -52,7 +52,7 @@ UnitsStackPtr:
 FixedBuildingsPtr:
 	dl	0
 UnitsPerTile:
-	rb	5
+	rb	5 * 3
 TempData1:
 	rb	8
 PathFindingData:
