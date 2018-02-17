@@ -171,7 +171,13 @@ NewStartAddr4:
 	ld	b, (hl)
 	inc	hl
 	ldir
-	ld	(FixedBuildingsPtr), de
+	ld	(BuildingsStackPtr), de
+	ld	hl, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT
+	add	hl, de
+	ld	(UnitsStackPtr), hl
+	ld	bc, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT
+	add	hl, bc
+	ld	(FixedBuildingsPtr), hl
 	pop	bc
 	ld	hl, RelocationTable2
 	call	ModifyRelocationTable

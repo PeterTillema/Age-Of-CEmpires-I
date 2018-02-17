@@ -45,6 +45,10 @@ AmountOfBuildings:
 	db	0
 MapDataPtr:
 	dl	0
+BuildingsStackPtr:
+	dl	0
+UnitsStackPtr:
+	dl	0
 FixedBuildingsPtr:
 	dl	0
 TempData1:

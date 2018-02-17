@@ -52,21 +52,27 @@ TILE_STONE_1                = 10
 TILE_STONE_2                = 11
 TILE_TREE                   = 12
 TILE_UNIT                   = TILE_TREE + AMOUNT_OF_TREES
-TILE_BUILDING               = TILE_UNIT + AMOUNT_OF_UNITS
+TILE_BUILDING               = TILE_UNIT + 1
 
-;;; Puppet struct
-puppetType                  = 0
-puppetEvent                 = 1
-puppetX                     = 2
-puppetY                     = 3
-puppetHealth                = 4
-puppetHitpoints             = 5
-puppetPath                  = 6
+;;; Unit struct
+SIZEOF_UNIT_STRUCT          = 9
+UnitType                    = 0
+UnitEvent                   = 1
+UnitHealth                  = 2
+UnitHitpoints               = 3
+UnitPath                    = 4
+UnitNext                    = 7
+UnitPrev                    = 8
+
+;;; Building struct
+SIZEOF_BUILDING_STRUCT      = 2
+BuildingHealth              = 0
+BuildingHitpoints           = 1       ; Useful for towers and castle
 
 ;;; Flags
 holdDownEnterKey            = 0
 
-;;; Pathfinding data and =ates
+;;; Pathfinding data and equates
 PFOpenedList                = pixelShadow
 PFClosedList                = pixelShadow + (9*8*4)
 PFStartX                    = 0
