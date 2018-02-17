@@ -92,6 +92,7 @@ DisplayEachRowLoop:			; Display X rows
 ;   HL  = pointer to tile/black tile
 ;   A'  = row index
 ;   B'  = column index
+;   BC' = amount of tiles to be added when changing row
 ;   DE' = x index tile
 ;   HL' = pointer to map data
 ;   IX  = y index tile
@@ -139,8 +140,7 @@ TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
 	sub	a, TILE_UNIT - TILE_TREE
 	jr	c, DisplayTileWithTree
-	sub	a, TILE_BUILDING - TILE_UNIT
-	jp	c, DisplayUnit
+	jp	z, DisplayUnits
 	jr	DisplayBuilding
 	
 TileIsOutOfField:
@@ -292,7 +292,8 @@ BackupIY3 = $+2
 	ld	iy, 0
 	jr	SkipDrawingOfTileExx
 	
-DisplayUnit:
+DisplayUnits:
+; Display them units!
 
 DrawIsometricTileSecondPart:
 	lddr
