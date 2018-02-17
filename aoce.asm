@@ -109,7 +109,7 @@ LoadingMessage:
 	db	"Loading...", 0
 	
 NewStartAddr1:
-org plotSScreen
+org plotSScreen + 2				; We use the 2 bytes from SPS at plotSScreen
 NewStartAddr2:
 ; Backup RAM
 	ld	de, (asm_prgm_size)
@@ -119,7 +119,7 @@ NewStartAddr2:
 	sbc	hl, hl
 	ld	(asm_prgm_size), hl
 	di
-	ld.sis	sp, stackBot and 0FFFFh
+	ld.sis	sp, NewStartAddr2 and 0FFFFh
 	call.lis fUnlockFlash and 0FFFFh
 	call	BackupRAM
 	ld	hl, NewStartAddr3
