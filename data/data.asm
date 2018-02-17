@@ -51,6 +51,8 @@ UnitsStackPtr:
 	dl	0
 FixedBuildingsPtr:
 	dl	0
+UnitsPerTile:
+	rb	5
 TempData1:
 	rb	8
 PathFindingData:

@@ -55,7 +55,7 @@ TILE_UNIT                   = TILE_TREE + AMOUNT_OF_TREES
 TILE_BUILDING               = TILE_UNIT + 1
 
 ;;; Unit struct
-SIZEOF_UNIT_STRUCT          = 9
+SIZEOF_UNIT_STRUCT          = 11
 UnitType                    = 0
 UnitEvent                   = 1
 UnitHealth                  = 2
@@ -63,6 +63,8 @@ UnitHitpoints               = 3
 UnitPath                    = 4
 UnitNext                    = 7
 UnitPrev                    = 8
+UnitOffsetX                 = 9
+UnitOffsetY                 = 10
 
 ;;; Building struct
 SIZEOF_BUILDING_STRUCT      = 2

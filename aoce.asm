@@ -109,7 +109,7 @@ LoadingMessage:
 	db	"Loading...", 0
 	
 NewStartAddr1:
-org plotSScreen + 2				; We use the 2 bytes from SPS at plotSScreen
+org plotSScreen + 2			; We use the 2 bytes from SPS at plotSScreen
 NewStartAddr2:
 ; Backup RAM
 	ld	de, (asm_prgm_size)
@@ -132,7 +132,7 @@ NewStartAddr2:
 #include "routines/flash.asm"
 	
 NewStartAddr3:
-org AOCE_RAM_START + 24
+org AOCE_RAM_START + 24			; 24 bytes from the 8 appvar pointers
 NewStartAddr4:
 ; Copy AppvarsPointersTable to AOCE_RAM_START
 	ld	de, AOCE_RAM_START

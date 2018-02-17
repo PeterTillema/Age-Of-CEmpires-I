@@ -49,6 +49,13 @@ DrawField:
 	inc	hl
 	ld	(hl), d
 	
+	sbc	hl, hl
+	add	hl, sp
+	ld	(TempSP2), hl
+	ld	(TempSP3), hl
+	ld	(TempSP4), hl
+	ld	(TempSP5), hl
+	
 	set	4, e			; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2
 	mlt	de
@@ -79,9 +86,6 @@ DrawField:
 	ld	bc, (MapDataPtr)
 	add	hl, bc
 	ld	a, AMOUNT_OF_ROWS	; Last X rows only trees/buildings
-	ld	(TempSP2), sp
-	ld	(TempSP3), sp
-	ld	(TempSP4), sp
 	exx
 DisplayEachRowLoopExx:
 	exx
@@ -141,6 +145,7 @@ TileDrawingRoutinePtr1 = $+1
 	sub	a, TILE_UNIT - TILE_TREE
 	jr	c, DisplayTileWithTree
 	jp	z, DisplayUnits
+	dec	a
 	jr	DisplayBuilding
 	
 TileIsOutOfField:
@@ -290,10 +295,41 @@ TempSP4 = $+1
 	call	_RLETSprite		; No need to pop
 BackupIY3 = $+2
 	ld	iy, 0
-	jr	SkipDrawingOfTileExx
+	jp	SkipDrawingOfTileExx
 	
 DisplayUnits:
 ; Display them units!
+	ld	(BackupIY4), iy
+	ld	iy, iy_base
+TempSP5 = $+1
+	ld	sp, 0
+	ld	e, 5			; Amount of units at the tile
+	exx
+	inc	hl
+	ld	a, (hl)			; Unit index
+	dec	hl
+	exx
+	ld	hl, UnitsPerTile
+FindNextUnit:
+	ld	c, a
+	ld	b, SIZEOF_UNIT_STRUCT
+	mlt	bc
+	ld	iy, (UnitsStackPtr)
+	add	iy, bc
+	ld	a, (iy + UnitType)
+	ld	(hl), a
+	inc	hl
+	ld	a, (iy + UnitNext)
+	inc	a
+	jr	z, DisplayUnitsAtTile
+	dec	a
+	dec	e
+	jr	nz, FindNextUnit
+DisplayUnitsAtTile:
+	
+BackupIY4 = $+2
+	ld	iy, 0
+	jr	SkipDrawingOfTileExx
 
 DrawIsometricTileSecondPart:
 	lddr
