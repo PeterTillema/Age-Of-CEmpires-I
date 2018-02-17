@@ -23,6 +23,10 @@ macro relocate? name, address*, maxSize*
 			repeat 1,x:name.length?
 				err 'Too much bytes relocated: ', `x, ' bytes'
 			end repeat
+		else
+			repeat 1,x:name.length?
+				display 'Relocation used ', `x, ' bytes', 10
+			end repeat
 		end if
 		org name.source? + name.length?
 		purge end?.relocate?

@@ -58,7 +58,6 @@ TempData1:
 PathFindingData:
 	rb	20
 	
-	
 virtual at iy
 	TopLeftXTile:			dl -10
 	TopLeftYTile:			dl -3
@@ -73,6 +72,17 @@ virtual at iy
 	load iy_data: $ - $$ from $$
 end virtual
 iy_base db iy_data
+
+TempUnits:
+	db	1, 0, 100, 5
+	dl	0
+	db	1, 255
+	db	1, 1
+	
+	db	1, 0, 100, 5
+	dl	0
+	db	255, 255
+	db	2, 2
 
 ResourcesType1:
 	db	0, 1, 0

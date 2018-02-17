@@ -146,7 +146,7 @@ TileDrawingRoutinePtr1 = $+1
 	jr	c, DisplayTileWithTree
 	jp	z, DisplayUnits
 	dec	a
-	jr	DisplayBuilding
+	jp	DisplayBuilding
 	
 TileIsOutOfField:
 	exx
@@ -165,7 +165,7 @@ TileOnlyDisplayBuilding:
 	ld	a, (hl)
 	sub	a, TILE_BUILDING
 	jp	c, SkipDrawingOfTile
-	jr	DisplayBuildingExx
+	jp	DisplayBuildingExx
 	
 DisplayTileWithTree:
 ; Inputs:
@@ -222,79 +222,6 @@ TempSP3 = $+1
 DontDisplayTree:
 	ld	iy, 0
 BackupIY2 = $-3
-	jp	SkipDrawingOfTileExx
-	
-DisplayBuildingExx:
-	exx
-DisplayBuilding:
-; Inputs:
-;   A' = row index
-;   B' = column index
-;   A  = building index
-
-; Y coordinate: A' * 8 + 17 - building_height
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
-	ld	c, a
-	ld	b, 3
-	mlt	bc
-BuildingsTablePointer = $+1		; Yay, ages! :D
-	ld	hl, BuildingsAge1
-	add	hl, bc
-	ld	hl, (hl)
-	ld	b, (hl)
-	ld	(BackupIY3), iy
-	ld	iy, iy_base
-TempSP4 = $+1
-	ld	sp, 0
-	push	hl			; Sprite struct
-	ex	af, af'
-	ld	c, a			; C = row index
-	ex	af, af'
-	ld	a, AMOUNT_OF_ROWS + 1
-	sub	a, c
-	ld	e, a
-	ld	d, TILE_HEIGHT / 2 / 2
-	mlt	de
-	inc	hl
-	ld	a, (hl)
-	ld	hl, 17
-	add	hl, de
-	add	hl, de
-	ld	e, (OFFSET_Y)
-	add	hl, de
-	ld	e, a
-	sbc	hl, de
-	push	hl			; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS - 2
-	exx
-	sub	a, b
-	exx
-	sbc	hl, hl
-	ld	l, a
-	add	hl, hl
-	add	hl, hl
-	add	hl, hl
-	add	hl, hl
-	add	hl, hl
-	ld	e, (OFFSET_X)
-	add	hl, de
-	ld	a, b
-	bit	0, c
-	jr	nz, .jump
-	bit	4, e
-	ld	e, TILE_WIDTH / 2
-	add	hl, de
-	jr	z, .jump
-	sla	e
-	sbc	hl, de
-.jump:	sub	a, 30
-	srl	a
-	ld	e, a
-	sbc	hl, de
-	push	hl			; X coordinate
-	call	_RLETSprite		; No need to pop
-BackupIY3 = $+2
-	ld	iy, 0
 	jp	SkipDrawingOfTileExx
 	
 DisplayUnits:
@@ -643,3 +570,76 @@ DrawIsometricTile:
 	jp	DrawIsometricTileSecondPart
 
 end relocate
+
+DisplayBuildingExx:
+	exx
+DisplayBuilding:
+; Inputs:
+;   A' = row index
+;   B' = column index
+;   A  = building index
+
+; Y coordinate: A' * 8 + 17 - building_height
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
+	ld	c, a
+	ld	b, 3
+	mlt	bc
+BuildingsTablePointer = $+1		; Yay, ages! :D
+	ld	hl, BuildingsAge1
+	add	hl, bc
+	ld	hl, (hl)
+	ld	b, (hl)
+	ld	(BackupIY3), iy
+	ld	iy, iy_base
+TempSP4 = $+1
+	ld	sp, 0
+	push	hl			; Sprite struct
+	ex	af, af'
+	ld	c, a			; C = row index
+	ex	af, af'
+	ld	a, AMOUNT_OF_ROWS + 1
+	sub	a, c
+	ld	e, a
+	ld	d, TILE_HEIGHT / 2 / 2
+	mlt	de
+	inc	hl
+	ld	a, (hl)
+	ld	hl, 17
+	add	hl, de
+	add	hl, de
+	ld	e, (OFFSET_Y)
+	add	hl, de
+	ld	e, a
+	sbc	hl, de
+	push	hl			; Y coordinate
+	ld	a, AMOUNT_OF_COLUMNS - 2
+	exx
+	sub	a, b
+	exx
+	sbc	hl, hl
+	ld	l, a
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	ld	e, (OFFSET_X)
+	add	hl, de
+	ld	a, b
+	bit	0, c
+	jr	nz, .jump
+	bit	4, e
+	ld	e, TILE_WIDTH / 2
+	add	hl, de
+	jr	z, .jump
+	sla	e
+	sbc	hl, de
+.jump:	sub	a, 30
+	srl	a
+	ld	e, a
+	sbc	hl, de
+	push	hl			; X coordinate
+	call	_RLETSprite		; No need to pop
+BackupIY3 = $+2
+	ld	iy, 0
+	jp	SkipDrawingOfTileExx

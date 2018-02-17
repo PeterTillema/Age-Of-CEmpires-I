@@ -149,14 +149,7 @@ LoadMap:
 	call	EraseArea
 	printString LoadingMapMessage, 5, 112
 	ld	hl, (MapDataPtr)
+	ld	(hl), TILE_UNIT
+	inc	hl
 	ld	(hl), 0
-	inc	hl
-	inc	hl
-	ld	(hl), 0
-	ld	bc, (MAP_SIZE - 1) * 2
-	add	hl, bc
-	ld	(hl), 0
-	inc	hl
-	inc	hl
-	ld	(hl), TILE_BUILDING + 5
 	ret

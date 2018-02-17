@@ -226,6 +226,10 @@ NewStartAddr4:
 	inc	de
 	ld	bc, lcdWidth * lcdHeight - 1
 	ldir
+	ld	hl, TempUnits		; Temp unit
+	ld	de, (UnitsStackPtr)
+	ld	bc, SIZEOF_UNIT_STRUCT * 2
+	ldir
 
 MainGameLoop:
 	call	DrawField
