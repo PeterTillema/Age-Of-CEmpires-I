@@ -5,15 +5,14 @@
 This is a TI-84 Plus CE clone of the popular game Age of Empires 2, written in Assembly.
 
 ## Build
-To build AoCE, be sure to download and install the [C toolchain](https://github.com/ce-programming/toolchain/releases/latest) and [MinGW](http://www.mingw.org/). After that, run `make gfx` from the command line to build the graphics, and then `make` to build AoCE.
+To build AoCE, download and install the latest [C toolchain](https://github.com/ce-programming/toolchain/releases/latest). From the root project directory, run `make gfx` to build the graphics, and then `make` to build AoCE.
 
 ### Troubleshooting
 Here are some errors you might encounter during building, and respectively their solutions.
-* *`make` is not recognized as an internal or external command, operable program or batch file* = install MinGW.
+* *`make` is not recognized as an internal or external command, operable program or batch file* = update/download the C toolchain.
 * *`fasmg` is not recognized as an internal or external command, operable program or batch file* = update/download the C toolchain.
 * *`convpng` is not recognized as an internal or external command, operable program or batch file* = update/download the C toolchain.
 * *`convhex` is not recognized as an internal or external command, operable program or batch file* = update/download the C toolchain.
-* *Opened convpng.ini \ [error] unknown command #X (line Y)* = update the C toolchain. If that doesn't work, build the latest ConvPNG from [here](https://github.com/mateoconlechuga/convpng) and put it in the `gfx` folder.
 * Anything else = redownload and rebuild this repo, or ask me on the EFnet IRC channel #aoce-dev (or #cemetech).
 
 ## Run
