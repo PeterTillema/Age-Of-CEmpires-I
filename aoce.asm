@@ -65,11 +65,8 @@ CheckGraphicsAppvarsLoop:
 	jr	nz, CheckGraphicsAppvarsLoop
 	
 ; Remove AoCE from UserMem to prevent memory leak, even when crashing
-	ld	hl, NewStartAddr1
-	ld	de, NewStartAddr2
-	ld	bc, AoCEEnd - NewStartAddr4 + NewStartAddr3 - NewStartAddr2
-	ldir
-	jp	NewStartAddr2
+	AoCE_plotSScreen.copy
+	jp	AoCE_plotSScreen_
 	
 AppvarNotFound:
 	call	_HomeUp
@@ -108,9 +105,9 @@ LibLoadAppVar:
 LoadingMessage:
 	db	"Loading...", 0
 	
-NewStartAddr1:
-org plotSScreen + 2			; We use the 2 bytes from SPS at plotSScreen
-NewStartAddr2:
+relocate AoCE_plotSScreen, plotSScreen + 2, 69060	; We use the 2 bytes from SPS at plotSScreen
+
+AoCE_plotSScreen_:
 ; Backup RAM
 	ld	de, (asm_prgm_size)
 	ld	hl, UserMem
@@ -119,21 +116,18 @@ NewStartAddr2:
 	sbc	hl, hl
 	ld	(asm_prgm_size), hl
 	di
-	ld.sis	sp, NewStartAddr2 and 0FFFFh
+	ld.sis	sp, AoCE_plotSScreen_ and 0FFFFh
 	call.lis fUnlockFlash and 0FFFFh
 	call	BackupRAM
-	ld	hl, NewStartAddr3
-	ld	de, NewStartAddr4 + RAM_SIZE	; Mirror of RAM
-	ld	bc, AoCEEnd - NewStartAddr4
-	ldir
+	AoCE_RAM.copy
 	ld	(MapDataPtr), de
-	jp	NewStartAddr4
+	jp	AoCE_RAM_
 	
 #include "routines/flash.asm"
+
+relocate AoCE_RAM, AOCE_RAM_START + RAM_SIZE + 24, 100000	; 24 bytes from the 8 appvar pointers
+AoCE_RAM_:
 	
-NewStartAddr3:
-org AOCE_RAM_START + 24			; 24 bytes from the 8 appvar pointers
-NewStartAddr4:
 ; Copy AppvarsPointersTable to AOCE_RAM_START
 	ld	de, AOCE_RAM_START
 	ld	hl, cursorImage
@@ -155,7 +149,6 @@ NewStartAddr4:
 	add	hl, de
 	ld	sp, hl
 	
-; Copy to cursorImage
 	DrawField.copy
 	
 ; Set some pointers
@@ -204,21 +197,20 @@ NewStartAddr4:
 	ld	de, barracks_1_offset
 	call	LoadAgeGraphicsAppvar
 	
+; Set some variables and the palette
 	ld	iy, iy_base
 	xor	a, a
 	ld	(OFFSET_X), a
 	ld	(OFFSET_Y), a
-	
-; Set some variables and palette
-	ld	hl, vRAM + (lcdWidth * lcdHeight)
-	ld	(currDrawingBuffer), hl
-	ld	(mpLcdBase), hl
 	ld	de, mpLcdPalette
 	ld	hl, _pal_gfx_pal
 	ld	bc, _pal_gfx_pal_size
 	ldir
 	
-; Needs to be removed before final release :P
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	ld	hl, screenBuffer
+	ld	(currDrawingBuffer), hl
+	ld	(mpLcdBase), hl
 	ld	hl, screenBuffer
 	ld	(hl), 255
 	push	hl
@@ -230,6 +222,7 @@ NewStartAddr4:
 	ld	de, (UnitsStackPtr)
 	ld	bc, SIZEOF_UNIT_STRUCT * 2
 	ldir
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 MainGameLoop:
 	call	DrawField
@@ -241,7 +234,7 @@ MainGameLoop:
 	sbc	hl, de
 	add	hl, de
 	jr	nz, .jump
-	ld	hl, vRAM + (lcdWidth * lcdHeight)
+	ld	hl, screenBuffer
 .jump:	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
 	ld	hl, mpLcdIcr
@@ -267,7 +260,7 @@ CheckKey9:
 	jr	z, CheckKeys28
 	ScrollFieldRight
 	ScrollFieldUp
-CheckKeys28:				; Check [2], [8]
+CheckKeys28:				; Check [2], [8] (5 does nothing)
 	ld	l, 018h
 	ld	a, (hl)
 	and	a, (1 shl kp2) or (1 shl kp8)
@@ -299,25 +292,24 @@ CheckKey7:
 CheckClearEnter:
 	ld	l, 01Ch
 	bit	kpClear, (hl)
-	jp	nz, ForceStopProgram
-	bit	kpEnter, (hl)
-	jr	z, CheckReleaseEnterKey
-	bit	holdDownEnterKey, (AoCEFlags1)
-	set	holdDownEnterKey, (AoCEFlags1)
-	jr	nz, CheckStop
-CreateNewSelectedArea:
-	ld	hl, (CursorX)
-	ld	(SelectedAreaStartX), hl
-	ld	l, (CursorY)
-	ld	(SelectedAreaStartY), l
-	jr	CheckStop
-CheckReleaseEnterKey:
-	bit	holdDownEnterKey, (AoCEFlags1)
-	res	holdDownEnterKey, (AoCEFlags1)
-	jr	z, CheckStop
-ParseSelectedArea:
-; Yay #not :P
-CheckStop:
+	jr	nz, ForceStopProgram
+	;bit	kpEnter, (hl)
+	;jr	z, CheckReleaseEnterKey
+	;bit	holdDownEnterKey, (AoCEFlags1)
+	;set	holdDownEnterKey, (AoCEFlags1)
+	;jr	nz, CheckStop
+;CreateNewSelectedArea:
+	;ld	hl, (CursorX)
+	;ld	(SelectedAreaStartX), hl
+	;ld	l, (CursorY)
+	;ld	(SelectedAreaStartY), l
+	;jr	CheckStop
+;CheckReleaseEnterKey:
+	;bit	holdDownEnterKey, (AoCEFlags1)
+	;res	holdDownEnterKey, (AoCEFlags1)
+	;jr	z, CheckStop
+;ParseSelectedArea:
+;CheckStop:
 	ld	hl, mpLcdRis
 WaitLCDInterrupt:
 	bit	2, (hl)
@@ -374,6 +366,8 @@ RelocationTable#%:
 	dw $FFFF
 end repeat
 
-AoCEEnd:
+end relocate
+
+end relocate
 
 	app_data			; Nope, we don't need have any bytes for you sadly :(

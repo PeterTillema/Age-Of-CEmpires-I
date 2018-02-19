@@ -17,7 +17,7 @@ MAX_AMOUNT_BUILDINGS        = 120
 
 ;;; Pointers
 currDrawingBuffer           = 0E30014h
-screenBuffer                = vRAM+(320*240)
+screenBuffer                = vRAM + (lcdWidth * lcdHeight)
 blackBuffer                 = 0E50000h
 
 ;;; Keypresses
