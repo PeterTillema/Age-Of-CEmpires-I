@@ -13,7 +13,7 @@ Here are some errors you might encounter during building, and respectively their
 * *`fasmg` is not recognized as an internal or external command, operable program or batch file* = update/download the C toolchain.
 * *`convpng` is not recognized as an internal or external command, operable program or batch file* = update/download the C toolchain.
 * *`convhex` is not recognized as an internal or external command, operable program or batch file* = update/download the C toolchain.
-* Anything else = redownload and rebuild this repo, or ask me on the EFnet IRC channel #aoce-dev (or #cemetech).
+* Anything else = redownload and rebuild this repo, or [ask me](http://chat.efnet.org:9090/?nick=AoCEuser&channels=%23aoce-dev&Login=Login) on the EFnet IRC channel #aoce-dev (or #cemetech).
 
 ## Run
 To run AoCE, copy `AOCE.8xp`, `AOCEAGE1.8xv`, `AOCEAGE2.8xv`, `AOCEAGE3.8xv`, `AOCEAGE4.8xv`, `AOCEGFX1.8xv`, `AOCEGFX2.8xv`, `AOCEUNI1.8xv` and `AOCEUNI2.8xv` to either CEmu or drag them into TI-Connect CE. In both cases, be sure to put them all in archive! The appvars are quite large, so they don't all fit in RAM. From the homescreen, run `Asm(prgmAOCE)` to run AoCE.
