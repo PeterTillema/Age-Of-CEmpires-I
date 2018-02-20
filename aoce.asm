@@ -22,7 +22,7 @@ start:
 	call	_ChkFindSym
 	jp	_DelVarArc		; delete installer code
 	
-	app_start 'AoCE', '(C) 2017 Peter "PT_" Tillema', '0.0.0.1', 1
+	app_start 'AoCE', '(C) 2018 Peter "PT_" Tillema', '0.0.0.1', 1 ;it's 2018, get a move on! :P
 
 	call	_HomeUp
 	call	_ClrLCDFull
@@ -103,7 +103,7 @@ LibLoadAppVar:
 	db	" LibLoad", 0
 	db	"tiny.cc/clibs", 0
 LoadingMessage:
-	db	"Loading...", 0
+	db	"Loading...", 0 ;why not something better, like 'turning the clock back...', etc? :P
 	
 relocate AoCE_plotSScreen, plotSScreen + 2, 69060	; We use the 2 bytes from SPS at plotSScreen
 
