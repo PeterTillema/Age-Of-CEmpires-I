@@ -22,13 +22,11 @@ start:
 	call	_ChkFindSym
 	jp	_DelVarArc		; delete installer code
 	
-	app_start 'AoCE', '(C) 2018 Peter "PT_" Tillema', '0.0.0.1', 1 ;it's 2018, get a move on! :P
+	app_start 'AoCE', '(C) 2018 Peter "PT_" Tillema', '0.0.0.1', 1
 
 	call	_HomeUp
 	call	_ClrLCDFull
 	call	_RunIndicOff
-	ld	hl, LoadingMessage
-	call	_PutS
 	push	ix
 	
 ; Check if all the appvars exists
@@ -63,6 +61,9 @@ CheckGraphicsAppvarsLoop:
 	pop	hl
 	dec	iyh
 	jr	nz, CheckGraphicsAppvarsLoop
+	
+	ld	hl, LoadingMessage
+	call	_PutS
 	
 ; Remove AoCE from UserMem to prevent memory leak, even when crashing
 	AoCE_plotSScreen.copy
@@ -103,7 +104,7 @@ LibLoadAppVar:
 	db	" LibLoad", 0
 	db	"tiny.cc/clibs", 0
 LoadingMessage:
-	db	"Loading...", 0 ;why not something better, like 'turning the clock back...', etc? :P
+	db	"One second, we're going   back to the Middle Ages...", 0
 	
 relocate AoCE_plotSScreen, plotSScreen + 2, 69060	; We use the 2 bytes from SPS at plotSScreen
 
