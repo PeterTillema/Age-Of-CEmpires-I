@@ -13,6 +13,10 @@ DrawField:
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
 	
+	scf
+	sbc	hl, hl
+	ld	(hl), 2
+	
 	ld	hl, DrawIsometricTile
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
@@ -104,20 +108,20 @@ DisplayEachRowLoop:			; Display X rows
 ;   SP  = -SCREEN_WIDTH + offset
 
 startingPosition = $+2			; Here are the shadow registers active
-	ld	iy, 0
+	ld	iy, 0			; Advance to the next row
 	ld	bc, (TILE_HEIGHT / 2) * lcdWidth
 	add	iy, bc
 	ld	(startingPosition), iy
-	bit	0, a
+	bit	0, a			; Check if we need to add half a tile to it
 	jr	nz, NoOffsetAtStart
 TopRowLeftOrRight = $+2
 	lea	iy, iy + 0
 NoOffsetAtStart:
 	ex	af, af'
 	ld	a, AMOUNT_OF_COLUMNS
-	ld	bc, (-MAP_SIZE + 1) * 2
+	ld	bc, (-MAP_SIZE + 1) * 2	; How much to advance to the next row in the map
 DisplayTile:				; Display X tiles in a row
-	ld	b, a
+	ld	b, a			; Check if we only need to display buildings (at the left/right)
 	cp	a, AMOUNT_OF_COLUMNS - 1
 	jr	nc, TileOnlyDisplayBuilding
 	cp	a, 3
@@ -129,24 +133,22 @@ DisplayTile:				; Display X tiles in a row
 	or	a, d
 	or	a, ixh
 	jr	nz, TileIsOutOfField
-	or	a, (hl)			; Get the tile index
+	or	a, (hl)			; Tile index
 	jp	z, SkipDrawingOfTile	; Tile is part of a building, which will be overwritten later
 	exx				; Here are the main registers active
-	ld	c, a
+	ld	c, a			; Get the pointer to the tile
 	ld	b, 3
 	mlt	bc
 TilePointersSMC = $+1
-	ld	hl, TilePointersEnd - 3
+	ld	hl, TilePointersEnd - 3	; The clipped tiles needs different pointers, so this pointer will be modified after X rows
 	add	hl, bc
-	ld	hl, (hl)		; Pointer to the tile/tree/building
-	sub	a, TILE_TREE
+	ld	hl, (hl)
+	sub	a, TILE_TREE		; Check if it's a tile (with unit)
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
-	sub	a, TILE_UNIT - TILE_TREE
-	jr	c, DisplayTileWithTree
-	jp	z, DisplayUnits
-	dec	a
-	jp	DisplayBuilding
+	sub	a, TILE_BUILDING - TILE_TREE
+	jr	c, DisplayTileWithTree	; It's a tree
+	jp	DisplayBuilding		; It's a building
 	
 TileIsOutOfField:
 	exx
@@ -155,7 +157,7 @@ TileDrawingRoutinePtr2 = $+1
 	jp	DrawIsometricTile	; This will be modified to the clipped version after X rows
 	
 TileOnlyDisplayBuilding:
-	ld	a, e
+	ld	a, e			; Check if out of field
 	or	a, ixl
 	add	a, a
 	sbc	a, a
@@ -163,7 +165,7 @@ TileOnlyDisplayBuilding:
 	or	a, ixh
 	jp	nz, SkipDrawingOfTile
 	ld	a, (hl)
-	sub	a, TILE_BUILDING
+	sub	a, TILE_BUILDING	; Check if it's a building
 	jp	c, SkipDrawingOfTile
 	jp	DisplayBuildingExx
 	
@@ -176,7 +178,7 @@ DisplayTileWithTree:
 ; Y coordinate: A' * 8 + 17 - tree_height
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 
-	ld	(BackupIY2), iy
+	ld	(BackupIY2), iy		; Backup IY, it's quite useful
 	ld	iy, iy_base
 TempSP3 = $+1
 	ld	sp, 0
@@ -223,43 +225,6 @@ DontDisplayTree:
 	ld	iy, 0
 BackupIY2 = $-3
 	jp	SkipDrawingOfTileExx
-	
-DisplayUnits:
-; Display them units!
-	ld	(BackupIY4), iy
-	ld	iy, iy_base
-TempSP5 = $+1
-	ld	sp, 0
-	ld	e, 5			; Amount of units at the tile
-	exx
-	inc	hl
-	ld	a, (hl)			; Unit index
-	dec	hl
-	exx
-	ld	hl, UnitsPerTile
-FindNextUnit:
-	ld	c, a
-	ld	b, SIZEOF_UNIT_STRUCT
-	mlt	bc
-	ld	iy, (UnitsStackPtr)
-	add	iy, bc
-	ld	bc, (iy + UnitOffsetX - 1)
-	ld	c, a
-	ld	(hl), bc
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	a, (iy + UnitNext)
-	inc	a
-	jr	z, DisplayUnitsAtTile
-	dec	a
-	dec	e
-	jr	nz, FindNextUnit
-DisplayUnitsAtTile:
-	
-BackupIY4 = $+2
-	ld	iy, 0
-	jr	SkipDrawingOfTileExx
 
 DrawIsometricTileSecondPart:
 	lddr
@@ -324,34 +289,34 @@ DrawIsometricTileSecondPart:
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
-	lea	iy, iy + TILE_WIDTH	; Skip to next tile
-	inc	de
-	dec	ix
+	lea	iy, iy + TILE_WIDTH	; Advance to next tile
+	inc	de			; Next X index in map
+	dec	ix			; Previous Y index in map
 	ld	a, b
 	ld	b, 255			; BCU and C still holds (-MAP_SIZE + 1) * 2)
-	add	hl, bc
+	add	hl, bc			; Advance to the next tile in the map data
 	dec	a
-	jp	nz, DisplayTile
+	jp	nz, DisplayTile		; Display all the tiles in the row
 	ex	af, af'
 IncrementRowXOrNot1 = $
 	jr	nz, NoExtraColumnChange	; The zero flag is still set/reset from the "bit 0, a"
-	inc	de
-	add	hl, bc
+	inc	de			; Advance an extra diagonal tile
 	dec	ix
+	add	hl, bc
 NoExtraColumnChange:
 	ex	de, hl
-	ld	c, -AMOUNT_OF_COLUMNS
+	ld	c, -AMOUNT_OF_COLUMNS	; Advance to the next row tiles
 	add	hl, bc
 	ex	de, hl
 	ld	bc, (MAP_SIZE * (AMOUNT_OF_COLUMNS + 1) - AMOUNT_OF_COLUMNS) * 2
 	add	hl, bc
 	lea	ix, ix + AMOUNT_OF_COLUMNS + 1
-TileHowManyRowsClipped = $+1
+TileHowManyRowsClipped = $+1		; Check if we need an extra routine to set the clipped tiles
 	cp	a, 0
 	dec	a
 	jp	nc, DisplayEachRowLoop
 	exx
-	ld	c, a
+	ld	c, a			; Get the routine
 TileWhichAction = $
 	nop				; Can be SMC'd into a "dec c"
 	ld	b, 3
@@ -359,43 +324,80 @@ TileWhichAction = $
 	ld	hl, FieldRowActionTable
 	add	hl, bc
 	ld	hl, (hl)
-	jp	(hl)
+	jp	(hl)			; And jump to it
+	
+DisplayUnits:
+; Display them units!
+	ld	(BackupIY4), iy
+	ld	iy, iy_base
+TempSP5 = $+1
+	ld	sp, 0
+	ld	e, 5			; Amount of units at the tile
+	exx
+	inc	hl
+	ld	a, (hl)			; Unit index
+	dec	hl
+	exx
+	ld	hl, UnitsPerTile
+FindNextUnit:
+	ld	c, a
+	ld	b, SIZEOF_UNIT_STRUCT
+	mlt	bc
+	ld	iy, (UnitsStackPtr)
+	add	iy, bc
+	ld	bc, (iy + UnitOffsetX - 1)
+	ld	c, a
+	ld	(hl), bc
+	inc	hl
+	inc	hl
+	inc	hl
+	ld	a, (iy + UnitNext)
+	inc	a
+	jr	z, DisplayUnitsAtTile
+	dec	a
+	dec	e
+	jr	nz, FindNextUnit
+DisplayUnitsAtTile:
+	
+BackupIY4 = $+2
+	ld	iy, 0
+	jr	SkipDrawingOfTileExx
 	
 SetClippedRoutine:
-	ld	hl, DrawTile_Clipped
+	ld	hl, DrawTile_Clipped	; Set the clipped routine
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
-	ld	hl, (startingPosition)
+	ld	hl, (startingPosition)	; The starting position is now different
 	ld	bc, -lcdWidth * (TILE_HEIGHT - 1) - 1	; -1 because we start at the left pixel of the top row, not the right one
 	add	hl, bc
 	ld	(startingPosition), hl
-	ld	hl, TilePointersStart - 3
+	ld	hl, TilePointersStart - 3	; Also use different pointers for displaying tiles
 	ld	(TilePointersSMC), hl
 	jp	DisplayEachRowLoopExx
 	
 SetClippedRoutine2:
 DrawTile_Clipped_SetJRStop = $+1
-	ld	hl, 0
+	ld	hl, 0			; Insert a JR X in the clipped tile routine
 DrawTile_Clipped_SetJRSMC = $+1
 	ld	(0), hl
 	jp	DisplayEachRowLoopExx
 	
 SetOnlyTreesRoutine:
-	ld	hl, SkipDrawingOfTileExx
+	ld	hl, SkipDrawingOfTileExx	; Normal tiles shouldn't be displayed anymore
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	jp	DisplayEachRowLoopExx
 	
 StopDisplayTiles:
-	ld	de, mpShaData
+	ld	de, mpShaData		; Copy routine to mpShaData
 	ld	hl, DrawScreenBorderStart
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
-	ld	de, (currDrawingBuffer)
+	ld	de, (currDrawingBuffer)	; Display food, wood, stone etc placeholder
 	r2 ld	hl, resources_offset + 0
 	ld	bc, resources_width * resources_height
 	ldir
-	ld	hl, blackBuffer
+	ld	hl, blackBuffer		; Display the right and left black edge
 	ld	b, (lcdWidth * 13 + TILE_WIDTH) shr 8
 	jp	mpShaData
 	
@@ -404,13 +406,13 @@ DrawScreenBorderStart:
 	ldir
 	ex	de, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ld	a, lcdHeight - 15 - 13 - 1
-	ld	de, lcdWidth
+	ld	de, lcdWidth		; Used to advance to the next 'half-row'
 	dec	hl
 FillBorderLoop:
 	add	hl, de
 	ld	(hl), c
 	ld	sp, hl
-	push	bc
+	push	bc			; Fill with black using pushes (bc = 0, writes 3 bytes at the same time)
 	push	bc
 	push	bc
 	push	bc
@@ -448,7 +450,7 @@ FillBorderLoop:
 	push	bc
 	push	bc
 TempSP2 = $+1
-	ld	sp, 0
+	ld	sp, 0			; Yay, we are finally done!
 	ret
 DrawScreenBorderEnd:
 	
@@ -568,7 +570,6 @@ DrawIsometricTile:
 	add	hl, bc
 	ex	de, hl
 	jp	DrawIsometricTileSecondPart
-
 end relocate
 
 DisplayBuildingExx:

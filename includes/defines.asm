@@ -50,9 +50,9 @@ TILE_GOLD_1                 = 8
 TILE_GOLD_2                 = 9
 TILE_STONE_1                = 10
 TILE_STONE_2                = 11
-TILE_TREE                   = 12
-TILE_UNIT                   = TILE_TREE + AMOUNT_OF_TREES
-TILE_BUILDING               = TILE_UNIT + 1
+TILE_UNIT                   = 12
+TILE_TREE                   = 13
+TILE_BUILDING               = TILE_TREE + AMOUNT_OF_TREES
 
 ;;; Unit struct
 SIZEOF_UNIT_STRUCT          = 11

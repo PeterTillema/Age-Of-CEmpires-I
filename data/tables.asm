@@ -10,6 +10,7 @@ TilePointersEnd:
 	r2 dl	gold_2_offset + 256 - 1
 	r2 dl	stone_1_offset + 256 - 1
 	r2 dl	stone_2_offset + 256 - 1
+	r2 dl	grass_offset + 256 - 1
 	r2 dl	tree_1_offset
 	r2 dl	tree_2_offset
 	r2 dl	tree_3_offset
@@ -27,6 +28,7 @@ TilePointersStart:
 	r2 dl	gold_2_offset
 	r2 dl	stone_1_offset
 	r2 dl	stone_2_offset
+	r2 dl	grass_offset
 	r2 dl	tree_1_offset
 	r2 dl	tree_2_offset
 	r2 dl	tree_3_offset
