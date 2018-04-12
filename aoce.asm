@@ -1,3 +1,4 @@
+; A bunch of inclues because fasmg
 include 'includes/ez80.inc'
 include 'includes/ti84pceg.inc'
 include 'includes/tiformat.inc'
@@ -22,7 +23,7 @@ start:
 	call	_ChkFindSym
 	jp	_DelVarArc		; delete installer code
 	
-	app_start 'AoCE', '(C) 2018 Peter "PT_" Tillema', '0.0.0.1', 1
+	app_start 'AoCE', '(C) 2018 Peter Tillema', '0.0.0.1', 1
 
 	call	_HomeUp
 	call	_ClrLCDFull
@@ -186,10 +187,10 @@ AoCE_RAM_:
 ; Setup some variables and start the game!
 	xor	a, a
 	ld	(_FillColor), a
-	inc	a
+	dec	a
 	ld	(_FGColor), a
 	call	_Begin
-	;call	MainMenu
+	call	MainMenu
 	call	GenerateMap
 	
 ; Of course, we start with age 1

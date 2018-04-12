@@ -83,7 +83,8 @@ macro ScrollFieldRight
 	jr	nz, .jump1
 	ScrollRight
 	ScrollUp
-.jump1:	sub	a, 4
+.jump1:
+	sub	a, 4
 	and	a, 000011111b
 	ld	(OFFSET_X), a
 end macro
@@ -116,7 +117,8 @@ macro ScrollFieldDown
 	jr	nz, .jump4
 	ScrollRight
 	ScrollDown
-.jump4:	sub	a, 4
+.jump4:
+	sub	a, 4
 	and	a, 000001111b
 	ld	(OFFSET_Y), a
 end macro
@@ -146,7 +148,8 @@ else
 end if
 	ld	de, 0D20000h
 	push	de
-	r1 ld	hl, sprite
+	db	021h
+	r1 dl	sprite
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	de
