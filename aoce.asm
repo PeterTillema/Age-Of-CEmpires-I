@@ -190,7 +190,7 @@ AoCE_RAM_:
 	dec	a
 	ld	(_FGColor), a
 	call	_Begin
-	call	MainMenu
+	;call	MainMenu
 	call	GenerateMap
 	
 ; Of course, we start with age 1

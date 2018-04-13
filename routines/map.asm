@@ -30,7 +30,7 @@ PlaceTreesLoop:
 	push	hl
 	randInt AMOUNT_OF_TREES
 	ld	a, l
-	add	a, TILE_TREE
+	add	a, TILE_TREE - 1
 	pop	hl
 	ld	(hl), a
 	dec	ixh
@@ -97,7 +97,7 @@ PlaceResourceRowLoop:
 	ld	a, r			; I like it
 	and	a, 1
 ResourceType = $+1
-	add	a, TILE_FOOD_1
+	add	a, TILE_FOOD_1 - 1
 	ld	(hl), a
 DontDisplayResource:
 	inc	hl

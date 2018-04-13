@@ -148,8 +148,7 @@ else
 end if
 	ld	de, 0D20000h
 	push	de
-	db	021h
-	r1 dl	sprite
+	r1 ld	hl, sprite + 0
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	de

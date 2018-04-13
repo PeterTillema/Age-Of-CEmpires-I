@@ -13,10 +13,6 @@ DrawField:
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
 	
-	scf
-	sbc	hl, hl
-	ld	(hl), 2
-	
 	ld	hl, DrawIsometricTile
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
@@ -146,11 +142,12 @@ TilePointersSMC = $+1
 	sub	a, TILE_TREE		; Check if it's a tile (with unit)
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
-	sub	a, TILE_BUILDING - TILE_TREE
+	sub	a, AMOUNT_OF_TREES
 	jr	c, DisplayTileWithTree	; It's a tree
 	jp	DisplayBuilding		; It's a building
 	
 TileIsOutOfField:
+	xor	a, a			; Reset A otherwise it might think that it was a unit tile
 	exx
 	ld	hl, blackBuffer
 TileDrawingRoutinePtr2 = $+1
@@ -286,6 +283,8 @@ DrawIsometricTileSecondPart:
 	add	hl, bc
 	ex	de, hl
 	lddr
+	inc	a			; A is FF if unit tile
+	jr	z, DisplayUnits
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
@@ -329,34 +328,34 @@ TileWhichAction = $
 DisplayUnits:
 ; Display them units!
 	ld	(BackupIY4), iy
-	ld	iy, iy_base
+	;ld	iy, iy_base
 TempSP5 = $+1
 	ld	sp, 0
-	ld	e, 5			; Amount of units at the tile
-	exx
-	inc	hl
-	ld	a, (hl)			; Unit index
-	dec	hl
-	exx
-	ld	hl, UnitsPerTile
+	;ld	e, 5			; Amount of units at the tile
+	;exx
+	;inc	hl
+	;ld	a, (hl)			; Unit index
+	;dec	hl
+	;exx
+	;ld	hl, UnitsPerTile
 FindNextUnit:
-	ld	c, a
-	ld	b, SIZEOF_UNIT_STRUCT
-	mlt	bc
-	ld	iy, (UnitsStackPtr)
-	add	iy, bc
-	ld	bc, (iy + UnitOffsetX - 1)
-	ld	c, a
-	ld	(hl), bc
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	a, (iy + UnitNext)
-	inc	a
-	jr	z, DisplayUnitsAtTile
-	dec	a
-	dec	e
-	jr	nz, FindNextUnit
+	;ld	c, a
+	;ld	b, SIZEOF_UNIT_STRUCT
+	;mlt	bc
+	;ld	iy, (UnitsStackPtr)
+	;add	iy, bc
+	;ld	bc, (iy + UnitOffsetX - 1)
+	;ld	c, a
+	;ld	(hl), bc
+	;inc	hl
+	;inc	hl
+	;inc	hl
+	;ld	a, (iy + UnitNext)
+	;inc	a
+	;jr	z, DisplayUnitsAtTile
+	;dec	a
+	;dec	e
+	;jr	nz, FindNextUnit
 DisplayUnitsAtTile:
 	
 BackupIY4 = $+2
