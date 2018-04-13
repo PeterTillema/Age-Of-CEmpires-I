@@ -18,7 +18,7 @@ DrawField:
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, TilePointersEnd - 3
 	ld	(TilePointersSMC), hl
-	ld	hl, 0ED39FDh		; add iy, sp \ lea de, iy + X
+	ld	hl, add_iy_sp_lea_de_iy
 	ld	(DrawTile_Clipped_Stop1), hl
 	ld	(DrawTile_Clipped_Stop2), hl
 	ld	(DrawTile_Clipped_Stop3), hl
@@ -48,13 +48,6 @@ DrawField:
 	ld	(hl), jr_
 	inc	hl
 	ld	(hl), d
-	
-	sbc	hl, hl
-	add	hl, sp
-	ld	(TempSP2), hl
-	ld	(TempSP3), hl
-	ld	(TempSP4), hl
-	ld	(TempSP5), hl
 	
 	set	4, e			; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2

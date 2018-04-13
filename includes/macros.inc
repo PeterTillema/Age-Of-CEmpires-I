@@ -53,6 +53,12 @@ virtual
 	load	jr_: byte from $$
 end virtual
 
+virtual
+	add	iy, sp
+	lea	de, iy+0
+	load	add_iy_sp_lea_de_iy: long from $$
+end virtual
+
 macro ScrollLeft
 	ld	de, (TopLeftXTile)
 	dec	de

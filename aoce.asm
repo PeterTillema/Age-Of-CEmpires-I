@@ -190,8 +190,8 @@ AoCE_RAM_:
 	dec	a
 	ld	(_FGColor), a
 	call	_Begin
-	;call	MainMenu
-	call	GenerateMap
+	call	MainMenu
+	;call	GenerateMap
 	
 ; Of course, we start with age 1
 	ld	c, 1
@@ -208,6 +208,14 @@ AoCE_RAM_:
 	ld	hl, _pal_gfx_pal
 	ld	bc, _pal_gfx_pal_size
 	ldir
+	
+; Since the stack is always the same, hardcode the sp backup pointers
+	ld	hl, -3
+	add	hl, sp
+	ld	(TempSP2), hl
+	ld	(TempSP3), hl
+	ld	(TempSP4), hl
+	ld	(TempSP5), hl
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld	hl, screenBuffer
