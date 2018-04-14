@@ -1,11 +1,59 @@
+struc concat? strings*&
+	local result
+	result = ''
+	iterate each, strings
+		result = string result or each shl (8 * lengthof result)
+	end iterate
+	. equ result
+end struc
+
 repeat 6
-	macro r#% inst&
-		inst
-		local pc
-		pc := $
-		relocation_table#% equ pc - 3
-	end macro
+	element appvar#%
+	appvar equ appvar#%
 end repeat
+
+macro appvars appvars*&
+	local index
+	index = 0
+	iterate <type, count*>, appvars
+		repeat count
+			varname concat 'AOCE', `type, `%
+			filename concat 'gfx/bin/', varname, '.inc'
+			irpv each, appvar
+				index = index + 1
+				if index <= %%
+					indx index
+					struc (name) equ? value*&
+						if `name shr (8 * (lengthof `name - 7)) = '_offset'
+							name := each + value
+						else
+							name := value
+						end if
+					end struc
+				end if
+				break
+			end irpv
+			include filename
+			restruc equ?
+		end repeat
+	end iterate
+end macro
+
+macro @ez80.word @value*
+	local value, address
+	value = @value
+	address = $
+	if elementsof value
+		irpv each, appvar
+			if value relativeto each
+				each#_relocation_table equ address
+				value = value - each
+				break
+			end if
+		end irpv
+	end if
+	@ez80.word value
+end macro
 
 macro relocate? name, address*, maxSize*
 	name.source? := $
@@ -154,7 +202,7 @@ else
 end if
 	ld	de, 0D20000h
 	push	de
-	r1 ld	hl, sprite + 0
+	ld	hl, sprite
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	de
