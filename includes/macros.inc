@@ -7,34 +7,31 @@ struc concat? strings*&
 	. equ result
 end struc
 
-repeat 6
-	element appvar#%
-	appvar equ appvar#%
-end repeat
-
 macro appvars appvars*&
 	local index
-	index = 0
+	index = 1
 	iterate <type, count*>, appvars
 		repeat count
 			varname concat 'AOCE', `type, `%
 			filename concat 'gfx/bin/', varname, '.inc'
-			irpv each, appvar
+			if index <= 6
+				repeat 1, index: index
+					element appvar#index
+					appvar equ appvar#index
+				end repeat
+				struc (name) equ? value*&
+					if `name shr (8 * (lengthof `name - 7)) = '_offset'
+						name := appvar + value
+					else
+						name := value
+					end if
+				end struc
+				include filename
+				restruc equ?
 				index = index + 1
-				if index <= %%
-					indx index
-					struc (name) equ? value*&
-						if `name shr (8 * (lengthof `name - 7)) = '_offset'
-							name := each + value
-						else
-							name := value
-						end if
-					end struc
-				end if
-				break
-			end irpv
-			include filename
-			restruc equ?
+			else
+				include filename
+			end if
 		end repeat
 	end iterate
 end macro
