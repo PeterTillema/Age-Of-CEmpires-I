@@ -35,7 +35,7 @@ start:
 	
 ; Check if all the appvars exists
 	ld	hl, GraphicsAppvar1_
-	ld	iyh, 8
+	ld	iyh, 9
 CheckGraphicsAppvarsLoop:
 	call	_Mov9ToOP1
 	inc	hl
@@ -49,12 +49,12 @@ CheckGraphicsAppvarsLoop:
 	call	_ChkFindSym
 	ex	de, hl
 	ld	de, 9
+	ld	a, e
 	add	hl, de
 	ld	e, (hl)
 	add	hl, de
 	inc	hl
 	ex	de, hl
-	ld	a, 8
 	sub	a, iyh
 	ld	c, a
 	ld	b, 3
@@ -100,6 +100,7 @@ GraphicsAppvar1_:
 	db	AppVarObj, "AOCEAGE4", 0
 	db	AppVarObj, "AOCEUNI1", 0
 	db	AppVarObj, "AOCEUNI2", 0
+	db	AppVarObj, "AOCEUNI3", 0
 GraphicsAppvarNotFound_:
 	db	"Can't find appvar:", 0
 MissingAppVar:
@@ -130,13 +131,13 @@ AoCE_plotSScreen_:
 	
 #include "routines/flash.asm"
 
-relocate AoCE_RAM, AOCE_RAM_START + RAM_SIZE + 24, 100000	; 24 bytes from the 8 appvar pointers
+relocate AoCE_RAM, AOCE_RAM_START + RAM_SIZE + 27, 100000	; 27 bytes from the 9 appvar pointers
 AoCE_RAM_:
 	
 ; Copy AppvarsPointersTable to AOCE_RAM_START
 	ld	de, AOCE_RAM_START
 	ld	hl, cursorImage
-	ld	bc, 24
+	ld	bc, 27
 	ldir
 	
 ; Backup stack
@@ -199,7 +200,7 @@ AoCE_RAM_:
 ; Of course, we start with age 1
 	ld	c, 1
 	ld	hl, RelocationTable3
-	ld	de, barracks_1_offset
+	ld	de, barracks_1_offset + 0
 	call	LoadAgeGraphicsAppvar
 	
 ; Set some variables and the palette
