@@ -1,10 +1,12 @@
-; A bunch of inclues because fasmg
+; Include files for fasmg
 include 'includes/ez80.inc'
 include 'includes/ti84pceg.inc'
 include 'includes/tiformat.inc'
 include 'includes/defines.asm'
 include 'includes/macros.inc'
 include 'includes/symbol_table.inc'
+
+; Include all the gfx .inc files
 include 'gfx/bin/AOCEGFX1.inc'
 include 'gfx/bin/AOCEGFX2.inc'
 include 'gfx/bin/AOCEAGE1.inc'
@@ -13,6 +15,7 @@ include 'gfx/bin/AOCEAGE3.inc'
 include 'gfx/bin/AOCEAGE4.inc'
 include 'gfx/bin/AOCEUNI1.inc'
 include 'gfx/bin/AOCEUNI2.inc'
+include 'gfx/bin/AOCEUNI3.inc'
 format ti executable 'AOCE'
 include 'includes/app.inc'
 
@@ -216,6 +219,8 @@ AoCE_RAM_:
 	ld	(TempSP3), hl
 	ld	(TempSP4), hl
 	ld	(TempSP5), hl
+	
+; TODO: load villager and sheep sprites
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld	hl, screenBuffer
