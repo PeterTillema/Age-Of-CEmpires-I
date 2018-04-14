@@ -1,10 +1,6 @@
 # Commands and tools
 ASSEMBLER ?= fasmg
-CONVHEX   ?= convhex
 CONVPNG   ?= convpng
-
-# Flags
-CONVFLAGS ?= -x -a
 
 # Sources
 SRC       ?= aoce.asm
