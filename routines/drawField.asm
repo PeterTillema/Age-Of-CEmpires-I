@@ -386,7 +386,7 @@ StopDisplayTiles:
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
 	ld	de, (currDrawingBuffer)	; Display food, wood, stone etc placeholder
-	r2 ld	hl, resources_offset + 0
+	ld	hl, resources_offset
 	ld	bc, resources_width * resources_height
 	ldir
 	ld	hl, blackBuffer		; Display the right and left black edge

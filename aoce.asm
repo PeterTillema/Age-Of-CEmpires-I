@@ -6,18 +6,11 @@ include 'includes/defines.asm'
 include 'includes/macros.inc'
 include 'includes/symbol_table.inc'
 
-; Include all the gfx .inc files
-include 'gfx/bin/AOCEGFX1.inc'
-include 'gfx/bin/AOCEGFX2.inc'
-include 'gfx/bin/AOCEAGE1.inc'
-include 'gfx/bin/AOCEAGE2.inc'
-include 'gfx/bin/AOCEAGE3.inc'
-include 'gfx/bin/AOCEAGE4.inc'
-include 'gfx/bin/AOCEUNI1.inc'
-include 'gfx/bin/AOCEUNI2.inc'
-include 'gfx/bin/AOCEUNI3.inc'
 format ti executable 'AOCE'
 include 'includes/app.inc'
+
+; Include all the gfx .inc files
+appvars GFX,2, AGE,4, UNI,3
 
 start:
 	app_create
@@ -92,15 +85,9 @@ WaitKeyLoop:
 	jp	_JForceCmdNoChar
 	
 GraphicsAppvar1_:
-	db	AppVarObj, "AOCEGFX1", 0
-	db	AppVarObj, "AOCEGFX2", 0
-	db	AppVarObj, "AOCEAGE1", 0
-	db	AppVarObj, "AOCEAGE2", 0
-	db	AppVarObj, "AOCEAGE3", 0
-	db	AppVarObj, "AOCEAGE4", 0
-	db	AppVarObj, "AOCEUNI1", 0
-	db	AppVarObj, "AOCEUNI2", 0
-	db	AppVarObj, "AOCEUNI3", 0
+irpv name, varname
+	db	AppVarObj, name, 0
+end irpv
 GraphicsAppvarNotFound_:
 	db	"Can't find appvar:", 0
 MissingAppVar:
@@ -183,7 +170,7 @@ AoCE_RAM_:
 	
 ; Get the sprites of the homescreen
 	ld	hl, RelocationTable1
-	ld	bc, (AOCE_RAM_START + 0)
+	ld	bc, (AOCE_RAM_START)
 	inc	bc			; Skip size bytes
 	inc	bc
 	call	ModifyRelocationTable
@@ -200,7 +187,7 @@ AoCE_RAM_:
 ; Of course, we start with age 1
 	ld	c, 1
 	ld	hl, RelocationTable3
-	ld	de, barracks_1_offset + 0
+	ld	de, barracks_1_offset - appvar3
 	call	LoadAgeGraphicsAppvar
 	
 ; Set some variables and the palette
@@ -374,13 +361,13 @@ include "routines/drawField.asm"
 include "data/tables.asm"
 include "data/data.asm"
 
-repeat 6
+irpv each, appvar
 RelocationTable#%:
-	irpv relocation, relocation_table#%
+	irpv relocation, each#_relocation_table
 		dl relocation
 	end irpv
 	dw $FFFF
-end repeat
+end irpv
 
 end relocate
 
