@@ -32,7 +32,8 @@ SelectLoopDrawPlayHelpQuit:
 	jr	z, DisplayHelp
 	dec	c
 	jr	nz, SelectedPlay
-.jump:	jp	ForceStopProgramFadeOut
+.jump:	cp	a, a				; Set Z
+	ret
     
 DisplayHelp:
 	call	EraseArea
@@ -40,14 +41,15 @@ DisplayHelp:
 	printString GetHelp2, 5, 122
 	printString GetHelp3, 5, 132
 	call	GetKeyAnyFast
-	jp	SelectLoopDrawPlayHelpQuit
+	jq	SelectLoopDrawPlayHelpQuit
+	
 SelectedPlay:
 	call	EraseArea
 	dispCompressedImage singlemultiplayer_compressed_offset, 50, 110
 	ld	hl, SelectMenuMax
 	ld	(hl), 1
 	call	SelectMenu
-	jp	c, SelectLoopDrawPlayHelpQuit
+	jq	c, SelectLoopDrawPlayHelpQuit
 	dec	c
 	jr	nz, SelectedSinglePlayer
 	call	EraseArea
@@ -66,7 +68,8 @@ SelectedSinglePlayer:
 	;jp	c, SelectedPlay
 	;dec	c
 	;jp	z, LoadMap
-	jp	GenerateMap
+	or	a, 1
+	ret
 
 EraseArea:
 	ld	hl, 130
@@ -151,3 +154,16 @@ EraseCursor:
 	pop	hl
 	pop	bc
 	jr	SelectLoop
+	
+GetHelp1:
+	db	"Check http://tiny.cc/aoce", 0
+GetHelp2:
+	db	"for help, controls, AI's", 0
+GetHelp3:
+	db	"and much more!", 0
+MadeByMessage:
+	db	"Made by Peter \"PT_\" Tillema", 0
+NoMultiplayer1:
+	db	"Multiplayer is not", 0
+NoMultiplayer2:
+	db	"supported yet!", 0

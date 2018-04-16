@@ -27,7 +27,7 @@ start:
 	push	ix
 	
 ; Check if all the appvars exists
-	ld	hl, GraphicsAppvar1_
+	ld	hl, GraphicsAppvars
 	ld	iyh, 9
 CheckGraphicsAppvarsLoop:
 	call	_Mov9ToOP1
@@ -52,79 +52,31 @@ CheckGraphicsAppvarsLoop:
 	ld	c, a
 	ld	b, 3
 	mlt	bc
-	ld	hl, cursorImage		; aka AppvarsPointersTable
+	ld	hl, AppvarsPointersTable
 	add	hl, bc
 	ld	(hl), de
 	pop	hl
 	dec	iyh
 	jr	nz, CheckGraphicsAppvarsLoop
 	
+; Display loading message
 	ld	hl, LoadingMessage
 	call	_PutS
 	
-; Remove AoCE from UserMem to prevent memory leak, even when crashing
-	AoCE_plotSScreen.copy
-	jp	AoCE_plotSScreen_
-	
-AppvarNotFound:
-	call	_HomeUp
-	call	_ClrLCDFull
-	ld	hl, GraphicsAppvarNotFound_
-	call	_PutS
-	call	_NewLine
-	pop	hl
-	ld	de, -9
-	add	hl, de
-	call	_PutS
-WaitKeyLoop:
-	call	_GetCSC
-	or	a, a
-	jr	z, WaitKeyLoop
-	pop	ix
-	ld	iy, flags
-	jp	_JForceCmdNoChar
-	
-GraphicsAppvar1_:
-irpv name, varname
-	db	AppVarObj, name, 0
-end irpv
-GraphicsAppvarNotFound_:
-	db	"Can't find appvar:", 0
-MissingAppVar:
-	db	"Need"
-LibLoadAppVar:
-	db	" LibLoad", 0
-	db	"tiny.cc/clibs", 0
-LoadingMessage:
-	db	"One second, we're going   back to the Middle Ages...", 0
-	
-relocate AoCE_plotSScreen, plotSScreen + 2, 69060	; We use the 2 bytes from SPS at plotSScreen
-
-AoCE_plotSScreen_:
 ; Backup RAM
-	ld	de, (asm_prgm_size)
-	ld	hl, UserMem
-	call	_DelMem
-	or	a, a
-	sbc	hl, hl
-	ld	(asm_prgm_size), hl
 	di
-	ld.sis	sp, AoCE_plotSScreen_ and 0FFFFh
+	ld	a, 0D1h
+	ld	mb, a
+	ld.sis	sp, AOCE_RAM_START and 0FFFFh
 	call.lis fUnlockFlash and 0FFFFh
 	call	BackupRAM
 	AoCE_RAM.copy
 	ld	(MapDataPtr), de
-	jp	AoCE_RAM_
 	
-#include "routines/flash.asm"
-
-relocate AoCE_RAM, AOCE_RAM_START + RAM_SIZE + 27, 100000	; 27 bytes from the 9 appvar pointers
-AoCE_RAM_:
-	
-; Copy AppvarsPointersTable to AOCE_RAM_START
+; Copy app data to AOCE_RAM_START
 	ld	de, AOCE_RAM_START
-	ld	hl, cursorImage
-	ld	bc, 27
+	ld	hl, AppDataStart
+	ld	bc, AppDataEnd - AppDataStart
 	ldir
 	
 ; Backup stack
@@ -137,7 +89,7 @@ AoCE_RAM_:
 	or	a, a
 	sbc	hl, hl
 	add	hl, sp
-	ld	(backupSP), hl
+	ld	(BackupSP), hl
 	ld	de, vRAM - stackTop
 	add	hl, de
 	ld	sp, hl
@@ -182,7 +134,8 @@ AoCE_RAM_:
 	ld	(_FGColor), a
 	call	_Begin
 	call	MainMenu
-	;call	GenerateMap
+	jr	z, ForceStopProgramFadeOut
+	call	GenerateMap
 	
 ; Of course, we start with age 1
 	ld	c, 1
@@ -201,7 +154,7 @@ AoCE_RAM_:
 	ldir
 	
 ; Since the stack is always the same, hardcode the sp backup pointers
-	ld	hl, -3
+	ld	hl, -6
 	add	hl, sp
 	ld	(TempSP2), hl
 	ld	(TempSP3), hl
@@ -226,108 +179,10 @@ AoCE_RAM_:
 	ld	bc, SIZEOF_UNIT_STRUCT * 2
 	ldir
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-MainGameLoop:
-	call	DrawField
-	call	DrawGame
-; Swap buffers
-	ld	hl, vRAM
-	ld	de, (mpLcdBase)
-	or	a, a
-	sbc	hl, de
-	add	hl, de
-	jr	nz, .jump
-	ld	hl, screenBuffer
-.jump:	ld	(currDrawingBuffer), de
-	ld	(mpLcdBase), hl
-	ld	hl, mpLcdIcr
-	set	2, (hl)
-	ld	hl, (AmountOfWood)
-	inc	hl
-	ld	(AmountOfWood), hl
-	call	GetKeyFast
-	ld	iy, iy_base
-CheckKeys369:				; Check [3], [6], [9]
-	ld	l, 01Ah
-	ld	a, (hl)
-	and	a, (1 shl kp3) or (1 shl kp6) or (1 shl kp9)
-	jp	z, CheckKeys28
-	ScrollFieldRight
-CheckKey3:
-	bit	kp3, (hl)
-	jr	z, CheckKey9
-	ScrollFieldRight
-	ScrollFieldDown
-CheckKey9:
-	bit	kp9, (hl)
-	jr	z, CheckKeys28
-	ScrollFieldRight
-	ScrollFieldUp
-CheckKeys28:				; Check [2], [8] (5 does nothing)
-	ld	l, 018h
-	ld	a, (hl)
-	and	a, (1 shl kp2) or (1 shl kp8)
-	jr	z, CheckKeys147
-CheckKey2:
-	bit	kp2, (hl)
-	jr	z, CheckKey8
-	ScrollFieldDown
-CheckKey8:
-	bit	kp8, (hl)
-	jr	z, CheckKeys147
-	ScrollFieldUp
-CheckKeys147:				; Check [1], [4], [7]
-	ld	l, 016h
-	ld	a, (hl)
-	and	a, (1 shl kp1) or (1 shl kp4) or (1 shl kp7)
-	jp	z, CheckClearEnter
-	ScrollFieldLeft
-CheckKey1:
-	bit	kp1, (hl)
-	jr	z, CheckKey7
-	ScrollFieldLeft
-	ScrollFieldDown
-CheckKey7:
-	bit	kp7, (hl)
-	jr	z, CheckClearEnter
-	ScrollFieldLeft
-	ScrollFieldUp
-CheckClearEnter:
-	ld	l, 01Ch
-	bit	kpClear, (hl)
-	jr	nz, ForceStopProgram
-	;bit	kpEnter, (hl)
-	;jr	z, CheckReleaseEnterKey
-	;bit	holdDownEnterKey, (AoCEFlags1)
-	;set	holdDownEnterKey, (AoCEFlags1)
-	;jr	nz, CheckStop
-;CreateNewSelectedArea:
-	;ld	hl, (CursorX)
-	;ld	(SelectedAreaStartX), hl
-	;ld	l, (CursorY)
-	;ld	(SelectedAreaStartY), l
-	;jr	CheckStop
-;CheckReleaseEnterKey:
-	;bit	holdDownEnterKey, (AoCEFlags1)
-	;res	holdDownEnterKey, (AoCEFlags1)
-	;jr	z, CheckStop
-;ParseSelectedArea:
-;CheckStop:
-	ld	hl, mpLcdRis
-WaitLCDInterrupt:
-	bit	2, (hl)
-	jr	z, WaitLCDInterrupt
-	jp	MainGameLoop
 	
+	call	MainGameLoop
 ForceStopProgramFadeOut:
-	call	fadeOut
-ForceStopProgram:
-CleanupCode:
-	ld	de, cursorImage
-	ld	hl, CleanupCode
-	ld	bc, CleanupCodeEnd - CleanupCode
-	ldir
-	jp	cursorImage + $ + 4 - CleanupCode
+	call	z, fadeOut
 	call	_End
 	ld	de, RAM_MIRROR
 	ld	hl, RAM_BACKUP
@@ -339,9 +194,10 @@ CleanupCode:
 	ld	bc, stackTop - heapBot
 	ldir
 	call.lis fLockFlash and 0FFFFh
+	ld	a, 0D0h
+	ld	mb, a
 	pop	de
-backupSP = $+1
-	ld	sp, 0
+	ld	sp, BackupSP
 	pop	ix
 	ld	hl, RAM_BACKUP + (vRAM - ramStart) - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
@@ -349,28 +205,89 @@ backupSP = $+1
 	ld	iy, flags
 	call	_DrawStatusBar
 	jp	_JForceCmdNoChar	; Return to TI-OS
-CleanupCodeEnd:
-    
+	
+AppvarNotFound:
+	call	_HomeUp
+	call	_ClrLCDFull
+	ld	hl, GraphicsAppvarNotFound
+	call	_PutS
+	call	_NewLine
+	pop	hl
+	ld	de, -9
+	add	hl, de
+	call	_PutS
+.loop:	call	_GetCSC
+	or	a, a
+	jr	z, .loop
+	pop	ix
+	ld	iy, flags
+	jp	_JForceCmdNoChar
+	
+_Begin:
+	ld	hl, vRAM
+	ld	(hl), 255
+	ld	de, vRAM + 1
+	ld	bc, lcdWidth * lcdHeight * 2 - 1
+	ldir
+	ld	a, lcdBpp8
+	ld	hl, currDrawingBuffer
+SetPointersAndPalette:
+	ld	de, vRAM
+	ld	(hl), de
+	ld	(mpLcdCtrl), a
+	ld	l, mpLcdIcr and 0FFh
+	ld	(hl), 4
+	ld	hl, pal_sprites
+	ld	de, mpLcdPalette
+	ld	bc, 256 * 2
+	ldir
+	ret
+	
+_End:
+	ld	hl, vRAM
+	ld	(hl), 255
+	ld	de, vRAM + 1
+	ld	bc, lcdWidth * lcdHeight * 2 - 1
+	ldir
+	ld	hl, mpLcdBase
+	ld	a, lcdBpp16
+	jr	SetPointersAndPalette
+	
 include "gfx/bin/pal_gfx.asm"
+include "routines/main.asm"
 include "routines/map.asm"
-include "routines/mainmenu.asm"
-include "routines/drawGame.asm"
-;#include "routines/pathfinding.asm"
-include "routines/routines.asm"
-include "routines/drawField.asm"
-include "data/tables.asm"
-include "data/data.asm"
-
-irpv each, appvar
-RelocationTable#%:
-	irpv relocation, each#_relocation_table
-		dl relocation
-	end irpv
-	dw $FFFF
+	
+GraphicsAppvars:
+irpv name, varname
+	db	AppVarObj, name, 0
 end irpv
+GraphicsAppvarNotFound:
+	db	"Can't find appvar:", 0
+MissingAppVar:
+	db	"Need"
+LibLoadAppVar:
+	db	" LibLoad", 0
+	db	"tiny.cc/clibs", 0
+LoadingMessage:
+	db	"One second, we're going   back to the Middle Ages...", 0
 
-end relocate
+	app_data
+	
+AppDataStart:
 
-end relocate
+AppvarsPointersTable:
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+BackupSP:
+	dl	0
+	
+include "routines/flash.asm"
 
-	app_data			; Nope, we don't need have any bytes for you sadly :(
+AppDataEnd:

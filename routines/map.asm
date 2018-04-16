@@ -64,7 +64,6 @@ PlaceResourceTypeLoop:
 	ld	de, screenBuffer
 	add	hl, de
 	push	hl
-	pop	iy
 	ld	de, lcdWidth - 2
 	ld	a, (hl)			; Check if one of the 9 blocks is already a tree/part of resource
 	inc	hl
@@ -83,9 +82,9 @@ PlaceResourceTypeLoop:
 	or	a, (hl)
 	inc	hl
 	or	a, (hl)
+	pop	hl
 	pop	de
 	jr	nz, DontDrawResource
-	lea	hl, iy
 	ld	b, 3
 PlaceResource:
 	ld	c, b
@@ -96,8 +95,9 @@ PlaceResourceRowLoop:
 	jr	z, DontDisplayResource
 	ld	a, r			; I like it
 	and	a, 1
-ResourceType = $+1
-	add	a, TILE_FOOD_1
+	add	a, TILE_FOOD_1 - 2
+	add	a, ixh
+	add	a, ixh
 	ld	(hl), a
 DontDisplayResource:
 	inc	hl
@@ -112,9 +112,6 @@ DontDisplayResource:
 DontDrawResource:
 	dec	ixl
 	jp	nz, PlaceResourceTypeLoop
-	ld	hl, ResourceType
-	inc	(hl)			; Next resource type
-	inc	(hl)
 	dec	ixh
 	jp	nz, PlaceAllResourceTypesLoop
 	
@@ -152,4 +149,10 @@ LoadMap:
 	ld	(hl), TILE_UNIT
 	inc	hl
 	ld	(hl), 0
+	or	a, 1				; Set NZ
 	ret
+	
+GeneratingMapMessage:
+	db	"Generating map...", 0
+LoadingMapMessage:
+	db	"Loading map...", 0

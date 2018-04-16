@@ -674,38 +674,6 @@ __state:
 	db	04h, 03h, 02h, 01h
 	
 ;-------------------------------------------------------------------------------
-_Begin:
-	ld	hl, vRAM
-	ld	(hl), 255
-	ld	de, vRAM + 1
-	ld	bc, lcdWidth * lcdHeight * 2 - 1
-	ldir
-	ld	a, lcdBpp8
-	ld	hl, currDrawingBuffer
-SetPointersAndPalette:
-	ld	de, vRAM
-	ld	(hl), de
-	ld	(mpLcdCtrl), a
-	ld	l, mpLcdIcr and 0FFh
-	ld	(hl), 4
-	ld	hl, pal_sprites
-	ld	de, mpLcdPalette
-	ld	bc, 256 * 2
-	ldir
-	ret
-
-;-------------------------------------------------------------------------------
-_End:
-	ld	hl, vRAM
-	ld	(hl), 255
-	ld	de, vRAM + 1
-	ld	bc, lcdWidth * lcdHeight * 2 - 1
-	ldir
-	ld	hl, mpLcdBase
-	ld	a, lcdBpp16
-	jr	SetPointersAndPalette
-	
-;-------------------------------------------------------------------------------
 _SetTextXY:
 	or	a, a
 	sbc	hl, hl

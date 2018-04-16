@@ -1,34 +1,3 @@
-GeneratingMapMessage:
-	db	"Generating map...", 0
-LoadingMapMessage:
-	db	"Loading map...", 0
-GraphicsAppvar1:
-	db	AppVarObj, "AOCEGFX1"
-GraphicsAppvar2:
-	db	AppVarObj, "AOCEGFX2"
-Age1Appvar:
-	db	AppVarObj, "AGE1", 0,0,0,0
-Age2Appvar:
-	db	AppVarObj, "AGE2", 0,0,0,0
-Age3Appvar:
-	db	AppVarObj, "AGE3", 0,0,0,0
-Age4Appvar:
-	db	AppVarObj, "AGE4", 0,0,0,0
-GraphicsAppvarNotFound:
-	db	"Can't find appvar:", 0
-GetHelp1:
-	db	"Check http://tiny.cc/aoce", 0
-GetHelp2:
-	db	"for help, controls, AI's", 0
-GetHelp3:
-	db	"and much more!", 0
-MadeByMessage:
-	db	"Made by Peter \"PT_\" Tillema", 0
-NoMultiplayer1:
-	db	"Multiplayer is not", 0
-NoMultiplayer2:
-	db	"supported yet!", 0
-
 AmountOfWood:
 	dl	0
 AmountOfFood:
