@@ -130,7 +130,7 @@ CheckGraphicsAppvarsLoop:
 ; Setup some variables and start the game!
 	xor	a, a
 	ld	(_FillColor), a
-	dec	a
+	inc	a
 	ld	(_FGColor), a
 	call	_Begin
 	call	MainMenu
@@ -180,10 +180,14 @@ CheckGraphicsAppvarsLoop:
 	ldir
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
+; Call the main loop
 	call	MainGameLoop
+	
 ForceStopProgramFadeOut:
 	call	z, fadeOut
 	call	_End
+	
+; Restore stack and RAM
 	ld	de, RAM_MIRROR
 	ld	hl, RAM_BACKUP
 	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
@@ -193,6 +197,8 @@ ForceStopProgramFadeOut:
 	push	hl
 	ld	bc, stackTop - heapBot
 	ldir
+	
+; Yeah... let's lock flash again :P
 	call.lis fLockFlash and 0FFFFh
 	ld	a, 0D0h
 	ld	mb, a
@@ -202,9 +208,11 @@ ForceStopProgramFadeOut:
 	ld	hl, RAM_BACKUP + (vRAM - ramStart) - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
 	ldir
+	
+; Return to TI-OS
 	ld	iy, flags
 	call	_DrawStatusBar
-	jp	_JForceCmdNoChar	; Return to TI-OS
+	jp	_JForceCmdNoChar
 	
 AppvarNotFound:
 	call	_HomeUp

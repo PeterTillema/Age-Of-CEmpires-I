@@ -11,6 +11,8 @@ TilePointersEnd:
 	dl	stone_1_offset + 256 - 1
 	dl	stone_2_offset + 256 - 1
 	dl	grass_offset + 256 - 1
+	dl	tree_stump_1_offset + 256 - 1
+	dl	tree_stump_2_offset + 256 - 1
 	dl	tree_1_offset
 	dl	tree_2_offset
 	dl	tree_3_offset
@@ -29,6 +31,8 @@ TilePointersStart:
 	dl	stone_1_offset
 	dl	stone_2_offset
 	dl	grass_offset
+	dl	tree_stump_1_offset
+	dl	tree_stump_2_offset
 	dl	tree_1_offset
 	dl	tree_2_offset
 	dl	tree_3_offset

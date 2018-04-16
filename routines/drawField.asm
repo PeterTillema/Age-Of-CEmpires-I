@@ -132,15 +132,15 @@ TilePointersSMC = $+1
 	ld	hl, TilePointersEnd - 3	; The clipped tiles needs different pointers, so this pointer will be modified after X rows
 	add	hl, bc
 	ld	hl, (hl)
-	sub	a, TILE_TREE		; Check if it's a tile (with unit)
+	cp	a, TILE_TREE		; Check if it's a tile (with unit)
 TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
-	sub	a, AMOUNT_OF_TREES
+	sub	a, TILE_BUILDING
 	jr	c, DisplayTileWithTree	; It's a tree
 	jp	DisplayBuilding		; It's a building
 	
 TileIsOutOfField:
-	xor	a, a			; Reset A otherwise it might think that it was a unit tile
+	xor	a, a			; Reset A otherwise it might think that it was a tile with unit(s)
 	exx
 	ld	hl, blackBuffer
 TileDrawingRoutinePtr2 = $+1
@@ -276,8 +276,8 @@ DrawIsometricTileSecondPart:
 	add	hl, bc
 	ex	de, hl
 	lddr
-	inc	a			; A is FF if unit tile
-	jr	z, DisplayUnits
+	cp	a, TILE_UNIT_GRASS
+	jr	nc, DisplayUnits
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
