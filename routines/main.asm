@@ -13,11 +13,17 @@ MainGameLoop:
 	ld	hl, screenBuffer
 .jump:	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
+	
+; Set the bit to wait for the LCD to be updated; meanwhile we do all the calculations, maybe then it already has been swapped and we don't need to wait anymore
 	ld	hl, mpLcdIcr
 	set	2, (hl)
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld	hl, (AmountOfWood)
 	inc	hl
 	ld	(AmountOfWood), hl
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 	call	GetKeyFast
 	ld	iy, iy_base
 CheckKeys369:				; Check [3], [6], [9]

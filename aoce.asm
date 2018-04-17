@@ -130,15 +130,17 @@ CheckGraphicsAppvarsLoop:
 ; Setup some variables and start the game!
 	xor	a, a
 	ld	(_FillColor), a
-	inc	a
+	dec	a
 	ld	(_FGColor), a
 	call	_Begin
 	call	MainMenu
 	jr	z, ForceStopProgramFadeOut
 	call	GenerateMap
+	ld	a, 1
+	ld	(_FGColor), a
 	
 ; Of course, we start with age 1
-	ld	c, 1
+	ld	c, a
 	ld	hl, RelocationTable3
 	ld	de, barracks_1_offset - appvar3
 	call	LoadAgeGraphicsAppvar
@@ -161,7 +163,7 @@ CheckGraphicsAppvarsLoop:
 	ld	(TempSP4), hl
 	ld	(TempSP5), hl
 	
-; TODO: load villager and sheep sprites
+; TODO: load villager and sheep sprites, place towncenter from you and enemy
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld	hl, screenBuffer
@@ -281,6 +283,7 @@ LoadingMessage:
 
 	app_data
 	
+; Data that will be stored to and then copied to a fixed RAM address
 AppDataStart:
 
 AppvarsPointersTable:

@@ -22,6 +22,9 @@ DrawField:
 	ld	(DrawTile_Clipped_Stop1), hl
 	ld	(DrawTile_Clipped_Stop2), hl
 	ld	(DrawTile_Clipped_Stop3), hl
+	
+	ld	a, DisplayUnits1 - UnitsRoutine - 1
+	ld	(UnitsRoutine), a
 
 	ld	e, (OFFSET_Y)
 	ld	d, 10
@@ -277,7 +280,8 @@ DrawIsometricTileSecondPart:
 	ex	de, hl
 	lddr
 	cp	a, TILE_UNIT_GRASS
-	jr	nc, DisplayUnits
+UnitsRoutine = $+1
+	jr	nc, DisplayUnits1
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
@@ -318,8 +322,14 @@ TileWhichAction = $
 	ld	hl, (hl)
 	jp	(hl)			; And jump to it
 	
-DisplayUnits:
-; Display them units!
+; Display the units
+DisplayUnits1:
+	lea	hl, iy
+	ld	bc, -lcdWidth * (TILE_HEIGHT - 1)
+	add	hl, bc
+	jr	$+5
+DisplayUnits2:
+	lea	hl, iy
 	ld	(BackupIY4), iy
 	;ld	iy, iy_base
 TempSP5 = $+1
@@ -356,26 +366,28 @@ BackupIY4 = $+2
 	jr	SkipDrawingOfTileExx
 	
 SetClippedRoutine:
-	ld	hl, DrawTile_Clipped	; Set the clipped routine
+	ld	hl, DrawTile_Clipped			; Set the clipped routine
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
-	ld	hl, (startingPosition)	; The starting position is now different
+	ld	hl, (startingPosition)			; The starting position is now different
 	ld	bc, -lcdWidth * (TILE_HEIGHT - 1) - 1	; -1 because we start at the left pixel of the top row, not the right one
 	add	hl, bc
 	ld	(startingPosition), hl
-	ld	hl, TilePointersStart - 3	; Also use different pointers for displaying tiles
+	ld	hl, TilePointersStart - 3		; Also use different pointers for displaying tiles
 	ld	(TilePointersSMC), hl
+	ld	hl, UnitsRoutine
+	ld	(hl), DisplayUnits2 - UnitsRoutine - 1	; Set the right unit routine
 	jp	DisplayEachRowLoopExx
 	
 SetClippedRoutine2:
 DrawTile_Clipped_SetJRStop = $+1
-	ld	hl, 0			; Insert a JR X in the clipped tile routine
+	ld	hl, 0					; Insert a JR X in the clipped tile routine
 DrawTile_Clipped_SetJRSMC = $+1
 	ld	(0), hl
 	jp	DisplayEachRowLoopExx
 	
 SetOnlyTreesRoutine:
-	ld	hl, SkipDrawingOfTileExx	; Normal tiles shouldn't be displayed anymore
+	ld	hl, SkipDrawingOfTileExx		; Normal tiles shouldn't be displayed anymore
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	jp	DisplayEachRowLoopExx
