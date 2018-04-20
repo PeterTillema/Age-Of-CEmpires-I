@@ -12,14 +12,13 @@ include 'includes/app.inc'
 ; Include all the gfx .inc files
 appvars GFX,2, AGE,4, UNI,3
 
-start:
 	app_create
 	
 	ret	nz
 	call	_ChkFindSym
 	jp	_DelVarArc		; delete installer code
 	
-	app_start 'AoCE', '(C) 2018 Peter Tillema', '0.0.0.1', 1
+	app_start 'AoCE', '(C) 2018 Peter Tillema', '1.0.0', 1
 
 	call	_HomeUp
 	call	_ClrLCDFull
@@ -63,22 +62,6 @@ CheckGraphicsAppvarsLoop:
 	ld	hl, LoadingMessage
 	call	_PutS
 	
-; Backup RAM
-	di
-	ld	a, 0D1h
-	ld	mb, a
-	ld.sis	sp, AOCE_RAM_START and 0FFFFh
-	call.lis fUnlockFlash and 0FFFFh
-	call	BackupRAM
-	AoCE_RAM.copy
-	ld	(MapDataPtr), de
-	
-; Copy app data to AOCE_RAM_START
-	ld	de, AOCE_RAM_START
-	ld	hl, AppDataStart
-	ld	bc, AppDataEnd - AppDataStart
-	ldir
-	
 ; Backup stack
 	ld	hl, heapBot
 	ld	de, vRAM - (stackTop - heapBot)
@@ -94,15 +77,22 @@ CheckGraphicsAppvarsLoop:
 	add	hl, de
 	ld	sp, hl
 	
-	DrawField.copy
+; Backup RAM
+	di
+	ld	a, 0D1h
+	ld	mb, a
+	ld.sis	sp, AOCE_RAM_START and 0FFFFh
+	call.lis fUnlockFlash and 0FFFFh
+	call	BackupRAM
+	AoCE_RAM.copy
+	ld	(MapDataPtr), de
 	
 ; Set some pointers
-	ld	hl, (MapDataPtr)
-	ld	de, MAP_SIZE * MAP_SIZE * 2
+	ld	hl, MAP_SIZE * MAP_SIZE * 2
 	add	hl, de
 	push	hl
 	ex	de, hl
-	ld	hl, (AOCE_RAM_START + 3)
+	ld	hl, (AppvarsPointersTable + 3)
 	ld	bc, 0
 	ld	c, (hl)
 	inc	hl
@@ -120,9 +110,17 @@ CheckGraphicsAppvarsLoop:
 	ld	hl, RelocationTable2
 	call	ModifyRelocationTable
 	
+; Copy app data to AOCE_RAM_START
+	ld	de, AOCE_RAM_START
+	ld	hl, AppDataStart
+	ld	bc, AppDataEnd - AppDataStart
+	ldir
+	
+	DrawField.copy
+	
 ; Get the sprites of the homescreen
 	ld	hl, RelocationTable1
-	ld	bc, (AOCE_RAM_START)
+	ld	bc, (AOCE_RAM_START + 0)
 	inc	bc			; Skip size bytes
 	inc	bc
 	call	ModifyRelocationTable

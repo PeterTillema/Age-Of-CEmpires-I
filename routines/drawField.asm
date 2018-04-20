@@ -331,6 +331,15 @@ DisplayUnits1:
 DisplayUnits2:
 	lea	hl, iy
 	ld	(BackupIY4), iy
+	
+; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
+; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
+
+; X = 
+; Y = 
+	
+	
+	
 	;ld	iy, iy_base
 TempSP5 = $+1
 	ld	sp, 0
@@ -462,7 +471,7 @@ DrawTile_Clipped:
 	ld	(BackupIY), iy
 	ld	sp, lcdWidth
 	lea	de, iy
-	ld	bc, 2
+	ld	c, 2
 	ldir
 	add	iy, sp
 	lea	de, iy-2
@@ -528,7 +537,6 @@ StopDrawingTile:
 BackupIY = $-3
 	exx
 	jp	SkipDrawingOfTile
-
 end relocate
 
 relocate DrawIsometricTile, mpShaData, 64
@@ -536,7 +544,7 @@ relocate DrawIsometricTile, mpShaData, 64
 DrawIsometricTile:
 	ld	sp, -lcdWidth - 2
 	lea	de, iy
-	ld	bc, 2
+	ld	c, 2
 	lddr
 	ld	c, 6
 	ex	de, hl
