@@ -338,36 +338,33 @@ DisplayUnits2:
 ; X = 
 ; Y = 
 	
-	
-	
-	;ld	iy, iy_base
 TempSP5 = $+1
 	ld	sp, 0
-	;ld	e, 5			; Amount of units at the tile
-	;exx
-	;inc	hl
-	;ld	a, (hl)			; Unit index
-	;dec	hl
-	;exx
-	;ld	hl, UnitsPerTile
+	ld	b, 5			; Amount of units at the tile
+	exx
+	inc	hl
+	ld	a, (hl)			; Unit index
+	dec	hl
+	exx
+	ld	hl, UnitsPerTile
 FindNextUnit:
-	;ld	c, a
-	;ld	b, SIZEOF_UNIT_STRUCT
-	;mlt	bc
-	;ld	iy, (UnitsStackPtr)
-	;add	iy, bc
-	;ld	bc, (iy + UnitOffsetX - 1)
-	;ld	c, a
-	;ld	(hl), bc
-	;inc	hl
-	;inc	hl
-	;inc	hl
-	;ld	a, (iy + UnitNext)
-	;inc	a
-	;jr	z, DisplayUnitsAtTile
-	;dec	a
-	;dec	e
-	;jr	nz, FindNextUnit
+	ld	e, a
+	ld	d, SIZEOF_UNIT_STRUCT
+	mlt	de
+	ld	iy, (UnitsStackPtr)
+	add	iy, de
+	ld	de, (iy + UnitNext)
+	ld	b, e			; B is next unit
+	ld	e, a
+	ld	(hl), de
+	inc	hl
+	inc	hl
+	inc	hl
+	inc	b
+	jr	z, DisplayUnitsAtTile
+	dec	b
+	ld	a, b
+	djnz	FindNextUnit
 DisplayUnitsAtTile:
 	
 BackupIY4 = $+2

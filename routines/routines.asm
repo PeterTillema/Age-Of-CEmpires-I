@@ -3,9 +3,8 @@ GetKeyFast:
 	ld	hl, mpKeyRange + (keyModeScanOnce shl 8)
 	ld	(hl), h
 	xor	a, a
-WaitGetKeyFastLoop:
-	cp	a, (hl)
-	jr	nz, WaitGetKeyFastLoop
+.loop:	cp	a, (hl)
+	jr	nz, .loop
 	ret
 
 ;-------------------------------------------------------------------------------
@@ -202,12 +201,7 @@ dzx7t_load_bits:
         rla
         ret
 	
-; ==================== This routine is a modified version of the routine from the GRAPHX lib ====================
-; Changes:
-;   Use the screen bounds directly
-;   Shuffle the arguments
-;   Optimized a few things, because known bounds
-
+;-------------------------------------------------------------------------------
 _RLETSprite:
 ; Draws a sprite with RLE transparency with clipping.
 ; Arguments:

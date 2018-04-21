@@ -64,9 +64,9 @@ UnitHealth                  = 2
 UnitHitpoints               = 3
 UnitPath                    = 4
 UnitNext                    = 7
-UnitPrev                    = 8
-UnitOffsetX                 = 9
-UnitOffsetY                 = 10
+UnitOffsetX                 = 8
+UnitOffsetY                 = 9
+UnitPrev                    = 10
 
 ;;; Building struct
 SIZEOF_BUILDING_STRUCT      = 2
