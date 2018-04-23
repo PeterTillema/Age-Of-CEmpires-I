@@ -374,8 +374,8 @@ SortUnits:
 	ld	c, 1			; C = unit index [1,X]
 	ld	a, c			; A = unit index [1,X]
 	ld	iy, UnitsPerTile + 3	; IY = pointer to current element
-	lea	ix, iy-3		; IX = pointer to test element
 .loop1:	ld	hl, (iy)		; HL = current element
+	lea	ix, iy-3		; IX = pointer to test element
 	ld	c, a
 .loop2:	ld	de, (ix)		; DE = test element
 	or	a, a			; Compare elements
@@ -390,7 +390,6 @@ SortUnits:
 	lea	iy, iy+3		; Increment current element pointer
 	inc	a			; Loop through all the units
 	djnz	.loop1
-		
 DisplayAllUnits:
 	
 BackupIY4 = $+2

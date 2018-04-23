@@ -14,9 +14,19 @@ appvars GFX,2, AGE,4, UNI,3
 
 	app_create
 	
-	ret	nz
+	jr	z, DeleteAoCEProg
+	call	_HomeUp
+	call	_ClrLCDFull
+	ld	hl, AlreadyInstalled
+	call	_PutS
+	call	_GetKey
+	jp	_ClrLCDFull
+DeleteAoCEProg:
 	call	_ChkFindSym
 	jp	_DelVarArc		; delete installer code
+	
+AlreadyInstalled:
+	db	"AoCE already installed,   please delete app to     reinstall", 0
 	
 	app_start 'AoCE', '(C) 2018 Peter Tillema', '1.0.0', 1
 
@@ -178,7 +188,7 @@ CheckGraphicsAppvarsLoop:
 	ldir
 	ld	hl, TempUnits		; Temp unit
 	ld	de, (UnitsStackPtr)
-	ld	bc, SIZEOF_UNIT_STRUCT * 2
+	ld	bc, SIZEOF_UNIT_STRUCT * 3
 	ldir
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
