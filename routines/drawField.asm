@@ -145,6 +145,7 @@ TileDrawingRoutinePtr1 = $+1
 TileIsOutOfField:
 	xor	a, a			; Reset A otherwise it might think that it was a tile with unit(s)
 	exx
+	ld	bc, 0
 	ld	hl, blackBuffer
 TileDrawingRoutinePtr2 = $+1
 	jp	DrawIsometricTile	; This will be modified to the clipped version after X rows
@@ -220,7 +221,6 @@ BackupIY2 = $-3
 	jp	SkipDrawingOfTileExx
 
 DrawIsometricTileSecondPart:
-	lddr
 	ld	c, 30
 	ex	de, hl
 	add	hl, sp
@@ -340,6 +340,7 @@ DisplayUnits2:
 	
 TempSP5 = $+1
 	ld	sp, 0
+	push	ix
 	ld	b, 5			; Amount of units at the tile
 	exx
 	inc	hl
@@ -354,22 +355,48 @@ FindNextUnit:
 	ld	iy, (UnitsStackPtr)
 	add	iy, de
 	ld	de, (iy + UnitNext)
-	ld	b, e			; B is next unit
+	ld	c, e			; C is next unit
 	ld	e, a
 	ld	(hl), de
 	inc	hl
 	inc	hl
 	inc	hl
-	inc	b
-	jr	z, DisplayUnitsAtTile
-	dec	b
-	ld	a, b
+	inc	c
+	jr	z, SortUnits
+	dec	c
+	ld	a, c
 	djnz	FindNextUnit
-DisplayUnitsAtTile:
+SortUnits:
+	ld	a, 5
+	sub	a, b
+	jr	z, DisplayAllUnits	; Only 1 unit, no need to sort
+	ld	b, a			; B = 5 - unit index
+	ld	c, 1			; C = unit index [1,X]
+	ld	a, c			; A = unit index [1,X]
+	ld	iy, UnitsPerTile + 3	; IY = pointer to current element
+	lea	ix, iy-3		; IX = pointer to test element
+.loop1:	ld	hl, (iy)		; HL = current element
+	ld	c, a
+.loop2:	ld	de, (ix)		; DE = test element
+	or	a, a			; Compare elements
+	sbc	hl, de
+	add	hl, de
+	jr	nc, .ins		; HL > DE, so stop with swapping
+	ld	(ix+3), de		; Move the test element to the previous position
+	lea	ix, ix-3		; Decrease test pointer
+	dec	c			; Loop through all the remaining units
+	jr	nz, .loop2
+.ins:	ld	(ix+3), hl		; Insert the current element in the right position
+	lea	iy, iy+3		; Increment current element pointer
+	inc	a			; Loop through all the units
+	djnz	.loop1
+		
+DisplayAllUnits:
 	
 BackupIY4 = $+2
 	ld	iy, 0
-	jr	SkipDrawingOfTileExx
+	pop	ix
+	jp	SkipDrawingOfTileExx
 	
 SetClippedRoutine:
 	ld	hl, DrawTile_Clipped			; Set the clipped routine
@@ -578,6 +605,7 @@ DrawIsometricTile:
 	add	hl, sp
 	add	hl, bc
 	ex	de, hl
+	lddr
 	jp	DrawIsometricTileSecondPart
 end relocate
 

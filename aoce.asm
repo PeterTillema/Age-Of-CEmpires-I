@@ -62,12 +62,6 @@ CheckGraphicsAppvarsLoop:
 	ld	hl, LoadingMessage
 	call	_PutS
 	
-; Backup stack
-	ld	hl, heapBot
-	ld	de, vRAM - (stackTop - heapBot)
-	ld	bc, stackTop - heapBot
-	ldir
-	
 ; Use the moved stack
 	or	a, a
 	sbc	hl, hl
@@ -87,8 +81,23 @@ CheckGraphicsAppvarsLoop:
 	AoCE_RAM.copy
 	ld	(MapDataPtr), de
 	
+; Backup stack
+	ld	hl, heapBot
+	ld	de, vRAM - (stackTop - heapBot)
+	ld	bc, stackTop - heapBot
+	ldir
+	
+; Copy app data to AOCE_RAM_START
+	ld	de, AOCE_RAM_START
+	ld	hl, AppDataStart
+	ld	bc, AppDataEnd - AppDataStart
+	ldir
+	
+	DrawField.copy
+	
 ; Set some pointers
-	ld	hl, MAP_SIZE * MAP_SIZE * 2
+	ld	hl, (MapDataPtr)
+	ld	de, MAP_SIZE * MAP_SIZE * 2
 	add	hl, de
 	push	hl
 	ex	de, hl
@@ -106,17 +115,10 @@ CheckGraphicsAppvarsLoop:
 	ld	bc, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT
 	add	hl, bc
 	ld	(FixedBuildingsPtr), hl
+	
 	pop	bc
 	ld	hl, RelocationTable2
 	call	ModifyRelocationTable
-	
-; Copy app data to AOCE_RAM_START
-	ld	de, AOCE_RAM_START
-	ld	hl, AppDataStart
-	ld	bc, AppDataEnd - AppDataStart
-	ldir
-	
-	DrawField.copy
 	
 ; Get the sprites of the homescreen
 	ld	hl, RelocationTable1

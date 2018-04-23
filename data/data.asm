@@ -20,6 +20,8 @@ UnitsStackPtr:
 	dl	0
 FixedBuildingsPtr:
 	dl	0
+	
+	dl	0
 UnitsPerTile:
 	rb	5 * 3
 TempData1:
@@ -45,13 +47,15 @@ iy_base db iy_data
 TempUnits:
 	db	1, 0, 100, 5
 	dl	0
-	db	1, 255
-	db	1, 1
+	db	1
+	db	1, 2
+	db	255
 	
 	db	1, 0, 100, 5
 	dl	0
-	db	255, 255
-	db	2, 2
+	db	255
+	db	1, 1
+	db	0
 
 ResourcesType1:
 	db	0, 1, 0
