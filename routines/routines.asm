@@ -140,65 +140,82 @@ Wait2Loop:
 
 ;-------------------------------------------------------------------------------
 dzx7_Turbo:
-        ld      a, 128
+	ld      a, 128
 dzx7t_copy_byte_loop:
-        ldi
+	ldi
 dzx7t_main_loop:
-        add     a, a
-        call    z, dzx7t_load_bits
-        jr      nc, dzx7t_copy_byte_loop
-        push    de
-        ld      de, 0
-        ld      bc, 1
+	add     a, a
+	jr	nz, .jump
+	ld	a, (hl)
+	inc	hl
+	rla
+.jump:	jr      nc, dzx7t_copy_byte_loop
+	push    de
+	ld      de, 0
+	ld      bc, 1
 dzx7t_len_size_loop:
-        inc     d
-        add     a, a
-        call    z, dzx7t_load_bits
-        jr      nc, dzx7t_len_size_loop
-        jr      dzx7t_len_value_start
+	inc     d
+	add     a, a
+	jr	nz, .jump
+	ld	a, (hl)
+	inc	hl
+	rla
+.jump:	jr      nc, dzx7t_len_size_loop
+	jr      dzx7t_len_value_start
 dzx7t_len_value_loop:
-        add     a, a
-        call    z, dzx7t_load_bits
-        rl      c
-        rl      b
-        jr      c, dzx7t_exit
+	add     a, a
+	jr	nz, .jump
+	ld	a, (hl)
+	inc	hl
+	rla
+.jump:	rl      c
+	rl      b
+	jr      c, dzx7t_exit
 dzx7t_len_value_start:
-        dec     d
-        jr      nz, dzx7t_len_value_loop
-        inc     bc
-        ld      e, (hl)
-        inc     hl
-        sla	e
-        inc	e
-        jr      nc, dzx7t_offset_end
-        add     a, a
-        call    z, dzx7t_load_bits
-        rl      d
-        add     a, a
-        call    z, dzx7t_load_bits
-        rl      d
-        add     a, a
-        call    z, dzx7t_load_bits
-        rl      d
-        add     a, a
-        call    z, dzx7t_load_bits
-        ccf
-        jr      c, dzx7t_offset_end
-        inc     d
+	dec     d
+	jr      nz, dzx7t_len_value_loop
+	inc     bc
+	ld      e, (hl)
+	inc     hl
+	sla	e
+	inc	e
+	jr      nc, dzx7t_offset_end
+	add     a, a
+	jr	nz, .jump1
+	ld	a, (hl)
+	inc	hl
+	rla
+.jump1:	rl      d
+	add     a, a
+	jr	nz, .jump2
+	ld	a, (hl)
+	inc	hl
+	rla
+.jump2:	rl      d
+	add     a, a
+	jr	nz, .jump3
+	ld	a, (hl)
+	inc	hl
+	rla
+.jump3:	rl      d
+	add     a, a
+	jr	nz, .jump4
+	ld	a, (hl)
+	inc	hl
+	rla
+.jump4:	ccf
+	jr      c, dzx7t_offset_end
+	inc     d
 dzx7t_offset_end:
-        rr      e
-        ex      (sp), hl
-        push    hl
-        sbc     hl, de
-        pop     de
-        ldir
+	rr      e
+	ex      (sp), hl
+	push    hl
+	sbc     hl, de
+	pop     de
+	ldir
 dzx7t_exit:
         pop     hl
         jp      nc, dzx7t_main_loop
-dzx7t_load_bits:
-        ld      a, (hl)
-        inc     hl
-        rla
         ret
 	
 ;-------------------------------------------------------------------------------

@@ -26,7 +26,7 @@ DeleteAoCEProg:
 	jp	_DelVarArc		; delete installer code
 	
 AlreadyInstalled:
-	db	"AoCE already installed,   please delete app to     reinstall", 0
+	db	"AoCE already installed,   please delete app to      reinstall", 0
 	
 	app_start 'AoCE', '(C) 2018 Peter Tillema', '1.0.0', 1
 

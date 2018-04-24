@@ -625,29 +625,29 @@ BuildingsTablePointer = $+1		; Yay, ages! :D
 	ld	hl, BuildingsAge1
 	add	hl, bc
 	ld	hl, (hl)
-	ld	b, (hl)
+	ld	b, (hl)			; B = building width
 	ld	(BackupIY3), iy
 	ld	iy, iy_base
 TempSP4 = $+1
 	ld	sp, 0
 	push	hl			; Sprite struct
 	ex	af, af'
-	ld	c, a			; C = row index
+	ld	c, a			; C = row_index start at bottom
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
-	sub	a, c
+	sub	a, c			; A = row_index start at top
 	ld	e, a
 	ld	d, TILE_HEIGHT / 2 / 2
-	mlt	de
+	mlt	de			; DE = pointer to row / 2
 	inc	hl
-	ld	a, (hl)
+	ld	a, (hl)			; A = building_height
 	ld	hl, 17
 	add	hl, de
-	add	hl, de
+	add	hl, de			; HL = pointer to row + offset
 	ld	e, (OFFSET_Y)
-	add	hl, de
+	add	hl, de			; HL = pointer to row + offset + y_offset
 	ld	e, a
-	sbc	hl, de
+	sbc	hl, de			; HL = pointer to row + offset + y_offset - building_height
 	push	hl			; Y coordinate
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
