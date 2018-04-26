@@ -871,3 +871,101 @@ SprNcLpStart:
 	jr	nz, SprNcLpOddW
 SprNcJrStep:
 	ret
+	
+;-------------------------------------------------------------------------------
+TeamColorsToInc:
+	ld	a, 034h
+	jr	TeamColorsChange
+TeamColorsToDec:
+	ld	a, 035h
+TeamColorsChange:
+	ld	hl, IncTeamColorsPtr
+	ld	de, 5
+	ld	b, 8
+.loop:	ld	(hl), a
+	add	hl, de
+	djnz	.loop
+	ret
+	
+;-------------------------------------------------------------------------------
+IncTeamColors_Run:
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+IncTeamColorsPtr:
+	inc	(hl)			; increment value of TCP
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+	inc	(hl)			; increment value of TCP
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+	inc	(hl)			; increment value of TCP
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+	inc	(hl)			; increment value of TCP
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+	inc	(hl)			; increment value of TCP
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+	inc	(hl)			; increment value of TCP
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+	inc	(hl)			; increment value of TCP
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+IncTeamColors_LoopStart1:
+	inc	(hl)			; increment value of TCP
+	dec	iyh
+	jr	nz, IncTeamColors_Loop
+; IncTeamColors
+; Inputs:
+;   - DE = TCP data
+;   - HL = sprite data
+; TCP data:
+;   Split into blocks with a 4-byte header and some data:
+;     Header:
+;       - 2-byte offset to the next TCP (first byte should be negative to stop)
+;       - 1-byte JR offset to the first run
+;       - 1-byte amount of full runs
+;     Data:
+;       1-byte offsets to the next TCP
+IncTeamColors:
+	dec.s	bc			; bcu = 0
+	ld	a, (de)			; a = (distance to next TCP)>>8
+	or	a, a
+	ret	m			; return if distance to next TCP > 32767
+	inc	de
+	ld	b, a
+	ld	a, (de)
+	inc	de
+	ld	c, a			; ubc = distance to next TCP
+	add	hl, bc			; uhl = next TCP
+	ld	b, 0			; b = 0
+	ld	a, (de)
+	inc	de
+	ld	(IncTeamColors_LoopStart_Jr_SMC), a
+					; = IncTeamColors_LoopStart_Start1
+					;   -(IncTeamColors_LoopStart_Jr+2)
+					;   -(((TCP sequence length)-1)%8*5)
+	ld	a, (de)
+	inc	de
+	ld	iyh, a			; iyh = ((TCP sequence length)-1)/8+1
+IncTeamColors_LoopStart_Jr:
+	jr	$
+IncTeamColors_LoopStart_Jr_SMC = $-1

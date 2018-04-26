@@ -140,7 +140,7 @@ TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
 	sub	a, TILE_BUILDING
 	jr	c, DisplayTileWithTree	; It's a tree
-	jp	DisplayBuilding		; It's a building
+	jp	DisplayBuildingExx	; It's a building
 	
 TileIsOutOfField:
 	xor	a, a			; Reset A otherwise it might think that it was a tile with unit(s)
@@ -161,7 +161,7 @@ TileOnlyDisplayBuilding:
 	ld	a, (hl)
 	sub	a, TILE_BUILDING	; Check if it's a building
 	jp	c, SkipDrawingOfTile
-	jp	DisplayBuildingExx
+	jp	DisplayBuilding
 	
 DisplayTileWithTree:
 ; Inputs:
@@ -611,22 +611,25 @@ end relocate
 DisplayBuildingExx:
 	exx
 DisplayBuilding:
+	inc	hl
+	ld	a, (hl)			; Building index
+	dec	hl
+	exx
 ; Inputs:
 ;   A' = row index
 ;   B' = column index
-;   A  = building index
+;   A  = index in buildings stack
 
 ; Y coordinate: A' * 8 + 17 - building_height
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
-	ld	c, a
-	ld	b, 3
-	mlt	bc
-BuildingsTablePointer = $+1		; Yay, ages! :D
-	ld	hl, BuildingsAge1
-	add	hl, bc
-	ld	hl, (hl)
-	ld	b, (hl)			; B = building width
 	ld	(BackupIY3), iy
+	ld	c, a
+	ld	b, SIZEOF_BUILDING_STRUCT
+	mlt	bc
+	ld	iy, (BuildingsStackPtr)
+	add	iy, bc
+	ld	hl, (iy)
+	ld	b, (hl)			; B = building width
 	ld	iy, iy_base
 TempSP4 = $+1
 	ld	sp, 0

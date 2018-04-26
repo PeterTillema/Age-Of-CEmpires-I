@@ -2,7 +2,7 @@
 include 'includes/ez80.inc'
 include 'includes/ti84pceg.inc'
 include 'includes/tiformat.inc'
-include 'includes/defines.asm'
+include 'includes/defines.inc'
 include 'includes/macros.inc'
 include 'includes/symbol_table.inc'
 
