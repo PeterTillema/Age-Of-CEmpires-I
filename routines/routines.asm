@@ -932,7 +932,7 @@ IncTeamColorsPtr:
 IncTeamColors_LoopStart1:
 	inc	(hl)			; increment value of TCP
 	dec	iyh
-	jr	nz, IncTeamColors_Loop
+	jr	nz, IncTeamColors_Run
 ; IncTeamColors
 ; Inputs:
 ;   - DE = TCP data
@@ -960,7 +960,7 @@ IncTeamColors:
 	ld	a, (de)
 	inc	de
 	ld	(IncTeamColors_LoopStart_Jr_SMC), a
-					; = IncTeamColors_LoopStart_Start1
+					; = IncTeamColors_LoopStart1
 					;   -(IncTeamColors_LoopStart_Jr+2)
 					;   -(((TCP sequence length)-1)%8*5)
 	ld	a, (de)
