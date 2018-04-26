@@ -50,71 +50,68 @@ FieldRowActionTable:
 	dl	SetClippedRoutine
 	
 BuildingsAge1:
-	dl	farm_1_offset			; 0
-	dl	lumbercamp_1_offset		; 1
-	dl	miningcamp_1_offset		; 2
-	dl	outpost_1_offset		; 3
-	dl	barracks_1_offset		; 4
-	dl	house_1_offset			; 5
-	dl	mill_1_offset			; 6
-	dl	towncenter_1_offset		; 7
+	dl	farm_1_compressed_offset		; 0
+	dl	lumbercamp_1_compressed_offset		; 1
+	dl	miningcamp_1_compressed_offset		; 2
+	dl	outpost_1_compressed_offset		; 3
+	dl	barracks_1_compressed_offset		; 4
+	dl	house_1_compressed_offset		; 5
+	dl	mill_1_compressed_offset		; 6
+	dl	towncenter_1_compressed_offset		; 7
 	
 BuildingsAge2:
-	dl	farm_1_offset			; 0
-	dl	lumbercamp_1_offset		; 1
-	dl	miningcamp_1_offset		; 2
-	dl	outpost_1_offset		; 3
-	dl	barracks_2_offset		; 4
-	dl	house_2_offset			; 5
-	dl	mill_2_offset			; 6
-	dl	towncenter_2_offset		; 7
-	dl	archery_2_offset		; 8
-	dl	blacksmith_2_offset		; 9
-	dl	market_2_offset			; 10
-	dl	stable_2_offset			; 11
-	dl	tower_2_offset			; 12
+	dl	farm_1_compressed_offset		; 0
+	dl	lumbercamp_1_compressed_offset		; 1
+	dl	miningcamp_1_compressed_offset		; 2
+	dl	outpost_1_compressed_offset		; 3
+	dl	barracks_2_compressed_offset		; 4
+	dl	house_2_compressed_offset		; 5
+	dl	mill_2_compressed_offset		; 6
+	dl	towncenter_2_compressed_offset		; 7
+	dl	archery_2_compressed_offset		; 8
+	dl	blacksmith_2_compressed_offset		; 9
+	dl	market_2_compressed_offset		; 10
+	dl	stable_2_compressed_offset		; 11
+	dl	tower_2_compressed_offset		; 12
 	
 BuildingsAge3:
-	dl	farm_1_offset			; 0
-	dl	lumbercamp_1_offset		; 1
-	dl	miningcamp_1_offset		; 2
-	dl	outpost_1_offset		; 3
-	dl	barracks_3_offset		; 4
-	dl	house_3_offset			; 5
-	dl	mill_3_offset			; 6
-	dl	towncenter_3_offset		; 7
-	dl	archery_3_offset		; 8
-	dl	blacksmith_3_offset		; 9
-	dl	market_3_offset			; 10
-	dl	stable_3_offset			; 11
-	dl	tower_3_offset			; 12
-	dl	castle_3_offset			; 13
-	dl	monastery_3_offset		; 14
-	dl	siegeworkshop_3_offset		; 15
-	dl	university_3_offset		; 16
+	dl	farm_1_compressed_offset		; 0
+	dl	lumbercamp_1_compressed_offset		; 1
+	dl	miningcamp_1_compressed_offset		; 2
+	dl	outpost_1_compressed_offset		; 3
+	dl	barracks_3_compressed_offset		; 4
+	dl	house_3_compressed_offset		; 5
+	dl	mill_3_compressed_offset		; 6
+	dl	towncenter_3_compressed_offset		; 7
+	dl	archery_3_compressed_offset		; 8
+	dl	blacksmith_3_compressed_offset		; 9
+	dl	market_3_compressed_offset		; 10
+	dl	stable_3_compressed_offset		; 11
+	dl	tower_3_compressed_offset		; 12
+	dl	castle_3_compressed_offset		; 13
+	dl	monastery_3_compressed_offset		; 14
+	dl	siegeworkshop_3_compressed_offset	; 15
+	dl	university_3_compressed_offset		; 16
 	
 BuildingsAge4:
-	dl	farm_1_offset			; 0
-	dl	lumbercamp_1_offset		; 1
-	dl	miningcamp_1_offset		; 2
-	dl	outpost_1_offset		; 3
-	dl	barracks_3_offset		; 4
-	dl	house_3_offset			; 5
-	dl	mill_3_offset			; 6
-	dl	towncenter_4_offset		; 7
-	dl	archery_3_offset		; 8
-	dl	blacksmith_3_offset		; 9
-	dl	market_4_offset			; 10
-	dl	stable_3_offset			; 11
-	dl	tower_4_offset			; 12
-	dl	castle_3_offset			; 13
-	dl	monastery_3_offset		; 14
-	dl	siegeworkshop_3_offset		; 15
-	dl	university_4_offset		; 16
-	dl	btower_4_offset			; 17
-	
-LoadedUnits:					; Dynamically loaded units in RAM, since they don't fit all
-	db	0 dup 3*22
+	dl	farm_1_compressed_offset		; 0
+	dl	lumbercamp_1_compressed_offset		; 1
+	dl	miningcamp_1_compressed_offset		; 2
+	dl	outpost_1_compressed_offset		; 3
+	dl	barracks_3_compressed_offset		; 4
+	dl	house_3_compressed_offset		; 5
+	dl	mill_3_compressed_offset		; 6
+	dl	towncenter_4_compressed_offset		; 7
+	dl	archery_3_compressed_offset		; 8
+	dl	blacksmith_3_compressed_offset		; 9
+	dl	market_4_compressed_offset		; 10
+	dl	stable_3_compressed_offset		; 11
+	dl	tower_4_compressed_offset		; 12
+	dl	castle_3_compressed_offset		; 13
+	dl	monastery_3_compressed_offset		; 14
+	dl	siegeworkshop_3_compressed_offset	; 15
+	dl	university_4_compressed_offset		; 16
+	dl	btower_4_compressed_offset		; 17
 	
 UnitArbalest:
 	dl	arbalest_a_1_compressed_offset

@@ -106,12 +106,4 @@ include "routines/drawField.asm"
 include "data/tables.asm"
 include "data/data.asm"
 
-irpv each, appvar
-RelocationTable#%:
-	irpv relocation, each#_relocation_table
-		dl relocation
-	end irpv
-	dw $FFFF
-end irpv
-
 end relocate

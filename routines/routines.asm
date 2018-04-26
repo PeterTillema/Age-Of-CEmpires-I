@@ -575,34 +575,13 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 	ret
 	
 ;-------------------------------------------------------------------------------
-LoadAgeGraphicsAppvar:
-	push	hl
-	push	de
-	inc	c
-	ld	b, 3
-	mlt	bc
-	ld	hl, AOCE_RAM_START
-	add	hl, bc
-	ld	hl, (hl)
-	inc	hl
-	inc	hl
-	ld	de, (FixedBuildingsPtr)
-	push	de
-	call	dzx7_Turbo
-	pop	hl
-	push	hl
-	pop	bc
-	pop	de
-	add	hl, de
-	ld	(FixedBuildingsPtr), hl
-	pop	hl
 ModifyRelocationTable:
 	push	hl
 	ld	hl, (hl)
-	ld	a, h
-	and	a, l
-	inc	a
-	jr	z, StopModifying
+	ld	de, 1
+	add	hl, de
+	jr	c, StopModifying
+	dec	hl
 	push	hl
 	ld	hl, (hl)
 	add	hl, bc

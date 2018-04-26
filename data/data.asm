@@ -12,14 +12,24 @@ AmountOfMaxPeople:
 	db	10
 AmountOfBuildings:
 	db	0
+AmountOfDifferentBuildings:
+	db	0
+	
 MapDataPtr:
 	dl	0
 BuildingsStackPtr:
 	dl	0
+BuildingsBase:
+	dl	0
+BuildingsPtr:
+	dl	0
 UnitsStackPtr:
 	dl	0
-FixedBuildingsPtr:
+UnitsBase:
 	dl	0
+UnitsPtr:
+	dl	0
+	
 UnitsPerTile:
 	rb	5 * 3
 TempData1:

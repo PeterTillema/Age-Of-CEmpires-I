@@ -14,7 +14,7 @@ macro appvars appvars*&
 		repeat count
 			varname concat 'AOCE', `type, `%
 			filename concat 'gfx/bin/', varname, '.inc'
-			if index <= 6
+			if index <= 2
 				repeat 1, index: index
 					element appvar#index
 					appvar equ appvar#index

@@ -91,9 +91,24 @@ CheckGraphicsAppvarsLoop:
 	AoCE_RAM.copy
 	ld	(MapDataPtr), de
 	
+; Set some pointers
+	ld	hl, MAP_SIZE * MAP_SIZE * 2
+	add	hl, de
+	ld	(BuildingsStackPtr), hl
+	ld	de, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT
+	add	hl, de
+	ld	(UnitsStackPtr), hl
+	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT
+	add	hl, de
+	ld	(BuildingsBase), hl
+	ld	(BuildingsPtr), hl
+	ld	hl, vRAM - (stackTop - heapBot)
+	ld	(UnitsBase), hl
+	ld	(UnitsPtr), hl
+	
 ; Backup stack
+	ex	de, hl
 	ld	hl, heapBot
-	ld	de, vRAM - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
 	ldir
 	
@@ -105,37 +120,14 @@ CheckGraphicsAppvarsLoop:
 	
 	DrawField.copy
 	
-; Set some pointers
-	ld	hl, (MapDataPtr)
-	ld	de, MAP_SIZE * MAP_SIZE * 2
-	add	hl, de
-	push	hl
-	ex	de, hl
-	ld	hl, (AppvarsPointersTable + 3)
-	ld	bc, 0
-	ld	c, (hl)
-	inc	hl
-	ld	b, (hl)
-	inc	hl
-	ldir
-	ld	(BuildingsStackPtr), de
-	ld	hl, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT
-	add	hl, de
-	ld	(UnitsStackPtr), hl
-	ld	bc, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT
-	add	hl, bc
-	ld	(FixedBuildingsPtr), hl
-	
-	pop	bc
-	ld	hl, RelocationTable2
-	call	ModifyRelocationTable
-	
-; Get the sprites of the homescreen
-	ld	hl, RelocationTable1
-	ld	bc, (AOCE_RAM_START + 0)
-	inc	bc			; Skip size bytes
+; Relocate everything
+irpv each, appvar
+	ld	hl, RelocationTable#%
+	ld	bc, (AppvarsPointersTable - 3 + (% * 3))
+	inc	bc
 	inc	bc
 	call	ModifyRelocationTable
+end irpv
 	
 ; Setup some variables and start the game!
 	xor	a, a
@@ -149,17 +141,7 @@ CheckGraphicsAppvarsLoop:
 	ld	a, 1
 	ld	(_FGColor), a
 	
-; Of course, we start with age 1
-	ld	c, a
-	ld	hl, RelocationTable3
-	ld	de, barracks_1_offset - appvar3
-	call	LoadAgeGraphicsAppvar
-	
-; Set some variables and the palette
-	ld	iy, iy_base
-	xor	a, a
-	ld	(OFFSET_X), a
-	ld	(OFFSET_Y), a
+; Set the palette
 	ld	de, mpLcdPalette
 	ld	hl, _pal_gfx_pal
 	ld	bc, _pal_gfx_pal_size
@@ -193,6 +175,7 @@ CheckGraphicsAppvarsLoop:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 ; Call the main loop
+	ld	iy, iy_base
 	call	MainGameLoop
 	
 ForceStopProgramFadeOut:
@@ -215,7 +198,7 @@ ForceStopProgramFadeOut:
 	ld	a, 0D0h
 	ld	mb, a
 	pop	de
-	ld	sp, BackupSP
+	ld	sp, (BackupSP)
 	pop	ix
 	ld	hl, RAM_BACKUP + (vRAM - ramStart) - (stackTop - heapBot)
 	ld	bc, stackTop - heapBot
@@ -281,6 +264,15 @@ GraphicsAppvars:
 irpv name, varname
 	db	AppVarObj, name, 0
 end irpv
+
+irpv each, appvar
+RelocationTable#%:
+	irpv relocation, each#_relocation_table
+		dl relocation
+	end irpv
+	dl 0FFFFFFh
+end irpv
+
 GraphicsAppvarNotFound:
 	db	"Can't find appvar:", 0
 MissingAppVar:
