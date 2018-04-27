@@ -14,21 +14,26 @@ AmountOfBuildings:
 	db	0
 AmountOfDifferentBuildings:
 	db	0
-	
 MapDataPtr:
 	dl	0
+	
 BuildingsStackPtr:
 	dl	0
 BuildingsBase:
 	dl	0
 BuildingsPtr:
 	dl	0
+BuildingsLoaded:
+	rb	18
+	
 UnitsStackPtr:
 	dl	0
 UnitsBase:
 	dl	0
 UnitsPtr:
 	dl	0
+UnitsLoaded:
+	rb	22
 	
 UnitsPerTile:
 	rb	5 * 3

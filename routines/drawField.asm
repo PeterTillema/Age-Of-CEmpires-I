@@ -622,17 +622,38 @@ DisplayBuilding:
 
 ; Y coordinate: A' * 8 + 17 - building_height
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
+TempSP4 = $+1
+	ld	sp, 0
 	ld	(BackupIY3), iy
+	ld	hl, BuildingsLoaded
+	ld	bc, 0
 	ld	c, a
+	add	hl, bc
+	ld	a, (hl)
 	ld	b, SIZEOF_BUILDING_STRUCT
 	mlt	bc
 	ld	iy, (BuildingsStackPtr)
 	add	iy, bc
-	ld	hl, (iy)
+; Loaded | Team | Action
+; 0        0      Nothing
+; 0        1      Inc
+; 1        0      Dec
+; 1        1      Nothing
+	cp	a, (iy + BuildingTeam)
+	jr	z, NoTeamColorsSwap
+	jr	c, .inc
+.dec:	dec	(hl)
+	call	TeamColorsToDec
+	jr	.ins
+.inc:	inc	(hl)
+	call	TeamColorsToInc
+.ins:	ld	hl, (iy + BuildingRAMPtr)
+	ld	de, (iy + BuildingTCPPtr)
+	call	IncTeamColors
+NoTeamColorsSwap:
+	ld	hl, (iy + BuildingRAMPtr)
 	ld	b, (hl)			; B = building width
 	ld	iy, iy_base
-TempSP4 = $+1
-	ld	sp, 0
 	push	hl			; Sprite struct
 	ex	af, af'
 	ld	c, a			; C = row_index start at bottom

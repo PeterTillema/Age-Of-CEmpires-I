@@ -940,11 +940,12 @@ IncTeamColors_LoopStart1:
 ; TCP data:
 ;   Split into blocks with a 4-byte header and some data:
 ;     Header:
-;       - 2-byte offset to the next TCP (first byte should be negative to stop)
+;       - 2-byte offset to the next TCP
 ;       - 1-byte JR offset to the first run
 ;       - 1-byte amount of full runs
 ;     Data:
 ;       1-byte offsets to the next TCP
+;   Last byte is 0x80 to signify the end of the data
 IncTeamColors:
 	dec.s	bc			; bcu = 0
 	ld	a, (de)			; a = (distance to next TCP)>>8

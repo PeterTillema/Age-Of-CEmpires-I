@@ -70,16 +70,15 @@ UnitOffsetY                 = 12
 UnitPrev                    = 13
 
 ;;; Building struct
-SIZEOF_BUILDING_STRUCT      = 9
+SIZEOF_BUILDING_STRUCT      = 12
 BuildingRAMPtr              = 0
-BuildingType                = 3
-BuildingHealth              = 4
-BuildingHitpoints           = 5       ; Useful for towers and castle
-BuildingX                   = 6
-BuildingY                   = 7
-BuildingTeam                = 8
-BuildingTeamColor             = 0
-BuildingTeamLoaded            = 1
+BuildingTCPPtr              = 3
+BuildingType                = 6
+BuildingHealth              = 7
+BuildingHitpoints           = 8       ; Useful for towers and castle
+BuildingX                   = 9
+BuildingY                   = 10
+BuildingTeam                = 11
 
 ;;; Flags
 holdDownEnterKey            = 0
