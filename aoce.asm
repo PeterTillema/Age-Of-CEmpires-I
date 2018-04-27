@@ -91,23 +91,8 @@ CheckGraphicsAppvarsLoop:
 	AoCE_RAM.copy
 	ld	(MapDataPtr), de
 	
-; Set some pointers
-	ld	hl, MAP_SIZE * MAP_SIZE * 2
-	add	hl, de
-	ld	(BuildingsStackPtr), hl
-	ld	de, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT
-	add	hl, de
-	ld	(UnitsStackPtr), hl
-	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT
-	add	hl, de
-	ld	(BuildingsBase), hl
-	ld	(BuildingsPtr), hl
-	ld	hl, vRAM - (stackTop - heapBot)
-	ld	(UnitsBase), hl
-	ld	(UnitsPtr), hl
-	
 ; Backup stack
-	ex	de, hl
+	ld	de, vRAM - (stackTop - heapBot)
 	ld	hl, heapBot
 	ld	bc, stackTop - heapBot
 	ldir
@@ -120,14 +105,41 @@ CheckGraphicsAppvarsLoop:
 	
 	DrawField.copy
 	
-; Relocate everything
-irpv each, appvar
-	ld	hl, RelocationTable#%
-	ld	bc, (AppvarsPointersTable - 3 + (% * 3))
+	debugger
+	
+; Copy the game sprites to RAM and set some pointers
+	ld	hl, (MapDataPtr)
+	ld	de, MAP_SIZE * MAP_SIZE * 2
+	add	hl, de
+	push	hl
+	ex	de, hl
+	ld	hl, (AOCE_RAM_START + 3)
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	inc	hl
+	ldir
+	ld	(BuildingsStackPtr), de
+	ld	hl, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT
+	add	hl, de
+	ld	(UnitsStackPtr), hl
+	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT
+	add	hl, de
+	ld	(BuildingsBase), hl
+	ld	(BuildingsPtr), hl
+	ld	hl, vRAM - (stackTop - heapBot)
+	ld	(UnitsBase), hl
+	ld	(UnitsPtr), hl
+	pop	bc
+	ld	hl, RelocationTable2
+	call	ModifyRelocationTable
+	
+; Relocate main menu sprites
+	ld	hl, RelocationTable1
+	ld	bc, (AOCE_RAM_START)
 	inc	bc
 	inc	bc
 	call	ModifyRelocationTable
-end irpv
 	
 ; Setup some variables and start the game!
 	xor	a, a
