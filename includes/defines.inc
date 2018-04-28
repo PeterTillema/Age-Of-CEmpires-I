@@ -56,29 +56,40 @@ TILE_UNIT_STUMP_2           = 14
 TILE_TREE                   = 15
 TILE_BUILDING               = TILE_TREE + AMOUNT_OF_TREES
 
-;;; Unit struct
-SIZEOF_UNIT_STRUCT          = 14
-UnitRAMPtr                  = 0
-UnitType                    = 3
-UnitEvent                   = 4
-UnitHealth                  = 5
-UnitHitpoints               = 6
-UnitPath                    = 7
-UnitNext                    = 10
-UnitOffsetX                 = 11
-UnitOffsetY                 = 12
-UnitPrev                    = 13
+;;; Unit struct 1
+SIZEOF_UNIT_STRUCT_1        = 8
+UnitTeamLoaded              = 0
+UnitRAMPtr                  = 1
+UnitTCPPtr                  = 4
+UnitType                    = 7
 
-;;; Building struct
-SIZEOF_BUILDING_STRUCT      = 12
-BuildingRAMPtr              = 0
-BuildingTCPPtr              = 3
-BuildingType                = 6
-BuildingHealth              = 7
-BuildingHitpoints           = 8       ; Useful for towers and castle
-BuildingX                   = 9
-BuildingY                   = 10
-BuildingTeam                = 11
+;;; Unit struct 2
+SIZEOF_UNIT_STRUCT_2        = 11
+UnitIndex                   = 0
+UnitEvent                   = 1
+UnitHealth                  = 2
+UnitHitpoints               = 3
+UnitPath                    = 4
+UnitNext                    = 7
+UnitOffsetX                 = 8
+UnitOffsetY                 = 9
+UnitPrev                    = 10
+
+;;; Building struct 1
+SIZEOF_BUILDING_STRUCT_1    = 8
+BuildingTeamLoaded          = 0
+BuildingRAMPtr              = 1
+BuildingTCPPtr              = 4
+BuildingType                = 7
+
+;;; Building struct 2
+SIZEOF_BUILDING_STRUCT_2    = 6
+BuildingIndex               = 0
+BuildingTeam                = 1
+BuildingHealth              = 2
+BuildingHitpoints           = 3       ; Useful for towers and castle
+BuildingX                   = 4
+BuildingY                   = 5
 
 ;;; Flags
 holdDownEnterKey            = 0

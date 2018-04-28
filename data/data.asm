@@ -12,28 +12,26 @@ AmountOfMaxPeople:
 	db	10
 AmountOfBuildings:
 	db	0
-AmountOfDifferentBuildings:
-	db	0
 MapDataPtr:
 	dl	0
 	
 BuildingsStackPtr:
 	dl	0
-BuildingsBase:
+BuildingsSpritesBase:
 	dl	0
-BuildingsPtr:
+BuildingsSpritesPtr:
 	dl	0
 BuildingsLoaded:
-	rb	18
+	rb	SIZEOF_BUILDING_STRUCT_1 * 18
 	
 UnitsStackPtr:
 	dl	0
-UnitsBase:
+UnitsSpritesBase:
 	dl	0
-UnitsPtr:
+UnitsSpritesPtr:
 	dl	0
 UnitsLoaded:
-	rb	22
+	rb	SIZEOF_UNIT_STRUCT_1 * 22
 	
 UnitsPerTile:
 	rb	5 * 3

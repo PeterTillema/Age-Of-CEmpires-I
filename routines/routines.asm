@@ -575,6 +575,47 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 	ret
 	
 ;-------------------------------------------------------------------------------
+; Inputs:
+;   A  = building index
+;   BC = data length
+;   E  = appvar index
+;   HL = offset in appvar
+; Outputs:
+;   E  = building index
+
+LoadBuildingDynamically:
+	ld	d, 3
+	mlt	de
+	ld	iy, AOCE_RAM_START
+	add	iy, de
+	ld	de, (iy)
+	add	hl, de
+	ld	de, (BuildingsSpritesPtr)
+	push	hl
+	ldir
+	ld	(BuildingsSpritesPtr), de
+	ld	e, a
+	ld	c, a
+	ld	b, SIZEOF_BUILDING_STRUCT_1
+	mlt	bc
+	ld	iy, BuildingsLoaded
+	add	iy, bc
+	pop	hl
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	inc	hl
+	ld	(iy + BuildingRAMPtr), hl
+	add	hl, bc
+	ld	(iy + BuildingTCPPtr), hl
+	ld	(iy + BuildingType), e
+	ret
+	
+;-------------------------------------------------------------------------------
+; Inputs:
+;   BC = offset (location of appvar)
+;   HL = pointer to relocation table
+
 ModifyRelocationTable:
 	push	hl
 	ld	hl, (hl)

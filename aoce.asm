@@ -117,16 +117,16 @@ CheckGraphicsAppvarsLoop:
 	inc	hl
 	ldir
 	ld	(BuildingsStackPtr), de
-	ld	hl, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT
+	ld	hl, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT_2
 	add	hl, de
 	ld	(UnitsStackPtr), hl
-	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT
+	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT_2
 	add	hl, de
-	ld	(BuildingsBase), hl
-	ld	(BuildingsPtr), hl
+	ld	(BuildingsSpritesBase), hl
+	ld	(BuildingsSpritesPtr), hl
 	ld	hl, vRAM - (stackTop - heapBot)
-	ld	(UnitsBase), hl
-	ld	(UnitsPtr), hl
+	ld	(UnitsSpritesBase), hl
+	ld	(UnitsSpritesPtr), hl
 	pop	bc
 	ld	hl, RelocationTable2 + 3	; Note that "ld	bc, foundation_11_offset" adds another entry to 
 	call	ModifyRelocationTable

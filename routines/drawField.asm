@@ -350,7 +350,7 @@ TempSP5 = $+1
 	ld	hl, UnitsPerTile
 FindNextUnit:
 	ld	e, a
-	ld	d, SIZEOF_UNIT_STRUCT
+	ld	d, SIZEOF_UNIT_STRUCT_2
 	mlt	de
 	ld	iy, (UnitsStackPtr)
 	add	iy, de
@@ -625,15 +625,18 @@ DisplayBuilding:
 TempSP4 = $+1
 	ld	sp, 0
 	ld	(BackupIY3), iy
-	ld	hl, BuildingsLoaded
-	ld	bc, 0
+	ld	hl, (BuildingsStackPtr)
 	ld	c, a
-	add	hl, bc
-	ld	a, (hl)
-	ld	b, SIZEOF_BUILDING_STRUCT
+	ld	b, SIZEOF_BUILDING_STRUCT_1
 	mlt	bc
-	ld	iy, (BuildingsStackPtr)
-	add	iy, bc
+	add	hl, bc
+	ld	c, (hl)			; C = building index
+	ld	b, SIZEOF_BUILDING_STRUCT_2
+	mlt	bc
+	inc	hl
+	ld	a, (hl)			; A = which team to load
+	ld	iy, BuildingsLoaded
+	add	iy, bc			; IY = pointer to general building struct
 	
 ; Loaded | Team | Action
 ; 0        0      Nothing
@@ -641,9 +644,9 @@ TempSP4 = $+1
 ; 1        0      Dec
 ; 1        1      Nothing
 
-	cp	a, (iy + BuildingTeam)
+	cp	a, (iy + BuildingTeamLoaded)
 	jr	z, NoTeamColorsSwap
-	jr	c, .inc
+	jr	nc, .inc
 .dec:	dec	(hl)
 	call	TeamColorsToDec
 	jr	.ins
