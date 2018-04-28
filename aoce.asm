@@ -105,8 +105,6 @@ CheckGraphicsAppvarsLoop:
 	
 	DrawField.copy
 	
-	debugger
-	
 ; Copy the game sprites to RAM and set some pointers
 	ld	hl, (MapDataPtr)
 	ld	de, MAP_SIZE * MAP_SIZE * 2
@@ -114,9 +112,8 @@ CheckGraphicsAppvarsLoop:
 	push	hl
 	ex	de, hl
 	ld	hl, (AOCE_RAM_START + 3)
-	ld	c, (hl)
+	ld	bc, foundation_11_offset
 	inc	hl
-	ld	b, (hl)
 	inc	hl
 	ldir
 	ld	(BuildingsStackPtr), de
@@ -131,7 +128,7 @@ CheckGraphicsAppvarsLoop:
 	ld	(UnitsBase), hl
 	ld	(UnitsPtr), hl
 	pop	bc
-	ld	hl, RelocationTable2
+	ld	hl, RelocationTable2 + 3	; Note that "ld	bc, foundation_11_offset" adds another entry to 
 	call	ModifyRelocationTable
 	
 ; Relocate main menu sprites
@@ -179,10 +176,6 @@ CheckGraphicsAppvarsLoop:
 	pop	de
 	inc	de
 	ld	bc, lcdWidth * lcdHeight - 1
-	ldir
-	ld	hl, TempUnits		; Temp unit
-	ld	de, (UnitsStackPtr)
-	ld	bc, SIZEOF_UNIT_STRUCT * 3
 	ldir
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	

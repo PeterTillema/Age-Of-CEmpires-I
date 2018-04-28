@@ -634,11 +634,13 @@ TempSP4 = $+1
 	mlt	bc
 	ld	iy, (BuildingsStackPtr)
 	add	iy, bc
+	
 ; Loaded | Team | Action
 ; 0        0      Nothing
 ; 0        1      Inc
 ; 1        0      Dec
 ; 1        1      Nothing
+
 	cp	a, (iy + BuildingTeam)
 	jr	z, NoTeamColorsSwap
 	jr	c, .inc
