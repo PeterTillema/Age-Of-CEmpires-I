@@ -627,11 +627,11 @@ TempSP4 = $+1
 	ld	(BackupIY3), iy
 	ld	hl, (BuildingsStackPtr)
 	ld	c, a
-	ld	b, SIZEOF_BUILDING_STRUCT_1
+	ld	b, SIZEOF_BUILDING_STRUCT_2
 	mlt	bc
 	add	hl, bc
 	ld	c, (hl)			; C = building index
-	ld	b, SIZEOF_BUILDING_STRUCT_2
+	ld	b, SIZEOF_BUILDING_STRUCT_1
 	mlt	bc
 	inc	hl
 	ld	a, (hl)			; A = which team to load
@@ -646,15 +646,19 @@ TempSP4 = $+1
 
 	cp	a, (iy + BuildingTeamLoaded)
 	jr	z, NoTeamColorsSwap
+	ld	a, iyh
+	ld	(IYH_SMC), a
 	jr	nc, .inc
-.dec:	dec	(hl)
+.dec:	dec	(iy+BuildingTeamLoaded)
 	call	TeamColorsToDec
 	jr	.ins
-.inc:	inc	(hl)
+.inc:	inc	(iy+BuildingTeamLoaded)
 	call	TeamColorsToInc
 .ins:	ld	hl, (iy + BuildingRAMPtr)
 	ld	de, (iy + BuildingTCPPtr)
 	call	IncTeamColors
+IYH_SMC = $+2
+	ld	iyh, 3
 NoTeamColorsSwap:
 	ld	hl, (iy + BuildingRAMPtr)
 	ld	b, (hl)			; B = building width

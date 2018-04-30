@@ -56,6 +56,8 @@ CheckGraphicsAppvarsLoop:
 	ld	e, (hl)
 	add	hl, de
 	inc	hl
+	inc	hl
+	inc	hl
 	ex	de, hl
 	sub	a, iyh
 	ld	c, a
@@ -113,8 +115,6 @@ CheckGraphicsAppvarsLoop:
 	ex	de, hl
 	ld	hl, (AOCE_RAM_START + 3)
 	ld	bc, foundation_11_offset
-	inc	hl
-	inc	hl
 	ldir
 	ld	(BuildingsStackPtr), de
 	ld	hl, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT_2
@@ -134,8 +134,6 @@ CheckGraphicsAppvarsLoop:
 ; Relocate main menu sprites
 	ld	hl, RelocationTable1
 	ld	bc, (AOCE_RAM_START)
-	inc	bc
-	inc	bc
 	call	ModifyRelocationTable
 	
 ; Setup some variables and start the game!
@@ -144,8 +142,8 @@ CheckGraphicsAppvarsLoop:
 	dec	a
 	ld	(_FGColor), a
 	call	_Begin
-	call	MainMenu
-	jr	z, ForceStopProgramFadeOut
+	;call	MainMenu
+	;jp	z, ForceStopProgramFadeOut
 	call	GenerateMap
 	ld	a, 1
 	ld	(_FGColor), a
@@ -177,6 +175,34 @@ CheckGraphicsAppvarsLoop:
 	inc	de
 	ld	bc, lcdWidth * lcdHeight - 1
 	ldir
+	ld	a, 5
+	ld	e, 2
+	ld	hl, 0
+	call	LoadBuildingDynamically
+	ld	hl, (BuildingsStackPtr)
+	ld	(hl), 5
+	inc	hl
+	ld	(hl), 0
+	ld	de, SIZEOF_BUILDING_STRUCT_2 - 1
+	add	hl, de
+	ld	(hl), 5
+	inc	hl
+	ld	(hl), 1
+	ld	hl, (MapDataPtr)
+	ld	(hl), TILE_BUILDING
+	inc	hl
+	ld	(hl), 0
+	inc	hl
+	inc	hl
+	inc	hl
+	ld	(hl), TILE_BUILDING
+	inc	hl
+	ld	(hl), 1
+	
+	
+	
+	
+	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 ; Call the main loop

@@ -577,7 +577,6 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 ;-------------------------------------------------------------------------------
 ; Inputs:
 ;   A  = building index
-;   BC = data length
 ;   E  = appvar index
 ;   HL = offset in appvar
 ; Outputs:
@@ -591,11 +590,12 @@ LoadBuildingDynamically:
 	ld	de, (iy)
 	add	hl, de
 	ld	de, (BuildingsSpritesPtr)
-	push	hl
-	ldir
+	push	de
+	ld	iyh, a
+	call	dzx7_Turbo
 	ld	(BuildingsSpritesPtr), de
-	ld	e, a
-	ld	c, a
+	ld	e, iyh
+	ld	c, e
 	ld	b, SIZEOF_BUILDING_STRUCT_1
 	mlt	bc
 	ld	iy, BuildingsLoaded
