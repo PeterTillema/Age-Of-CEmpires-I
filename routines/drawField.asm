@@ -2,7 +2,7 @@ relocate DrawField, cursorImage, 1024
 
 DrawField:
 	DrawIsometricTile.copy
-	ld	b, (OFFSET_X)		; We start with the shadow registers active
+	ld	b, (OFFSET_X)
 	bit	4, b
 	ld	a, TILE_WIDTH / 2
 	ld	c, jr_z
@@ -33,7 +33,7 @@ DrawField:
 	jr	z, .jump2
 	inc	d
 	ld	a, dec_c
-.jump2:	ld	(TileWhichAction), a	; Write "dec c" or "nop"
+.jump2:	ld	(TileWhichAction), a			; Write "dec c" or "nop"
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
 	bit	2, e
@@ -52,7 +52,7 @@ DrawField:
 	inc	hl
 	ld	(hl), d
 	
-	set	4, e			; Point to the row of the bottom right pixel
+	set	4, e					; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2
 	mlt	de
 	ld	a, b
@@ -65,8 +65,8 @@ DrawField:
 	add	hl, de
 	ld	(startingPosition), hl
 	ld	ix, (TopLeftYTile)
-	lea	ix, ix + 2		; Remember the 2 columns at the left
-	lea	hl, ix			; Y * MAP_SIZE + X, point to the map data
+	lea	ix, ix + 2				; Remember the 2 columns at the left
+	lea	hl, ix					; Y * MAP_SIZE + X, point to the map data
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
@@ -75,83 +75,83 @@ DrawField:
 	add	hl, hl
 	add	hl, hl
 	ld	de, (TopLeftXTile)
-	dec	de			; Remember the 2 columns at the left
+	dec	de					; Remember the 2 columns at the left
 	dec	de
 	add	hl, de
-	add	hl, hl			; Each tile is 2 bytes worth
+	add	hl, hl					; Each tile is 2 bytes worth
 	ld	bc, (MapDataPtr)
 	add	hl, bc
-	ld	a, AMOUNT_OF_ROWS	; Last X rows only trees/buildings
+	ld	a, AMOUNT_OF_ROWS			; Last X rows only trees/buildings
 	exx
 DisplayEachRowLoopExx:
 	exx
-DisplayEachRowLoop:			; Display X rows
-; Registers:
+DisplayEachRowLoop:					; Display X rows
+; Registers usage:
 ;   BC  = length of row tile
 ;   DE  = pointer to output
-;   HL  = pointer to tile/black tile
+;   HL  = pointer to (black) tile
 ;   A'  = row index
 ;   B'  = column index
-;   BC' = amount of tiles to be added when changing row
+;   BC' = amount of tiles to be added when changing rows
 ;   DE' = x index tile
 ;   HL' = pointer to map data
 ;   IX  = y index tile
 ;   IY  = pointer to output
-;   SP  = -SCREEN_WIDTH + offset
+;   SPL = -SCREEN_WIDTH + offset
 
-startingPosition = $+2			; Here are the shadow registers active
-	ld	iy, 0			; Advance to the next row
+startingPosition = $+2					; Here are the shadow registers active
+	ld	iy, 0					; Advance to the next row
 	ld	bc, (TILE_HEIGHT / 2) * lcdWidth
 	add	iy, bc
 	ld	(startingPosition), iy
-	bit	0, a			; Check if we need to add half a tile to it
+	bit	0, a					; Check if we need to add half a tile to it
 	jr	nz, NoOffsetAtStart
 TopRowLeftOrRight = $+2
 	lea	iy, iy + 0
 NoOffsetAtStart:
 	ex	af, af'
 	ld	a, AMOUNT_OF_COLUMNS
-	ld	bc, (-MAP_SIZE + 1) * 2	; How much to advance to the next row in the map
-DisplayTile:				; Display X tiles in a row
-	ld	b, a			; Check if we only need to display buildings (at the left/right)
+	ld	bc, (-MAP_SIZE + 1) * 2			; How much to advance to the next row in the map
+DisplayTile:						; Display X tiles in a row
+	ld	b, a					; Check if we only need to display buildings (at the left/right)
 	cp	a, AMOUNT_OF_COLUMNS - 1
 	jr	nc, TileOnlyDisplayBuilding
 	cp	a, 3
 	jr	c, TileOnlyDisplayBuilding
-	ld	a, e			; Check out of field: DE and IX < MAP_SIZE
+	ld	a, e					; Check out of field: DE and IX < MAP_SIZE
 	or	a, ixl
 	add	a, a
 	sbc	a, a
 	or	a, d
 	or	a, ixh
 	jr	nz, TileIsOutOfField
-	or	a, (hl)			; Tile index
-	jp	z, SkipDrawingOfTile	; Tile is part of a building, which will be overwritten later
-	exx				; Here are the main registers active
-	ld	c, a			; Get the pointer to the tile
+	or	a, (hl)					; Tile index
+	jp	z, SkipDrawingOfTile			; Tile is part of a building, which will be overwritten later
+	exx						; Here are the main registers active
+	ld	c, a					; Get the pointer to the tile
 	ld	b, 3
 	mlt	bc
 TilePointersSMC = $+1
-	ld	hl, TilePointersEnd - 3	; The clipped tiles needs different pointers, so this pointer will be modified after X rows
+	ld	hl, TilePointersEnd - 3			; The clipped tiles needs different pointers, so this pointer will be modified after X rows
 	add	hl, bc
 	ld	hl, (hl)
-	cp	a, TILE_TREE		; Check if it's a tile (with unit)
+	cp	a, TILE_TREE				; Check if it's a tile (with unit)
 TileDrawingRoutinePtr1 = $+1
-	jp	c, DrawIsometricTile	; This will be modified to the clipped version after X rows
+	jp	c, DrawIsometricTile			; This will be modified to the clipped version after X rows
 	sub	a, TILE_BUILDING
-	jr	c, DisplayTileWithTree	; It's a tree
-	jp	DisplayBuildingExx	; It's a building
+	jr	c, DisplayTileWithTree			; It's a tree
+	jp	DisplayBuildingExx			; It's a building
 	
 TileIsOutOfField:
-	xor	a, a			; Reset A otherwise it might think that it was a tile with unit(s)
+	xor	a, a					; Reset A otherwise it might think that it was a tile with unit(s)
 	exx
 	ld	bc, 0
 	ld	hl, blackBuffer
 TileDrawingRoutinePtr2 = $+1
-	jp	DrawIsometricTile	; This will be modified to the clipped version after X rows
+	jp	DrawIsometricTile			; This will be modified to the clipped version after X rows
 	
 TileOnlyDisplayBuilding:
-	ld	a, e			; Check if out of field
+	ld	a, e					; Check if out of field
 	or	a, ixl
 	add	a, a
 	sbc	a, a
@@ -159,7 +159,7 @@ TileOnlyDisplayBuilding:
 	or	a, ixh
 	jp	nz, SkipDrawingOfTile
 	ld	a, (hl)
-	sub	a, TILE_BUILDING	; Check if it's a building
+	sub	a, TILE_BUILDING			; Check if it's a building
 	jp	c, SkipDrawingOfTile
 	jp	DisplayBuilding
 	
@@ -172,13 +172,13 @@ DisplayTileWithTree:
 ; Y coordinate: A' * 8 + 17 - tree_height
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 
-	ld	(BackupIY2), iy		; Backup IY, it's quite useful
+	ld	(BackupIY2), iy				; Backup IY, it's quite useful
 	ld	iy, iy_base
 TempSP3 = $+1
 	ld	sp, 0
-	push	hl			; Sprite struct
+	push	hl					; Sprite struct
 	ex	af, af'
-	ld	c, a			; C = row index
+	ld	c, a					; C = row index
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c
@@ -194,10 +194,10 @@ TempSP3 = $+1
 	add	hl, de
 	ld	e, a
 	sbc	hl, de
-	push	hl			; Y coordinate
+	push	hl					; Y coordinate
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
-	sub	a, b			; B' = column index
+	sub	a, b					; B' = column index
 	exx
 	ld	l, a
 	ld	h, TILE_WIDTH
@@ -212,9 +212,9 @@ TempSP3 = $+1
 	jr	z, .jump
 	sla	e
 	sbc	hl, de
-	jr	z, DontDisplayTree	; If X offset 0, and the tree is at the most left column, it's fully offscreen
-.jump:	push	hl			; X coordinate
-	call	_RLETSprite		; No need to pop
+	jr	z, DontDisplayTree			; If X offset 0, and the tree is at the most left column, it's fully offscreen
+.jump:	push	hl					; X coordinate
+	call	_RLETSprite				; No need to pop
 DontDisplayTree:
 	ld	iy, 0
 BackupIY2 = $-3
@@ -285,44 +285,43 @@ UnitsRoutine = $+1
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
-	lea	iy, iy + TILE_WIDTH	; Advance to next tile
-	inc	de			; Next X index in map
-	dec	ix			; Previous Y index in map
+	lea	iy, iy + TILE_WIDTH			; Advance to next tile
+	inc	de					; Next X index in map
+	dec	ix					; Previous Y index in map
 	ld	a, b
-	ld	b, 255			; BCU and C still holds (-MAP_SIZE + 1) * 2)
-	add	hl, bc			; Advance to the next tile in the map data
+	ld	b, 255					; BCU and C still holds (-MAP_SIZE + 1) * 2)
+	add	hl, bc					; Advance to the next tile in the map data
 	dec	a
-	jp	nz, DisplayTile		; Display all the tiles in the row
+	jp	nz, DisplayTile				; Display all the tiles in the row
 	ex	af, af'
 IncrementRowXOrNot1 = $
-	jr	nz, NoExtraColumnChange	; The zero flag is still set/reset from the "bit 0, a"
-	inc	de			; Advance an extra diagonal tile
+	jr	nz, NoExtraColumnChange			; The zero flag is still set/reset from the "bit 0, a"
+	inc	de					; Advance an extra diagonal tile
 	dec	ix
 	add	hl, bc
 NoExtraColumnChange:
 	ex	de, hl
-	ld	c, -AMOUNT_OF_COLUMNS	; Advance to the next row tiles
+	ld	c, -AMOUNT_OF_COLUMNS			; Advance to the next row tiles
 	add	hl, bc
 	ex	de, hl
 	ld	bc, (MAP_SIZE * (AMOUNT_OF_COLUMNS + 1) - AMOUNT_OF_COLUMNS) * 2
 	add	hl, bc
 	lea	ix, ix + AMOUNT_OF_COLUMNS + 1
-TileHowManyRowsClipped = $+1		; Check if we need an extra routine to set the clipped tiles
+TileHowManyRowsClipped = $+1				; Check if we need an extra routine to set the clipped tiles
 	cp	a, 0
 	dec	a
 	jp	nc, DisplayEachRowLoop
 	exx
-	ld	c, a			; Get the routine
+	ld	c, a					; Get the routine
 TileWhichAction = $
-	nop				; Can be SMC'd into a "dec c"
+	nop						; Can be SMC'd into a "dec c"
 	ld	b, 3
 	mlt	bc
 	ld	hl, FieldRowActionTable
 	add	hl, bc
 	ld	hl, (hl)
-	jp	(hl)			; And jump to it
+	jp	(hl)					; And jump to it
 	
-; Display the units
 DisplayUnits1:
 	lea	hl, iy
 	ld	bc, -lcdWidth * (TILE_HEIGHT - 1)
@@ -341,10 +340,10 @@ DisplayUnits2:
 TempSP5 = $+1
 	ld	sp, 0
 	push	ix
-	ld	b, 5			; Amount of units at the tile
+	ld	b, 5					; Amount of units at the tile
 	exx
 	inc	hl
-	ld	a, (hl)			; Unit index
+	ld	a, (hl)					; Unit index
 	dec	hl
 	exx
 	ld	hl, UnitsPerTile
@@ -355,7 +354,7 @@ FindNextUnit:
 	ld	iy, (UnitsStackPtr)
 	add	iy, de
 	ld	de, (iy + UnitNext)
-	ld	c, e			; C is next unit
+	ld	c, e					; C is next unit
 	ld	e, a
 	ld	(hl), de
 	inc	hl
@@ -369,26 +368,26 @@ FindNextUnit:
 SortUnits:
 	ld	a, 5
 	sub	a, b
-	jr	z, DisplayAllUnits	; Only 1 unit, no need to sort
-	ld	b, a			; B = 5 - unit index
-	ld	c, 1			; C = unit index [1,X]
-	ld	a, c			; A = unit index [1,X]
-	ld	iy, UnitsPerTile + 3	; IY = pointer to current element
-.loop1:	ld	hl, (iy)		; HL = current element
-	lea	ix, iy-3		; IX = pointer to test element
+	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
+	ld	b, a					; B = 5 - unit index
+	ld	c, 1					; C = unit index [1,X]
+	ld	a, c					; A = unit index [1,X]
+	ld	iy, UnitsPerTile + 3			; IY = pointer to current element
+.loop1:	ld	hl, (iy)				; HL = current element
+	lea	ix, iy-3				; IX = pointer to test element
 	ld	c, a
-.loop2:	ld	de, (ix)		; DE = test element
-	or	a, a			; Compare elements
+.loop2:	ld	de, (ix)				; DE = test element
+	or	a, a					; Compare elements
 	sbc	hl, de
 	add	hl, de
-	jr	nc, .ins		; HL > DE, so stop with swapping
-	ld	(ix+3), de		; Move the test element to the previous position
-	lea	ix, ix-3		; Decrease test pointer
-	dec	c			; Loop through all the remaining units
+	jr	nc, .ins				; HL > DE, so stop with swapping
+	ld	(ix+3), de				; Move the test element to the previous position
+	lea	ix, ix-3				; Decrease test pointer
+	dec	c					; Loop through all the remaining units
 	jr	nz, .loop2
-.ins:	ld	(ix+3), hl		; Insert the current element in the right position
-	lea	iy, iy+3		; Increment current element pointer
-	inc	a			; Loop through all the units
+.ins:	ld	(ix+3), hl				; Insert the current element in the right position
+	lea	iy, iy+3				; Increment current element pointer
+	inc	a					; Loop through all the units
 	djnz	.loop1
 DisplayAllUnits:
 	
@@ -425,30 +424,30 @@ SetOnlyTreesRoutine:
 	jp	DisplayEachRowLoopExx
 	
 StopDisplayTiles:
-	ld	de, mpShaData		; Copy routine to mpShaData
+	ld	de, mpShaData				; Copy routine to mpShaData
 	ld	hl, DrawScreenBorderStart
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
-	ld	de, (currDrawingBuffer)	; Display food, wood, stone etc placeholder
+	ld	de, (currDrawingBuffer)			; Display food, wood, stone etc placeholder
 	ld	hl, resources_offset
 	ld	bc, resources_width * resources_height
 	ldir
-	ld	hl, blackBuffer		; Display the right and left black edge
+	ld	hl, blackBuffer				; Display the right and left black edge
 	ld	b, (lcdWidth * 13 + TILE_WIDTH) shr 8
 	jp	mpShaData
 	
 DrawScreenBorderStart:
 	ld	c, (lcdWidth * 13 + TILE_WIDTH) and 255
 	ldir
-	ex	de, hl			; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
+	ex	de, hl					; Fill the edges with black; 21 pushes = 21*3=63+1 = 64 bytes, so 32 bytes on each side
 	ld	a, lcdHeight - 15 - 13 - 1
-	ld	de, lcdWidth		; Used to advance to the next 'half-row'
+	ld	de, lcdWidth				; Used to advance to the next 'half-row'
 	dec	hl
 FillBorderLoop:
 	add	hl, de
 	ld	(hl), c
 	ld	sp, hl
-	push	bc			; Fill with black using pushes (bc = 0, writes 3 bytes at the same time)
+	push	bc					; Fill with black using pushes (bc = 0, writes 3 bytes at the same time)
 	push	bc
 	push	bc
 	push	bc
@@ -472,7 +471,7 @@ FillBorderLoop:
 	dec	a
 	jr	nz, FillBorderLoop
 	ld	de, lcdWidth - TILE_WIDTH + 2
-	add	hl, de			; Clear the last row of the right edge
+	add	hl, de					; Clear the last row of the right edge
 	ld	sp, hl
 	push	bc
 	push	bc
@@ -486,7 +485,7 @@ FillBorderLoop:
 	push	bc
 	push	bc
 TempSP2 = $+1
-	ld	sp, 0			; Yay, we are finally done!
+	ld	sp, 0					; Yay, we are finally done!
 	ret
 DrawScreenBorderEnd:
 	
@@ -612,7 +611,7 @@ DisplayBuildingExx:
 	exx
 DisplayBuilding:
 	inc	hl
-	ld	a, (hl)			; Building index
+	ld	a, (hl)					; Building index
 	dec	hl
 	exx
 ; Inputs:
@@ -630,13 +629,13 @@ TempSP4 = $+1
 	ld	b, SIZEOF_BUILDING_STRUCT_2
 	mlt	bc
 	add	hl, bc
-	ld	c, (hl)			; C = building index
+	ld	c, (hl)					; C = building index
 	ld	b, SIZEOF_BUILDING_STRUCT_1
 	mlt	bc
 	inc	hl
-	ld	a, (hl)			; A = which team to load
+	ld	a, (hl)					; A = which team to load
 	ld	iy, BuildingsLoaded
-	add	iy, bc			; IY = pointer to general building struct
+	add	iy, bc					; IY = pointer to general building struct
 	
 ; Loaded | Team | Action
 ; 0        0      Nothing
@@ -644,7 +643,7 @@ TempSP4 = $+1
 ; 1        0      Dec
 ; 1        1      Nothing
 
-	cp	a, (iy + BuildingTeamLoaded)
+	cp	a, (iy + BuildingTeamLoaded)		; Eventually swap teamcolors
 	jr	z, NoTeamColorsSwap
 	ld	a, iyh
 	ld	(IYH_SMC), a
@@ -661,27 +660,27 @@ IYH_SMC = $+2
 	ld	iyh, 3
 NoTeamColorsSwap:
 	ld	hl, (iy + BuildingRAMPtr)
-	ld	b, (hl)			; B = building width
+	ld	b, (hl)					; B = building width
 	ld	iy, iy_base
-	push	hl			; Sprite struct
+	push	hl					; Sprite struct
 	ex	af, af'
-	ld	c, a			; C = row_index start at bottom
+	ld	c, a					; C = row_index start at bottom
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
-	sub	a, c			; A = row_index start at top
+	sub	a, c					; A = row_index start at top
 	ld	e, a
 	ld	d, TILE_HEIGHT / 2 / 2
-	mlt	de			; DE = pointer to row / 2
+	mlt	de					; DE = pointer to row / 2
 	inc	hl
-	ld	a, (hl)			; A = building_height
+	ld	a, (hl)					; A = building_height
 	ld	hl, 17
 	add	hl, de
-	add	hl, de			; HL = pointer to row + offset
+	add	hl, de					; HL = pointer to row + offset
 	ld	e, (OFFSET_Y)
-	add	hl, de			; HL = pointer to row + offset + y_offset
+	add	hl, de					; HL = pointer to row + offset + y_offset
 	ld	e, a
-	sbc	hl, de			; HL = pointer to row + offset + y_offset - building_height
-	push	hl			; Y coordinate
+	sbc	hl, de					; HL = pointer to row + offset + y_offset - building_height
+	push	hl					; Y coordinate
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
 	sub	a, b
@@ -708,8 +707,8 @@ NoTeamColorsSwap:
 	srl	a
 	ld	e, a
 	sbc	hl, de
-	push	hl			; X coordinate
-	call	_RLETSprite		; No need to pop
+	push	hl					; X coordinate
+	call	_RLETSprite				; No need to pop
 BackupIY3 = $+2
 	ld	iy, 0
 	jp	SkipDrawingOfTileExx

@@ -6,6 +6,7 @@ include 'includes/defines.inc'
 include 'includes/macros.inc'
 include 'includes/symbol_table.inc'
 
+; Make AoCE an app
 format ti executable 'AOCE'
 include 'includes/app.inc'
 
