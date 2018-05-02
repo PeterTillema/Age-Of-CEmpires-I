@@ -1,4 +1,8 @@
 ;-------------------------------------------------------------------------------
+; Performs a keyboard scan
+; Inputs: none
+; Outputs: none
+
 GetKeyFast:
 	ld	hl, mpKeyRange + (keyModeScanOnce shl 8)
 	ld	(hl), h
@@ -8,6 +12,10 @@ GetKeyFast:
 	ret
 
 ;-------------------------------------------------------------------------------
+; Performs keyboard scans until a key is pressed
+; Inputs: none
+; Outputs: none
+
 GetKeyAnyFast:
 	call	GetKeyFast
 	ld	l, keyData + 2
@@ -35,12 +43,21 @@ GetKeyAnyFast:
 	jp	_DelayTenTimesAms
 	
 ;-------------------------------------------------------------------------------
+; Fades a palette into a new palette
+; Inputs: none
+; Outputs: none
+
 fadeIn:
 	ld	hl, fadeInSub
 	jr	fadeLcd
 fadeInSub:
 	dec	c
 	ret
+
+;-------------------------------------------------------------------------------
+; Fades a palette out to a new palette
+; Inputs: none
+; Outputs: none
 
 fadeOut:
 	ld	hl, fadeOutSub
@@ -50,7 +67,6 @@ fadeOutSub:
 	sub	a, c
 	ld	c, a
 	ret
-
 fadeLcd:
 	ld	(__flSubCalc), hl
 	ld	c, 32
@@ -139,6 +155,12 @@ Wait2Loop:
 	ret
 
 ;-------------------------------------------------------------------------------
+; Uncompresses a compressed sprite as fast as possible
+; Inputs:
+;   DE = target location
+;   HL = source location
+; Outputs: none
+
 dzx7_Turbo:
 	ld      a, 128
 dzx7t_copy_byte_loop:
@@ -222,11 +244,11 @@ dzx7t_exit:
 _RLETSprite:
 ; Draws a sprite with RLE transparency with clipping.
 ; Arguments:
-;  arg0 : x-coordinate
-;  arg1 : y-coordinate
-;  arg2 : pointer to sprite structure
-; Returns:
-;  None
+;   arg0 : x-coordinate
+;   arg1 : y-coordinate
+;   arg2 : pointer to sprite structure
+; Returns: none
+
 	ld	iy, 0
 	lea	bc, iy			; bc = 0
 	add	iy, sp			; iy = frame
@@ -495,11 +517,10 @@ _RLETSprite_EnterLeft_Trans_Jr_SMC = $-1
 _RLETSprite_NoClip:
 ; Draws a sprite with RLE transparency without clipping.
 ; Arguments:
-;  arg0 : x-coordinate
-;  arg1 : y-coordinate
-;  arg2 : pointer to sprite structure
-; Returns:
-;  None
+;   arg0 : x-coordinate
+;   arg1 : y-coordinate
+;   arg2 : pointer to sprite structure
+; Returns: none
 	ld	iy, 0
 	add	iy, sp
 ; Calculate the pointer to the top-left corner of the sprite in the buffer.
@@ -575,6 +596,7 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 	ret
 	
 ;-------------------------------------------------------------------------------
+; Uncompresses a building to RAM
 ; Inputs:
 ;   A  = building index
 ;   E  = appvar index
@@ -612,6 +634,7 @@ LoadBuildingDynamically:
 	ret
 	
 ;-------------------------------------------------------------------------------
+; Adds an offset to all pointers in a relocation table
 ; Inputs:
 ;   BC = offset (location of appvar)
 ;   HL = pointer to relocation table
@@ -639,6 +662,10 @@ StopModifying:
 	ret
 
 ;-------------------------------------------------------------------------------
+; Seeds the rand routine
+; Inputs:
+;   HL = seed
+
 _srand:
 	xor	a, a
 __setstate:
@@ -652,6 +679,11 @@ __setstateloop:
 	djnz	__setstateloop
 	ret
 	
+;-------------------------------------------------------------------------------
+; Gets a random integer
+; Outputs:
+;   HL = random integer
+
 _rand:
 	ld	iy, __state
 	ld	hl, (iy+0*4+0)
@@ -705,6 +737,12 @@ __state:
 	db	04h, 03h, 02h, 01h
 	
 ;-------------------------------------------------------------------------------
+; Sets the coordinates for text routines
+; Inputs:
+;   A  = Y coordinate
+;   DE = X coordinate
+; Outputs: none
+
 _SetTextXY:
 	or	a, a
 	sbc	hl, hl
@@ -714,11 +752,23 @@ _SetTextXY:
 	ret
 
 ;-------------------------------------------------------------------------------
+; Prints an integer with 5 chars
+; Inputs:
+;   HL = integer
+; Outputs: none
+
 _PrintUInt_5:
 	ld	bc, -10000
 	call	Num1
 	ld	bc, -1000
 	call	Num1
+	
+;-------------------------------------------------------------------------------
+; Prints an integer with 3 chars
+; Inputs:
+;   HL = integer
+; Outputs: none
+
 _PrintUInt_3:
 	ld	bc, -100
 	call	Num1
@@ -733,6 +783,13 @@ Num2:	inc	a
 	jr	_PrintChar
 
 ;-------------------------------------------------------------------------------
+; Prints a string at given coordinates
+; Argumnets:
+;   arg0 = pointer to string
+;   arg1 = X coordinate
+;   arg2 = Y coordinate
+; Returns: none
+
 _PrintStringXY:
 	ld	hl, 9
 	add	hl, sp
@@ -749,6 +806,11 @@ _PrintStringXY:
 	jr	NextCharLoop
 	
 ;-------------------------------------------------------------------------------
+; Prints a string at the text coordinates
+; Arguments:
+;   arg0 = pointer to string
+; Returns: none
+
 _PrintString:
 	pop	de
 	pop	hl
@@ -763,6 +825,11 @@ NextCharLoop:
 	jr	NextCharLoop
 	
 ;-------------------------------------------------------------------------------
+; Prints a character at the text coordinates
+; Inputs:
+;   A = char
+; Outputs: none
+
 _PrintChar:
 	push	hl
 	ld	e, a
@@ -822,6 +889,14 @@ IsTransparent:
 	ret
 
 ;-------------------------------------------------------------------------------
+; Fills a rectangle with a color
+; Arguments:
+;   arg0 = X coordinate
+;   arg1 = Y coordinate
+;   arg2 = width
+;   arg3 = height
+; Returns: none
+
 _FillRectangle_NoClip:
 	ld	iy, 0
 	add	iy, sp
@@ -870,6 +945,11 @@ _RectangleWidth2_SMC = $+1
 	ret
 
 ;-------------------------------------------------------------------------------
+; Draws a sprite on the screen
+; Arguments:
+;   arg0 = pointer to sprite struct
+;   arg1 = X coordinate
+;   arg2 = Y coordinate
 _Sprite_NoClip:
 	ld	iy, 0
 	add	iy, sp
@@ -914,9 +994,19 @@ SprNcJrStep:
 	ret
 	
 ;-------------------------------------------------------------------------------
+; Sets the TCP pixels to increment
+; Inputs: none
+; Outputs: none
+
 TeamColorsToInc:
 	ld	a, 034h
 	jr	TeamColorsChange
+	
+;-------------------------------------------------------------------------------
+; Sets the TCP pixels to decrement
+; Inputs: none
+; Outputs: none
+
 TeamColorsToDec:
 	ld	a, 035h
 TeamColorsChange:
@@ -928,7 +1018,6 @@ TeamColorsChange:
 	djnz	.loop
 	ret
 	
-;-------------------------------------------------------------------------------
 IncTeamColors_Run:
 	ld	a, (de)
 	inc	de
@@ -974,11 +1063,14 @@ IncTeamColors_LoopStart1:
 	inc	(hl)			; increment value of TCP
 	dec	iyh
 	jr	nz, IncTeamColors_Run
-; IncTeamColors
+	
+;-------------------------------------------------------------------------------
+; Changes all the teamcolor pixels in a RLET sprite
 ; Inputs:
-;   - DE = TCP data
-;   - HL = sprite data
-; TCP data:
+;   DE = TCP data
+;   HL = pointer to sprite
+; Outputs: none
+; TCP data format:
 ;   Split into blocks with a 4-byte header and some data:
 ;     Header:
 ;       - 2-byte offset to the next TCP
@@ -987,6 +1079,7 @@ IncTeamColors_LoopStart1:
 ;     Data:
 ;       1-byte offsets to the next TCP
 ;   Last byte is 0x80 to signify the end of the data
+
 IncTeamColors:
 	dec.s	bc			; bcu = 0
 	ld	a, (de)			; a = (distance to next TCP)>>8

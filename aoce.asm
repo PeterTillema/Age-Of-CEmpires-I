@@ -166,44 +166,10 @@ CheckGraphicsAppvarsLoop:
 ; TODO: load villager and sheep sprites, place towncenter from you and enemy
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	ld	hl, screenBuffer
-	ld	(currDrawingBuffer), hl
-	ld	(mpLcdBase), hl
-	ld	hl, screenBuffer
-	ld	(hl), 255
-	push	hl
-	pop	de
-	inc	de
-	ld	bc, lcdWidth * lcdHeight - 1
-	ldir
-	ld	a, 5
-	ld	e, 2
-	ld	hl, 0
-	call	LoadBuildingDynamically
-	ld	hl, (BuildingsStackPtr)
-	ld	(hl), 5
-	inc	hl
-	ld	(hl), 0
-	ld	de, SIZEOF_BUILDING_STRUCT_2 - 1
-	add	hl, de
-	ld	(hl), 5
-	inc	hl
-	ld	(hl), 1
-	ld	hl, (MapDataPtr)
-	ld	(hl), TILE_BUILDING
-	inc	hl
-	ld	(hl), 0
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	(hl), TILE_BUILDING
-	inc	hl
-	ld	(hl), 1
-	
-	
-	
-	
-	
+	call	SetBufferToScreen
+	call	FillScreenPink
+	;call	PlaceTempBuildings
+	call	PlaceTempUnits
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 ; Call the main loop
@@ -291,6 +257,7 @@ _End:
 include "gfx/bin/pal_gfx.asm"
 include "routines/main.asm"
 include "routines/map.asm"
+include "routines/temp.asm"
 	
 GraphicsAppvars:
 irpv name, varname
