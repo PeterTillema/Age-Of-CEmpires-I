@@ -319,16 +319,6 @@ TileWhichAction = $
 	
 DisplayUnits:
 	ld	(BackupIY4), iy
-; Inputs:
-;   A' = row index
-;   B' = column index
-
-; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
-; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
-
-; Y coordinate: A' * 8 + 17
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
-	
 TempSP5 = $+1
 	ld	sp, 0
 	push	ix
@@ -360,10 +350,10 @@ FindNextUnit:
 SortUnits:
 	ld	a, 5
 	sub	a, b
-	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
 	ld	b, a					; B = 5 - unit index
-	ld	c, 1					; C = unit index [1,X]
-	ld	a, c					; A = unit index [1,X]
+	ld	a, 1					; A = unit index [1,X]
+	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
+	ld	c, a					; C = unit index [1,X]
 	ld	iy, UnitsPerTile + 3			; IY = pointer to current element
 .loop1:	ld	hl, (iy)				; HL = current element
 	lea	ix, iy-3				; IX = pointer to test element
@@ -382,6 +372,17 @@ SortUnits:
 	inc	a					; Loop through all the units
 	djnz	.loop1
 DisplayAllUnits:
+; Inputs:
+;   A  = amount of units
+;   A' = row index
+;   B' = column index
+
+; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
+; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
+
+; Y coordinate: (A' + sprite_x + sprite_y) * 8 + 17 + offset_y - sprite_y
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + offset_x + (sprite_x - sprite_y) * 16
+	
 	
 BackupIY4 = $+2
 	ld	iy, 0

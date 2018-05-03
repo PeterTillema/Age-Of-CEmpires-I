@@ -95,9 +95,9 @@ CheckGraphicsAppvarsLoop:
 	ld	(MapDataPtr), de
 	
 ; Backup stack
-	ld	de, vRAM - (stackTop - heapBot)
-	ld	hl, heapBot
-	ld	bc, stackTop - heapBot
+	ld	de, vRAM - (stackTop - stackBot)
+	ld	hl, stackBot
+	ld	bc, stackTop - stackBot
 	ldir
 	
 ; Copy app data to AOCE_RAM_START
@@ -125,7 +125,7 @@ CheckGraphicsAppvarsLoop:
 	add	hl, de
 	ld	(BuildingsSpritesBase), hl
 	ld	(BuildingsSpritesPtr), hl
-	ld	hl, vRAM - (stackTop - heapBot)
+	ld	hl, vRAM - (stackTop - stackBot)
 	ld	(UnitsSpritesBase), hl
 	ld	(UnitsSpritesPtr), hl
 	pop	bc
@@ -183,12 +183,12 @@ ForceStopProgramFadeOut:
 ; Restore stack and RAM
 	ld	de, RAM_MIRROR
 	ld	hl, RAM_BACKUP
-	ld	bc, (vRAM - ramStart) - (stackTop - heapBot)
+	ld	bc, (vRAM - ramStart) - (stackTop - stackBot)
 	ldir
-	ld	de, heapBot + RAM_SIZE			; Prevent crashing because memory protector
-	ld	hl, vRAM - (stackTop - heapBot)
+	ld	de, stackBot + RAM_SIZE			; Prevent crashing because memory protector
+	ld	hl, vRAM - (stackTop - stackBot)
 	push	hl
-	ld	bc, stackTop - heapBot
+	ld	bc, stackTop - stackBot
 	ldir
 	
 ; Yeah... let's lock flash again :P
@@ -198,8 +198,8 @@ ForceStopProgramFadeOut:
 	pop	de
 	ld	sp, (BackupSP)
 	pop	ix
-	ld	hl, RAM_BACKUP + (vRAM - ramStart) - (stackTop - heapBot)
-	ld	bc, stackTop - heapBot
+	ld	hl, RAM_BACKUP + (vRAM - ramStart) - (stackTop - stackBot)
+	ld	bc, stackTop - stackBot
 	ldir
 	
 ; Return to TI-OS

@@ -1,0 +1,24 @@
+Arbalest:			7381			7381
+Archer:				7277			7277
+Camel:				20383
+CamelHeavy:			20842
+Cavalier:			20749
+Champion:			6542			6542
+Crossbowman:		7134			7134
+Halbadier:			6892			6892
+LightCavalry:		18393
+Longbowman:			7053			7053
+Longswordman:		6822			6822
+ManAtArms:			6565			6565
+Militia:			6257			6257
+Monk:				7656			7656
+Paladin:			21636
+Pikeman:			6922			6922
+Sheep:				4232			4232
+Skirmisher:			7908			7908
+SkirmisherElite:	7337			7337
+Spearman:			7377			7377
+Swordman:			6679			6679
+Villager:			10440			10440
+					-------- +		-------- +
+					222477			120474
