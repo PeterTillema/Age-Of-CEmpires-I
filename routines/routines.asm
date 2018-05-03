@@ -459,7 +459,7 @@ _RLETSprite_ClipRight_LoopJr_SMC = $-1
 
 _RLETSprite_ClipLeftMiddleClipRight:
 	dec	b			; b = 0
-	sub	a, _RLETSprite_ClipRight_LoopJr_SMC  + 1 - _RLETSprite_ClipLeft_Row_WidthEven
+	sub	a, _RLETSprite_ClipRight_LoopJr_SMC + 1 - _RLETSprite_ClipLeft_Row_WidthEven
 	ld	(_RLETSprite_ClipRight_LoopJr_SMC), a
 	ld	a, _RLETSprite_Middle_OpaqueCopy - (_RLETSprite_EnterLeft_Opaque_Jr_SMC + 1)
 	ld	c, _RLETSprite_Middle_TransSkip - (_RLETSprite_EnterLeft_Trans_Jr_SMC + 1)

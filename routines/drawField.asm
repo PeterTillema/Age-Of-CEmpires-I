@@ -22,9 +22,6 @@ DrawField:
 	ld	(DrawTile_Clipped_Stop1), hl
 	ld	(DrawTile_Clipped_Stop2), hl
 	ld	(DrawTile_Clipped_Stop3), hl
-	
-	ld	a, DisplayUnits1 - UnitsRoutine - 1
-	ld	(UnitsRoutine), a
 
 	ld	e, (OFFSET_Y)
 	ld	d, 10
@@ -173,7 +170,6 @@ DisplayTileWithTree:
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 
 	ld	(BackupIY2), iy				; Backup IY, it's quite useful
-	ld	iy, iy_base
 TempSP3 = $+1
 	ld	sp, 0
 	push	hl					; Sprite struct
@@ -187,10 +183,9 @@ TempSP3 = $+1
 	mlt	de
 	inc	hl
 	ld	a, (hl)
+OffsetY_SMC1 = $+1
 	ld	hl, 17
 	add	hl, de
-	add	hl, de
-	ld	e, (OFFSET_Y)
 	add	hl, de
 	ld	e, a
 	sbc	hl, de
@@ -202,7 +197,8 @@ TempSP3 = $+1
 	ld	l, a
 	ld	h, TILE_WIDTH
 	mlt	hl
-	ld	e, (OFFSET_X)
+OffsetX_SMC1 = $+1
+	ld	e, 0
 	add	hl, de
 	bit	0, c
 	jr	nz, .jump
@@ -212,7 +208,7 @@ TempSP3 = $+1
 	jr	z, .jump
 	sla	e
 	sbc	hl, de
-	jr	z, DontDisplayTree			; If X offset 0, and the tree is at the most left column, it's fully offscreen
+	jr	z, DontDisplayTree			; If X offset 0, the tree is at the most left column, so fully offscreen
 .jump:	push	hl					; X coordinate
 	call	_RLETSprite				; No need to pop
 DontDisplayTree:
@@ -280,8 +276,7 @@ DrawIsometricTileSecondPart:
 	ex	de, hl
 	lddr
 	cp	a, TILE_UNIT_GRASS
-UnitsRoutine = $+1
-	jr	nc, DisplayUnits1
+	jr	nc, DisplayUnits
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
@@ -322,20 +317,17 @@ TileWhichAction = $
 	ld	hl, (hl)
 	jp	(hl)					; And jump to it
 	
-DisplayUnits1:
-	lea	hl, iy
-	ld	bc, -lcdWidth * (TILE_HEIGHT - 1)
-	add	hl, bc
-	jr	$+5
-DisplayUnits2:
-	lea	hl, iy
+DisplayUnits:
 	ld	(BackupIY4), iy
-	
+; Inputs:
+;   A' = row index
+;   B' = column index
+
 ; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
 ; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
 
-; X = 
-; Y = 
+; Y coordinate: A' * 8 + 17
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 	
 TempSP5 = $+1
 	ld	sp, 0
@@ -406,8 +398,6 @@ SetClippedRoutine:
 	ld	(startingPosition), hl
 	ld	hl, TilePointersStart - 3		; Also use different pointers for displaying tiles
 	ld	(TilePointersSMC), hl
-	ld	hl, UnitsRoutine
-	ld	(hl), DisplayUnits2 - UnitsRoutine - 1	; Set the right unit routine
 	jp	DisplayEachRowLoopExx
 	
 SetClippedRoutine2:
@@ -661,7 +651,6 @@ IYH_SMC = $+2
 NoTeamColorsSwap:
 	ld	hl, (iy + BuildingRAMPtr)
 	ld	b, (hl)					; B = building width
-	ld	iy, iy_base
 	push	hl					; Sprite struct
 	ex	af, af'
 	ld	c, a					; C = row_index start at bottom
@@ -673,10 +662,9 @@ NoTeamColorsSwap:
 	mlt	de					; DE = pointer to row / 2
 	inc	hl
 	ld	a, (hl)					; A = building_height
+OffsetY_SMC2 = $+1
 	ld	hl, 17
 	add	hl, de
-	add	hl, de					; HL = pointer to row + offset
-	ld	e, (OFFSET_Y)
 	add	hl, de					; HL = pointer to row + offset + y_offset
 	ld	e, a
 	sbc	hl, de					; HL = pointer to row + offset + y_offset - building_height
@@ -692,7 +680,8 @@ NoTeamColorsSwap:
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	e, (OFFSET_X)
+OffsetX_SMC2 = $+1
+	ld	e, 0
 	add	hl, de
 	ld	a, b
 	bit	0, c

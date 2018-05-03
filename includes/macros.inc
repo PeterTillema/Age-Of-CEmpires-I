@@ -143,6 +143,8 @@ macro ScrollFieldRight
 	sub	a, 4
 	and	a, 000011111b
 	ld	(OFFSET_X), a
+	ld	(OffsetX_SMC1), a
+	ld	(OffsetX_SMC2), a
 end macro
 
 macro ScrollFieldLeft
@@ -150,6 +152,8 @@ macro ScrollFieldLeft
 	add	a, 4
 	and	a, 000011111b
 	ld	(OFFSET_X), a
+	ld	(OffsetX_SMC1), a
+	ld	(OffsetX_SMC2), a
 	jr	nz, .jump2
 	ScrollLeft
 	ScrollDown
@@ -165,6 +169,9 @@ macro ScrollFieldUp
 	ScrollLeft
 	ScrollUp
 .jump3:
+	add	a, 17
+	ld	(OffsetY_SMC1), a
+	ld	(OffsetY_SMC2), a
 end macro
 
 macro ScrollFieldDown
@@ -177,6 +184,9 @@ macro ScrollFieldDown
 	sub	a, 4
 	and	a, 000001111b
 	ld	(OFFSET_Y), a
+	add	a, 17
+	ld	(OffsetY_SMC1), a
+	ld	(OffsetY_SMC2), a
 end macro
 
 macro printString message, x, y
