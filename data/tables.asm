@@ -124,14 +124,6 @@ UnitArbalest:
 	dl	arbalest_a_8_compressed_offset
 	dl	arbalest_d_1_compressed_offset
 	dl	arbalest_d_2_compressed_offset
-	dl	arbalest_s_1_compressed_offset
-	dl	arbalest_s_2_compressed_offset
-	dl	arbalest_s_3_compressed_offset
-	dl	arbalest_s_4_compressed_offset
-	dl	arbalest_s_5_compressed_offset
-	dl	arbalest_s_6_compressed_offset
-	dl	arbalest_s_7_compressed_offset
-	dl	arbalest_s_8_compressed_offset
 	dl	arbalest_w_1_1_compressed_offset
 	dl	arbalest_w_1_2_compressed_offset
 	dl	arbalest_w_1_3_compressed_offset
@@ -168,14 +160,6 @@ UnitArcher:
 	dl	archer_a_8_compressed_offset
 	dl	archer_d_1_compressed_offset
 	dl	archer_d_2_compressed_offset
-	dl	archer_s_1_compressed_offset
-	dl	archer_s_2_compressed_offset
-	dl	archer_s_3_compressed_offset
-	dl	archer_s_4_compressed_offset
-	dl	archer_s_5_compressed_offset
-	dl	archer_s_6_compressed_offset
-	dl	archer_s_7_compressed_offset
-	dl	archer_s_8_compressed_offset
 	dl	archer_w_1_1_compressed_offset
 	dl	archer_w_1_2_compressed_offset
 	dl	archer_w_1_3_compressed_offset
@@ -212,14 +196,6 @@ UnitCamel:
 	dl	camel_a_8_compressed_offset
 	dl	camel_d_1_compressed_offset
 	dl	camel_d_2_compressed_offset
-	dl	camel_s_1_compressed_offset
-	dl	camel_s_2_compressed_offset
-	dl	camel_s_3_compressed_offset
-	dl	camel_s_4_compressed_offset
-	dl	camel_s_5_compressed_offset
-	dl	camel_s_6_compressed_offset
-	dl	camel_s_7_compressed_offset
-	dl	camel_s_8_compressed_offset
 	dl	camel_w_1_1_compressed_offset
 	dl	camel_w_1_2_compressed_offset
 	dl	camel_w_1_3_compressed_offset
@@ -256,14 +232,6 @@ UnitHCamel:
 	dl	hcamel_a_8_compressed_offset
 	dl	hcamel_d_1_compressed_offset
 	dl	hcamel_d_2_compressed_offset
-	dl	hcamel_s_1_compressed_offset
-	dl	hcamel_s_2_compressed_offset
-	dl	hcamel_s_3_compressed_offset
-	dl	hcamel_s_4_compressed_offset
-	dl	hcamel_s_5_compressed_offset
-	dl	hcamel_s_6_compressed_offset
-	dl	hcamel_s_7_compressed_offset
-	dl	hcamel_s_8_compressed_offset
 	dl	hcamel_w_1_1_compressed_offset
 	dl	hcamel_w_1_2_compressed_offset
 	dl	hcamel_w_1_3_compressed_offset
@@ -300,14 +268,6 @@ UnitCavalier:
 	dl	cavalier_a_8_compressed_offset
 	dl	cavalier_d_1_compressed_offset
 	dl	cavalier_d_2_compressed_offset
-	dl	cavalier_s_1_compressed_offset
-	dl	cavalier_s_2_compressed_offset
-	dl	cavalier_s_3_compressed_offset
-	dl	cavalier_s_4_compressed_offset
-	dl	cavalier_s_5_compressed_offset
-	dl	cavalier_s_6_compressed_offset
-	dl	cavalier_s_7_compressed_offset
-	dl	cavalier_s_8_compressed_offset
 	dl	cavalier_w_1_1_compressed_offset
 	dl	cavalier_w_1_2_compressed_offset
 	dl	cavalier_w_1_3_compressed_offset
@@ -344,14 +304,6 @@ UnitChampion:
 	dl	champion_a_8_compressed_offset
 	dl	champion_d_1_compressed_offset
 	dl	champion_d_2_compressed_offset
-	dl	champion_s_0_compressed_offset
-	dl	champion_s_1_compressed_offset
-	dl	champion_s_3_compressed_offset
-	dl	champion_s_4_compressed_offset
-	dl	champion_s_5_compressed_offset
-	dl	champion_s_6_compressed_offset
-	dl	champion_s_7_compressed_offset
-	dl	champion_s_8_compressed_offset
 	dl	champion_w_1_1_compressed_offset
 	dl	champion_w_1_2_compressed_offset
 	dl	champion_w_1_3_compressed_offset
@@ -388,14 +340,6 @@ UnitCrossbowman:
 	dl	crossbowman_a_8_compressed_offset
 	dl	crossbowman_d_1_compressed_offset
 	dl	crossbowman_d_2_compressed_offset
-	dl	crossbowman_s_1_compressed_offset
-	dl	crossbowman_s_2_compressed_offset
-	dl	crossbowman_s_3_compressed_offset
-	dl	crossbowman_s_4_compressed_offset
-	dl	crossbowman_s_5_compressed_offset
-	dl	crossbowman_s_6_compressed_offset
-	dl	crossbowman_s_7_compressed_offset
-	dl	crossbowman_s_8_compressed_offset
 	dl	crossbowman_w_1_1_compressed_offset
 	dl	crossbowman_w_1_2_compressed_offset
 	dl	crossbowman_w_1_3_compressed_offset
@@ -432,14 +376,6 @@ UnitHalbadier:
 	dl	halbadier_a_8_compressed_offset
 	dl	halbadier_d_1_compressed_offset
 	dl	halbadier_d_2_compressed_offset
-	dl	halbadier_s_1_compressed_offset
-	dl	halbadier_s_2_compressed_offset
-	dl	halbadier_s_3_compressed_offset
-	dl	halbadier_s_4_compressed_offset
-	dl	halbadier_s_5_compressed_offset
-	dl	halbadier_s_6_compressed_offset
-	dl	halbadier_s_7_compressed_offset
-	dl	halbadier_s_8_compressed_offset
 	dl	halbadier_w_1_1_compressed_offset
 	dl	halbadier_w_1_2_compressed_offset
 	dl	halbadier_w_1_3_compressed_offset
@@ -476,14 +412,6 @@ UnitLCavalry:
 	dl	lcavalry_a_8_compressed_offset
 	dl	lcavalry_d_1_compressed_offset
 	dl	lcavalry_d_2_compressed_offset
-	dl	lcavalry_s_1_compressed_offset
-	dl	lcavalry_s_2_compressed_offset
-	dl	lcavalry_s_3_compressed_offset
-	dl	lcavalry_s_4_compressed_offset
-	dl	lcavalry_s_5_compressed_offset
-	dl	lcavalry_s_6_compressed_offset
-	dl	lcavalry_s_7_compressed_offset
-	dl	lcavalry_s_8_compressed_offset
 	dl	lcavalry_w_1_1_compressed_offset
 	dl	lcavalry_w_1_2_compressed_offset
 	dl	lcavalry_w_1_3_compressed_offset
@@ -520,14 +448,6 @@ Unitlongbowman:
 	dl	longbowman_a_8_compressed_offset
 	dl	longbowman_d_1_compressed_offset
 	dl	longbowman_d_2_compressed_offset
-	dl	longbowman_s_1_compressed_offset
-	dl	longbowman_s_2_compressed_offset
-	dl	longbowman_s_3_compressed_offset
-	dl	longbowman_s_4_compressed_offset
-	dl	longbowman_s_5_compressed_offset
-	dl	longbowman_s_6_compressed_offset
-	dl	longbowman_s_7_compressed_offset
-	dl	longbowman_s_8_compressed_offset
 	dl	longbowman_w_1_1_compressed_offset
 	dl	longbowman_w_1_2_compressed_offset
 	dl	longbowman_w_1_3_compressed_offset
@@ -564,14 +484,6 @@ UnitLongswordman:
 	dl	longswordman_a_8_compressed_offset
 	dl	longswordman_d_1_compressed_offset
 	dl	longswordman_d_2_compressed_offset
-	dl	longswordman_s_1_compressed_offset
-	dl	longswordman_s_2_compressed_offset
-	dl	longswordman_s_3_compressed_offset
-	dl	longswordman_s_4_compressed_offset
-	dl	longswordman_s_5_compressed_offset
-	dl	longswordman_s_6_compressed_offset
-	dl	longswordman_s_7_compressed_offset
-	dl	longswordman_s_8_compressed_offset
 	dl	longswordman_w_1_1_compressed_offset
 	dl	longswordman_w_1_2_compressed_offset
 	dl	longswordman_w_1_3_compressed_offset
@@ -608,14 +520,6 @@ UnitManAtArms:
 	dl	manatarms_a_8_compressed_offset
 	dl	manatarms_d_1_compressed_offset
 	dl	manatarms_d_2_compressed_offset
-	dl	manatarms_s_1_compressed_offset
-	dl	manatarms_s_2_compressed_offset
-	dl	manatarms_s_3_compressed_offset
-	dl	manatarms_s_4_compressed_offset
-	dl	manatarms_s_5_compressed_offset
-	dl	manatarms_s_6_compressed_offset
-	dl	manatarms_s_7_compressed_offset
-	dl	manatarms_s_8_compressed_offset
 	dl	manatarms_w_1_1_compressed_offset
 	dl	manatarms_w_1_2_compressed_offset
 	dl	manatarms_w_1_3_compressed_offset
@@ -652,14 +556,6 @@ UnitMilitia:
 	dl	militia_a_8_compressed_offset
 	dl	militia_d_1_compressed_offset
 	dl	militia_d_2_compressed_offset
-	dl	militia_s_1_compressed_offset
-	dl	militia_s_2_compressed_offset
-	dl	militia_s_3_compressed_offset
-	dl	militia_s_4_compressed_offset
-	dl	militia_s_5_compressed_offset
-	dl	militia_s_6_compressed_offset
-	dl	militia_s_7_compressed_offset
-	dl	militia_s_8_compressed_offset
 	dl	militia_w_1_1_compressed_offset
 	dl	militia_w_1_2_compressed_offset
 	dl	militia_w_1_3_compressed_offset
@@ -688,14 +584,6 @@ UnitMilitia:
 UnitMonk:
 	dl	monk_d_1_compressed_offset
 	dl	monk_d_2_compressed_offset
-	dl	monk_s_1_compressed_offset
-	dl	monk_s_2_compressed_offset
-	dl	monk_s_3_compressed_offset
-	dl	monk_s_4_compressed_offset
-	dl	monk_s_5_compressed_offset
-	dl	monk_s_6_compressed_offset
-	dl	monk_s_7_compressed_offset
-	dl	monk_s_8_compressed_offset
 	dl	monk_w_1_1_compressed_offset
 	dl	monk_w_1_2_compressed_offset
 	dl	monk_w_1_3_compressed_offset
@@ -741,14 +629,6 @@ UnitPaladin:
 	dl	paladin_a_8_compressed_offset
 	dl	paladin_d_1_compressed_offset
 	dl	paladin_d_2_compressed_offset
-	dl	paladin_s_1_compressed_offset
-	dl	paladin_s_2_compressed_offset
-	dl	paladin_s_3_compressed_offset
-	dl	paladin_s_4_compressed_offset
-	dl	paladin_s_5_compressed_offset
-	dl	paladin_s_6_compressed_offset
-	dl	paladin_s_7_compressed_offset
-	dl	paladin_s_8_compressed_offset
 	dl	paladin_w_1_1_compressed_offset
 	dl	paladin_w_1_2_compressed_offset
 	dl	paladin_w_1_3_compressed_offset
@@ -785,14 +665,6 @@ UnitPikeman:
 	dl	pikeman_a_8_compressed_offset
 	dl	pikeman_d_1_compressed_offset
 	dl	pikeman_d_2_compressed_offset
-	dl	pikeman_s_1_compressed_offset
-	dl	pikeman_s_2_compressed_offset
-	dl	pikeman_s_3_compressed_offset
-	dl	pikeman_s_4_compressed_offset
-	dl	pikeman_s_5_compressed_offset
-	dl	pikeman_s_6_compressed_offset
-	dl	pikeman_s_7_compressed_offset
-	dl	pikeman_s_8_compressed_offset
 	dl	pikeman_w_1_1_compressed_offset
 	dl	pikeman_w_1_2_compressed_offset
 	dl	pikeman_w_1_3_compressed_offset
@@ -821,14 +693,6 @@ UnitPikeman:
 UnitSheep:
 	dl	sheep_d_1_compressed_offset
 	dl	sheep_d_2_compressed_offset
-	dl	sheep_s_1_compressed_offset
-	dl	sheep_s_2_compressed_offset
-	dl	sheep_s_3_compressed_offset
-	dl	sheep_s_4_compressed_offset
-	dl	sheep_s_5_compressed_offset
-	dl	sheep_s_6_compressed_offset
-	dl	sheep_s_7_compressed_offset
-	dl	sheep_s_8_compressed_offset
 	dl	sheep_w_1_1_compressed_offset
 	dl	sheep_w_1_2_compressed_offset
 	dl	sheep_w_1_3_compressed_offset
@@ -865,14 +729,6 @@ UnitSkirmisher:
 	dl	skirmisher_a_8_compressed_offset
 	dl	skirmisher_d_1_compressed_offset
 	dl	skirmisher_d_2_compressed_offset
-	dl	skirmisher_s_1_compressed_offset
-	dl	skirmisher_s_2_compressed_offset
-	dl	skirmisher_s_3_compressed_offset
-	dl	skirmisher_s_4_compressed_offset
-	dl	skirmisher_s_5_compressed_offset
-	dl	skirmisher_s_6_compressed_offset
-	dl	skirmisher_s_7_compressed_offset
-	dl	skirmisher_s_8_compressed_offset
 	dl	skirmisher_w_1_1_compressed_offset
 	dl	skirmisher_w_1_2_compressed_offset
 	dl	skirmisher_w_1_3_compressed_offset
@@ -909,14 +765,6 @@ UnitESkirmisher:
 	dl	eskirmisher_a_8_compressed_offset
 	dl	eskirmisher_d_1_compressed_offset
 	dl	eskirmisher_d_2_compressed_offset
-	dl	eskirmisher_s_1_compressed_offset
-	dl	eskirmisher_s_2_compressed_offset
-	dl	eskirmisher_s_3_compressed_offset
-	dl	eskirmisher_s_4_compressed_offset
-	dl	eskirmisher_s_5_compressed_offset
-	dl	eskirmisher_s_6_compressed_offset
-	dl	eskirmisher_s_7_compressed_offset
-	dl	eskirmisher_s_8_compressed_offset
 	dl	eskirmisher_w_1_1_compressed_offset
 	dl	eskirmisher_w_1_2_compressed_offset
 	dl	eskirmisher_w_1_3_compressed_offset
@@ -953,14 +801,6 @@ UnitSpearman:
 	dl	spearman_a_8_compressed_offset
 	dl	spearman_d_1_compressed_offset
 	dl	spearman_d_2_compressed_offset
-	dl	spearman_s_1_compressed_offset
-	dl	spearman_s_2_compressed_offset
-	dl	spearman_s_3_compressed_offset
-	dl	spearman_s_4_compressed_offset
-	dl	spearman_s_5_compressed_offset
-	dl	spearman_s_6_compressed_offset
-	dl	spearman_s_7_compressed_offset
-	dl	spearman_s_8_compressed_offset
 	dl	spearman_w_1_1_compressed_offset
 	dl	spearman_w_1_2_compressed_offset
 	dl	spearman_w_1_3_compressed_offset
@@ -997,14 +837,6 @@ UnitSwordman:
 	dl	swordman_a_8_compressed_offset
 	dl	swordman_d_1_compressed_offset
 	dl	swordman_d_2_compressed_offset
-	dl	swordman_s_1_compressed_offset
-	dl	swordman_s_2_compressed_offset
-	dl	swordman_s_3_compressed_offset
-	dl	swordman_s_4_compressed_offset
-	dl	swordman_s_5_compressed_offset
-	dl	swordman_s_6_compressed_offset
-	dl	swordman_s_7_compressed_offset
-	dl	swordman_s_8_compressed_offset
 	dl	swordman_w_1_1_compressed_offset
 	dl	swordman_w_1_2_compressed_offset
 	dl	swordman_w_1_3_compressed_offset
@@ -1081,14 +913,6 @@ UnitVillager:
 	dl	villager_f_m_8_compressed_offset
 	dl	villager_f_d_1_compressed_offset
 	dl	villager_f_d_2_compressed_offset
-	dl	villager_f_s_1_compressed_offset
-	dl	villager_f_s_2_compressed_offset
-	dl	villager_f_s_3_compressed_offset
-	dl	villager_f_s_4_compressed_offset
-	dl	villager_f_s_5_compressed_offset
-	dl	villager_f_s_6_compressed_offset
-	dl	villager_f_s_7_compressed_offset
-	dl	villager_f_s_8_compressed_offset
 	dl	villager_f_w_1_1_compressed_offset
 	dl	villager_f_w_1_2_compressed_offset
 	dl	villager_f_w_1_3_compressed_offset
