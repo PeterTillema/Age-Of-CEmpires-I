@@ -615,7 +615,7 @@ LoadBuildingDynamically:
 	push	de
 	ld	iyh, a
 	call	dzx7_Turbo
-	ld	(BuildingsSpritesPtr), de
+	ld	(BuildingsSpritesPtr), hl
 	ld	e, iyh
 	ld	c, e
 	ld	b, SIZEOF_BUILDING_STRUCT_1
@@ -631,6 +631,62 @@ LoadBuildingDynamically:
 	add	hl, bc
 	ld	(iy + BuildingTCPPtr), hl
 	ld	(iy + BuildingType), e
+	ret
+	
+;-------------------------------------------------------------------------------
+; Uncompresses all the sprites for a unit to RAM
+; Inputs:
+;   A = unit index
+;   E = appvar index
+
+LoadUnitDynamically:
+	ld	d, 3
+	mlt	de
+	ld	hl, AOCE_RAM_START
+	add	hl, de
+	ld	hl, (hl)
+	ld	(UnitPointerInAppvarStart), hl			; Pointer to start of appvar
+	ld	b, 34
+	cp	a, 16
+	jr	nz, UnitNoSheep
+	ld	b, 24
+UnitNoSheep:
+	cp	a, 21
+	jr	nz, UnitNoVillager
+	ld	b, 82
+UnitNoVillager:
+	ld	hl, UnitsSpritesPointersTable
+	ld	e, a
+	ld	d, 3
+	mlt	de
+	add	hl, de
+	ld	hl, (hl)					; Pointer to table with sprites offsets
+	ld	de, (BuildingsSpritesPtr)			; Pointer to temp RAM to uncompress sprite to
+UnitUncompressLoop:
+	push	bc
+	push	hl
+	ld	hl, (hl)
+UnitPointerInAppvarStart = $+1
+	ld	bc, 0
+	add	hl, bc
+	call	dzx7_Turbo					; Uncompress the sprite
+	ex	de, hl
+	pop	hl
+	inc	hl
+	inc	hl
+	inc	hl
+	pop	bc
+	djnz	UnitUncompressLoop
+	ld	hl, (BuildingsSpritesPtr)			; Pointer to temp RAM
+	ex	de, hl						; Pointer to byte after uncompressed data
+	or	a, a
+	sbc	hl, de
+	push	hl
+	pop	bc						; BC = data length
+	add	hl, de
+	ld	de, (UnitsSpritesPtr)
+	lddr							; Copy to sprite stack
+	ld	(UnitsSpritesPtr), de
 	ret
 	
 ;-------------------------------------------------------------------------------

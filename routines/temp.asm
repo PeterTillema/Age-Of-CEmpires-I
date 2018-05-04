@@ -49,6 +49,9 @@ PlaceTempUnits:
 	ld	(hl), TILE_UNIT_GRASS
 	inc	hl
 	ld	(hl), 0
+	ld	a, 0
+	ld	e, 6
+	call	LoadUnitDynamically
 	ret
 	
 TempUnitsData:

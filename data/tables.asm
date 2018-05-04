@@ -113,6 +113,30 @@ BuildingsAge4:
 	dl	university_4_compressed_offset		; 16
 	dl	btower_4_compressed_offset		; 17
 	
+UnitsSpritesPointersTable:
+	dl	UnitArbalest
+	dl	UnitArcher
+	dl	UnitCamel
+	dl	UnitHCamel
+	dl	UnitCavalier
+	dl	UnitChampion
+	dl	UnitCrossbowman
+	dl	UnitHalbadier
+	dl	UnitLCavalry
+	dl	UnitLongbowman
+	dl	UnitLongswordman
+	dl	UnitManAtArms
+	dl	UnitMilitia
+	dl	UnitMonk
+	dl	UnitPaladin
+	dl	UnitPikeman
+	dl	UnitSheep
+	dl	UnitSkirmisher
+	dl	UnitESkirmisher
+	dl	UnitSpearman
+	dl	UnitSwordman
+	dl	UnitVillager
+	
 UnitArbalest:
 	dl	arbalest_a_1_compressed_offset
 	dl	arbalest_a_2_compressed_offset
@@ -437,7 +461,7 @@ UnitLCavalry:
 	dl	lcavalry_w_8_2_compressed_offset
 	dl	lcavalry_w_8_3_compressed_offset
 	
-Unitlongbowman:
+UnitLongbowman:
 	dl	longbowman_a_1_compressed_offset
 	dl	longbowman_a_2_compressed_offset
 	dl	longbowman_a_3_compressed_offset
@@ -945,4 +969,3 @@ UnitVillager:
 	dl	villager_f_w_6_compressed_offset
 	dl	villager_f_w_7_compressed_offset
 	dl	villager_f_w_8_compressed_offset
-	dl	villager_f_w_8_compressed_height

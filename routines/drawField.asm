@@ -24,13 +24,15 @@ DrawField:
 	ld	(DrawTile_Clipped_Stop3), hl
 
 	ld	e, (OFFSET_Y)
+	ld	hl, FieldRowActionTable
 	ld	d, 10
-	xor	a, a
 	bit	3, e
 	jr	z, .jump2
 	inc	d
-	ld	a, dec_c
-.jump2:	ld	(TileWhichAction), a			; Write "dec c" or "nop"
+	dec	hl
+	dec	hl
+	dec	hl
+.jump2:	ld	(TileRoutinesTable), hl
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
 	bit	2, e
@@ -308,10 +310,9 @@ TileHowManyRowsClipped = $+1				; Check if we need an extra routine to set the c
 	jp	nc, DisplayEachRowLoop
 	exx
 	ld	c, a					; Get the routine
-TileWhichAction = $
-	nop						; Can be SMC'd into a "dec c"
 	ld	b, 3
 	mlt	bc
+TileRoutinesTable = $+1
 	ld	hl, FieldRowActionTable
 	add	hl, bc
 	ld	hl, (hl)
@@ -394,8 +395,8 @@ SetClippedRoutine:
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	ld	hl, (startingPosition)			; The starting position is now different
-	ld	bc, -lcdWidth * (TILE_HEIGHT - 1) - 1	; -1 because we start at the left pixel of the top row, not the right one
-	add	hl, bc
+	ld	de, -lcdWidth * (TILE_HEIGHT - 1) - 1	; -1 because we start at the left pixel of the top row, not the right one
+	add	hl, de
 	ld	(startingPosition), hl
 	ld	hl, TilePointersStart - 3		; Also use different pointers for displaying tiles
 	ld	(TilePointersSMC), hl
@@ -548,8 +549,7 @@ DrawTile_Clipped_Stop3 = $
 StopDrawingTile:
 	ld	iy, 0
 BackupIY = $-3
-	exx
-	jp	SkipDrawingOfTile
+	jp	SkipDrawingOfTileExx
 end relocate
 
 relocate DrawIsometricTile, mpShaData, 64
