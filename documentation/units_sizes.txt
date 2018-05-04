@@ -1,24 +1,24 @@
-Arbalest:			7381			7381
-Archer:				7277			7277
-Camel:				20383
-CamelHeavy:			20842
-Cavalier:			20749
-Champion:			6542			6542
-Crossbowman:		7134			7134
-Halbadier:			6892			6892
-LightCavalry:		18393
-Longbowman:			7053			7053
-Longswordman:		6822			6822
-ManAtArms:			6565			6565
-Militia:			6257			6257
-Monk:				7656			7656
-Paladin:			21636
-Pikeman:			6922			6922
-Sheep:				4232			4232
-Skirmisher:			7908			7908
-SkirmisherElite:	7337			7337
-Spearman:			7377			7377
-Swordman:			6679			6679
-Villager:			10440			10440
+Arbalest:			5524			5524
+Archer:				5309			5309
+Camel:				14125
+CamelHeavy:			14190
+Cavalier:			13454
+Champion:			4739			4739
+Crossbowman:		5420			5420
+Halbadier:			5155			5155
+LightCavalry:		12704
+Longbowman:			5354			5354
+Longswordman:		4989			4989
+ManAtArms:			4923			4923
+Militia:			4520			4520
+Monk:				5679			5679
+Paladin:			14147
+Pikeman:			5207			5207
+Sheep:				3093			3093
+Skirmisher:			6003			6003
+SkirmisherElite:	5690			5690
+Spearman:			5527			5527
+Swordman:			4704			4704
+Villager:			9004			9004
 					-------- +		-------- +
-					222477			120474
+					159460			90840
