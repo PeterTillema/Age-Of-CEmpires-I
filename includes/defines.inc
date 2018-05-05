@@ -57,11 +57,10 @@ TILE_TREE                   = 15
 TILE_BUILDING               = TILE_TREE + AMOUNT_OF_TREES
 
 ;;; Unit struct 1
-SIZEOF_UNIT_STRUCT_1        = 8
+SIZEOF_UNIT_STRUCT_1        = 5
 UnitTeamLoaded              = 0
 UnitRAMPtr                  = 1
-UnitTCPPtr                  = 4
-UnitType                    = 7
+UnitType                    = 4
 
 ;;; Unit struct 2
 SIZEOF_UNIT_STRUCT_2        = 11

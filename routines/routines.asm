@@ -627,6 +627,7 @@ LoadBuildingDynamically:
 	inc	hl
 	ld	b, (hl)
 	inc	hl
+	ld	(iy + BuildingTeamLoaded), 0
 	ld	(iy + BuildingRAMPtr), hl
 	add	hl, bc
 	ld	(iy + BuildingTCPPtr), hl
@@ -640,6 +641,7 @@ LoadBuildingDynamically:
 ;   E = appvar index
 
 LoadUnitDynamically:
+	ld	ixh, a
 	ld	d, 3
 	mlt	de
 	ld	hl, AOCE_RAM_START
@@ -656,10 +658,12 @@ UnitNoSheep:
 	ld	b, 82
 UnitNoVillager:
 	ld	hl, UnitsSpritesPointersTable
+	ld	iy, UnitsLoaded
 	ld	e, a
 	ld	d, 3
 	mlt	de
 	add	hl, de
+	add	iy, de
 	ld	hl, (hl)					; Pointer to table with sprites offsets
 	ld	de, (BuildingsSpritesPtr)			; Pointer to temp RAM to uncompress sprite to
 UnitUncompressLoop:
@@ -687,6 +691,11 @@ UnitPointerInAppvarStart = $+1
 	ld	de, (UnitsSpritesPtr)
 	lddr							; Copy to sprite stack
 	ld	(UnitsSpritesPtr), de
+	inc	de
+	ld	(iy + UnitTeamLoaded), 0			; Set the unit struct
+	ld	(iy + UnitRAMPtr), de
+	ld	a, ixh
+	ld	(iy + UnitType), a
 	ret
 	
 ;-------------------------------------------------------------------------------
