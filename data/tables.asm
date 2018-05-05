@@ -137,6 +137,42 @@ UnitsSpritesPointersTable:
 	dl	UnitSwordman
 	dl	UnitVillager
 	
+UnitsEventsTable:
+	dl UnitAttack1
+	dl UnitAttack2
+	dl UnitAttack3
+	dl UnitAttack4
+	dl UnitAttack5
+	dl UnitAttack6
+	dl UnitAttack7
+	dl UnitAttack8
+	dl UnitDie1
+	dl UnitDie2
+	dl UnitWalk11
+	dl UnitWalk12
+	dl UnitWalk13
+	dl UnitWalk21
+	dl UnitWalk22
+	dl UnitWalk23
+	dl UnitWalk31
+	dl UnitWalk32
+	dl UnitWalk33
+	dl UnitWalk41
+	dl UnitWalk42
+	dl UnitWalk43
+	dl UnitWalk51
+	dl UnitWalk52
+	dl UnitWalk53
+	dl UnitWalk61
+	dl UnitWalk62
+	dl UnitWalk63
+	dl UnitWalk71
+	dl UnitWalk72
+	dl UnitWalk73
+	dl UnitWalk81
+	dl UnitWalk82
+	dl UnitWalk83
+	
 UnitArbalest:
 	dl	arbalest_a_1_compressed_offset
 	dl	arbalest_a_2_compressed_offset

@@ -18,6 +18,22 @@ MainGameLoop:
 	ld	hl, mpLcdIcr
 	set	2, (hl)
 	
+; Check all the events of the units
+	ld	a, (AmountOfPeople)
+	ld	b, a
+	ld	iy, (UnitsStackPtr)
+DoUnitEventLoop:
+	push	bc
+	ld	c, (iy + UnitEvent)
+	ld	b, 3
+	mlt	bc
+	ld	hl, UnitsEventsTable
+	add	hl, bc
+	ld	hl, (hl)
+	call	JumpHL
+	pop	bc
+	djnz	DoUnitEventLoop
+	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld	hl, (AmountOfWood)
 	inc	hl
@@ -98,11 +114,15 @@ WaitLCDInterrupt:
 	jr	z, WaitLCDInterrupt
 	jp	MainGameLoop
 	
+JumpHL:
+	jp	(hl)
+	
 include "routines/mainmenu.asm"
 include "routines/drawGame.asm"
 ;include "routines/pathfinding.asm"
 include "routines/routines.asm"
 include "routines/drawField.asm"
+include "routines/unitEvents.asm"
 include "data/tables.asm"
 include "data/data.asm"
 

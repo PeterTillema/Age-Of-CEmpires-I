@@ -7,7 +7,7 @@ AmountOfGold:
 AmountOfStone:
 	dl	0
 AmountOfPeople:
-	db	1
+	db	3
 AmountOfMaxPeople:
 	db	10
 AmountOfBuildings:
