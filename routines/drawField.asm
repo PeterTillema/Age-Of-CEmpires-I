@@ -257,21 +257,21 @@ TempSP4 = $+1
 ; 1        1      Nothing
 
 	cp	a, (iy + BuildingTeamLoaded)		; Eventually swap teamcolors
-	jr	z, NoTeamColorsSwap
+	jr	z, NoBuildingTeamColorsSwap
 	ld	a, iyh
-	ld	(IYH_SMC), a
+	ld	(IYH_SMC1), a
 	jr	nc, .inc
-.dec:	dec	(iy+BuildingTeamLoaded)
+.dec:	dec	(iy + BuildingTeamLoaded)
 	call	TeamColorsToDec
 	jr	.ins
-.inc:	inc	(iy+BuildingTeamLoaded)
+.inc:	inc	(iy + BuildingTeamLoaded)
 	call	TeamColorsToInc
 .ins:	ld	hl, (iy + BuildingRAMPtr)
 	ld	de, (iy + BuildingTCPPtr)
 	call	IncTeamColors
-IYH_SMC = $+2
+IYH_SMC1 = $+2
 	ld	iyh, 3
-NoTeamColorsSwap:
+NoBuildingTeamColorsSwap:
 	ld	hl, (iy + BuildingRAMPtr)
 	ld	b, (hl)					; B = building width
 	push	hl					; Sprite struct
@@ -702,27 +702,64 @@ DisplayAllUnits:
 
 	ld	b, a
 	ld	hl, UnitsPerTile
-.loop:	push	bc
+DisplayUnitLoop:
+	push	bc
 	push	hl
-	ld	c, (hl)
-	ld	b, 3
+	ld	c, (hl)					; Unit index
+	ld	b, SIZEOF_UNIT_STRUCT_2
 	mlt	bc
 	ld	iy, (UnitsStackPtr)
-	add	iy, bc
+	add	iy, bc					; Pointer to unit struct in game
+	ld	a, (iy + UnitTeam)
 	ld	c, (iy + UnitIndex)
-	ld	b, 3
+	ld	b, SIZEOF_UNIT_STRUCT_1
 	mlt	bc
-	ld	hl, (UnitsLoaded)
+	ld	ix, UnitsLoaded
+	add	ix, bc					; Pointer to unit struct in RAM
+	
+; Loaded | Team | Action
+; 0        0      Nothing
+; 0        1      Inc
+; 1        0      Dec
+; 1        1      Nothing
+
+	cp	a, (ix + UnitTeamLoaded)
+	jr	z, NoUnitTeamColorsSwap
+	ld	a, iyh
+	ld	(IYH_SMC2), a
+	jr	c, .inc
+.dec:	dec	(ix + BuildingTeamLoaded)
+	call	TeamColorsToDec
+	jr	.ins
+.inc:	inc	(ix + BuildingTeamLoaded)
+	call	TeamColorsToInc
+.ins:	ld	hl, (ix + UnitRAMPtr)
+	ld	de, (ix + BuildingTCPPtr)
+	call	IncTeamColors
+	ld	b, 0
+IYH_SMC2 = $+2
+	ld	iyh, 3
+NoUnitTeamColorsSwap:
+	ld	c, (ix + UnitType)
+	ld	hl, UnitsSpritesPointersTable
 	add	hl, bc
-	ld	hl, (hl)
-	push	hl					; Pointer to sprite
+	add	hl, bc
+	add	hl, bc
+	ld	hl, (hl)				; Pointer to table with sprites per unit
+	ld	c, (ix + UnitEvent)
+	add	hl, bc
+	add	hl, bc
+	add	hl, bc
+	ld	hl, (hl)				; Pointer to sprite
+	push	hl
 	ex	af, af'
 	ld	c, a
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c
-	add	a, (iy + UnitOffsetX)
-	add	a, (iy + UnitOffsetY)
+	ld	b, (ix + UnitOffsetX)
+	add	a, b
+	add	a, (ix + UnitOffsetX)
 	ld	e, a
 	ld	d, TILE_HEIGHT / 2 / 2
 	mlt	de
@@ -735,8 +772,8 @@ OffsetY_SMC2 = $+1
 	ld	e, a
 	sbc	hl, de
 	push	hl
-	ld	a, (iy + UnitOffsetX)
-	sub	a, (iy + UnitOffsetY)
+	ld	a, b
+	sub	a, (ix + UnitOffsetY)
 	sbc	hl, hl
 	ld	l, a
 	add	hl, hl
@@ -769,12 +806,13 @@ OffsetX_SMC2 = $+1
 	pop	hl
 	pop	hl
 	pop	hl
-	inc	hl
-	inc	hl
-	inc	hl
 	pop	bc
-	djnz	.loop
+	inc	hl
+	inc	hl
+	inc	hl
+	dec	b
+	jp	nz, DisplayUnitLoop
+	pop	ix
 BackupIY4 = $+2
 	ld	iy, 0
-	pop	ix
 	jp	SkipDrawingOfTileExx

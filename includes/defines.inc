@@ -57,22 +57,24 @@ TILE_TREE                   = 15
 TILE_BUILDING               = TILE_TREE + AMOUNT_OF_TREES
 
 ;;; Unit struct 1
-SIZEOF_UNIT_STRUCT_1        = 5
-UnitRAMPtr                  = 0
-UnitTeamLoaded              = 3
-UnitType                    = 4
+SIZEOF_UNIT_STRUCT_1        = 8
+UnitTeamLoaded              = 0
+UnitTCPPtr                  = 1
+UnitRAMPtr                  = 4
+UnitType                    = 7
 
 ;;; Unit struct 2
-SIZEOF_UNIT_STRUCT_2        = 11
+SIZEOF_UNIT_STRUCT_2        = 12
 UnitIndex                   = 0
-UnitEvent                   = 1
-UnitHealth                  = 2
-UnitHitpoints               = 3
-UnitPath                    = 4
-UnitNext                    = 7
-UnitOffsetX                 = 8
-UnitOffsetY                 = 9
-UnitPrev                    = 10
+UnitTeam                    = 1
+UnitEvent                   = 2
+UnitHealth                  = 3
+UnitHitpoints               = 4
+UnitPath                    = 5
+UnitNext                    = 8
+UnitOffsetX                 = 9
+UnitOffsetY                 = 10
+UnitPrev                    = 11
 
 ;;; Building struct 1
 SIZEOF_BUILDING_STRUCT_1    = 8

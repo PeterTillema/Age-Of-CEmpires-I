@@ -129,7 +129,7 @@ CheckGraphicsAppvarsLoop:
 	ld	(UnitsSpritesBase), hl
 	ld	(UnitsSpritesPtr), hl
 	pop	bc
-	ld	hl, RelocationTable2 + 3	; Note that "ld	bc, foundation_11_offset" adds another entry to 
+	ld	hl, RelocationTable2 + 3	; Note that "ld	bc, foundation_11_offset" adds another entry to the relocation table
 	call	ModifyRelocationTable
 	
 ; Relocate main menu sprites
