@@ -139,7 +139,7 @@ TileDrawingRoutinePtr1 = $+1
 	jp	c, DrawIsometricTile			; This will be modified to the clipped version after X rows
 	sub	a, TILE_BUILDING
 	jr	c, DisplayTileWithTree			; It's a tree
-	jp	DisplayBuildingExx			; It's a building
+	jr	DisplayBuildingExx			; It's a building
 	
 TileIsOutOfField:
 	xor	a, a					; Reset A otherwise it might think that it was a tile with unit(s)
@@ -160,7 +160,7 @@ TileOnlyDisplayBuilding:
 	ld	a, (hl)
 	sub	a, TILE_BUILDING			; Check if it's a building
 	jp	c, SkipDrawingOfTile
-	jp	DisplayBuilding
+	jr	DisplayBuilding
 	
 DisplayTileWithTree:
 ; Inputs:
@@ -216,6 +216,113 @@ OffsetX_SMC1 = $+1
 DontDisplayTree:
 	ld	iy, 0
 BackupIY2 = $-3
+	jp	SkipDrawingOfTileExx
+	
+DisplayBuildingExx:
+	exx
+DisplayBuilding:
+	inc	hl
+	ld	a, (hl)					; Building index
+	dec	hl
+	exx
+	
+; Inputs:
+;   A' = row index
+;   B' = column index
+;   A  = index in buildings stack
+
+; Y coordinate: A' * 8 + 17 - building_height
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
+
+TempSP4 = $+1
+	ld	sp, 0
+	ld	(BackupIY3), iy
+	ld	hl, (BuildingsStackPtr)
+	ld	c, a
+	ld	b, SIZEOF_BUILDING_STRUCT_2
+	mlt	bc
+	add	hl, bc
+	ld	c, (hl)					; C = building index
+	ld	b, SIZEOF_BUILDING_STRUCT_1
+	mlt	bc
+	inc	hl
+	ld	a, (hl)					; A = which team to load
+	ld	iy, BuildingsLoaded
+	add	iy, bc					; IY = pointer to general building struct
+	
+; Loaded | Team | Action
+; 0        0      Nothing
+; 0        1      Inc
+; 1        0      Dec
+; 1        1      Nothing
+
+	cp	a, (iy + BuildingTeamLoaded)		; Eventually swap teamcolors
+	jr	z, NoTeamColorsSwap
+	ld	a, iyh
+	ld	(IYH_SMC), a
+	jr	nc, .inc
+.dec:	dec	(iy+BuildingTeamLoaded)
+	call	TeamColorsToDec
+	jr	.ins
+.inc:	inc	(iy+BuildingTeamLoaded)
+	call	TeamColorsToInc
+.ins:	ld	hl, (iy + BuildingRAMPtr)
+	ld	de, (iy + BuildingTCPPtr)
+	call	IncTeamColors
+IYH_SMC = $+2
+	ld	iyh, 3
+NoTeamColorsSwap:
+	ld	hl, (iy + BuildingRAMPtr)
+	ld	b, (hl)					; B = building width
+	push	hl					; Sprite struct
+	ex	af, af'
+	ld	c, a					; C = row_index start at bottom
+	ex	af, af'
+	ld	a, AMOUNT_OF_ROWS + 1
+	sub	a, c					; A = row_index start at top
+	ld	e, a
+	ld	d, TILE_HEIGHT / 2 / 2
+	mlt	de					; DE = pointer to row / 2
+	inc	hl
+	ld	a, (hl)					; A = building_height
+OffsetY_SMC3 = $+1
+	ld	hl, 17
+	add	hl, de
+	add	hl, de					; HL = pointer to row + offset + y_offset
+	ld	e, a
+	sbc	hl, de					; HL = pointer to row + offset + y_offset - building_height
+	push	hl					; Y coordinate
+	ld	a, AMOUNT_OF_COLUMNS - 2
+	exx
+	sub	a, b
+	exx
+	sbc	hl, hl
+	ld	l, a
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+	add	hl, hl
+OffsetX_SMC3 = $+1
+	ld	e, 0
+	add	hl, de
+	ld	a, b
+	bit	0, c
+	jr	nz, .jump
+	bit	4, e
+	ld	e, TILE_WIDTH / 2
+	add	hl, de
+	jr	z, .jump
+	sla	e
+	sbc	hl, de
+.jump:	sub	a, 30
+	srl	a
+	ld	e, a
+	sbc	hl, de
+	push	hl					; X coordinate
+	call	_RLETSprite				; No need to pop
+BackupIY3 = $+2
+	ld	iy, 0
 	jp	SkipDrawingOfTileExx
 
 DrawIsometricTileSecondPart:
@@ -278,7 +385,7 @@ DrawIsometricTileSecondPart:
 	ex	de, hl
 	lddr
 	cp	a, TILE_UNIT_GRASS
-	jr	nc, DisplayUnits
+	jp	nc, DisplayUnits
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
@@ -317,78 +424,6 @@ TileRoutinesTable = $+1
 	add	hl, bc
 	ld	hl, (hl)
 	jp	(hl)					; And jump to it
-	
-DisplayUnits:
-	ld	(BackupIY4), iy
-TempSP5 = $+1
-	ld	sp, 0
-	push	ix
-	ld	b, 5					; Amount of units at the tile
-	exx
-	inc	hl
-	ld	a, (hl)					; Unit index
-	dec	hl
-	exx
-	ld	hl, UnitsPerTile
-FindNextUnit:
-	ld	e, a
-	ld	d, SIZEOF_UNIT_STRUCT_2
-	mlt	de
-	ld	iy, (UnitsStackPtr)
-	add	iy, de
-	ld	de, (iy + UnitNext)
-	ld	c, e					; C is next unit
-	ld	e, a
-	ld	(hl), de
-	inc	hl
-	inc	hl
-	inc	hl
-	inc	c
-	jr	z, SortUnits
-	dec	c
-	ld	a, c
-	djnz	FindNextUnit
-SortUnits:
-	ld	a, 5
-	sub	a, b
-	ld	b, a					; B = 5 - unit index
-	ld	a, 1					; A = unit index [1,X]
-	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
-	ld	c, a					; C = unit index [1,X]
-	ld	iy, UnitsPerTile + 3			; IY = pointer to current element
-.loop1:	ld	hl, (iy)				; HL = current element
-	lea	ix, iy-3				; IX = pointer to test element
-	ld	c, a
-.loop2:	ld	de, (ix)				; DE = test element
-	or	a, a					; Compare elements
-	sbc	hl, de
-	add	hl, de
-	jr	nc, .ins				; HL > DE, so stop with swapping
-	ld	(ix+3), de				; Move the test element to the previous position
-	lea	ix, ix-3				; Decrease test pointer
-	dec	c					; Loop through all the remaining units
-	jr	nz, .loop2
-.ins:	ld	(ix+3), hl				; Insert the current element in the right position
-	lea	iy, iy+3				; Increment current element pointer
-	inc	a					; Loop through all the units
-	djnz	.loop1
-DisplayAllUnits:
-; Inputs:
-;   A  = amount of units
-;   A' = row index
-;   B' = column index
-
-; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
-; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
-
-; Y coordinate: (A' + sprite_x + sprite_y) * 8 + 17 + offset_y - sprite_y
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + offset_x + (sprite_x - sprite_y) * 16
-	
-	
-BackupIY4 = $+2
-	ld	iy, 0
-	pop	ix
-	jp	SkipDrawingOfTileExx
 	
 SetClippedRoutine:
 	ld	hl, DrawTile_Clipped			; Set the clipped routine
@@ -597,108 +632,149 @@ DrawIsometricTile:
 	lddr
 	jp	DrawIsometricTileSecondPart
 end relocate
-
-DisplayBuildingExx:
+	
+DisplayUnits:
+	ld	(BackupIY4), iy
+TempSP5 = $+1
+	ld	sp, 0
+	push	ix
+	ld	b, 5					; Amount of units at the tile
 	exx
-DisplayBuilding:
 	inc	hl
-	ld	a, (hl)					; Building index
+	ld	a, (hl)					; Unit index
 	dec	hl
 	exx
+	ld	hl, UnitsPerTile
+FindNextUnit:
+	ld	e, a
+	ld	d, SIZEOF_UNIT_STRUCT_2
+	mlt	de
+	ld	iy, (UnitsStackPtr)
+	add	iy, de
+	ld	de, (iy + UnitNext)
+	ld	c, e					; C is next unit
+	ld	e, a
+	ld	(hl), de
+	inc	hl
+	inc	hl
+	inc	hl
+	inc	c
+	jr	z, SortUnits
+	dec	c
+	ld	a, c
+	djnz	FindNextUnit
+SortUnits:
+	ld	a, 5
+	sub	a, b
+	ld	b, a					; B = 5 - unit index
+	ld	a, 1					; A = unit index [1,X]
+	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
+	ld	c, a					; C = unit index [1,X]
+	ld	iy, UnitsPerTile + 3			; IY = pointer to current element
+.loop1:	ld	hl, (iy)				; HL = current element
+	lea	ix, iy-3				; IX = pointer to test element
+	ld	c, a
+.loop2:	ld	de, (ix)				; DE = test element
+	or	a, a					; Compare elements
+	sbc	hl, de
+	add	hl, de
+	jr	nc, .ins				; HL > DE, so stop with swapping
+	ld	(ix+3), de				; Move the test element to the previous position
+	lea	ix, ix-3				; Decrease test pointer
+	dec	c					; Loop through all the remaining units
+	jr	nz, .loop2
+.ins:	ld	(ix+3), hl				; Insert the current element in the right position
+	lea	iy, iy+3				; Increment current element pointer
+	inc	a					; Loop through all the units
+	djnz	.loop1
+DisplayAllUnits:
+	
 ; Inputs:
+;   A  = amount of units
 ;   A' = row index
 ;   B' = column index
-;   A  = index in buildings stack
 
-; Y coordinate: A' * 8 + 17 - building_height
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
-TempSP4 = $+1
-	ld	sp, 0
-	ld	(BackupIY3), iy
-	ld	hl, (BuildingsStackPtr)
-	ld	c, a
-	ld	b, SIZEOF_BUILDING_STRUCT_2
+; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
+; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
+
+; Y coordinate: (A' + sprite_x + sprite_y) * 8 + 17 + offset_y - sprite_y
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + offset_x + (sprite_x - sprite_y) * 16
+
+	ld	b, a
+	ld	hl, UnitsPerTile
+.loop:	push	bc
+	push	hl
+	ld	c, (hl)
+	ld	b, 3
 	mlt	bc
+	ld	iy, (UnitsStackPtr)
+	add	iy, bc
+	ld	c, (iy + UnitIndex)
+	ld	b, 3
+	mlt	bc
+	ld	hl, (UnitsLoaded)
 	add	hl, bc
-	ld	c, (hl)					; C = building index
-	ld	b, SIZEOF_BUILDING_STRUCT_1
-	mlt	bc
-	inc	hl
-	ld	a, (hl)					; A = which team to load
-	ld	iy, BuildingsLoaded
-	add	iy, bc					; IY = pointer to general building struct
-	
-; Loaded | Team | Action
-; 0        0      Nothing
-; 0        1      Inc
-; 1        0      Dec
-; 1        1      Nothing
-
-	cp	a, (iy + BuildingTeamLoaded)		; Eventually swap teamcolors
-	jr	z, NoTeamColorsSwap
-	ld	a, iyh
-	ld	(IYH_SMC), a
-	jr	nc, .inc
-.dec:	dec	(iy+BuildingTeamLoaded)
-	call	TeamColorsToDec
-	jr	.ins
-.inc:	inc	(iy+BuildingTeamLoaded)
-	call	TeamColorsToInc
-.ins:	ld	hl, (iy + BuildingRAMPtr)
-	ld	de, (iy + BuildingTCPPtr)
-	call	IncTeamColors
-IYH_SMC = $+2
-	ld	iyh, 3
-NoTeamColorsSwap:
-	ld	hl, (iy + BuildingRAMPtr)
-	ld	b, (hl)					; B = building width
-	push	hl					; Sprite struct
+	ld	hl, (hl)
+	push	hl					; Pointer to sprite
 	ex	af, af'
-	ld	c, a					; C = row_index start at bottom
+	ld	c, a
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
-	sub	a, c					; A = row_index start at top
+	sub	a, c
+	add	a, (iy + UnitOffsetX)
+	add	a, (iy + UnitOffsetY)
 	ld	e, a
 	ld	d, TILE_HEIGHT / 2 / 2
-	mlt	de					; DE = pointer to row / 2
+	mlt	de
 	inc	hl
-	ld	a, (hl)					; A = building_height
+	ld	a, (hl)
 OffsetY_SMC2 = $+1
 	ld	hl, 17
 	add	hl, de
-	add	hl, de					; HL = pointer to row + offset + y_offset
+	add	hl, de
 	ld	e, a
-	sbc	hl, de					; HL = pointer to row + offset + y_offset - building_height
-	push	hl					; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS - 2
-	exx
-	sub	a, b
-	exx
+	sbc	hl, de
+	push	hl
+	ld	a, (iy + UnitOffsetX)
+	sub	a, (iy + UnitOffsetY)
 	sbc	hl, hl
 	ld	l, a
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	add	hl, hl
+	ld	a, AMOUNT_OF_COLUMNS - 2
+	exx
+	sub	a, b
+	exx
+	ld	e, a
+	ld	d, TILE_WIDTH / 2
+	mlt	de
+	add	hl, de
+	add	hl, de
 OffsetX_SMC2 = $+1
 	ld	e, 0
 	add	hl, de
-	ld	a, b
 	bit	0, c
 	jr	nz, .jump
 	bit	4, e
-	ld	e, TILE_WIDTH / 2
+	ld	e, TILE_WIDTH - 2
 	add	hl, de
 	jr	z, .jump
 	sla	e
 	sbc	hl, de
-.jump:	sub	a, 30
-	srl	a
-	ld	e, a
-	sbc	hl, de
-	push	hl					; X coordinate
-	call	_RLETSprite				; No need to pop
-BackupIY3 = $+2
+.jump:	push	hl
+	call	_RLETSprite
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	inc	hl
+	inc	hl
+	inc	hl
+	pop	bc
+	djnz	.loop
+BackupIY4 = $+2
 	ld	iy, 0
+	pop	ix
 	jp	SkipDrawingOfTileExx
