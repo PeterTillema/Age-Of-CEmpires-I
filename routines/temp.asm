@@ -49,6 +49,7 @@ PlaceTempUnits:
 	ld	(hl), TILE_UNIT_GRASS
 	inc	hl
 	ld	(hl), 0
+	ld	bc, villager_gfx
 	ld	a, 21
 	ld	e, 8
 	call	LoadUnitDynamically
