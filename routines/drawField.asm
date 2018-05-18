@@ -728,18 +728,18 @@ DisplayUnitLoop:
 	jr	z, NoUnitTeamColorsSwap
 	ld	a, iyh
 	ld	(IYH_SMC2), a
-	jr	c, .inc
+	jr	nc, .inc
 .dec:	dec	(ix + UnitTeamLoaded)
 	call	TeamColorsToDec
 	jr	.ins
 .inc:	inc	(ix + UnitTeamLoaded)
 	call	TeamColorsToInc
 .ins:	ld	hl, (ix + UnitRAMPtr)
-	ld	de, (ix + BuildingTCPPtr)
+	ld	de, (ix + UnitTCPPtr)
 	call	IncTeamColors
 	ld	b, 0
 IYH_SMC2 = $+2
-	ld	iyh, 3
+	ld	iyh, 0
 NoUnitTeamColorsSwap:
 	ld	c, (ix + UnitType)
 	ld	hl, UnitsSpritesPointersTable
