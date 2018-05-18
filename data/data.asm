@@ -14,6 +14,9 @@ AmountOfBuildings:
 	db	0
 MapDataPtr:
 	dl	0
+TempUnitData:
+	db	0
+	db	0
 	
 BuildingsStackPtr:
 	dl	0

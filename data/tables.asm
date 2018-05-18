@@ -174,7 +174,7 @@ UnitsEventsTable:
 	dl	UnitWalk83
 	
 UnitArbalest:
-	dl	arbalest_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 7, 19, arbalest_a_1_compressed_offset		; 0
 	dl	arbalest_a_2_compressed_offset
 	dl	arbalest_a_3_compressed_offset
 	dl	arbalest_a_4_compressed_offset

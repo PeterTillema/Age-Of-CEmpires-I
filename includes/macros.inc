@@ -231,3 +231,9 @@ macro randInt x
 	ld	bc, x
 	call	__idvrmu
 end macro
+
+macro unit? base_x*, base_y*, name*
+	db	base_x
+	db	base_y
+	dl	name
+end macro

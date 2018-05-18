@@ -698,8 +698,8 @@ DisplayAllUnits:
 ; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
 ; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
 
-; Y coordinate: (A' + sprite_x + sprite_y) * 8 + 17 + offset_y - sprite_y
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + offset_x + (sprite_x - sprite_y) * 16
+; Y coordinate: A' * 8 + 17 + offset_y + (sprite_x + sprite_y) / 2 - sprite_base_offset
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + offset_x + sprite_x - sprite_y + sprite_base_offset
 
 	ld	b, a
 	ld	hl, UnitsPerTile
@@ -751,20 +751,18 @@ NoUnitTeamColorsSwap:
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
+	ld	de, TempUnitData
+	ldi
+	ldi
 	ld	hl, (hl)				; Sprite offset
 	ld	bc, (ix + UnitRAMPtr)
 	add	hl, bc					; Pointer to sprite
 	push	hl
-	inc	hl
-	ld	b, (hl)
 	ex	af, af'
 	ld	c, a
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS - 1
 	sub	a, c
-	;ld	b, (iy + UnitOffsetX)
-	;add	a, b
-	;add	a, (iy + UnitOffsetX)
 	sbc	hl, hl
 	ld	l, a
 	add	hl, hl
@@ -773,31 +771,20 @@ NoUnitTeamColorsSwap:
 OffsetY_SMC3 = $+1
 	ld	de, 17
 	add	hl, de
-	ld	e, b
+	ld	a, (TempUnitData + 1)			; Substract base height from sprite
+	ld	e, a
 	or	a, a
 	sbc	hl, de
 	push	hl
-	;ld	a, b
-	;sub	a, (iy + UnitOffsetY)
-	;sbc	hl, hl
-	;ld	l, a
-	;add	hl, hl
-	;add	hl, hl
-	;add	hl, hl
-	;add	hl, hl
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
 	sub	a, b
 	exx
-	;ld	e, a
-	;ld	d, TILE_WIDTH / 2
-	;mlt	de
-	;add	hl, de
-	;add	hl, de
-		ld	l, a
-		ld	h, TILE_WIDTH
-		mlt	hl
-	ld	e, TILE_WIDTH / 2
+	ld	l, a
+	ld	h, TILE_WIDTH
+	mlt	hl
+	ld	a, (TempUnitData)
+	ld	e, a
 	add	hl, de
 OffsetX_SMC3 = $+1
 	ld	e, 0
