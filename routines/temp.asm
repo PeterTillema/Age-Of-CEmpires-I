@@ -49,21 +49,21 @@ PlaceTempUnits:
 	ld	(hl), TILE_UNIT_GRASS
 	inc	hl
 	ld	(hl), 0
-	ld	bc, villager_gfx
-	ld	a, 21
-	ld	e, 8
+	ld	bc, arbalest_gfx
+	ld	a, 0
+	ld	e, 6
 	call	LoadUnitDynamically
 	ret
 	
 TempUnitsData:
-	db	0, 0, 100, 5
+	db	0, 0, 1, 100, 5
 	dl	0
-	db	1, 1, 1, 255
+	db	1, 4, 4, 255
 	
-	db	0, 1, 100, 6
+	db	0, 0, 2, 100, 5
 	dl	0
-	db	2, 2, 1, 0
+	db	2, 4, 12, 0
 	
-	db	0, 2, 100, 4
+	db	0, 0, 3, 100, 5
 	dl	0
-	db	255, 0, 3, 1
+	db	255, 8, 8, 1

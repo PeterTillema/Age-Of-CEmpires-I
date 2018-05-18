@@ -285,7 +285,7 @@ NoBuildingTeamColorsSwap:
 	mlt	de					; DE = pointer to row / 2
 	inc	hl
 	ld	a, (hl)					; A = building_height
-OffsetY_SMC3 = $+1
+OffsetY_SMC2 = $+1
 	ld	hl, 17
 	add	hl, de
 	add	hl, de					; HL = pointer to row + offset + y_offset
@@ -303,7 +303,7 @@ OffsetY_SMC3 = $+1
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-OffsetX_SMC3 = $+1
+OffsetX_SMC2 = $+1
 	ld	e, 0
 	add	hl, de
 	ld	a, b
@@ -384,6 +384,7 @@ DrawIsometricTileSecondPart:
 	add	hl, bc
 	ex	de, hl
 	lddr
+SkipDrawingOfTileCheckUnit:
 	cp	a, TILE_UNIT_GRASS
 	jp	nc, DisplayUnits
 SkipDrawingOfTileExx:
@@ -584,7 +585,7 @@ DrawTile_Clipped_Stop3 = $
 StopDrawingTile:
 	ld	iy, 0
 BackupIY = $-3
-	jp	SkipDrawingOfTileExx
+	jp	SkipDrawingOfTileCheckUnit
 end relocate
 
 relocate DrawIsometricTile, mpShaData, 64
@@ -728,10 +729,10 @@ DisplayUnitLoop:
 	ld	a, iyh
 	ld	(IYH_SMC2), a
 	jr	c, .inc
-.dec:	dec	(ix + BuildingTeamLoaded)
+.dec:	dec	(ix + UnitTeamLoaded)
 	call	TeamColorsToDec
 	jr	.ins
-.inc:	inc	(ix + BuildingTeamLoaded)
+.inc:	inc	(ix + UnitTeamLoaded)
 	call	TeamColorsToInc
 .ins:	ld	hl, (ix + UnitRAMPtr)
 	ld	de, (ix + BuildingTCPPtr)
@@ -746,56 +747,65 @@ NoUnitTeamColorsSwap:
 	add	hl, bc
 	add	hl, bc
 	ld	hl, (hl)				; Pointer to table with sprites per unit
-	ld	c, (ix + UnitEvent)
+	ld	c, (iy + UnitEvent)
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
-	ld	hl, (hl)				; Pointer to sprite
+	ld	hl, (hl)				; Sprite offset
+	ld	bc, (ix + UnitRAMPtr)
+	add	hl, bc					; Pointer to sprite
 	push	hl
+	inc	hl
+	ld	b, (hl)
 	ex	af, af'
 	ld	c, a
 	ex	af, af'
-	ld	a, AMOUNT_OF_ROWS + 1
+	ld	a, AMOUNT_OF_ROWS - 1
 	sub	a, c
-	ld	b, (ix + UnitOffsetX)
-	add	a, b
-	add	a, (ix + UnitOffsetX)
-	ld	e, a
-	ld	d, TILE_HEIGHT / 2 / 2
-	mlt	de
-	inc	hl
-	ld	a, (hl)
-OffsetY_SMC2 = $+1
-	ld	hl, 17
-	add	hl, de
-	add	hl, de
-	ld	e, a
-	sbc	hl, de
-	push	hl
-	ld	a, b
-	sub	a, (ix + UnitOffsetY)
+	;ld	b, (iy + UnitOffsetX)
+	;add	a, b
+	;add	a, (iy + UnitOffsetX)
 	sbc	hl, hl
 	ld	l, a
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	add	hl, hl
+OffsetY_SMC3 = $+1
+	ld	de, 17
+	add	hl, de
+	ld	e, b
+	or	a, a
+	sbc	hl, de
+	push	hl
+	;ld	a, b
+	;sub	a, (iy + UnitOffsetY)
+	;sbc	hl, hl
+	;ld	l, a
+	;add	hl, hl
+	;add	hl, hl
+	;add	hl, hl
+	;add	hl, hl
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
 	sub	a, b
 	exx
-	ld	e, a
-	ld	d, TILE_WIDTH / 2
-	mlt	de
+	;ld	e, a
+	;ld	d, TILE_WIDTH / 2
+	;mlt	de
+	;add	hl, de
+	;add	hl, de
+		ld	l, a
+		ld	h, TILE_WIDTH
+		mlt	hl
+	ld	e, TILE_WIDTH / 2
 	add	hl, de
-	add	hl, de
-OffsetX_SMC2 = $+1
+OffsetX_SMC3 = $+1
 	ld	e, 0
 	add	hl, de
 	bit	0, c
 	jr	nz, .jump
 	bit	4, e
-	ld	e, TILE_WIDTH - 2
+	ld	e, TILE_WIDTH / 2
 	add	hl, de
 	jr	z, .jump
 	sla	e

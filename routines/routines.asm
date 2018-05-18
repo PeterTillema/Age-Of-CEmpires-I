@@ -655,13 +655,15 @@ LoadUnitDynamically:
 	add	iy, de
 	ld	(iy + UnitType), a
 	ld	de, (BuildingsSpritesPtr)
+	push	de
 	call	dzx7_Turbo					; HL = pointer to byte after uncompressed data
-	ld	de, (BuildingsSpritesPtr)			; Pointer to temp RAM
+	pop	de
 	or	a, a
 	sbc	hl, de
 	push	hl
 	pop	bc						; BC = data length
 	add	hl, de
+	dec	hl
 	ld	de, (UnitsSpritesPtr)
 	lddr							; Copy to sprite stack
 	ld	(UnitsSpritesPtr), de
