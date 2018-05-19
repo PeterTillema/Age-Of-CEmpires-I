@@ -101,7 +101,7 @@ SelectLoop:
 	ld	de, plotSScreen
 	push	de
 	ld	hl, pointer_compressed_offset
-	call	dzx7_Mega
+	call	dzx7_Turbo
 	call	_Sprite_NoClip
 	pop	hl
 	pop	hl
