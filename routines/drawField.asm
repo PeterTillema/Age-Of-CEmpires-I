@@ -771,18 +771,30 @@ NoUnitTeamColorsSwap:
 OffsetY_SMC3 = $+1
 	ld	de, 17
 	add	hl, de
+	ld	a, (iy + UnitOffsetX)			; Coordinates in isometric tile = (X+Y)/2
+	ld	b, (iy + UnitOffsetY)
+	add	a, b
+	rra
+	ld	e, a
+	add	hl, de
 	ld	a, (TempUnitData + 1)			; Substract base height from sprite
 	ld	e, a
 	or	a, a
 	sbc	hl, de
 	push	hl
+	ld	a, (iy + UnitOffsetX)			; Coordinates in isometric tile = X-Y
+	sub	a, b
+	sbc	hl, hl
+	ld	l, a
 	ld	a, AMOUNT_OF_COLUMNS - 2
 	exx
 	sub	a, b
 	exx
-	ld	l, a
-	ld	h, TILE_WIDTH
-	mlt	hl
+	ld	e, a
+	ld	d, TILE_WIDTH / 2
+	mlt	de
+	add	hl, de
+	add	hl, de
 	ld	a, (TempUnitData)
 	ld	e, a
 	add	hl, de

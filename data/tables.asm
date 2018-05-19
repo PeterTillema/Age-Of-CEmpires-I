@@ -175,8 +175,8 @@ UnitsEventsTable:
 	
 UnitArbalest:
 	unit	TILE_WIDTH / 2 - 7, 19, arbalest_a_1_compressed_offset		; 0
-	dl	arbalest_a_2_compressed_offset
-	dl	arbalest_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 10, 19, arbalest_a_2_compressed_offset		; 1
+	unit	TILE_WIDTH / 2 - 10, 19, arbalest_a_3_compressed_offset		; 2
 	dl	arbalest_a_4_compressed_offset
 	dl	arbalest_a_5_compressed_offset
 	dl	arbalest_a_6_compressed_offset

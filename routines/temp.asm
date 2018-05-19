@@ -58,11 +58,11 @@ PlaceTempUnits:
 TempUnitsData:
 	db	0, 1, 0, 100, 5
 	dl	0
-	db	255, 4, 4, 255
+	db	1, 0, 0, 255
 	
-	db	0, 0, 2, 100, 5
+	db	0, 0, 0, 100, 5
 	dl	0
-	db	2, 4, 12, 0
+	db	255, 12, 0, 0
 	
 	db	0, 0, 3, 100, 5
 	dl	0
