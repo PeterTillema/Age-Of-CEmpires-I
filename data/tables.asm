@@ -177,831 +177,830 @@ UnitArbalest:
 	unit	TILE_WIDTH / 2 - 7, 19, arbalest_a_1_compressed_offset		; 0
 	unit	TILE_WIDTH / 2 - 10, 19, arbalest_a_2_compressed_offset		; 1
 	unit	TILE_WIDTH / 2 - 10, 19, arbalest_a_3_compressed_offset		; 2
-	dl	arbalest_a_4_compressed_offset
-	dl	arbalest_a_5_compressed_offset
-	dl	arbalest_a_6_compressed_offset
-	dl	arbalest_a_7_compressed_offset
-	dl	arbalest_a_8_compressed_offset
-	dl	arbalest_d_1_compressed_offset
-	dl	arbalest_d_2_compressed_offset
-	dl	arbalest_w_1_1_compressed_offset
-	dl	arbalest_w_1_2_compressed_offset
-	dl	arbalest_w_1_3_compressed_offset
-	dl	arbalest_w_2_1_compressed_offset
-	dl	arbalest_w_2_2_compressed_offset
-	dl	arbalest_w_2_3_compressed_offset
-	dl	arbalest_w_3_1_compressed_offset
-	dl	arbalest_w_3_2_compressed_offset
-	dl	arbalest_w_3_3_compressed_offset
-	dl	arbalest_w_4_1_compressed_offset
-	dl	arbalest_w_4_2_compressed_offset
-	dl	arbalest_w_4_3_compressed_offset
-	dl	arbalest_w_5_1_compressed_offset
-	dl	arbalest_w_5_2_compressed_offset
-	dl	arbalest_w_5_3_compressed_offset
-	dl	arbalest_w_6_1_compressed_offset
-	dl	arbalest_w_6_2_compressed_offset
-	dl	arbalest_w_6_3_compressed_offset
-	dl	arbalest_w_7_1_compressed_offset
-	dl	arbalest_w_7_2_compressed_offset
-	dl	arbalest_w_7_3_compressed_offset
-	dl	arbalest_w_8_1_compressed_offset
-	dl	arbalest_w_8_2_compressed_offset
-	dl	arbalest_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 8, 17, arbalest_a_4_compressed_offset		; 3
+	unit	TILE_WIDTH / 2 - 5, 16, arbalest_a_5_compressed_offset		; 4
+	unit	TILE_WIDTH / 2 - 3, 17, arbalest_a_6_compressed_offset		; 5
+	unit	TILE_WIDTH / 2 - 3, 17, arbalest_a_7_compressed_offset		; 6
+	unit	TILE_WIDTH / 2 - 5, 19, arbalest_a_8_compressed_offset		; 7
+	unit	TILE_WIDTH / 2 - 38, 7, arbalest_d_1_compressed_offset		; 8
+	unit	TILE_WIDTH / 2 - 9, 9, arbalest_d_2_compressed_offset		; 9
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_3_compressed_offset
 	
 UnitArcher:
-	dl	archer_a_1_compressed_offset
-	dl	archer_a_2_compressed_offset
-	dl	archer_a_3_compressed_offset
-	dl	archer_a_4_compressed_offset
-	dl	archer_a_5_compressed_offset
-	dl	archer_a_6_compressed_offset
-	dl	archer_a_7_compressed_offset
-	dl	archer_a_8_compressed_offset
-	dl	archer_d_1_compressed_offset
-	dl	archer_d_2_compressed_offset
-	dl	archer_w_1_1_compressed_offset
-	dl	archer_w_1_2_compressed_offset
-	dl	archer_w_1_3_compressed_offset
-	dl	archer_w_2_1_compressed_offset
-	dl	archer_w_2_2_compressed_offset
-	dl	archer_w_2_3_compressed_offset
-	dl	archer_w_3_1_compressed_offset
-	dl	archer_w_3_2_compressed_offset
-	dl	archer_w_3_3_compressed_offset
-	dl	archer_w_4_1_compressed_offset
-	dl	archer_w_4_2_compressed_offset
-	dl	archer_w_4_3_compressed_offset
-	dl	archer_w_5_1_compressed_offset
-	dl	archer_w_5_2_compressed_offset
-	dl	archer_w_5_3_compressed_offset
-	dl	archer_w_6_1_compressed_offset
-	dl	archer_w_6_2_compressed_offset
-	dl	archer_w_6_3_compressed_offset
-	dl	archer_w_7_1_compressed_offset
-	dl	archer_w_7_2_compressed_offset
-	dl	archer_w_7_3_compressed_offset
-	dl	archer_w_8_1_compressed_offset
-	dl	archer_w_8_2_compressed_offset
-	dl	archer_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, archer_w_8_3_compressed_offset
 	
 UnitCamel:
-	dl	camel_a_1_compressed_offset
-	dl	camel_a_2_compressed_offset
-	dl	camel_a_3_compressed_offset
-	dl	camel_a_4_compressed_offset
-	dl	camel_a_5_compressed_offset
-	dl	camel_a_6_compressed_offset
-	dl	camel_a_7_compressed_offset
-	dl	camel_a_8_compressed_offset
-	dl	camel_d_1_compressed_offset
-	dl	camel_d_2_compressed_offset
-	dl	camel_w_1_1_compressed_offset
-	dl	camel_w_1_2_compressed_offset
-	dl	camel_w_1_3_compressed_offset
-	dl	camel_w_2_1_compressed_offset
-	dl	camel_w_2_2_compressed_offset
-	dl	camel_w_2_3_compressed_offset
-	dl	camel_w_3_1_compressed_offset
-	dl	camel_w_3_2_compressed_offset
-	dl	camel_w_3_3_compressed_offset
-	dl	camel_w_4_1_compressed_offset
-	dl	camel_w_4_2_compressed_offset
-	dl	camel_w_4_3_compressed_offset
-	dl	camel_w_5_1_compressed_offset
-	dl	camel_w_5_2_compressed_offset
-	dl	camel_w_5_3_compressed_offset
-	dl	camel_w_6_1_compressed_offset
-	dl	camel_w_6_2_compressed_offset
-	dl	camel_w_6_3_compressed_offset
-	dl	camel_w_7_1_compressed_offset
-	dl	camel_w_7_2_compressed_offset
-	dl	camel_w_7_3_compressed_offset
-	dl	camel_w_8_1_compressed_offset
-	dl	camel_w_8_2_compressed_offset
-	dl	camel_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, camel_w_8_3_compressed_offset
 	
 UnitHCamel:
-	dl	hcamel_a_1_compressed_offset
-	dl	hcamel_a_2_compressed_offset
-	dl	hcamel_a_3_compressed_offset
-	dl	hcamel_a_4_compressed_offset
-	dl	hcamel_a_5_compressed_offset
-	dl	hcamel_a_6_compressed_offset
-	dl	hcamel_a_7_compressed_offset
-	dl	hcamel_a_8_compressed_offset
-	dl	hcamel_d_1_compressed_offset
-	dl	hcamel_d_2_compressed_offset
-	dl	hcamel_w_1_1_compressed_offset
-	dl	hcamel_w_1_2_compressed_offset
-	dl	hcamel_w_1_3_compressed_offset
-	dl	hcamel_w_2_1_compressed_offset
-	dl	hcamel_w_2_2_compressed_offset
-	dl	hcamel_w_2_3_compressed_offset
-	dl	hcamel_w_3_1_compressed_offset
-	dl	hcamel_w_3_2_compressed_offset
-	dl	hcamel_w_3_3_compressed_offset
-	dl	hcamel_w_4_1_compressed_offset
-	dl	hcamel_w_4_2_compressed_offset
-	dl	hcamel_w_4_3_compressed_offset
-	dl	hcamel_w_5_1_compressed_offset
-	dl	hcamel_w_5_2_compressed_offset
-	dl	hcamel_w_5_3_compressed_offset
-	dl	hcamel_w_6_1_compressed_offset
-	dl	hcamel_w_6_2_compressed_offset
-	dl	hcamel_w_6_3_compressed_offset
-	dl	hcamel_w_7_1_compressed_offset
-	dl	hcamel_w_7_2_compressed_offset
-	dl	hcamel_w_7_3_compressed_offset
-	dl	hcamel_w_8_1_compressed_offset
-	dl	hcamel_w_8_2_compressed_offset
-	dl	hcamel_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, hcamel_w_8_3_compressed_offset
 	
 UnitCavalier:
-	dl	cavalier_a_1_compressed_offset
-	dl	cavalier_a_2_compressed_offset
-	dl	cavalier_a_3_compressed_offset
-	dl	cavalier_a_4_compressed_offset
-	dl	cavalier_a_5_compressed_offset
-	dl	cavalier_a_6_compressed_offset
-	dl	cavalier_a_7_compressed_offset
-	dl	cavalier_a_8_compressed_offset
-	dl	cavalier_d_1_compressed_offset
-	dl	cavalier_d_2_compressed_offset
-	dl	cavalier_w_1_1_compressed_offset
-	dl	cavalier_w_1_2_compressed_offset
-	dl	cavalier_w_1_3_compressed_offset
-	dl	cavalier_w_2_1_compressed_offset
-	dl	cavalier_w_2_2_compressed_offset
-	dl	cavalier_w_2_3_compressed_offset
-	dl	cavalier_w_3_1_compressed_offset
-	dl	cavalier_w_3_2_compressed_offset
-	dl	cavalier_w_3_3_compressed_offset
-	dl	cavalier_w_4_1_compressed_offset
-	dl	cavalier_w_4_2_compressed_offset
-	dl	cavalier_w_4_3_compressed_offset
-	dl	cavalier_w_5_1_compressed_offset
-	dl	cavalier_w_5_2_compressed_offset
-	dl	cavalier_w_5_3_compressed_offset
-	dl	cavalier_w_6_1_compressed_offset
-	dl	cavalier_w_6_2_compressed_offset
-	dl	cavalier_w_6_3_compressed_offset
-	dl	cavalier_w_7_1_compressed_offset
-	dl	cavalier_w_7_2_compressed_offset
-	dl	cavalier_w_7_3_compressed_offset
-	dl	cavalier_w_8_1_compressed_offset
-	dl	cavalier_w_8_2_compressed_offset
-	dl	cavalier_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, cavalier_w_8_3_compressed_offset
 	
 UnitChampion:
-	dl	champion_a_1_compressed_offset
-	dl	champion_a_2_compressed_offset
-	dl	champion_a_3_compressed_offset
-	dl	champion_a_4_compressed_offset
-	dl	champion_a_5_compressed_offset
-	dl	champion_a_6_compressed_offset
-	dl	champion_a_7_compressed_offset
-	dl	champion_a_8_compressed_offset
-	dl	champion_d_1_compressed_offset
-	dl	champion_d_2_compressed_offset
-	dl	champion_w_1_1_compressed_offset
-	dl	champion_w_1_2_compressed_offset
-	dl	champion_w_1_3_compressed_offset
-	dl	champion_w_2_1_compressed_offset
-	dl	champion_w_2_2_compressed_offset
-	dl	champion_w_2_3_compressed_offset
-	dl	champion_w_3_1_compressed_offset
-	dl	champion_w_3_2_compressed_offset
-	dl	champion_w_3_3_compressed_offset
-	dl	champion_w_4_1_compressed_offset
-	dl	champion_w_4_2_compressed_offset
-	dl	champion_w_4_3_compressed_offset
-	dl	champion_w_5_1_compressed_offset
-	dl	champion_w_5_2_compressed_offset
-	dl	champion_w_5_3_compressed_offset
-	dl	champion_w_6_1_compressed_offset
-	dl	champion_w_6_2_compressed_offset
-	dl	champion_w_6_3_compressed_offset
-	dl	champion_w_7_1_compressed_offset
-	dl	champion_w_7_2_compressed_offset
-	dl	champion_w_7_3_compressed_offset
-	dl	champion_w_8_1_compressed_offset
-	dl	champion_w_8_2_compressed_offset
-	dl	champion_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, champion_w_8_3_compressed_offset
 	
 UnitCrossbowman:
-	dl	crossbowman_a_1_compressed_offset
-	dl	crossbowman_a_2_compressed_offset
-	dl	crossbowman_a_3_compressed_offset
-	dl	crossbowman_a_4_compressed_offset
-	dl	crossbowman_a_5_compressed_offset
-	dl	crossbowman_a_6_compressed_offset
-	dl	crossbowman_a_7_compressed_offset
-	dl	crossbowman_a_8_compressed_offset
-	dl	crossbowman_d_1_compressed_offset
-	dl	crossbowman_d_2_compressed_offset
-	dl	crossbowman_w_1_1_compressed_offset
-	dl	crossbowman_w_1_2_compressed_offset
-	dl	crossbowman_w_1_3_compressed_offset
-	dl	crossbowman_w_2_1_compressed_offset
-	dl	crossbowman_w_2_2_compressed_offset
-	dl	crossbowman_w_2_3_compressed_offset
-	dl	crossbowman_w_3_1_compressed_offset
-	dl	crossbowman_w_3_2_compressed_offset
-	dl	crossbowman_w_3_3_compressed_offset
-	dl	crossbowman_w_4_1_compressed_offset
-	dl	crossbowman_w_4_2_compressed_offset
-	dl	crossbowman_w_4_3_compressed_offset
-	dl	crossbowman_w_5_1_compressed_offset
-	dl	crossbowman_w_5_2_compressed_offset
-	dl	crossbowman_w_5_3_compressed_offset
-	dl	crossbowman_w_6_1_compressed_offset
-	dl	crossbowman_w_6_2_compressed_offset
-	dl	crossbowman_w_6_3_compressed_offset
-	dl	crossbowman_w_7_1_compressed_offset
-	dl	crossbowman_w_7_2_compressed_offset
-	dl	crossbowman_w_7_3_compressed_offset
-	dl	crossbowman_w_8_1_compressed_offset
-	dl	crossbowman_w_8_2_compressed_offset
-	dl	crossbowman_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, crossbowman_w_8_3_compressed_offset
 	
 UnitHalbadier:
-	dl	halbadier_a_1_compressed_offset
-	dl	halbadier_a_2_compressed_offset
-	dl	halbadier_a_3_compressed_offset
-	dl	halbadier_a_4_compressed_offset
-	dl	halbadier_a_5_compressed_offset
-	dl	halbadier_a_6_compressed_offset
-	dl	halbadier_a_7_compressed_offset
-	dl	halbadier_a_8_compressed_offset
-	dl	halbadier_d_1_compressed_offset
-	dl	halbadier_d_2_compressed_offset
-	dl	halbadier_w_1_1_compressed_offset
-	dl	halbadier_w_1_2_compressed_offset
-	dl	halbadier_w_1_3_compressed_offset
-	dl	halbadier_w_2_1_compressed_offset
-	dl	halbadier_w_2_2_compressed_offset
-	dl	halbadier_w_2_3_compressed_offset
-	dl	halbadier_w_3_1_compressed_offset
-	dl	halbadier_w_3_2_compressed_offset
-	dl	halbadier_w_3_3_compressed_offset
-	dl	halbadier_w_4_1_compressed_offset
-	dl	halbadier_w_4_2_compressed_offset
-	dl	halbadier_w_4_3_compressed_offset
-	dl	halbadier_w_5_1_compressed_offset
-	dl	halbadier_w_5_2_compressed_offset
-	dl	halbadier_w_5_3_compressed_offset
-	dl	halbadier_w_6_1_compressed_offset
-	dl	halbadier_w_6_2_compressed_offset
-	dl	halbadier_w_6_3_compressed_offset
-	dl	halbadier_w_7_1_compressed_offset
-	dl	halbadier_w_7_2_compressed_offset
-	dl	halbadier_w_7_3_compressed_offset
-	dl	halbadier_w_8_1_compressed_offset
-	dl	halbadier_w_8_2_compressed_offset
-	dl	halbadier_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, halbadier_w_8_3_compressed_offset
 	
 UnitLCavalry:
-	dl	lcavalry_a_1_compressed_offset
-	dl	lcavalry_a_2_compressed_offset
-	dl	lcavalry_a_3_compressed_offset
-	dl	lcavalry_a_4_compressed_offset
-	dl	lcavalry_a_5_compressed_offset
-	dl	lcavalry_a_6_compressed_offset
-	dl	lcavalry_a_7_compressed_offset
-	dl	lcavalry_a_8_compressed_offset
-	dl	lcavalry_d_1_compressed_offset
-	dl	lcavalry_d_2_compressed_offset
-	dl	lcavalry_w_1_1_compressed_offset
-	dl	lcavalry_w_1_2_compressed_offset
-	dl	lcavalry_w_1_3_compressed_offset
-	dl	lcavalry_w_2_1_compressed_offset
-	dl	lcavalry_w_2_2_compressed_offset
-	dl	lcavalry_w_2_3_compressed_offset
-	dl	lcavalry_w_3_1_compressed_offset
-	dl	lcavalry_w_3_2_compressed_offset
-	dl	lcavalry_w_3_3_compressed_offset
-	dl	lcavalry_w_4_1_compressed_offset
-	dl	lcavalry_w_4_2_compressed_offset
-	dl	lcavalry_w_4_3_compressed_offset
-	dl	lcavalry_w_5_1_compressed_offset
-	dl	lcavalry_w_5_2_compressed_offset
-	dl	lcavalry_w_5_3_compressed_offset
-	dl	lcavalry_w_6_1_compressed_offset
-	dl	lcavalry_w_6_2_compressed_offset
-	dl	lcavalry_w_6_3_compressed_offset
-	dl	lcavalry_w_7_1_compressed_offset
-	dl	lcavalry_w_7_2_compressed_offset
-	dl	lcavalry_w_7_3_compressed_offset
-	dl	lcavalry_w_8_1_compressed_offset
-	dl	lcavalry_w_8_2_compressed_offset
-	dl	lcavalry_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, lcavalry_w_8_3_compressed_offset
 	
 UnitLongbowman:
-	dl	longbowman_a_1_compressed_offset
-	dl	longbowman_a_2_compressed_offset
-	dl	longbowman_a_3_compressed_offset
-	dl	longbowman_a_4_compressed_offset
-	dl	longbowman_a_5_compressed_offset
-	dl	longbowman_a_6_compressed_offset
-	dl	longbowman_a_7_compressed_offset
-	dl	longbowman_a_8_compressed_offset
-	dl	longbowman_d_1_compressed_offset
-	dl	longbowman_d_2_compressed_offset
-	dl	longbowman_w_1_1_compressed_offset
-	dl	longbowman_w_1_2_compressed_offset
-	dl	longbowman_w_1_3_compressed_offset
-	dl	longbowman_w_2_1_compressed_offset
-	dl	longbowman_w_2_2_compressed_offset
-	dl	longbowman_w_2_3_compressed_offset
-	dl	longbowman_w_3_1_compressed_offset
-	dl	longbowman_w_3_2_compressed_offset
-	dl	longbowman_w_3_3_compressed_offset
-	dl	longbowman_w_4_1_compressed_offset
-	dl	longbowman_w_4_2_compressed_offset
-	dl	longbowman_w_4_3_compressed_offset
-	dl	longbowman_w_5_1_compressed_offset
-	dl	longbowman_w_5_2_compressed_offset
-	dl	longbowman_w_5_3_compressed_offset
-	dl	longbowman_w_6_1_compressed_offset
-	dl	longbowman_w_6_2_compressed_offset
-	dl	longbowman_w_6_3_compressed_offset
-	dl	longbowman_w_7_1_compressed_offset
-	dl	longbowman_w_7_2_compressed_offset
-	dl	longbowman_w_7_3_compressed_offset
-	dl	longbowman_w_8_1_compressed_offset
-	dl	longbowman_w_8_2_compressed_offset
-	dl	longbowman_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longbowman_w_8_3_compressed_offset
 	
 UnitLongswordman:
-	dl	longswordman_a_1_compressed_offset
-	dl	longswordman_a_2_compressed_offset
-	dl	longswordman_a_3_compressed_offset
-	dl	longswordman_a_4_compressed_offset
-	dl	longswordman_a_5_compressed_offset
-	dl	longswordman_a_6_compressed_offset
-	dl	longswordman_a_7_compressed_offset
-	dl	longswordman_a_8_compressed_offset
-	dl	longswordman_d_1_compressed_offset
-	dl	longswordman_d_2_compressed_offset
-	dl	longswordman_w_1_1_compressed_offset
-	dl	longswordman_w_1_2_compressed_offset
-	dl	longswordman_w_1_3_compressed_offset
-	dl	longswordman_w_2_1_compressed_offset
-	dl	longswordman_w_2_2_compressed_offset
-	dl	longswordman_w_2_3_compressed_offset
-	dl	longswordman_w_3_1_compressed_offset
-	dl	longswordman_w_3_2_compressed_offset
-	dl	longswordman_w_3_3_compressed_offset
-	dl	longswordman_w_4_1_compressed_offset
-	dl	longswordman_w_4_2_compressed_offset
-	dl	longswordman_w_4_3_compressed_offset
-	dl	longswordman_w_5_1_compressed_offset
-	dl	longswordman_w_5_2_compressed_offset
-	dl	longswordman_w_5_3_compressed_offset
-	dl	longswordman_w_6_1_compressed_offset
-	dl	longswordman_w_6_2_compressed_offset
-	dl	longswordman_w_6_3_compressed_offset
-	dl	longswordman_w_7_1_compressed_offset
-	dl	longswordman_w_7_2_compressed_offset
-	dl	longswordman_w_7_3_compressed_offset
-	dl	longswordman_w_8_1_compressed_offset
-	dl	longswordman_w_8_2_compressed_offset
-	dl	longswordman_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, longswordman_w_8_3_compressed_offset
 	
 UnitManAtArms:
-	dl	manatarms_a_1_compressed_offset
-	dl	manatarms_a_2_compressed_offset
-	dl	manatarms_a_3_compressed_offset
-	dl	manatarms_a_4_compressed_offset
-	dl	manatarms_a_5_compressed_offset
-	dl	manatarms_a_6_compressed_offset
-	dl	manatarms_a_7_compressed_offset
-	dl	manatarms_a_8_compressed_offset
-	dl	manatarms_d_1_compressed_offset
-	dl	manatarms_d_2_compressed_offset
-	dl	manatarms_w_1_1_compressed_offset
-	dl	manatarms_w_1_2_compressed_offset
-	dl	manatarms_w_1_3_compressed_offset
-	dl	manatarms_w_2_1_compressed_offset
-	dl	manatarms_w_2_2_compressed_offset
-	dl	manatarms_w_2_3_compressed_offset
-	dl	manatarms_w_3_1_compressed_offset
-	dl	manatarms_w_3_2_compressed_offset
-	dl	manatarms_w_3_3_compressed_offset
-	dl	manatarms_w_4_1_compressed_offset
-	dl	manatarms_w_4_2_compressed_offset
-	dl	manatarms_w_4_3_compressed_offset
-	dl	manatarms_w_5_1_compressed_offset
-	dl	manatarms_w_5_2_compressed_offset
-	dl	manatarms_w_5_3_compressed_offset
-	dl	manatarms_w_6_1_compressed_offset
-	dl	manatarms_w_6_2_compressed_offset
-	dl	manatarms_w_6_3_compressed_offset
-	dl	manatarms_w_7_1_compressed_offset
-	dl	manatarms_w_7_2_compressed_offset
-	dl	manatarms_w_7_3_compressed_offset
-	dl	manatarms_w_8_1_compressed_offset
-	dl	manatarms_w_8_2_compressed_offset
-	dl	manatarms_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, manatarms_w_8_3_compressed_offset
 	
 UnitMilitia:
-	dl	militia_a_1_compressed_offset
-	dl	militia_a_2_compressed_offset
-	dl	militia_a_3_compressed_offset
-	dl	militia_a_4_compressed_offset
-	dl	militia_a_5_compressed_offset
-	dl	militia_a_6_compressed_offset
-	dl	militia_a_7_compressed_offset
-	dl	militia_a_8_compressed_offset
-	dl	militia_d_1_compressed_offset
-	dl	militia_d_2_compressed_offset
-	dl	militia_w_1_1_compressed_offset
-	dl	militia_w_1_2_compressed_offset
-	dl	militia_w_1_3_compressed_offset
-	dl	militia_w_2_1_compressed_offset
-	dl	militia_w_2_2_compressed_offset
-	dl	militia_w_2_3_compressed_offset
-	dl	militia_w_3_1_compressed_offset
-	dl	militia_w_3_2_compressed_offset
-	dl	militia_w_3_3_compressed_offset
-	dl	militia_w_4_1_compressed_offset
-	dl	militia_w_4_2_compressed_offset
-	dl	militia_w_4_3_compressed_offset
-	dl	militia_w_5_1_compressed_offset
-	dl	militia_w_5_2_compressed_offset
-	dl	militia_w_5_3_compressed_offset
-	dl	militia_w_6_1_compressed_offset
-	dl	militia_w_6_2_compressed_offset
-	dl	militia_w_6_3_compressed_offset
-	dl	militia_w_7_1_compressed_offset
-	dl	militia_w_7_2_compressed_offset
-	dl	militia_w_7_3_compressed_offset
-	dl	militia_w_8_1_compressed_offset
-	dl	militia_w_8_2_compressed_offset
-	dl	militia_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, militia_w_8_3_compressed_offset
 	
 UnitMonk:
-	dl	monk_d_1_compressed_offset
-	dl	monk_d_2_compressed_offset
-	dl	monk_w_1_1_compressed_offset
-	dl	monk_w_1_2_compressed_offset
-	dl	monk_w_1_3_compressed_offset
-	dl	monk_w_2_1_compressed_offset
-	dl	monk_w_2_2_compressed_offset
-	dl	monk_w_2_3_compressed_offset
-	dl	monk_w_3_1_compressed_offset
-	dl	monk_w_3_2_compressed_offset
-	dl	monk_w_3_3_compressed_offset
-	dl	monk_w_4_1_compressed_offset
-	dl	monk_w_4_2_compressed_offset
-	dl	monk_w_4_3_compressed_offset
-	dl	monk_w_5_1_compressed_offset
-	dl	monk_w_5_2_compressed_offset
-	dl	monk_w_5_3_compressed_offset
-	dl	monk_w_6_1_compressed_offset
-	dl	monk_w_6_2_compressed_offset
-	dl	monk_w_6_3_compressed_offset
-	dl	monk_w_7_1_compressed_offset
-	dl	monk_w_7_2_compressed_offset
-	dl	monk_w_7_3_compressed_offset
-	dl	monk_w_8_1_compressed_offset
-	dl	monk_w_8_2_compressed_offset
-	dl	monk_w_8_3_compressed_offset
-	dl	monk_wol_1_compressed_offset
-	dl	monk_wol_2_compressed_offset
-	dl	monk_wol_3_compressed_offset
-	dl	monk_wol_4_compressed_offset
-	dl	monk_wol_5_compressed_offset
-	dl	monk_wol_6_compressed_offset
-	dl	monk_wol_7_compressed_offset
-	dl	monk_wol_8_compressed_offset
-	dl	monk_wol_8_compressed_height
+	unit	TILE_WIDTH / 2 - 0, 0, monk_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, monk_wol_8_compressed_offset
 	
 UnitPaladin:
-	dl	paladin_a_1_compressed_offset
-	dl	paladin_a_2_compressed_offset
-	dl	paladin_a_3_compressed_offset
-	dl	paladin_a_4_compressed_offset
-	dl	paladin_a_5_compressed_offset
-	dl	paladin_a_6_compressed_offset
-	dl	paladin_a_7_compressed_offset
-	dl	paladin_a_8_compressed_offset
-	dl	paladin_d_1_compressed_offset
-	dl	paladin_d_2_compressed_offset
-	dl	paladin_w_1_1_compressed_offset
-	dl	paladin_w_1_2_compressed_offset
-	dl	paladin_w_1_3_compressed_offset
-	dl	paladin_w_2_1_compressed_offset
-	dl	paladin_w_2_2_compressed_offset
-	dl	paladin_w_2_3_compressed_offset
-	dl	paladin_w_3_1_compressed_offset
-	dl	paladin_w_3_2_compressed_offset
-	dl	paladin_w_3_3_compressed_offset
-	dl	paladin_w_4_1_compressed_offset
-	dl	paladin_w_4_2_compressed_offset
-	dl	paladin_w_4_3_compressed_offset
-	dl	paladin_w_5_1_compressed_offset
-	dl	paladin_w_5_2_compressed_offset
-	dl	paladin_w_5_3_compressed_offset
-	dl	paladin_w_6_1_compressed_offset
-	dl	paladin_w_6_2_compressed_offset
-	dl	paladin_w_6_3_compressed_offset
-	dl	paladin_w_7_1_compressed_offset
-	dl	paladin_w_7_2_compressed_offset
-	dl	paladin_w_7_3_compressed_offset
-	dl	paladin_w_8_1_compressed_offset
-	dl	paladin_w_8_2_compressed_offset
-	dl	paladin_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, paladin_w_8_3_compressed_offset
 	
 UnitPikeman:
-	dl	pikeman_a_1_compressed_offset
-	dl	pikeman_a_2_compressed_offset
-	dl	pikeman_a_3_compressed_offset
-	dl	pikeman_a_4_compressed_offset
-	dl	pikeman_a_5_compressed_offset
-	dl	pikeman_a_6_compressed_offset
-	dl	pikeman_a_7_compressed_offset
-	dl	pikeman_a_8_compressed_offset
-	dl	pikeman_d_1_compressed_offset
-	dl	pikeman_d_2_compressed_offset
-	dl	pikeman_w_1_1_compressed_offset
-	dl	pikeman_w_1_2_compressed_offset
-	dl	pikeman_w_1_3_compressed_offset
-	dl	pikeman_w_2_1_compressed_offset
-	dl	pikeman_w_2_2_compressed_offset
-	dl	pikeman_w_2_3_compressed_offset
-	dl	pikeman_w_3_1_compressed_offset
-	dl	pikeman_w_3_2_compressed_offset
-	dl	pikeman_w_3_3_compressed_offset
-	dl	pikeman_w_4_1_compressed_offset
-	dl	pikeman_w_4_2_compressed_offset
-	dl	pikeman_w_4_3_compressed_offset
-	dl	pikeman_w_5_1_compressed_offset
-	dl	pikeman_w_5_2_compressed_offset
-	dl	pikeman_w_5_3_compressed_offset
-	dl	pikeman_w_6_1_compressed_offset
-	dl	pikeman_w_6_2_compressed_offset
-	dl	pikeman_w_6_3_compressed_offset
-	dl	pikeman_w_7_1_compressed_offset
-	dl	pikeman_w_7_2_compressed_offset
-	dl	pikeman_w_7_3_compressed_offset
-	dl	pikeman_w_8_1_compressed_offset
-	dl	pikeman_w_8_2_compressed_offset
-	dl	pikeman_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, pikeman_w_8_3_compressed_offset
 	
 UnitSheep:
-	dl	sheep_d_1_compressed_offset
-	dl	sheep_d_2_compressed_offset
-	dl	sheep_w_1_1_compressed_offset
-	dl	sheep_w_1_2_compressed_offset
-	dl	sheep_w_1_3_compressed_offset
-	dl	sheep_w_2_1_compressed_offset
-	dl	sheep_w_2_2_compressed_offset
-	dl	sheep_w_2_3_compressed_offset
-	dl	sheep_w_3_1_compressed_offset
-	dl	sheep_w_3_2_compressed_offset
-	dl	sheep_w_3_3_compressed_offset
-	dl	sheep_w_4_1_compressed_offset
-	dl	sheep_w_4_2_compressed_offset
-	dl	sheep_w_4_3_compressed_offset
-	dl	sheep_w_5_1_compressed_offset
-	dl	sheep_w_5_2_compressed_offset
-	dl	sheep_w_5_3_compressed_offset
-	dl	sheep_w_6_1_compressed_offset
-	dl	sheep_w_6_2_compressed_offset
-	dl	sheep_w_6_3_compressed_offset
-	dl	sheep_w_7_1_compressed_offset
-	dl	sheep_w_7_2_compressed_offset
-	dl	sheep_w_7_3_compressed_offset
-	dl	sheep_w_8_1_compressed_offset
-	dl	sheep_w_8_2_compressed_offset
-	dl	sheep_w_8_3_compressed_offset
-	
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, sheep_w_8_3_compressed_offset
+
 UnitSkirmisher:
-	dl	skirmisher_a_1_compressed_offset
-	dl	skirmisher_a_2_compressed_offset
-	dl	skirmisher_a_3_compressed_offset
-	dl	skirmisher_a_4_compressed_offset
-	dl	skirmisher_a_5_compressed_offset
-	dl	skirmisher_a_6_compressed_offset
-	dl	skirmisher_a_7_compressed_offset
-	dl	skirmisher_a_8_compressed_offset
-	dl	skirmisher_d_1_compressed_offset
-	dl	skirmisher_d_2_compressed_offset
-	dl	skirmisher_w_1_1_compressed_offset
-	dl	skirmisher_w_1_2_compressed_offset
-	dl	skirmisher_w_1_3_compressed_offset
-	dl	skirmisher_w_2_1_compressed_offset
-	dl	skirmisher_w_2_2_compressed_offset
-	dl	skirmisher_w_2_3_compressed_offset
-	dl	skirmisher_w_3_1_compressed_offset
-	dl	skirmisher_w_3_2_compressed_offset
-	dl	skirmisher_w_3_3_compressed_offset
-	dl	skirmisher_w_4_1_compressed_offset
-	dl	skirmisher_w_4_2_compressed_offset
-	dl	skirmisher_w_4_3_compressed_offset
-	dl	skirmisher_w_5_1_compressed_offset
-	dl	skirmisher_w_5_2_compressed_offset
-	dl	skirmisher_w_5_3_compressed_offset
-	dl	skirmisher_w_6_1_compressed_offset
-	dl	skirmisher_w_6_2_compressed_offset
-	dl	skirmisher_w_6_3_compressed_offset
-	dl	skirmisher_w_7_1_compressed_offset
-	dl	skirmisher_w_7_2_compressed_offset
-	dl	skirmisher_w_7_3_compressed_offset
-	dl	skirmisher_w_8_1_compressed_offset
-	dl	skirmisher_w_8_2_compressed_offset
-	dl	skirmisher_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, skirmisher_w_8_3_compressed_offset
 	
 UnitESkirmisher:
-	dl	eskirmisher_a_1_compressed_offset
-	dl	eskirmisher_a_2_compressed_offset
-	dl	eskirmisher_a_3_compressed_offset
-	dl	eskirmisher_a_4_compressed_offset
-	dl	eskirmisher_a_5_compressed_offset
-	dl	eskirmisher_a_6_compressed_offset
-	dl	eskirmisher_a_7_compressed_offset
-	dl	eskirmisher_a_8_compressed_offset
-	dl	eskirmisher_d_1_compressed_offset
-	dl	eskirmisher_d_2_compressed_offset
-	dl	eskirmisher_w_1_1_compressed_offset
-	dl	eskirmisher_w_1_2_compressed_offset
-	dl	eskirmisher_w_1_3_compressed_offset
-	dl	eskirmisher_w_2_1_compressed_offset
-	dl	eskirmisher_w_2_2_compressed_offset
-	dl	eskirmisher_w_2_3_compressed_offset
-	dl	eskirmisher_w_3_1_compressed_offset
-	dl	eskirmisher_w_3_2_compressed_offset
-	dl	eskirmisher_w_3_3_compressed_offset
-	dl	eskirmisher_w_4_1_compressed_offset
-	dl	eskirmisher_w_4_2_compressed_offset
-	dl	eskirmisher_w_4_3_compressed_offset
-	dl	eskirmisher_w_5_1_compressed_offset
-	dl	eskirmisher_w_5_2_compressed_offset
-	dl	eskirmisher_w_5_3_compressed_offset
-	dl	eskirmisher_w_6_1_compressed_offset
-	dl	eskirmisher_w_6_2_compressed_offset
-	dl	eskirmisher_w_6_3_compressed_offset
-	dl	eskirmisher_w_7_1_compressed_offset
-	dl	eskirmisher_w_7_2_compressed_offset
-	dl	eskirmisher_w_7_3_compressed_offset
-	dl	eskirmisher_w_8_1_compressed_offset
-	dl	eskirmisher_w_8_2_compressed_offset
-	dl	eskirmisher_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, eskirmisher_w_8_3_compressed_offset
 	
 UnitSpearman:
-	dl	spearman_a_1_compressed_offset
-	dl	spearman_a_2_compressed_offset
-	dl	spearman_a_3_compressed_offset
-	dl	spearman_a_4_compressed_offset
-	dl	spearman_a_5_compressed_offset
-	dl	spearman_a_6_compressed_offset
-	dl	spearman_a_7_compressed_offset
-	dl	spearman_a_8_compressed_offset
-	dl	spearman_d_1_compressed_offset
-	dl	spearman_d_2_compressed_offset
-	dl	spearman_w_1_1_compressed_offset
-	dl	spearman_w_1_2_compressed_offset
-	dl	spearman_w_1_3_compressed_offset
-	dl	spearman_w_2_1_compressed_offset
-	dl	spearman_w_2_2_compressed_offset
-	dl	spearman_w_2_3_compressed_offset
-	dl	spearman_w_3_1_compressed_offset
-	dl	spearman_w_3_2_compressed_offset
-	dl	spearman_w_3_3_compressed_offset
-	dl	spearman_w_4_1_compressed_offset
-	dl	spearman_w_4_2_compressed_offset
-	dl	spearman_w_4_3_compressed_offset
-	dl	spearman_w_5_1_compressed_offset
-	dl	spearman_w_5_2_compressed_offset
-	dl	spearman_w_5_3_compressed_offset
-	dl	spearman_w_6_1_compressed_offset
-	dl	spearman_w_6_2_compressed_offset
-	dl	spearman_w_6_3_compressed_offset
-	dl	spearman_w_7_1_compressed_offset
-	dl	spearman_w_7_2_compressed_offset
-	dl	spearman_w_7_3_compressed_offset
-	dl	spearman_w_8_1_compressed_offset
-	dl	spearman_w_8_2_compressed_offset
-	dl	spearman_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, spearman_w_8_3_compressed_offset
 	
 UnitSwordman:
-	dl	swordman_a_1_compressed_offset
-	dl	swordman_a_2_compressed_offset
-	dl	swordman_a_3_compressed_offset
-	dl	swordman_a_4_compressed_offset
-	dl	swordman_a_5_compressed_offset
-	dl	swordman_a_6_compressed_offset
-	dl	swordman_a_7_compressed_offset
-	dl	swordman_a_8_compressed_offset
-	dl	swordman_d_1_compressed_offset
-	dl	swordman_d_2_compressed_offset
-	dl	swordman_w_1_1_compressed_offset
-	dl	swordman_w_1_2_compressed_offset
-	dl	swordman_w_1_3_compressed_offset
-	dl	swordman_w_2_1_compressed_offset
-	dl	swordman_w_2_2_compressed_offset
-	dl	swordman_w_2_3_compressed_offset
-	dl	swordman_w_3_1_compressed_offset
-	dl	swordman_w_3_2_compressed_offset
-	dl	swordman_w_3_3_compressed_offset
-	dl	swordman_w_4_1_compressed_offset
-	dl	swordman_w_4_2_compressed_offset
-	dl	swordman_w_4_3_compressed_offset
-	dl	swordman_w_5_1_compressed_offset
-	dl	swordman_w_5_2_compressed_offset
-	dl	swordman_w_5_3_compressed_offset
-	dl	swordman_w_6_1_compressed_offset
-	dl	swordman_w_6_2_compressed_offset
-	dl	swordman_w_6_3_compressed_offset
-	dl	swordman_w_7_1_compressed_offset
-	dl	swordman_w_7_2_compressed_offset
-	dl	swordman_w_7_3_compressed_offset
-	dl	swordman_w_8_1_compressed_offset
-	dl	swordman_w_8_2_compressed_offset
-	dl	swordman_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, swordman_w_8_3_compressed_offset
 	
 UnitVillager:
-	dl	villager_f_b_1_compressed_offset
-	dl	villager_f_b_2_compressed_offset
-	dl	villager_f_b_3_compressed_offset
-	dl	villager_f_b_4_compressed_offset
-	dl	villager_f_b_5_compressed_offset
-	dl	villager_f_b_6_compressed_offset
-	dl	villager_f_b_7_compressed_offset
-	dl	villager_f_b_8_compressed_offset
-	dl	villager_f_fa_1_compressed_offset
-	dl	villager_f_fa_2_compressed_offset
-	dl	villager_f_fa_3_compressed_offset
-	dl	villager_f_fa_4_compressed_offset
-	dl	villager_f_fa_5_compressed_offset
-	dl	villager_f_fa_6_compressed_offset
-	dl	villager_f_fa_7_compressed_offset
-	dl	villager_f_fa_8_compressed_offset
-	dl	villager_f_fo_1_compressed_offset
-	dl	villager_f_fo_2_compressed_offset
-	dl	villager_f_fo_3_compressed_offset
-	dl	villager_f_fo_4_compressed_offset
-	dl	villager_f_fo_5_compressed_offset
-	dl	villager_f_fo_6_compressed_offset
-	dl	villager_f_fo_7_compressed_offset
-	dl	villager_f_fo_8_compressed_offset
-	dl	villager_f_h_a_1_compressed_offset
-	dl	villager_f_h_a_2_compressed_offset
-	dl	villager_f_h_a_3_compressed_offset
-	dl	villager_f_h_a_4_compressed_offset
-	dl	villager_f_h_a_5_compressed_offset
-	dl	villager_f_h_a_6_compressed_offset
-	dl	villager_f_h_a_7_compressed_offset
-	dl	villager_f_h_a_8_compressed_offset
-	dl	villager_f_h_act_1_compressed_offset
-	dl	villager_f_h_act_2_compressed_offset
-	dl	villager_f_h_act_3_compressed_offset
-	dl	villager_f_h_act_4_compressed_offset
-	dl	villager_f_h_act_5_compressed_offset
-	dl	villager_f_h_act_6_compressed_offset
-	dl	villager_f_h_act_7_compressed_offset
-	dl	villager_f_h_act_8_compressed_offset
-	dl	villager_f_m_1_compressed_offset
-	dl	villager_f_m_2_compressed_offset
-	dl	villager_f_m_3_compressed_offset
-	dl	villager_f_m_4_compressed_offset
-	dl	villager_f_m_5_compressed_offset
-	dl	villager_f_m_6_compressed_offset
-	dl	villager_f_m_7_compressed_offset
-	dl	villager_f_m_8_compressed_offset
-	dl	villager_f_d_1_compressed_offset
-	dl	villager_f_d_2_compressed_offset
-	dl	villager_f_w_1_1_compressed_offset
-	dl	villager_f_w_1_2_compressed_offset
-	dl	villager_f_w_1_3_compressed_offset
-	dl	villager_f_w_2_1_compressed_offset
-	dl	villager_f_w_2_2_compressed_offset
-	dl	villager_f_w_2_3_compressed_offset
-	dl	villager_f_w_3_1_compressed_offset
-	dl	villager_f_w_3_2_compressed_offset
-	dl	villager_f_w_3_3_compressed_offset
-	dl	villager_f_w_4_1_compressed_offset
-	dl	villager_f_w_4_2_compressed_offset
-	dl	villager_f_w_4_3_compressed_offset
-	dl	villager_f_w_5_1_compressed_offset
-	dl	villager_f_w_5_2_compressed_offset
-	dl	villager_f_w_5_3_compressed_offset
-	dl	villager_f_w_6_1_compressed_offset
-	dl	villager_f_w_6_2_compressed_offset
-	dl	villager_f_w_6_3_compressed_offset
-	dl	villager_f_w_7_1_compressed_offset
-	dl	villager_f_w_7_2_compressed_offset
-	dl	villager_f_w_7_3_compressed_offset
-	dl	villager_f_w_8_1_compressed_offset
-	dl	villager_f_w_8_2_compressed_offset
-	dl	villager_f_w_8_3_compressed_offset
-	dl	villager_f_w_1_compressed_offset
-	dl	villager_f_w_2_compressed_offset
-	dl	villager_f_w_3_compressed_offset
-	dl	villager_f_w_4_compressed_offset
-	dl	villager_f_w_5_compressed_offset
-	dl	villager_f_w_6_compressed_offset
-	dl	villager_f_w_7_compressed_offset
-	dl	villager_f_w_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_b_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fa_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_fo_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_a_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_h_act_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_m_8_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_d_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_d_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_1_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_1_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_1_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_2_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_2_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_2_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_3_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_3_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_3_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_4_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_4_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_4_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_5_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_5_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_5_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_6_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_6_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_6_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_7_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_7_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_7_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_8_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_8_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_1_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_2_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_4_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_5_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_6_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_7_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, villager_f_w_8_compressed_offset
