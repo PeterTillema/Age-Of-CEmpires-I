@@ -184,30 +184,30 @@ UnitArbalest:
 	unit	TILE_WIDTH / 2 - 5, 19, arbalest_a_8_compressed_offset		; 7
 	unit	TILE_WIDTH / 2 - 38, 7, arbalest_d_1_compressed_offset		; 8
 	unit	TILE_WIDTH / 2 - 9, 9, arbalest_d_2_compressed_offset		; 9
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_3_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_3_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_3_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_3_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_3_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_3_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_3_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_1_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_2_compressed_offset
-	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_3_compressed_offset
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_1_compressed_offset		; 10
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_2_compressed_offset		; 11
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_1_3_compressed_offset		; 12
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_1_compressed_offset		; 13
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_2_compressed_offset		; 14
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_2_3_compressed_offset		; 15
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_1_compressed_offset		; 16
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_2_compressed_offset		; 17
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_3_3_compressed_offset		; 18
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_1_compressed_offset		; 19
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_2_compressed_offset		; 20
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_4_3_compressed_offset		; 21
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_1_compressed_offset		; 22
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_2_compressed_offset		; 23
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_5_3_compressed_offset		; 24
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_1_compressed_offset		; 25
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_2_compressed_offset		; 26
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_6_3_compressed_offset		; 27
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_1_compressed_offset		; 28
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_2_compressed_offset		; 29
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_7_3_compressed_offset		; 30
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_1_compressed_offset		; 31
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_2_compressed_offset		; 32
+	unit	TILE_WIDTH / 2 - 0, 0, arbalest_w_8_3_compressed_offset		; 33
 	
 UnitArcher:
 	unit	TILE_WIDTH / 2 - 0, 0, archer_a_1_compressed_offset

@@ -219,7 +219,7 @@ end if
 	ld	de, 0D20000h
 	push	de
 	ld	hl, sprite
-	call	dzx7_Turbo
+	call	dzx7_Mega
 	call	_Sprite_NoClip
 	pop	de
 	pop	hl

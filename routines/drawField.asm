@@ -779,7 +779,6 @@ OffsetY_SMC3 = $+1
 	add	hl, de
 	ld	a, (TempUnitData + 1)			; Substract base height from sprite
 	ld	e, a
-	or	a, a
 	sbc	hl, de
 	push	hl
 	ld	a, (iy + UnitOffsetX)			; Coordinates in isometric tile = X-Y
