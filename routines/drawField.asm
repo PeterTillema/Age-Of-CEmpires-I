@@ -765,6 +765,8 @@ NoUnitTeamColorsSwap:
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
+	add	hl, bc
+	add	hl, bc
 	ld	de, TempUnitData
 	ldi
 	ldi

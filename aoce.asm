@@ -171,6 +171,29 @@ CheckGraphicsAppvarsLoop:
 	call	PlaceTempBuildings
 	call	PlaceTempUnits
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Set timer for scheduling events
+	ld	hl, mpTmrCtrl
+	ld	a, (hl)
+	and	a, not (tmr1Enable or tmr1Overflow)
+	or	a, tmr1Crystal
+	ld	(hl), a
+	inc	hl
+	set	1, (hl)
+	ld	de, 0
+	ld	l, e
+	ld	(hl), de
+	inc	hl
+	ld	(hl), de
+	dec	de
+	inc	hl
+	inc	hl
+	inc	hl
+	ld	(hl), de
+	inc	hl
+	ld	(hl), de
+	ld	l, tmrCtrl
+	set	bTmr1Enable, (hl)
 	
 ; Call the main loop
 	ld	iy, iy_base

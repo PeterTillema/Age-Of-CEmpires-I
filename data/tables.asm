@@ -182,8 +182,8 @@ UnitArbalest:
 	unit	TILE_WIDTH / 2 - 3, 17, arbalest_a_6_compressed_offset		; 5
 	unit	TILE_WIDTH / 2 - 3, 17, arbalest_a_7_compressed_offset		; 6
 	unit	TILE_WIDTH / 2 - 5, 19, arbalest_a_8_compressed_offset		; 7
-	unit	TILE_WIDTH / 2 - 38, 7, arbalest_d_1_compressed_offset		; 8
-	unit	TILE_WIDTH / 2 - 9, 9, arbalest_d_2_compressed_offset		; 9
+	unit	TILE_WIDTH / 2 - 10, 7, arbalest_d_1_compressed_offset		; 8
+	unit	TILE_WIDTH / 2 - 11, 5, arbalest_d_2_compressed_offset		; 9
 	unit	TILE_WIDTH / 2 - 9, 18, arbalest_w_1_1_compressed_offset	; 10
 	unit	TILE_WIDTH / 2 - 8, 18, arbalest_w_1_2_compressed_offset	; 11
 	unit	TILE_WIDTH / 2 - 8, 18, arbalest_w_1_3_compressed_offset	; 12

@@ -58,11 +58,11 @@ PlaceTempUnits:
 	ret
 	
 TempUnitsData:
-	db	0, 1, 0, 100, 5
+	db	0, 1, 8, 100, 5
 	dl	0
 	db	1, 0, 0, 255
 	
-	db	0, 0, 0, 100, 5
+	db	0, 0, 9, 100, 5
 	dl	0
 	db	255, 12, 0, 0
 	
