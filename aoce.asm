@@ -168,7 +168,7 @@ CheckGraphicsAppvarsLoop:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	call	SetBufferToScreen
 	call	FillScreenPink
-	;call	PlaceTempBuildings
+	call	PlaceTempBuildings
 	call	PlaceTempUnits
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	

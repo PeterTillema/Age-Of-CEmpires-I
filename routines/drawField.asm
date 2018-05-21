@@ -6,10 +6,10 @@ DrawField:
 	bit	4, b
 	ld	a, TILE_WIDTH / 2
 	ld	c, jr_z
-	jr	z, .jump1
+	jr	z, .jump
 	neg
 	ld	c, jr_nz
-.jump1:	ld	(TopRowLeftOrRight), a
+.jump:	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
 	
@@ -27,25 +27,25 @@ DrawField:
 	ld	hl, FieldRowActionTable
 	ld	d, 10
 	bit	3, e
-	jr	z, .jump2
+	jr	z, .jump1
 	inc	d
 	dec	hl
 	dec	hl
 	dec	hl
-.jump2:	ld	(TileRoutinesTable), hl
+.jump1:	ld	(TileRoutinesTable), hl
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
 	bit	2, e
 	ld	hl, DrawTile_Clipped_Stop2
 	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
-	jr	z, .jump3
+	jr	z, .jump2
 	ld	hl, DrawTile_Clipped_Stop3
 	ld	(hl), jr_
 	inc	hl
 	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
 	ld	hl, DrawTile_Clipped_Stop1
 	ld	d, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
-.jump3:	ld	(DrawTile_Clipped_SetJRSMC), hl
+.jump2:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	ld	hl, DrawTile_Clipped_SetJRStop
 	ld	(hl), jr_
 	inc	hl
@@ -82,6 +82,8 @@ DrawField:
 	add	hl, bc
 	ld	a, AMOUNT_OF_ROWS			; Last X rows only trees/buildings
 	exx
+	
+;---------------------------------------------------------------------------------------------------------------------------------
 DisplayEachRowLoopExx:
 	exx
 DisplayEachRowLoop:					; Display X rows
@@ -162,6 +164,7 @@ TileOnlyDisplayBuilding:
 	jp	c, SkipDrawingOfTile
 	jr	DisplayBuilding
 	
+;---------------------------------------------------------------------------------------------------------------------------------
 DisplayTileWithTree:
 ; Inputs:
 ;   A' = row index
@@ -218,6 +221,7 @@ DontDisplayTree:
 BackupIY2 = $-3
 	jp	SkipDrawingOfTileExx
 	
+;---------------------------------------------------------------------------------------------------------------------------------
 DisplayBuildingExx:
 	exx
 DisplayBuilding:
@@ -325,6 +329,7 @@ BackupIY3 = $+2
 	ld	iy, 0
 	jp	SkipDrawingOfTileExx
 
+;---------------------------------------------------------------------------------------------------------------------------------
 DrawIsometricTileSecondPart:
 	ld	c, 30
 	ex	de, hl
@@ -387,6 +392,8 @@ DrawIsometricTileSecondPart:
 SkipDrawingOfTileCheckUnit:
 	cp	a, TILE_UNIT_GRASS
 	jp	nc, DisplayUnits
+	
+;---------------------------------------------------------------------------------------------------------------------------------
 SkipDrawingOfTileExx:
 	exx
 SkipDrawingOfTile:
@@ -426,6 +433,7 @@ TileRoutinesTable = $+1
 	ld	hl, (hl)
 	jp	(hl)					; And jump to it
 	
+;---------------------------------------------------------------------------------------------------------------------------------
 SetClippedRoutine:
 	ld	hl, DrawTile_Clipped			; Set the clipped routine
 	ld	(TileDrawingRoutinePtr1), hl
@@ -446,11 +454,12 @@ DrawTile_Clipped_SetJRSMC = $+1
 	jp	DisplayEachRowLoopExx
 	
 SetOnlyTreesRoutine:
-	ld	hl, SkipDrawingOfTileExx		; Normal tiles shouldn't be displayed anymore
+	ld	hl, SkipDrawingOfTileCheckUnit		; Normal tiles shouldn't be displayed anymore
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
 	jp	DisplayEachRowLoopExx
 	
+;---------------------------------------------------------------------------------------------------------------------------------
 StopDisplayTiles:
 	ld	de, mpShaData				; Copy routine to mpShaData
 	ld	hl, DrawScreenBorderStart
@@ -517,6 +526,7 @@ TempSP2 = $+1
 	ret
 DrawScreenBorderEnd:
 	
+;---------------------------------------------------------------------------------------------------------------------------------
 DrawTile_Clipped:
 	ld	(BackupIY), iy
 	ld	sp, lcdWidth
@@ -590,6 +600,7 @@ end relocate
 
 relocate DrawIsometricTile, mpShaData, 64
 
+;---------------------------------------------------------------------------------------------------------------------------------
 DrawIsometricTile:
 	ld	sp, -lcdWidth - 2
 	lea	de, iy
@@ -634,6 +645,7 @@ DrawIsometricTile:
 	jp	DrawIsometricTileSecondPart
 end relocate
 	
+;---------------------------------------------------------------------------------------------------------------------------------
 DisplayUnits:
 	ld	(BackupIY4), iy
 TempSP5 = $+1
@@ -688,6 +700,8 @@ SortUnits:
 	lea	iy, iy+3				; Increment current element pointer
 	inc	a					; Loop through all the units
 	djnz	.loop1
+	
+;---------------------------------------------------------------------------------------------------------------------------------
 DisplayAllUnits:
 	
 ; Inputs:
