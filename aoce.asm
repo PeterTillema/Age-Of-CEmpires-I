@@ -123,6 +123,10 @@ CheckGraphicsAppvarsLoop:
 	ld	(UnitsStackPtr), hl
 	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT_2
 	add	hl, de
+	ld	(SchedulingEventsBase), hl
+	ld	(SchedulingEventsPtr), hl
+	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_SCHEDULING_EVENT
+	add	hl, de
 	ld	(BuildingsSpritesBase), hl
 	ld	(BuildingsSpritesPtr), hl
 	ld	hl, vRAM - (stackTop - stackBot)
@@ -174,22 +178,17 @@ CheckGraphicsAppvarsLoop:
 
 ; Set timer for scheduling events
 	ld	hl, mpTmrCtrl
-	ld	a, (hl)
-	and	a, not (tmr1Enable or tmr1Overflow)
-	or	a, tmr1Crystal
-	ld	(hl), a
+	ld	(hl), tmr1Crystal
 	inc	hl
-	set	1, (hl)
+	ld	(hl), tmr1CountUp and 255
 	ld	de, 0
 	ld	l, e
 	ld	(hl), de
 	inc	hl
-	ld	(hl), de
-	dec	de
-	inc	hl
 	inc	hl
 	inc	hl
 	ld	(hl), de
+	inc	hl
 	inc	hl
 	ld	(hl), de
 	ld	l, tmrCtrl

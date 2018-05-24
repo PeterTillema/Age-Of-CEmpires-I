@@ -10,10 +10,10 @@ TILE_HEIGHT                 = 16
 ;;; Variables
 MAP_SIZE                    = 128
 RESOURCE_MAX                = 200
-MAX_AMOUNT_PEOPLE           = 120
+MAX_AMOUNT_PEOPLE           = 100
 AMOUNT_OF_TREES             = 4
 AMOUNT_OF_UNITS             = 1
-MAX_AMOUNT_BUILDINGS        = 120
+MAX_AMOUNT_BUILDINGS        = 100
 
 ;;; Pointers
 currDrawingBuffer           = 0E30014h
@@ -91,6 +91,12 @@ BuildingHealth              = 2
 BuildingHitpoints           = 3       ; Useful for towers and castle
 BuildingX                   = 4
 BuildingY                   = 5
+
+;;; Schedule event struct
+SIZEOF_SCHEDULING_EVENT     = 8
+SchedulingEventPointer      = 0
+SchedulingEventUnit         = 3
+SchedulingEventTime         = 4
 
 ;;; Flags
 holdDownEnterKey            = 0

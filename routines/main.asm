@@ -32,7 +32,11 @@ DoUnitEventLoop:
 	ld	hl, (hl)
 	call	JumpHL
 	pop	bc
+	lea	iy, iy + SIZEOF_UNIT_STRUCT_2
 	djnz	DoUnitEventLoop
+	
+; Scheduling
+	call	CheckAllEvents
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld	hl, (AmountOfWood)
@@ -123,6 +127,7 @@ include "routines/drawGame.asm"
 include "routines/routines.asm"
 include "routines/drawField.asm"
 include "routines/unitEvents.asm"
+include "routines/scheduling.asm"
 include "data/tables.asm"
 include "data/data.asm"
 
