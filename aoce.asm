@@ -168,19 +168,15 @@ CheckGraphicsAppvarsLoop:
 	ld	(TempSP5), hl
 	
 ; TODO: load villager and sheep sprites, place towncenter from you and enemy
-	
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	call	SetBufferToScreen
-	call	FillScreenPink
-	call	PlaceTempBuildings
-	call	PlaceTempUnits
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ; Set timer for scheduling events
+	scf
+	sbc	hl, hl
+	ld	(hl), 2
 	ld	hl, mpTmrCtrl
-	ld	(hl), tmr1Crystal
+	ld	(hl), tmr1Crystal or tmr1Overflow
 	inc	hl
-	ld	(hl), tmr1CountUp and 255
+	ld	(hl), tmr1CountUp shr 8
 	ld	de, 0
 	ld	l, e
 	ld	(hl), de
@@ -193,6 +189,14 @@ CheckGraphicsAppvarsLoop:
 	ld	(hl), de
 	ld	l, tmrCtrl
 	set	bTmr1Enable, (hl)
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	call	SetBufferToScreen
+	call	FillScreenPink
+	call	PlaceTempBuildings
+	call	PlaceTempUnits
+	call	RegisterUnitDieEvent
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 ; Call the main loop
 	ld	iy, iy_base

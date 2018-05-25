@@ -57,15 +57,23 @@ PlaceTempUnits:
 	call	LoadUnitDynamically
 	ret
 	
+RegisterUnitDieEvent:
+	ld	hl, UNIT_DIE_TIMEOUT
+	ld	e, 0
+	ld	bc, RemoveUnitFromTile
+	ld	a, 0
+	call	RegisterEvent
+	ret
+	
 TempUnitsData:
 	db	0, 1, 8, 100, 5
 	dl	0
-	db	1, 0, 0, 255
+	db	1, 0, 0, 255, 0, 0
 	
 	db	0, 0, 9, 100, 5
 	dl	0
-	db	255, 12, 0, 0
+	db	255, 12, 0, 0, 0, 0
 	
 	db	0, 0, 3, 100, 5
 	dl	0
-	db	255, 8, 8, 1
+	db	255, 8, 8, 1, 0, 0

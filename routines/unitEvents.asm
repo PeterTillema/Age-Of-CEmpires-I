@@ -38,3 +38,52 @@ UnitWalk81:
 UnitWalk82:
 UnitWalk83:
 	ret
+	
+RemoveUnitFromTile:
+; Inputs: A - doesn't really work yet lol
+	scf
+	sbc	hl, hl
+	ld	(hl), 2
+	ld	ix, (UnitsStackPtr)
+	ld	c, a
+	ld	b, SIZEOF_UNIT_STRUCT_2
+	mlt	bc
+	add	ix, bc
+	ld	a, (ix + UnitNext)			; A = next unit
+	ld	c, (ix + UnitPrev)			; C = prev unit
+	cp	a, c
+	jr	nz, RemoveUnitFromChain
+	ld	c, (ix + UnitY)
+	ld	b, MAP_SIZE
+	mlt	bc
+	ld	hl, (MapDataPtr)
+	add	hl, bc
+	ld	c, (ix + UnitX)
+	ld	b, 0
+	add	hl, bc
+	ld	a, (hl)
+	sub	a, TILE_UNIT_GRASS - TILE_GRASS
+	ld	(hl), a
+	ret
+RemoveUnitFromChain:
+	ld	e, c					; E = prev unit
+	inc	e
+	jr	z, .jump
+	dec	e
+	ld	b, SIZEOF_UNIT_STRUCT_2
+	mlt	bc
+	ld	ix, (MapDataPtr)
+	add	ix, bc
+	ld	(ix + UnitNext), a
+.jump:	inc	a
+	ret	z
+	dec	a
+	ld	c, a					; C = next unit
+	ld	b, SIZEOF_UNIT_STRUCT_2
+	mlt	bc
+	ld	ix, (MapDataPtr)
+	add	ix, bc
+	ld	(ix + UnitPrev), e
+	ret
+	
+	

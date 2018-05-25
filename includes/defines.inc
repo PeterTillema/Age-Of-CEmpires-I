@@ -14,6 +14,7 @@ MAX_AMOUNT_PEOPLE           = 100
 AMOUNT_OF_TREES             = 4
 AMOUNT_OF_UNITS             = 1
 MAX_AMOUNT_BUILDINGS        = 100
+UNIT_DIE_TIMEOUT            = 3000 * 32768 / 1000
 
 ;;; Pointers
 currDrawingBuffer           = 0E30014h
@@ -64,7 +65,7 @@ UnitRAMPtr                  = 4
 UnitType                    = 7
 
 ;;; Unit struct 2
-SIZEOF_UNIT_STRUCT_2        = 12
+SIZEOF_UNIT_STRUCT_2        = 14
 UnitIndex                   = 0
 UnitTeam                    = 1
 UnitEvent                   = 2
@@ -75,6 +76,8 @@ UnitNext                    = 8
 UnitOffsetX                 = 9
 UnitOffsetY                 = 10
 UnitPrev                    = 11
+UnitX                       = 12
+UnitY                       = 13
 
 ;;; Building struct 1
 SIZEOF_BUILDING_STRUCT_1    = 8
