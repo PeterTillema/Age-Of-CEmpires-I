@@ -170,9 +170,6 @@ CheckGraphicsAppvarsLoop:
 ; TODO: load villager and sheep sprites, place towncenter from you and enemy
 
 ; Set timer for scheduling events
-	scf
-	sbc	hl, hl
-	ld	(hl), 2
 	ld	hl, mpTmrCtrl
 	ld	(hl), tmr1Crystal or tmr1Overflow
 	inc	hl

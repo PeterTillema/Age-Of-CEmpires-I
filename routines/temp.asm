@@ -66,7 +66,7 @@ RegisterUnitDieEvent:
 	ret
 	
 TempUnitsData:
-	db	0, 1, 8, 100, 5
+	db	0, 1, 1, 100, 5
 	dl	0
 	db	1, 0, 0, 255, 0, 0
 	

@@ -40,19 +40,12 @@ UnitWalk83:
 	ret
 	
 RemoveUnitFromTile:
-; Inputs: A - doesn't really work yet lol
-	scf
-	sbc	hl, hl
-	ld	(hl), 2
 	ld	ix, (UnitsStackPtr)
-	ld	c, a
+	ld	c, a					; C = unit index
+	ld	e, a					; E = unit index
 	ld	b, SIZEOF_UNIT_STRUCT_2
 	mlt	bc
 	add	ix, bc
-	ld	a, (ix + UnitNext)			; A = next unit
-	ld	c, (ix + UnitPrev)			; C = prev unit
-	cp	a, c
-	jr	nz, RemoveUnitFromChain
 	ld	c, (ix + UnitY)
 	ld	b, MAP_SIZE
 	mlt	bc
@@ -61,29 +54,34 @@ RemoveUnitFromTile:
 	ld	c, (ix + UnitX)
 	ld	b, 0
 	add	hl, bc
-	ld	a, (hl)
-	sub	a, TILE_UNIT_GRASS - TILE_GRASS
-	ld	(hl), a
-	ret
-RemoveUnitFromChain:
-	ld	e, c					; E = prev unit
-	inc	e
-	jr	z, .jump
-	dec	e
+	
+; UnitPrev : 
+;   255 : 
+;     UnitNext : 
+;       255 : Remove unit from map data
+;       X   : Move unit X to curr unit
+;   X   :
+;     UnitNext : 
+;       255 : Set 255 as UnitNext of unit X
+;       Y   : Move unit Y to curr unit
+
+	ld	a, (ix + UnitNext)
+	inc	a
+	jr	nz, CopyNextUnitToCurr
+	; Things
+CopyNextUnitToCurr:
+	dec	a					; A = next unit index
+	ld	hl, (UnitsStackPtr)
+	ld	d, SIZEOF_UNIT_STRUCT_2
+	mlt	de
+	add	hl, de
+	ex	de, hl					; DE = destination
+	ld	hl, (UnitsStackPtr)
+	ld	c, a
 	ld	b, SIZEOF_UNIT_STRUCT_2
 	mlt	bc
-	ld	ix, (MapDataPtr)
-	add	ix, bc
-	ld	(ix + UnitNext), a
-.jump:	inc	a
-	ret	z
-	dec	a
-	ld	c, a					; C = next unit
-	ld	b, SIZEOF_UNIT_STRUCT_2
-	mlt	bc
-	ld	ix, (MapDataPtr)
-	add	ix, bc
-	ld	(ix + UnitPrev), e
+	add	hl, bc					; HL = source
+	ld	c, SIZEOF_UNIT_STRUCT_2
+	ld	b, 0
+	ldir
 	ret
-	
-	
