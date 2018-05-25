@@ -55,13 +55,20 @@ PlaceTempUnits:
 	ld	a, 0
 	ld	e, 6
 	call	LoadUnitDynamically
+	ld	hl, UnitsActive
+	ld	(hl), 1
+	inc	hl
+	ld	(hl), 1
 	ret
 	
 RegisterUnitDieEvent:
 	ld	hl, UNIT_DIE_TIMEOUT
-	ld	e, 0
 	ld	bc, RemoveUnitFromTile
 	ld	a, 0
+	call	RegisterEvent
+	ld	hl, UNIT_DIE_TIMEOUT * 2
+	ld	bc, RemoveUnitFromTile
+	ld	a, 1
 	call	RegisterEvent
 	ret
 	

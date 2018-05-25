@@ -2,27 +2,24 @@
 RegisterEvent:
 ; Registers an event
 ; Inputs:
-;   A    = unit
-;   BC   = pointer
-;   EUHL = time offset
+;   A   = unit
+;   BC  = pointer
+;   UHL = time offset
 	exx
 	ld	hl, AmountOfEvents
-	ld	c, (hl)
 	inc	(hl)
-	ld	b, 3
-	mlt	bc
 	ld	iy, (SchedulingEventsPtr)
-	add	iy, bc
+	lea	hl, iy + SIZEOF_SCHEDULING_EVENT
 	exx
 	ld	(iy + SchedulingEventPointer), bc
 	ld	(iy + SchedulingEventUnit), a
 	ld	bc, (mpTmr1Counter)			; Add offset to current time
 	ld	a, (mpTmr1Counter + 3)
 	add	hl, bc
-	adc	a, e
+	adc	a, 0
 	ld	(iy + SchedulingEventTime), hl
 	ld	(iy + SchedulingEventTime + 3), a
-	lea	hl, iy + SIZEOF_SCHEDULING_EVENT
+	exx
 	ld	(SchedulingEventsPtr), hl
 	ret
 
@@ -47,7 +44,7 @@ CheckBCHL:
 	add	hl, bc
 	jr	c, CheckNextEvent			; BC>=HL -> no event
 DoEvent:
-	exx
+	exx						; D' = event index
 	ld	hl, (iy + SchedulingEventPointer)
 	ld	a, (iy + SchedulingEventUnit)
 	call	JumpHL
@@ -55,10 +52,11 @@ DoEvent:
 	dec	a
 	ld	(AmountOfEvents), a
 	ret	z					; No events left, so return
-	exx
+	exx						; D = event index
 	dec	d					; D = amount - current event index
 	jr	z, .noremove
 	sub	a, d					; A = current event index
+	ld	ixl, d
 	exx
 	ld	c, a
 	ld	b, SIZEOF_SCHEDULING_EVENT
@@ -70,10 +68,11 @@ DoEvent:
 	add	hl, bc
 	ld	bc, SIZEOF_SCHEDULING_EVENT
 	add	hl, bc
-	ex	de, hl
-	ld	c, d
+	ld	c, ixl
 	ld	b, SIZEOF_SCHEDULING_EVENT
+	mlt	bc
 	ldir
+	exx
 .noremove:
 	inc	d
 CheckNextEvent:

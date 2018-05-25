@@ -46,6 +46,11 @@ RemoveUnitFromTile:
 	ld	b, SIZEOF_UNIT_STRUCT_2
 	mlt	bc
 	add	ix, bc
+	ld	hl, UnitsActive				; Set unit inactive
+	ld	c, e
+	ld	b, 0
+	add	hl, bc
+	dec	(hl)
 	ld	c, (ix + UnitY)
 	ld	b, MAP_SIZE
 	mlt	bc
@@ -59,29 +64,40 @@ RemoveUnitFromTile:
 ;   255 : 
 ;     UnitNext : 
 ;       255 : Remove unit from map data
-;       X   : Move unit X to curr unit
+;       X   : Set map data to unit X
 ;   X   :
 ;     UnitNext : 
-;       255 : Set 255 as UnitNext of unit X
-;       Y   : Move unit Y to curr unit
+;       Set UnitNext as UnitNext of unit X
 
-	ld	a, (ix + UnitNext)
-	inc	a
-	jr	nz, CopyNextUnitToCurr
-	; Things
-CopyNextUnitToCurr:
-	dec	a					; A = next unit index
-	ld	hl, (UnitsStackPtr)
-	ld	d, SIZEOF_UNIT_STRUCT_2
-	mlt	de
-	add	hl, de
-	ex	de, hl					; DE = destination
-	ld	hl, (UnitsStackPtr)
+	ld	a, (ix + UnitPrev)
+	cp	a, 255
+	jr	nz, ChangeUnitNext
+	ld	c, (ix + UnitY)
+	ld	b, MAP_SIZE
+	mlt	bc
+	ld	hl, (MapDataPtr)
+	add	hl, bc
+	ld	c, (ix + UnitX)
+	ld	b, 0
+	add	hl, bc
+	ld	c, (ix + UnitNext)
+	inc	c
+	jr	z, RemoveUnitFromMap
+	dec	c
+	inc	hl
+	ld	(hl), c
+	ret
+RemoveUnitFromMap:
+	ld	a, (hl)
+	sub	a, TILE_UNIT_GRASS - TILE_GRASS
+	ld	(hl), a
+	ret
+ChangeUnitNext:
+	ld	e, (ix + UnitNext)			; E = next unit index
 	ld	c, a
 	ld	b, SIZEOF_UNIT_STRUCT_2
 	mlt	bc
-	add	hl, bc					; HL = source
-	ld	c, SIZEOF_UNIT_STRUCT_2
-	ld	b, 0
-	ldir
+	ld	ix, (UnitsStackPtr)
+	add	ix, bc
+	ld	(ix + UnitNext), e
 	ret

@@ -33,14 +33,16 @@ BuildingsSpritesPtr:
 BuildingsLoaded:
 	rb	SIZEOF_BUILDING_STRUCT_1 * 18
 	
-UnitsStackPtr:
+UnitsStackPtr:						; Pointer to the allocated memory for all the 200 units
 	dl	0
-UnitsSpritesBase:
+UnitsSpritesBase:					; Pointer to the loaded graphics start
 	dl	0
-UnitsSpritesPtr:
+UnitsSpritesPtr:					; Pointer to the loaded graphics end
 	dl	0
-UnitsLoaded:
+UnitsLoaded:						; Stack with which unit is loaded in RAM (graphics)
 	rb	SIZEOF_UNIT_STRUCT_1 * 22
+UnitsActive:						; A list with all the active units or not
+	rb	MAX_AMOUNT_PEOPLE * 2
 	
 UnitsPerTile:
 	rb	5 * 3
