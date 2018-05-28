@@ -68,8 +68,7 @@ DoEvent:
 	add	hl, bc
 	ld	bc, SIZEOF_SCHEDULING_EVENT
 	add	hl, bc
-	ld	c, ixl
-	ld	b, SIZEOF_SCHEDULING_EVENT
+	ld	b, ixl
 	mlt	bc
 	ldir
 	exx
