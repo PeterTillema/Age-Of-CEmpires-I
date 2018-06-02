@@ -24,15 +24,13 @@ DrawField:
 	ld	(DrawTile_Clipped_Stop3), hl
 
 	ld	e, (OFFSET_Y)
-	ld	hl, FieldRowActionTable
+	xor	a, a
 	ld	d, 10
 	bit	3, e
 	jr	z, .jump1
 	inc	d
-	dec	hl
-	dec	hl
-	dec	hl
-.jump1:	ld	(TileRoutinesTable), hl
+	ld	a, dec_a
+.jump1:	ld	(TileWhichAction), a			; Write nop/dec a to tile action
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
 	bit	2, e
@@ -424,16 +422,28 @@ TileHowManyRowsClipped = $+1				; Check if we need an extra routine to set the c
 	dec	a
 	jp	nc, DisplayEachRowLoop
 	exx
-	ld	c, a					; Get the routine
-	ld	b, 3
-	mlt	bc
-TileRoutinesTable = $+1
-	ld	hl, FieldRowActionTable
-	add	hl, bc
-	ld	hl, (hl)
-	jp	(hl)					; And jump to it
+	ld	e, a
+TileWhichAction:
+	nop
+	add	a, a
+	ld	(JR_SMC), a
+	ld	a, e
+JR_SMC = $+1
+	jr	$
+	jr	StopDisplayTiles
+	jr	DisplayEachRowLoopExx_jmp
+	jr	DisplayEachRowLoopExx_jmp
+	jr	DisplayEachRowLoopExx_jmp
+	jr	DisplayEachRowLoopExx_jmp
+	jr	DisplayEachRowLoopExx_jmp
+	jr	SetOnlyTreesRoutine
+	jr	SetClippedRoutine2
+	jr	SetClippedRoutine
 	
 ;---------------------------------------------------------------------------------------------------------------------------------
+DisplayEachRowLoopExx_jmp:
+	jp	DisplayEachRowLoopExx
+	
 SetClippedRoutine:
 	ld	hl, DrawTile_Clipped			; Set the clipped routine
 	ld	(TileDrawingRoutinePtr1), hl

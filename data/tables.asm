@@ -38,17 +38,6 @@ TilePointersStart:
 	dl	tree_3_offset
 	dl	tree_4_offset
 	
-FieldRowActionTable:
-	dl	StopDisplayTiles
-	dl	DisplayEachRowLoopExx
-	dl	DisplayEachRowLoopExx
-	dl	DisplayEachRowLoopExx
-	dl	DisplayEachRowLoopExx
-	dl	DisplayEachRowLoopExx
-	dl	SetOnlyTreesRoutine
-	dl	SetClippedRoutine2
-	dl	SetClippedRoutine
-	
 BuildingsAge1:
 	dl	farm_1_compressed_offset		; 0
 	dl	lumbercamp_1_compressed_offset		; 1

@@ -94,8 +94,8 @@ virtual
 end virtual
 
 virtual
-	dec	c
-	load	dec_c: byte from $$
+	dec	a
+	load	dec_a: byte from $$
 end virtual
 
 virtual
