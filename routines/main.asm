@@ -190,7 +190,15 @@ SetOffsetYPointers:
 .jump1:	ld	(TileWhichAction), a			; Write nop/dec a to tile action
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
-	ld	hl, mpKeyRange
+	ld	hl, add_iy_sp_lea_de_iy
+	ld	(DrawTile_Clipped_Stop3), hl
+	bit	2, e
+	jr	z, .jump2
+	ld	hl, DrawTile_Clipped_Stop3
+	ld	(hl), jr_
+	inc	hl
+	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
+.jump2:	ld	hl, mpKeyRange
 	ret
 
 ScrollFieldDown:

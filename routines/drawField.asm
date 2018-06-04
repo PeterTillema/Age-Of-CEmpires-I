@@ -10,24 +10,16 @@ DrawField:
 	ld	hl, add_iy_sp_lea_de_iy
 	ld	(DrawTile_Clipped_Stop1), hl
 	ld	(DrawTile_Clipped_Stop2), hl
-	ld	(DrawTile_Clipped_Stop3), hl
 	
 	ld	e, (OFFSET_Y)
 	bit	2, e
 	ld	hl, DrawTile_Clipped_Stop2
-	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2	; Offset to end of clipped routine
+	ld	a, StopDrawingTile - DrawTile_Clipped_Stop2 - 2	; Offset to end of clipped routine
 	jr	z, .jump2
-	ld	hl, DrawTile_Clipped_Stop3
-	ld	(hl), jr_
-	inc	hl
-	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
 	ld	hl, DrawTile_Clipped_Stop1
-	ld	d, StopDrawingTile - DrawTile_Clipped_Stop1 - 2	; Offset to end of clipped routine
+	ld	a, StopDrawingTile - DrawTile_Clipped_Stop1 - 2	; Offset to end of clipped routine
 .jump2:	ld	(DrawTile_Clipped_SetJRSMC), hl
-	ld	hl, DrawTile_Clipped_SetJRStop
-	ld	(hl), jr_
-	inc	hl
-	ld	(hl), d
+	ld	(DrawTile_Clipped_JR_offset), a
 	
 	set	4, e					; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2
@@ -437,15 +429,12 @@ SetClippedRoutine:
 	jp	DisplayEachRowLoopExx
 	
 SetClippedRoutine2:
-DrawTile_Clipped_SetJRStop = $+1
-	ld	hl, 0					; Insert a JR X in the clipped tile routine
-DrawTile_Clipped_SetJRSMC = $+1
-	ld	(0), hl
-	
-	;ld	hl, 0
-	;ld	(hl), jr_
-	;inc	hl
-	;ld	(hl), 0
+DrawTile_Clipped_SetJRSMC = $+1				; Insert a JR X in the clipped tile routine
+	ld	hl, 0
+	ld	(hl), jr_
+	inc	hl
+DrawTile_Clipped_JR_offset = $+1
+	ld	(hl), 0
 	jp	DisplayEachRowLoopExx
 	
 SetOnlyTreesRoutine:
