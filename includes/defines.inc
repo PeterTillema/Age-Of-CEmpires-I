@@ -6,6 +6,7 @@ AMOUNT_OF_COLUMNS           = 13
 AMOUNT_OF_ROWS              = 35
 TILE_WIDTH                  = 32
 TILE_HEIGHT                 = 16
+SCROLL_SPEED                = 4
 
 ;;; Variables
 MAP_SIZE                    = 128

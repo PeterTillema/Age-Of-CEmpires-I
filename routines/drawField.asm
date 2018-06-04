@@ -2,17 +2,6 @@ relocate DrawField, cursorImage, 1024
 
 DrawField:
 	DrawIsometricTile.copy
-	ld	b, (OFFSET_X)
-	bit	4, b
-	ld	a, TILE_WIDTH / 2
-	ld	c, jr_z
-	jr	z, .jump
-	neg
-	ld	c, jr_nz
-.jump:	ld	(TopRowLeftOrRight), a
-	ld	a, c
-	ld	(IncrementRowXOrNot1), a
-	
 	ld	hl, DrawIsometricTile
 	ld	(TileDrawingRoutinePtr1), hl
 	ld	(TileDrawingRoutinePtr2), hl
@@ -22,27 +11,18 @@ DrawField:
 	ld	(DrawTile_Clipped_Stop1), hl
 	ld	(DrawTile_Clipped_Stop2), hl
 	ld	(DrawTile_Clipped_Stop3), hl
-
+	
 	ld	e, (OFFSET_Y)
-	xor	a, a
-	ld	d, 10
-	bit	3, e
-	jr	z, .jump1
-	inc	d
-	ld	a, dec_a
-.jump1:	ld	(TileWhichAction), a			; Write nop/dec a to tile action
-	ld	a, d
-	ld	(TileHowManyRowsClipped), a
 	bit	2, e
 	ld	hl, DrawTile_Clipped_Stop2
-	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2
+	ld	d, StopDrawingTile - DrawTile_Clipped_Stop2 - 2	; Offset to end of clipped routine
 	jr	z, .jump2
 	ld	hl, DrawTile_Clipped_Stop3
 	ld	(hl), jr_
 	inc	hl
 	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
 	ld	hl, DrawTile_Clipped_Stop1
-	ld	d, StopDrawingTile - DrawTile_Clipped_Stop1 - 2
+	ld	d, StopDrawingTile - DrawTile_Clipped_Stop1 - 2	; Offset to end of clipped routine
 .jump2:	ld	(DrawTile_Clipped_SetJRSMC), hl
 	ld	hl, DrawTile_Clipped_SetJRStop
 	ld	(hl), jr_
@@ -52,7 +32,7 @@ DrawField:
 	set	4, e					; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2
 	mlt	de
-	ld	a, b
+	ld	a, (OFFSET_X)
 	sub	a, TILE_WIDTH * 2 - (TILE_WIDTH / 2 - 1)	; We start at column 17 (bottom right pixel), but 2 tiles to the left
 	sbc	hl, hl
 	ld	l, a
@@ -83,7 +63,7 @@ DrawField:
 	
 ;---------------------------------------------------------------------------------------------------------------------------------
 DisplayEachRowLoopExx:
-	exx
+	exx						; ======================== shadow registers ========================
 DisplayEachRowLoop:					; Display X rows
 ; Registers usage:
 ;   BC  = length of row tile
@@ -98,7 +78,7 @@ DisplayEachRowLoop:					; Display X rows
 ;   IY  = pointer to output
 ;   SPL = -SCREEN_WIDTH + offset
 
-startingPosition = $+2					; Here are the shadow registers active
+startingPosition = $+2
 	ld	iy, 0					; Advance to the next row
 	ld	bc, (TILE_HEIGHT / 2) * lcdWidth
 	add	iy, bc
@@ -106,12 +86,12 @@ startingPosition = $+2					; Here are the shadow registers active
 	bit	0, a					; Check if we need to add half a tile to it
 	jr	nz, NoOffsetAtStart
 TopRowLeftOrRight = $+2
-	lea	iy, iy + 0
+	lea	iy, iy + 16
 NoOffsetAtStart:
 	ex	af, af'
-	ld	a, AMOUNT_OF_COLUMNS
+	ld	a, AMOUNT_OF_COLUMNS			; Display X tiles
 	ld	bc, (-MAP_SIZE + 1) * 2			; How much to advance to the next row in the map
-DisplayTile:						; Display X tiles in a row
+DisplayTile:
 	ld	b, a					; Check if we only need to display buildings (at the left/right)
 	cp	a, AMOUNT_OF_COLUMNS - 1
 	jr	nc, TileOnlyDisplayBuilding
@@ -126,7 +106,7 @@ DisplayTile:						; Display X tiles in a row
 	jr	nz, TileIsOutOfField
 	or	a, (hl)					; Tile index
 	jp	z, SkipDrawingOfTile			; Tile is part of a building, which will be overwritten later
-	exx						; Here are the main registers active
+	exx						; ======================== main registers ========================
 	ld	c, a					; Get the pointer to the tile
 	ld	b, 3
 	mlt	bc
@@ -143,7 +123,7 @@ TileDrawingRoutinePtr1 = $+1
 	
 TileIsOutOfField:
 	xor	a, a					; Reset A otherwise it might think that it was a tile with unit(s)
-	exx
+	exx						; ======================== main registers ========================
 	ld	bc, 0
 	ld	hl, blackBuffer
 TileDrawingRoutinePtr2 = $+1
@@ -393,19 +373,19 @@ SkipDrawingOfTileCheckUnit:
 	
 ;---------------------------------------------------------------------------------------------------------------------------------
 SkipDrawingOfTileExx:
-	exx
+	exx						; ======================== shadow registers ========================
 SkipDrawingOfTile:
 	lea	iy, iy + TILE_WIDTH			; Advance to next tile
 	inc	de					; Next X index in map
 	dec	ix					; Previous Y index in map
 	ld	a, b
-	ld	b, 255					; BCU and C still holds (-MAP_SIZE + 1) * 2)
+	ld	b, 255					; UBC and C still holds (-MAP_SIZE + 1) * 2)
 	add	hl, bc					; Advance to the next tile in the map data
 	dec	a
 	jp	nz, DisplayTile				; Display all the tiles in the row
 	ex	af, af'
 IncrementRowXOrNot1 = $
-	jr	nz, NoExtraColumnChange			; The zero flag is still set/reset from the "bit 0, a"
+	jr	z, NoExtraColumnChange			; The zero flag is still set/reset from the "bit 0, a"
 	inc	de					; Advance an extra diagonal tile
 	dec	ix
 	add	hl, bc
@@ -418,10 +398,10 @@ NoExtraColumnChange:
 	add	hl, bc
 	lea	ix, ix + AMOUNT_OF_COLUMNS + 1
 TileHowManyRowsClipped = $+1				; Check if we need an extra routine to set the clipped tiles
-	cp	a, 0
+	cp	a, 10
 	dec	a
 	jp	nc, DisplayEachRowLoop
-	exx
+	exx						; ======================== main registers ========================
 	ld	e, a
 TileWhichAction:
 	nop
@@ -461,6 +441,11 @@ DrawTile_Clipped_SetJRStop = $+1
 	ld	hl, 0					; Insert a JR X in the clipped tile routine
 DrawTile_Clipped_SetJRSMC = $+1
 	ld	(0), hl
+	
+	;ld	hl, 0
+	;ld	(hl), jr_
+	;inc	hl
+	;ld	(hl), 0
 	jp	DisplayEachRowLoopExx
 	
 SetOnlyTreesRoutine:
