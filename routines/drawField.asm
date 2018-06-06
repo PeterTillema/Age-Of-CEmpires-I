@@ -58,6 +58,7 @@ DisplayEachRowLoopExx:
 	exx						; ======================== shadow registers ========================
 DisplayEachRowLoop:					; Display X rows
 ; Registers usage:
+;   A   = tile index
 ;   BC  = length of row tile
 ;   DE  = pointer to output
 ;   HL  = pointer to (black) tile
@@ -371,7 +372,7 @@ SkipDrawingOfTile:
 	inc	de					; Next X index in map
 	dec	ix					; Previous Y index in map
 	ld	a, b
-	ld	b, 255					; UBC and C still holds (-MAP_SIZE + 1) * 2)
+	ld	b, ((-MAP_SIZE + 1) * 2) shr 8 and 255	; UBC and C still holds (-MAP_SIZE + 1) * 2
 	add	hl, bc					; Advance to the next tile in the map data
 	dec	a
 	jp	nz, DisplayTile				; Display all the tiles in the row
@@ -518,62 +519,62 @@ DrawTile_Clipped:
 	ld	c, 2
 	ldir
 	add	iy, sp
-	lea	de, iy-2
+	lea	de, iy - 2
 	ld	c, 6
 	ldir
 	add	iy, sp
-	lea	de, iy-4
+	lea	de, iy - 4
 	ld	c, 10
 	ldir
 DrawTile_Clipped_Stop1 = $
 	add	iy, sp
-	lea	de, iy-6
+	lea	de, iy - 6
 	ld	c, 14
 	ldir
 	add	iy, sp
-	lea	de, iy-8
+	lea	de, iy - 8
 	ld	c, 18
 	ldir
 	add	iy, sp
-	lea	de, iy-10
+	lea	de, iy - 10
 	ld	c, 22
 	ldir
 	add	iy, sp
-	lea	de, iy-12
+	lea	de, iy - 12
 	ld	c, 26
 	ldir
 DrawTile_Clipped_Stop2 = $
 	add	iy, sp
-	lea	de, iy-14
+	lea	de, iy - 14
 	ld	c, 30
 	ldir
 	add	iy, sp
-	lea	de, iy-14
+	lea	de, iy - 14
 	ld	c, 30
 	ldir
 	add	iy, sp
-	lea	de, iy-12
+	lea	de, iy - 12
 	ld	c, 26
 	ldir
 	add	iy, sp
-	lea	de, iy-10
+	lea	de, iy - 10
 	ld	c, 22
 	ldir
 DrawTile_Clipped_Stop3 = $
 	add	iy, sp
-	lea	de, iy-8
+	lea	de, iy - 8
 	ld	c, 18
 	ldir
 	add	iy, sp
-	lea	de, iy-6
+	lea	de, iy - 6
 	ld	c, 14
 	ldir
 	add	iy, sp
-	lea	de, iy-4
+	lea	de, iy - 4
 	ld	c, 10
 	ldir
 	add	iy, sp
-	lea	de, iy-2
+	lea	de, iy - 2
 	ld	c, 6
 	ldir
 StopDrawingTile:
