@@ -13,6 +13,9 @@ To run AoCE, copy `AOCE.8xp`, and all the `AOCEXXXX.8xv` appvars to either CEmu 
 ### Bugs
 If you found a bug in the latest AoCE from the master branch, be sure to create an issue [here](https://github.com/PeterTillema/Age-Of-CEmpires-I/issues). Note that other branches might not be stable!
 
+### Controls
+Use the numpad (`[1]` to `[9]`) to scroll the field. Press `[CLEAR]` to exit the game.
+
 ## To-Do-List
 - [x] Homescreen
 - [x] Generate map
