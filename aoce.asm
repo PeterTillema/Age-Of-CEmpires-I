@@ -75,24 +75,21 @@ CheckGraphicsAppvarsLoop:
 	ld	hl, LoadingMessage
 	call	_PutS
 	
-; Use the moved stack
-	or	a, a
-	sbc	hl, hl
-	add	hl, sp
-	ld	(BackupSP), hl
-	ld	de, vRAM - stackTop
-	add	hl, de
-	ld	sp, hl
-	
 ; Backup RAM
 	di
 	ld	a, 0D1h
 	ld	mb, a
 	ld.sis	sp, AOCE_RAM_START and 0FFFFh
 	call.lis fUnlockFlash and 0FFFFh
+	ld	(BackupSP), sp
 	call	BackupRAM
 	AoCE_RAM.copy
 	ld	(MapDataPtr), de
+	
+; Use the moved stack
+	ld	hl, vRAM - stackTop
+	add	hl, sp
+	ld	sp, hl
 	
 ; Backup stack
 	ld	de, vRAM - (stackTop - stackBot)
