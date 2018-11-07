@@ -175,7 +175,7 @@ dzx7t_main_loop:
 	jr      nc, dzx7t_copy_byte_loop
 	push    de
 	ld      bc, 1
-	ld	d, b
+	ld	de, 0
 dzx7t_len_size_loop:
 	inc     d
 	add     a, a
