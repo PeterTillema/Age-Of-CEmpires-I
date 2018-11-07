@@ -84,21 +84,29 @@ macro @ez80.classify @val, @ind*, @arg&
 end macro
 
 long? = 3
-; FIXME: dup
+; FIXME: dup relocations
 macro dw? @values*&
 	if @ez80.adl
 		emit word?: @values
 	else
-		iterate @value, @values
-			@ez80.word @value
-		end iterate
+		match left =dup? right, @values
+			emit word?: @values
+		else
+			iterate @value, @values
+				@ez80.word @value
+			end iterate
+		end match
 	end if
 end macro
 macro dl? @values*&
 	if @ez80.adl
-		iterate @value, @values
-			@ez80.word @value
-		end iterate
+		match left =dup? right, @values
+			emit long?: @values
+		else
+			iterate @value, @values
+				@ez80.word @value
+			end iterate
+		end match
 	else
 		emit long?: @values
 	end if
@@ -223,7 +231,7 @@ macro inst! @name*, @params&
 		end iterate
 		load @temp: $ - $$ from $$
 	end virtual
-	esc macro @name? @params
+	esc macro @name?: @params
 		local before, after, noerr
 		label before
 		eval @temp
@@ -367,12 +375,12 @@ inst jq, @arg1*, @arg2
 		if defined @ez80.pre
 			off = off - 1
 		end if
-		if defined noerr & arg1 <> after | defined keep
+		if defined noerr & ~arg1 eq after | defined keep
 			define keep
 		end if
-		if defined after & arg1 = after & ~defined keep
+		if defined after & arg1 eq after & ~defined keep
 			define noerr
-		else if -200o <= off & off < 200o
+		else if ~elementsof off & -200o <= off & off < 200o
 			@ez80.emit byte 030o, offset off
 		else
 			@ez80.emit byte 303o, word arg1
@@ -383,12 +391,12 @@ inst jq, @arg1*, @arg2
 		if defined @ez80.pre
 			off = off - 1
 		end if
-		if defined noerr & arg2 <> after | defined keep
+		if defined noerr & ~arg2 eq after | defined keep
 			define keep
 		end if
-		if defined after & arg2 = after & ~defined keep
-		   define noerr
-		else if arg1 metadata 1 scale 0 < 040o & -200o <= off & off < 200o
+		if defined after & arg2 eq after & ~defined keep
+			define noerr
+		else if arg1 metadata 1 scale 0 < 040o & ~elementsof off & -200o <= off & off < 200o
 		 	@ez80.emit byte arg1 metadata 1 scale 0 and 030o or 040o, \
 			           offset off
 		else
@@ -496,18 +504,10 @@ inst ld, @dst, @src*
 				           byte src
 			end if
 		else if dst @ez80.is_reg @ez80.wreg & dst metadata 1 scale 1 and 004o
-			if src relativeto src element 1 & src @ez80.is_reg @ez80.wreg
-				if dst eq? sp
-					if src metadata 1 scale 0 = 040o
-						@ez80.emit idxpre src, byte 371o
-					end if
-				else if src metadata 1 scale 1 = 007o
-					@ez80.nest push? src
-					@ez80.nest pop? dst
-				else
-					@ez80.nest lea? dst, src
-				end if
-			else if src eq i? & dst eq hl?
+			if dst eq sp? & src eq src element 1 & src @ez80.is_reg @ez80.wreg \
+			 & src metadata 1 scale 0 = 040o
+				@ez80.emit idxpre src, byte 371o
+			else if dst eq hl? & src eq i?
 				@ez80.emit <byte 355o, 327o>
 			else
 				@ez80.emit idxpre dst, byte dst metadata 1 scale 0 or 001o, \
@@ -857,22 +857,6 @@ inst mlt, @reg*
 		@ez80.emit <byte 355o, reg metadata 1 scale 0 or 114o>
 	end if
 end inst
-
-inst rcf
-	@ez80.nest or? a?, a?
-end inst
-iterate <@name, @carry>, \
-         uext,  rcf,     \
-         sext,  rla
-	inst @name, @reg*
-		if regind
-			err 'invalid indirection'
-		else
-			@ez80.nest @carry?
-			@ez80.nest sbc? reg, reg
-		end if
-	end inst
-end iterate
 
 purge inst
 purge end?.inst

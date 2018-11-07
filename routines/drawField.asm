@@ -33,8 +33,7 @@ DrawField:
 	ld	de, (currDrawingBuffer)
 	add	hl, de
 	ld	(startingPosition), hl
-	ld	ix, (TopLeftYTile)
-	lea	ix, ix + 2				; Remember the 2 columns at the left
+	ld	ix, (TopLeftYTile)			; TopLeftYTile is already positioned 2 columns at the left
 	lea	hl, ix					; Y * MAP_SIZE + X, point to the map data
 	add	hl, hl
 	add	hl, hl
@@ -43,9 +42,7 @@ DrawField:
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	de, (TopLeftXTile)
-	dec	de					; Remember the 2 columns at the left
-	dec	de
+	ld	de, (TopLeftXTile)			; TopLeftXTile is already positioned 2 columns at the left
 	add	hl, de
 	add	hl, hl					; Each tile is 2 bytes worth
 	ld	bc, (MapDataPtr)
@@ -372,7 +369,7 @@ SkipDrawingOfTile:
 	inc	de					; Next X index in map
 	dec	ix					; Previous Y index in map
 	ld	a, b
-	ld	b, ((-MAP_SIZE + 1) * 2) shr 8 and 255	; UBC and C still holds (-MAP_SIZE + 1) * 2
+	ld	b, ((-MAP_SIZE + 1) * 2) shr 8 and 255	; BCU and C still holds (-MAP_SIZE + 1) * 2
 	add	hl, bc					; Advance to the next tile in the map data
 	dec	a
 	jp	nz, DisplayTile				; Display all the tiles in the row
@@ -508,8 +505,12 @@ FillBorderLoop:
 	push	bc
 TempSP2 = $+1
 	ld	sp, 0					; Yay, we are finally done!
-	ret
+	jp	MainGameContinue
 DrawScreenBorderEnd:
+
+repeat 1,x:(DrawScreenBorderEnd - DrawScreenBorderStart)
+	display 'Relocation used ', `x, ' bytes', 10
+end repeat
 	
 ;---------------------------------------------------------------------------------------------------------------------------------
 DrawTile_Clipped:

@@ -1,9 +1,9 @@
-macro private
+macro ?!
 	; assign needs to be local so that it is only
 	; defined once (no purge!) so that it can be
 	; forward referenced so that it can recurse
 	local assign
-	macro assign name*, expr&
+	macro assign: name*, expr&
 		match left =% right, expr
 			assign name, left mod right
 		else match left =| right, expr
@@ -32,9 +32,8 @@ macro private
 			assign name, expr
 		end match
 	end macro
+	purge ?
 end macro
-private
-purge private
 
 macro .list?
 end macro

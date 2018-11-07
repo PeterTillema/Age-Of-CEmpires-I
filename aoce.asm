@@ -159,7 +159,6 @@ CheckGraphicsAppvarsLoop:
 ; Since the stack is always the same, hardcode the sp backup pointers
 	ld	hl, -6
 	add	hl, sp
-	ld	(TempSP2), hl
 	ld	(TempSP3), hl
 	ld	(TempSP4), hl
 	ld	(TempSP5), hl

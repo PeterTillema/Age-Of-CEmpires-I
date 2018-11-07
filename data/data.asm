@@ -52,8 +52,8 @@ PathFindingData:
 	rb	20
 	
 virtual at iy
-	TopLeftXTile:			dl -10
-	TopLeftYTile:			dl -3
+	TopLeftXTile:			dl -12
+	TopLeftYTile:			dl -1
 	CursorX:			dl 160-12
 	CursorY:			db 120-16
 	SelectedAreaStartX:		dl 0

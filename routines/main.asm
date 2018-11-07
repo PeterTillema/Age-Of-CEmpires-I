@@ -1,8 +1,10 @@
 relocate AoCE_RAM, AOCE_RAM_START + RAM_SIZE + AppDataEnd - AppDataStart, 100000
 
 MainGameLoop:
-	call	DrawField
+	jp	DrawField
+MainGameContinue:
 	call	DrawGame
+	
 ; Swap buffers
 	ld	hl, vRAM
 	ld	de, (mpLcdBase)

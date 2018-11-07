@@ -171,10 +171,11 @@ dzx7t_main_loop:
 	ld	a, (hl)
 	inc	hl
 	rla
-.jump:	jr      nc, dzx7t_copy_byte_loop
+.jump:
+	jr      nc, dzx7t_copy_byte_loop
 	push    de
-	ld      de, 0
 	ld      bc, 1
+	ld	d, b
 dzx7t_len_size_loop:
 	inc     d
 	add     a, a
@@ -182,7 +183,8 @@ dzx7t_len_size_loop:
 	ld	a, (hl)
 	inc	hl
 	rla
-.jump:	jr      nc, dzx7t_len_size_loop
+.jump:
+	jr      nc, dzx7t_len_size_loop
 	jr      dzx7t_len_value_start
 dzx7t_len_value_loop:
 	add     a, a
@@ -190,7 +192,8 @@ dzx7t_len_value_loop:
 	ld	a, (hl)
 	inc	hl
 	rla
-.jump:	rl      c
+.jump:
+	rl      c
 	rl      b
 	jr      c, dzx7t_exit
 dzx7t_len_value_start:
@@ -207,25 +210,29 @@ dzx7t_len_value_start:
 	ld	a, (hl)
 	inc	hl
 	rla
-.jump1:	rl      d
+.jump1:
+	rl      d
 	add     a, a
 	jr	nz, .jump2
 	ld	a, (hl)
 	inc	hl
 	rla
-.jump2:	rl      d
+.jump2:
+	rl      d
 	add     a, a
 	jr	nz, .jump3
 	ld	a, (hl)
 	inc	hl
 	rla
-.jump3:	rl      d
+.jump3:
+	rl      d
 	add     a, a
 	jr	nz, .jump4
 	ld	a, (hl)
 	inc	hl
 	rla
-.jump4:	ccf
+.jump4:
+	ccf
 	jr      c, dzx7t_offset_end
 	inc     d
 dzx7t_offset_end:
