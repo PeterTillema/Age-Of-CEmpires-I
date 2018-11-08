@@ -145,9 +145,11 @@ CheckGraphicsAppvarsLoop:
 	ld	(_FillColor), a
 	dec	a
 	ld	(_FGColor), a
+	ld	hl, _menu_gfx_pal
+	ld	(Palette_Pointer2), hl
 	call	_Begin
-	;call	MainMenu
-	;jp	z, ForceStopProgramFadeOut
+	call	MainMenu
+	jp	z, ForceStopProgramFadeOut
 	call	GenerateMap
 	ld	a, 1
 	ld	(_FGColor), a
@@ -260,7 +262,7 @@ SetPointersAndPalette:
 	ld	(mpLcdCtrl), a
 	ld	l, mpLcdIcr and 0FFh
 	ld	(hl), 4
-	ld	hl, pal_sprites
+	ld	hl, _menu_gfx_pal
 	ld	de, mpLcdPalette
 	ld	bc, 256 * 2
 	ldir
@@ -276,6 +278,7 @@ _End:
 	ld	a, lcdBpp16
 	jr	SetPointersAndPalette
 	
+include 'gfx/bin/menu_gfx.asm'
 include 'gfx/bin/pal_gfx.asm'
 include 'routines/main.asm'
 include 'routines/map.asm'

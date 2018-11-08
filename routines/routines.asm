@@ -48,6 +48,7 @@ GetKeyAnyFast:
 ; Outputs: none
 
 fadeIn:
+	ld	(Palette_Pointer), hl
 	ld	hl, fadeInSub
 	jr	fadeLcd
 fadeInSub:
@@ -73,7 +74,8 @@ fadeLcd:
 flOuter:
 	ld	b, 0			; B = number of colours in palette
 	ld	iy, mpLcdPalette
-	ld	ix, pal_sprites		; IX => palette being used
+Palette_Pointer = $+2
+	ld	ix, 0
 flInner:
 	push	bc
 __flSubCalc = $+1

@@ -8,7 +8,8 @@ MainMenu:
 	ld	de, vRAM + 1
 	ld	bc, lcdWidth * lcdHeight - 1
 	ldir
-	dispCompressedImage intro_compressed_offset, 72, 32
+	dispCompressedImage logo_compressed_offset, 72, 32
+	ld	hl, pal_sprites
 	call	fadeIn
 	ld	a, 200
 	call	_DelayTenTimesAms
@@ -20,6 +21,8 @@ MainMenu:
 	dispCompressedImage AoCEI_compressed_offset, 5, 5
 	dispCompressedImage soldier_compressed_offset, 215, 5
 	printString MadeByMessage, 18, 94
+Palette_Pointer2 = $+1
+	ld	hl, 0
 	call	fadeIn
 SelectLoopDrawPlayHelpQuit:
 	call	EraseArea
@@ -162,7 +165,7 @@ GetHelp2:
 GetHelp3:
 	db	"and much more!", 0
 MadeByMessage:
-	db	'Made by Peter \"PT_\" Tillema', 0
+	db	'Made by Peter "PT_" Tillema', 0
 NoMultiplayer1:
 	db	"Multiplayer is not", 0
 NoMultiplayer2:
