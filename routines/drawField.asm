@@ -182,7 +182,8 @@ OffsetX_SMC1 = $+1
 	sla	e
 	sbc	hl, de
 	jr	z, DontDisplayTree			; If X offset 0, the tree is at the most left column, so fully offscreen
-.jump:	push	hl					; X coordinate
+.jump:	
+	push	hl					; X coordinate
 	call	_RLETSprite				; No need to pop
 DontDisplayTree:
 	ld	iy, 0
@@ -368,7 +369,7 @@ SkipDrawingOfTile:
 	lea	iy, iy + TILE_WIDTH			; Advance to next tile
 	inc	de					; Next X index in map
 	dec	ix					; Previous Y index in map
-	ld	a, b
+	ld	a, b					; Restore column index
 	ld	b, ((-MAP_SIZE + 1) * 2) shr 8 and 255	; BCU and C still holds (-MAP_SIZE + 1) * 2
 	add	hl, bc					; Advance to the next tile in the map data
 	dec	a
@@ -742,18 +743,18 @@ IYH_SMC2 = $+2
 	ld	iyh, 0
 NoUnitTeamColorsSwap:
 	ld	c, (ix + UnitType)
-	ld	hl, UnitsSpritesPointersTable
+	ld	hl, UnitsSpritesPointersTable		; Get the table per unit
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
 	ld	hl, (hl)				; Pointer to table with sprites per unit
 	ld	c, (iy + UnitEvent)
+	add	hl, bc					; sizeof(uint) = 5
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
-	add	hl, bc
-	ld	de, TempUnitData
+	ld	de, TempUnitData			; Copy the base offsets
 	ldi
 	ldi
 	ld	hl, (hl)				; Sprite offset
@@ -810,7 +811,8 @@ OffsetX_SMC3 = $+1
 	jr	z, .jump
 	sla	e
 	sbc	hl, de
-.jump:	push	hl
+.jump:	
+	push	hl
 	call	_RLETSprite
 	pop	hl
 	pop	hl

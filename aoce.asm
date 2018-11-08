@@ -1,3 +1,5 @@
+AOCE_VERSION := "1.0.0"
+
 ; Include files for fasmg
 include 'includes/ez80.inc'
 include 'includes/ti84pceg.inc'
@@ -29,7 +31,7 @@ DeleteAoCEProg:
 AlreadyInstalled:
 	db	"AoCE already installed,   please delete app to      reinstall", 0
 	
-	app_start 'AoCE', '(C) 2018 Peter Tillema', '1.0.0', 1
+	app_start "AoCE", "(C) 2018 Peter Tillema", AOCE_VERSION, 1
 
 	call	_HomeUp
 	call	_ClrLCDFull
@@ -274,10 +276,10 @@ _End:
 	ld	a, lcdBpp16
 	jr	SetPointersAndPalette
 	
-include "gfx/bin/pal_gfx.asm"
-include "routines/main.asm"
-include "routines/map.asm"
-include "routines/temp.asm"
+include 'gfx/bin/pal_gfx.asm'
+include 'routines/main.asm'
+include 'routines/map.asm'
+include 'routines/temp.asm'
 	
 GraphicsAppvars:
 irpv name, varname
@@ -287,9 +289,9 @@ end irpv
 irpv each, appvar
 RelocationTable#%:
 	irpv relocation, each#_relocation_table
-		dl relocation
+		dl	relocation
 	end irpv
-	dl 0FFFFFFh
+	dl	0
 end irpv
 
 GraphicsAppvarNotFound:
@@ -320,6 +322,6 @@ AppvarsPointersTable:
 BackupSP:
 	dl	0
 	
-include "routines/flash.asm"
+include 'routines/flash.asm'
 
 AppDataEnd:

@@ -109,6 +109,16 @@ virtual
 	load	add_iy_sp_lea_de_iy: long from $$
 end virtual
 
+virtual
+	dec	(hl)
+	load	dec_hl: byte from $$
+end virtual
+
+virtual
+	inc	(hl)
+	load	inc_hl: byte from $$
+end virtual
+
 macro printString message, x, y
 	ld	l, y
 	push	hl

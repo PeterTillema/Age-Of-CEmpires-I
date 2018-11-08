@@ -69,21 +69,19 @@ CheckKeys28:				; Check [2], [8] (5 does nothing)
 	ld	a, (hl)
 	and	a, (1 shl kp2) or (1 shl kp8)
 	jr	z, CheckKeys147
-CheckKey2:
-	bit	kp2, (hl)
-	jr	z, CheckKey8
-	call	ScrollFieldDown
-CheckKey8:
+; Check key 2
+	bit	kp2, a
+	call	nz, ScrollFieldDown
+; Check key 8
 	bit	kp8, (hl)
-	jr	z, CheckKeys147
-	call	ScrollFieldUp
+	call	nz, ScrollFieldUp
 CheckKeys147:				; Check [1], [4], [7]
 	ld	l, 016h
 	ld	a, (hl)
 	and	a, (1 shl kp1) or (1 shl kp4) or (1 shl kp7)
-	jp	z, CheckClearEnter
+	jr	z, CheckClearEnter
 	call	ScrollFieldLeft
-CheckKey1:
+; Check key 1
 	bit	kp1, (hl)
 	jr	z, CheckKey7
 	call	ScrollFieldLeft
@@ -115,25 +113,13 @@ CheckClearEnter:
 ;ParseSelectedArea:
 ;CheckStop:
 	ld	hl, mpLcdRis
-WaitLCDInterrupt:
+.wait:
 	bit	2, (hl)
-	jr	z, WaitLCDInterrupt
+	jr	z, .wait
 	jp	MainGameLoop
 	
 JumpHL:
 	jp	(hl)
-	
-SetOffsetXPointers:
-	bit	4, a
-	ld	a, TILE_WIDTH / 2
-	ld	c, jr_z
-	jr	z, .jump
-	neg
-	ld	c, jr_nz
-.jump:	ld	(TopRowLeftOrRight), a
-	ld	a, c
-	ld	(IncrementRowXOrNot1), a
-	ret
 
 ScrollFieldRight:
 	ld	a, (OFFSET_X)
@@ -165,7 +151,17 @@ ScrollFieldLeftRightRoutine:
 	ld	(OffsetX_SMC1), a
 	ld	(OffsetX_SMC2), a
 	ld	(OffsetX_SMC3), a
-	jr	SetOffsetXPointers
+	bit	4, a
+	ld	a, TILE_WIDTH / 2
+	ld	c, jr_z
+	jr	z, .jump
+	neg
+	ld	c, jr_nz
+.jump:	
+	ld	(TopRowLeftOrRight), a
+	ld	a, c
+	ld	(IncrementRowXOrNot1), a
+	ret
 
 ScrollFieldUp:
 	ld	a, (OFFSET_Y)
@@ -179,29 +175,6 @@ ScrollFieldUp:
 	dec	de
 	ld	(TopLeftYTile), de
 	jr	ScrollFieldUpDownRoutine
-	
-SetOffsetYPointers:
-	sub	a, 17
-	ld	e, a
-	xor	a, a
-	ld	d, 10
-	bit	3, e
-	jr	z, .jump1
-	inc	d
-	ld	a, dec_a
-.jump1:	ld	(TileWhichAction), a			; Write nop/dec a to tile action
-	ld	a, d
-	ld	(TileHowManyRowsClipped), a
-	ld	hl, add_iy_sp_lea_de_iy
-	ld	(DrawTile_Clipped_Stop3), hl
-	bit	2, e
-	jr	z, .jump2
-	ld	hl, DrawTile_Clipped_Stop3
-	ld	(hl), jr_
-	inc	hl
-	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
-.jump2:	ld	hl, mpKeyRange
-	ret
 
 ScrollFieldDown:
 	ld	a, (OFFSET_Y)
@@ -221,16 +194,38 @@ ScrollFieldUpDownRoutine:
 	ld	(OffsetY_SMC1), a
 	ld	(OffsetY_SMC2), a
 	ld	(OffsetY_SMC3), a
-	jr	SetOffsetYPointers
+	sub	a, 17
+	ld	e, a
+	xor	a, a
+	ld	d, 10
+	bit	3, e
+	jr	z, .jump1
+	inc	d
+	ld	a, dec_a
+.jump1:	
+	ld	(TileWhichAction), a			; Write nop/dec a to tile action
+	ld	a, d
+	ld	(TileHowManyRowsClipped), a
+	ld	hl, add_iy_sp_lea_de_iy
+	ld	(DrawTile_Clipped_Stop3), hl
+	bit	2, e
+	jr	z, .jump2
+	ld	hl, DrawTile_Clipped_Stop3
+	ld	(hl), jr_
+	inc	hl
+	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
+.jump2:	
+	ld	hl, mpKeyRange
+	ret
 	
-include "routines/mainmenu.asm"
-include "routines/drawGame.asm"
-;include "routines/pathfinding.asm"
-include "routines/routines.asm"
-include "routines/drawField.asm"
-include "routines/unitEvents.asm"
-include "routines/scheduling.asm"
-include "data/tables.asm"
-include "data/data.asm"
+include 'routines/mainmenu.asm'
+include 'routines/drawGame.asm'
+;include 'routines/pathfinding.asm'
+include 'routines/routines.asm'
+include 'routines/drawField.asm'
+include 'routines/unitEvents.asm'
+include 'routines/scheduling.asm'
+include 'data/tables.asm'
+include 'data/data.asm'
 
 end relocate

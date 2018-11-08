@@ -175,7 +175,8 @@ dzx7t_main_loop:
 	jr      nc, dzx7t_copy_byte_loop
 	push    de
 	ld      bc, 1
-	ld	de, 0
+	inc.s	de
+	ld	d, b
 dzx7t_len_size_loop:
 	inc     d
 	add     a, a
@@ -691,14 +692,15 @@ LoadUnitDynamically:
 ; Inputs:
 ;   BC = offset (location of appvar)
 ;   HL = pointer to relocation table
+; 3 zero-bytes at end of table
 
 ModifyRelocationTable:
 	push	hl
 	ld	hl, (hl)
-	ld	de, 1
 	add	hl, de
-	jr	c, StopModifying
-	dec	hl
+	or	a, a
+	sbc	hl, de
+	jr	z, StopModifying
 	push	hl
 	ld	hl, (hl)
 	add	hl, bc
@@ -1052,7 +1054,7 @@ SprNcJrStep:
 ; Outputs: none
 
 TeamColorsToInc:
-	ld	a, 034h
+	ld	a, inc_hl
 	jr	TeamColorsChange
 	
 ;-------------------------------------------------------------------------------
@@ -1061,14 +1063,25 @@ TeamColorsToInc:
 ; Outputs: none
 
 TeamColorsToDec:
-	ld	a, 035h
+	ld	a, dec_hl
 TeamColorsChange:
 	ld	hl, IncTeamColorsPtr
 	ld	de, 5
-	ld	b, 8
-.loop:	ld	(hl), a
+	ld	(hl), a
 	add	hl, de
-	djnz	.loop
+	ld	(hl), a
+	add	hl, de
+	ld	(hl), a
+	add	hl, de
+	ld	(hl), a
+	add	hl, de
+	ld	(hl), a
+	add	hl, de
+	ld	(hl), a
+	add	hl, de
+	ld	(hl), a
+	add	hl, de
+	ld	(hl), a
 	ret
 	
 IncTeamColors_Run:
@@ -1119,6 +1132,7 @@ IncTeamColors_LoopStart1:
 	
 ;-------------------------------------------------------------------------------
 ; Changes all the teamcolor pixels in a RLET sprite
+; The data is all outputted by ConvPNG, no need to do it ourselves
 ; Inputs:
 ;   DE = TCP data
 ;   HL = pointer to sprite
@@ -1131,11 +1145,11 @@ IncTeamColors_LoopStart1:
 ;       - 1-byte amount of full runs
 ;     Data:
 ;       1-byte offsets to the next TCP
-;   Last byte is 0x80 to signify the end of the data
+;   A 0x80 first byte in a block signifies the end
 
 IncTeamColors:
 	dec.s	bc			; bcu = 0
-	ld	a, (de)			; a = (distance to next TCP)>>8
+	ld	a, (de)			; a = (distance to next TCP) >> 8
 	or	a, a
 	ret	m			; return if distance to next TCP > 32767
 	inc	de
@@ -1151,7 +1165,7 @@ IncTeamColors:
 					; = IncTeamColors_LoopStart1
 					;   -(IncTeamColors_LoopStart_Jr+2)
 					;   -(((TCP sequence length)-1)%8*5)
-	ld	a, (de)
+	ld	a, (de)			; Amount of full runs per block
 	inc	de
 	ld	iyh, a			; iyh = ((TCP sequence length)-1)/8+1
 IncTeamColors_LoopStart_Jr:
