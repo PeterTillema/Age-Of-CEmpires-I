@@ -52,10 +52,10 @@ PathFindingData:
 	rb	20
 	
 virtual at iy
-	TopLeftXTile:			dl -12
-	TopLeftYTile:			dl -1
-	CursorX:			dl 160-12
-	CursorY:			db 120-16
+	TopLeftXTile:			dl -10 - 2 - 2			; (-10, -3) is the begin position measured from the top left
+	TopLeftYTile:			dl -3 + 2 + 2			; We start with 4 columns to the left, because buildings can be 4 tiles width
+	CursorX:			dl lcdWidth / 2 - 12
+	CursorY:			db lcdHeight / 2 - 16
 	SelectedAreaStartX:		dl 0
 	SelectedAreaStartY:		db 0
 	TempData2:			rb 12

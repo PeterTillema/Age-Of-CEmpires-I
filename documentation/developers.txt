@@ -1,0 +1,57 @@
+BuildingsStackPtr:
+	- Index (1 byte): 
+	- Team (1 byte): 0 = team 1, 1 = team 2
+	- Health (1 byte): current health of the building
+	- Hitpoints (1 byte): amount of hitpoints of castle, tower etc
+	- X (1 byte): X position of the building on the map
+	- Y (1 byte): Y position of the building on the map
+
+UnitsStackPtr:
+	- Index (1 byte): 
+	- Team (1 byte): 0 = team 1, 1 = team 2
+	- Event (1 byte): current event the unit is doing
+	- Health (1 byte): health of the unit
+	- Hitpoints (1 byte): amount of hitpoints of this unit
+	- Path (3 bytes): pointer to the path data
+	- Next (1 byte): unit id of the next unit in the chain
+	- OffsetX (1 byte): X offset on the tile itself
+	- OffsetY (1 byte): Y offset on the tile itself
+	- Prev (1 byte): unit id of the previous unit in the chain
+	- X (1 byte): X position of the unit on the map
+	- Y (1 byte): Y position of the unit on the map
+
+SchedulingEventsPtr:
+	- Pointer (3 bytes): pointer to the handler
+	- Unit (1 byte): unit id
+	- Time (4 bytes): timestamp at which the event should run
+
+BuildingsSpritesPtr: BuildingsLoaded
+	- TeamLoaded (1 byte): 0 = team 1, 1 = team 2
+	- RAMPtr (3 bytes): pointer to the sprite data in RAM
+	- TCPPtr (3 bytes): pointer to the TCP data of the building
+	- Type (1 byte): building type
+
+UnitsSpritesPtr: UnitsLoaded, UnitsActive
+	- TeamLoaded (1 byte): 0 = team 1, 1 = team 2
+	- TCPPtr (3 bytes): pointer to the unit data in RAM
+	- RAMPtr (3 bytes): pointer to the TCP data of the unit
+	- Type (1 byte): unit type
+
+
+
+RAM data:
+	- AoCE
+		- BuildingsLoaded: a stack with information about which buildings are loaded in RAM
+		- UnitsLoaded: a stack with information which units are loaded in RAM
+		- UnitsActive: a stack with booleans whether units are needed or not
+	- Map data
+	- Sprites: gameplay, tiles, trees
+	- BuildingsStackPtr: a stack with all buildings in the game, with information such as team, location etc
+	- UnitsStackPtr: a stack with all the units in the game, including information such as event, type, path etc
+	- SchedulingEventsPtr: a stack with all the upcoming events
+	- BuildingsSpritesPtr: a pointer to the end of the buildings sprites data
+end of RAM:
+	- UnitsSpritesPtr: a pointer to the begin of the units sprites data
+	- Stack
+
+BuildingsSpritesPtr and UnitsSpritesPtr grow towards each other, and AoCE should error if they overlap (i.e. not enough memory available)

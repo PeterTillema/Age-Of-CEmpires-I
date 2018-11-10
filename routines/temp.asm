@@ -29,17 +29,9 @@ PlaceTempBuildings:
 	inc	hl
 	ld	(hl), 1
 	ld	hl, (MapDataPtr)
-	ld	de, 4*2
-	add	hl, de
 	ld	(hl), TILE_BUILDING
 	inc	hl
 	ld	(hl), 0
-	inc	hl
-	inc	hl
-	inc	hl
-	ld	(hl), TILE_BUILDING
-	inc	hl
-	ld	(hl), 1
 	ret
 	
 PlaceTempUnits:

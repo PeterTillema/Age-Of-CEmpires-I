@@ -148,8 +148,8 @@ CheckGraphicsAppvarsLoop:
 	ld	hl, _menu_gfx_pal
 	ld	(Palette_Pointer2), hl
 	call	_Begin
-	call	MainMenu
-	jp	z, ForceStopProgramFadeOut
+	;call	MainMenu
+	;jp	z, ForceStopProgramFadeOut
 	call	GenerateMap
 	ld	a, 1
 	ld	(_FGColor), a
@@ -192,8 +192,8 @@ CheckGraphicsAppvarsLoop:
 	call	SetBufferToScreen
 	call	FillScreenPink
 	call	PlaceTempBuildings
-	call	PlaceTempUnits
-	call	RegisterUnitDieEvent
+	;call	PlaceTempUnits
+	;call	RegisterUnitDieEvent
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 ; Call the main loop

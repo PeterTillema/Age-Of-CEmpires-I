@@ -3,9 +3,11 @@ RAM_MIRROR                  = ramStart + RAM_SIZE
 AOCE_RAM_START              = ramStart + 4
 RAM_BACKUP                  = 03C0000h
 AMOUNT_OF_COLUMNS           = 13
+AMOUNT_OF_COLUMNS_LEFT      = 4
 AMOUNT_OF_ROWS              = 35
 TILE_WIDTH                  = 32
 TILE_HEIGHT                 = 16
+TILE_HEIGHT_HALF            = TILE_HEIGHT / 2
 SCROLL_SPEED                = 4
 
 ;;; Variables

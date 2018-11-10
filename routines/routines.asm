@@ -80,7 +80,8 @@ flInner:
 	push	bc
 __flSubCalc = $+1
 	call	0000000h
-	ld	hl, 0
+	or	a, a
+	sbc	hl, hl
         ; red
 	ld	a, (ix+1)
 	rrca

@@ -190,9 +190,10 @@ ScrollFieldDown:
 	and	a, TILE_HEIGHT - 1
 ScrollFieldUpDownRoutine:
 	ld	(OFFSET_Y), a
-	add	a, 17
-	ld	(OffsetY_SMC1), a
+	add	a, TILE_HEIGHT_HALF + 2
 	ld	(OffsetY_SMC2), a
+	add	a, TILE_HEIGHT_HALF - 1
+	ld	(OffsetY_SMC1), a
 	ld	(OffsetY_SMC3), a
 	sub	a, 17
 	ld	e, a

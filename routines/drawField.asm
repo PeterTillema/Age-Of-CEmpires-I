@@ -25,7 +25,7 @@ DrawField:
 	ld	d, lcdWidth / 2
 	mlt	de
 	ld	a, (OFFSET_X)
-	sub	a, TILE_WIDTH * 2 - (TILE_WIDTH / 2 - 1)	; We start at column 17 (bottom right pixel), but 2 tiles to the left
+	sub	a, TILE_WIDTH * AMOUNT_OF_COLUMNS_LEFT - (TILE_WIDTH / 2 - 1)	; We start at column 17 (bottom right pixel), but 4 tiles to the left
 	sbc	hl, hl
 	ld	l, a
 	add	hl, de
@@ -33,7 +33,7 @@ DrawField:
 	ld	de, (currDrawingBuffer)
 	add	hl, de
 	ld	(startingPosition), hl
-	ld	ix, (TopLeftYTile)			; TopLeftYTile is already positioned 2 columns at the left
+	ld	ix, (TopLeftYTile)			; TopLeftYTile is already positioned 4 columns at the left
 	lea	hl, ix					; Y * MAP_SIZE + X, point to the map data
 	add	hl, hl
 	add	hl, hl
@@ -42,7 +42,7 @@ DrawField:
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	de, (TopLeftXTile)			; TopLeftXTile is already positioned 2 columns at the left
+	ld	de, (TopLeftXTile)			; TopLeftXTile is already positioned 4 columns at the left
 	add	hl, de
 	add	hl, hl					; Each tile is 2 bytes worth
 	ld	bc, (MapDataPtr)
@@ -70,7 +70,7 @@ DisplayEachRowLoop:					; Display X rows
 
 startingPosition = $+2
 	ld	iy, 0					; Advance to the next row
-	ld	bc, (TILE_HEIGHT / 2) * lcdWidth
+	ld	bc, TILE_HEIGHT_HALF * lcdWidth
 	add	iy, bc
 	ld	(startingPosition), iy
 	bit	0, a					; Check if we need to add half a tile to it
@@ -82,11 +82,9 @@ NoOffsetAtStart:
 	ld	a, AMOUNT_OF_COLUMNS			; Display X tiles
 	ld	bc, (-MAP_SIZE + 1) * 2			; How much to advance to the next row in the map
 DisplayTile:
-	ld	b, a					; Check if we only need to display buildings (at the left/right)
-	cp	a, AMOUNT_OF_COLUMNS - 1
+	ld	b, a					; Check if we only need to display buildings
+	cp	a, AMOUNT_OF_COLUMNS - (AMOUNT_OF_COLUMNS_LEFT - 1)
 	jr	nc, TileOnlyDisplayBuilding
-	cp	a, 3
-	jr	c, TileOnlyDisplayBuilding
 	ld	a, e					; Check out of field: DE and IX < MAP_SIZE
 	or	a, ixl
 	add	a, a
@@ -152,7 +150,7 @@ TempSP3 = $+1
 	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c
 	ld	e, a
-	ld	d, TILE_HEIGHT / 2 / 2
+	ld	d, TILE_HEIGHT_HALF / 2
 	mlt	de
 	inc	hl
 	ld	a, (hl)
@@ -163,7 +161,7 @@ OffsetY_SMC1 = $+1
 	ld	e, a
 	sbc	hl, de
 	push	hl					; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS - 2
+	ld	a, AMOUNT_OF_COLUMNS - AMOUNT_OF_COLUMNS_LEFT
 	exx
 	sub	a, b					; B' = column index
 	exx
@@ -204,8 +202,8 @@ DisplayBuilding:
 ;   B' = column index
 ;   A  = index in buildings stack
 
-; Y coordinate: A' * 8 + 17 - building_height
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) - (building_width - 30) / 2
+; Y coordinate: A' * 8 + 17 - (building_height - (building_width + 2) / 32 * 8)
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16)
 
 TempSP4 = $+1
 	ld	sp, 0
@@ -246,26 +244,30 @@ IYH_SMC1 = $+2
 	ld	iyh, 3
 NoBuildingTeamColorsSwap:
 	ld	hl, (iy + BuildingRAMPtr)
-	ld	b, (hl)					; B = building width
 	push	hl					; Sprite struct
+	ld	a, (hl)					; A = building_width
+	srl	a
+	srl	a
+	ld	b, a
 	ex	af, af'
 	ld	c, a					; C = row_index start at bottom
 	ex	af, af'
 	ld	a, AMOUNT_OF_ROWS + 1
 	sub	a, c					; A = row_index start at top
 	ld	e, a
-	ld	d, TILE_HEIGHT / 2 / 2
+	ld	d, TILE_HEIGHT_HALF / 2
 	mlt	de					; DE = pointer to row / 2
 	inc	hl
 	ld	a, (hl)					; A = building_height
+	sub	a, b
 OffsetY_SMC2 = $+1
-	ld	hl, 17
+	ld	hl, TILE_HEIGHT_HALF + 2
 	add	hl, de
 	add	hl, de					; HL = pointer to row + offset + y_offset
 	ld	e, a
 	sbc	hl, de					; HL = pointer to row + offset + y_offset - building_height
 	push	hl					; Y coordinate
-	ld	a, AMOUNT_OF_COLUMNS - 2
+	ld	a, AMOUNT_OF_COLUMNS - AMOUNT_OF_COLUMNS_LEFT
 	exx
 	sub	a, b
 	exx
@@ -279,7 +281,6 @@ OffsetY_SMC2 = $+1
 OffsetX_SMC2 = $+1
 	ld	e, 0
 	add	hl, de
-	ld	a, b
 	bit	0, c
 	jr	nz, .jump
 	bit	4, e
@@ -288,10 +289,7 @@ OffsetX_SMC2 = $+1
 	jr	z, .jump
 	sla	e
 	sbc	hl, de
-.jump:	sub	a, 30
-	srl	a
-	ld	e, a
-	sbc	hl, de
+.jump:	
 	push	hl					; X coordinate
 	call	_RLETSprite				; No need to pop
 BackupIY3 = $+2
@@ -788,7 +786,7 @@ OffsetY_SMC3 = $+1
 	sub	a, b
 	sbc	hl, hl
 	ld	l, a
-	ld	a, AMOUNT_OF_COLUMNS - 2
+	ld	a, AMOUNT_OF_COLUMNS - AMOUNT_OF_COLUMNS_LEFT
 	exx
 	sub	a, b
 	exx
