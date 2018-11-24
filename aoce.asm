@@ -31,7 +31,7 @@ DeleteAoCEProg:
 AlreadyInstalled:
 	db	"AoCE already installed,   please delete app to      reinstall", 0
 	
-	app_start "AoCE", "(C) 2018 Peter Tillema", AOCE_VERSION, 1
+	app_start "AoCE", "(C) 2019 Peter Tillema", AOCE_VERSION, 1
 
 	call	_HomeUp
 	call	_ClrLCDFull
