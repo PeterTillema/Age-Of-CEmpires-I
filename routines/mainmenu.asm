@@ -84,10 +84,7 @@ EraseArea:
 	ld	l, 0
 	push	hl
 	call	_FillRectangle_NoClip
-	pop	hl
-	pop	hl
-	pop	hl
-	pop	hl
+	pop	hl, hl, hl, hl
 	ret
     
 SelectMenu:
@@ -106,10 +103,7 @@ SelectLoop:
 	ld	hl, pointer_compressed_offset
 	call	dzx7_Turbo
 	call	_Sprite_NoClip
-	pop	hl
-	pop	hl
-	pop	hl
-	pop	bc
+	pop	hl, hl, hl, bc
 	ld	b, c
 KeyLoop:
 	call	GetKeyAnyFast
@@ -151,11 +145,7 @@ EraseCursor:
 	ld	hl, 10
 	push	hl
 	call	_FillRectangle_NoClip
-	pop	hl
-	pop	hl
-	pop	hl
-	pop	hl
-	pop	bc
+	pop	hl, hl, hl, hl, bc
 	jr	SelectLoop
 	
 GetHelp1:

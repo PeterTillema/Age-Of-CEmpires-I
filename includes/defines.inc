@@ -7,6 +7,7 @@ AMOUNT_OF_COLUMNS_LEFT      = 4
 AMOUNT_OF_ROWS              = 35
 TILE_WIDTH                  = 32
 TILE_HEIGHT                 = 16
+TILE_WIDTH_HALF             = TILE_WIDTH / 2
 TILE_HEIGHT_HALF            = TILE_HEIGHT / 2
 SCROLL_SPEED                = 4
 
@@ -40,6 +41,7 @@ kpRight                     = 2
 kpDown                      = 0
 kpClear                     = 6
 kpEnter                     = 0
+kpMode                      = 6
 
 ;;; Tiles
 TILE_EMPTY                  = 0

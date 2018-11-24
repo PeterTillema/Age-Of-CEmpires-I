@@ -25,7 +25,7 @@ DrawField:
 	ld	d, lcdWidth / 2
 	mlt	de
 	ld	a, (OFFSET_X)
-	sub	a, TILE_WIDTH * AMOUNT_OF_COLUMNS_LEFT - (TILE_WIDTH / 2 - 1)	; We start at column 17 (bottom right pixel), but 4 tiles to the left
+	sub	a, TILE_WIDTH * AMOUNT_OF_COLUMNS_LEFT - (TILE_WIDTH_HALF - 1)	; We start at column 17 (bottom right pixel), but 4 tiles to the left
 	sbc	hl, hl
 	ld	l, a
 	add	hl, de
@@ -174,7 +174,7 @@ OffsetX_SMC1 = $+1
 	bit	0, c
 	jr	nz, .jump
 	bit	4, e
-	ld	e, TILE_WIDTH / 2
+	ld	e, TILE_WIDTH_HALF
 	add	hl, de
 	jr	z, .jump
 	sla	e
@@ -284,7 +284,7 @@ OffsetX_SMC2 = $+1
 	bit	0, c
 	jr	nz, .jump
 	bit	4, e
-	ld	e, TILE_WIDTH / 2
+	ld	e, TILE_WIDTH_HALF
 	add	hl, de
 	jr	z, .jump
 	sla	e
@@ -446,10 +446,10 @@ StopDisplayTiles:
 	ld	hl, DrawScreenBorderStart
 	ld	bc, DrawScreenBorderEnd - DrawScreenBorderStart
 	ldir
-	ld	de, (currDrawingBuffer)			; Display food, wood, stone etc placeholder
-	ld	hl, resources_offset
+	ld	hl, (currDrawingBuffer)			; Display food, wood, stone etc placeholder
 	ld	bc, resources_width * resources_height
-	ldir
+	add	hl, bc
+	ex	de, hl
 	ld	hl, blackBuffer				; Display the right and left black edge
 	ld	b, (lcdWidth * 13 + TILE_WIDTH) shr 8
 	jp	mpShaData
@@ -791,7 +791,7 @@ OffsetY_SMC3 = $+1
 	sub	a, b
 	exx
 	ld	e, a
-	ld	d, TILE_WIDTH / 2
+	ld	d, TILE_WIDTH_HALF
 	mlt	de
 	add	hl, de
 	add	hl, de
@@ -804,7 +804,7 @@ OffsetX_SMC3 = $+1
 	bit	0, c
 	jr	nz, .jump
 	bit	4, e
-	ld	e, TILE_WIDTH / 2
+	ld	e, TILE_WIDTH_HALF
 	add	hl, de
 	jr	z, .jump
 	sla	e
@@ -812,11 +812,10 @@ OffsetX_SMC3 = $+1
 .jump:	
 	push	hl
 	call	_RLETSprite
-	pop	hl
-	pop	hl
-	pop	hl
-	pop	hl
-	pop	bc
+	ld	hl, 9
+	add	hl, sp
+	ld	sp, hl
+	pop	hl, bc
 	inc	hl
 	inc	hl
 	inc	hl

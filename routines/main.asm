@@ -1,6 +1,7 @@
 relocate AoCE_RAM, AOCE_RAM_START + RAM_SIZE + AppDataEnd - AppDataStart, 100000
 
 MainGameLoop:
+MainGameLoopPtr = $+1
 	jp	DrawField
 MainGameContinue:
 	call	DrawGame
@@ -13,7 +14,8 @@ MainGameContinue:
 	add	hl, de
 	jr	nz, .jump
 	ld	hl, screenBuffer
-.jump:	ld	(currDrawingBuffer), de
+.jump:
+	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
 	
 ; Set the bit to wait for the LCD to be updated; meanwhile we do all the calculations, maybe then it already has been swapped and we don't need to wait anymore
@@ -95,6 +97,19 @@ CheckClearEnter:
 	ld	l, 01Ch
 	bit	kpClear, (hl)
 	ret	nz
+; Check [MODE] switch
+	ld	l, 012h
+	bit	kpMode, (hl)
+	jr	z, CheckStop
+	ld	de, DrawField
+	ld	hl, (MainGameLoopPtr)
+	or	a, a
+	sbc	hl, de
+	add	hl, de
+	jr	nz, .jump
+	ld	de, DrawGUI
+.jump:
+	ld	(MainGameLoopPtr), de
 	;bit	kpEnter, (hl)
 	;jr	z, CheckReleaseEnterKey
 	;bit	holdDownEnterKey, (AoCEFlags1)
@@ -111,7 +126,7 @@ CheckClearEnter:
 	;res	holdDownEnterKey, (AoCEFlags1)
 	;jr	z, CheckStop
 ;ParseSelectedArea:
-;CheckStop:
+CheckStop:
 	ld	hl, mpLcdRis
 .wait:
 	bit	2, (hl)
@@ -131,7 +146,8 @@ ScrollFieldRight:
 	ld	de, (TopLeftYTile)
 	dec	de
 	ld	(TopLeftYTile), de
-.jump:	sub	a, SCROLL_SPEED
+.jump:
+	sub	a, SCROLL_SPEED
 	and	a, TILE_WIDTH - 1
 	jr	ScrollFieldLeftRightRoutine
 
@@ -157,7 +173,7 @@ ScrollFieldLeftRightRoutine:
 	jr	z, .jump
 	neg
 	ld	c, jr_nz
-.jump:	
+.jump:
 	ld	(TopRowLeftOrRight), a
 	ld	a, c
 	ld	(IncrementRowXOrNot1), a
@@ -186,24 +202,24 @@ ScrollFieldDown:
 	ld	de, (TopLeftYTile)
 	inc	de
 	ld	(TopLeftYTile), de
-.jump:	sub	a, SCROLL_SPEED
+.jump:
+	sub	a, SCROLL_SPEED
 	and	a, TILE_HEIGHT - 1
 ScrollFieldUpDownRoutine:
 	ld	(OFFSET_Y), a
+	ld	e, a
 	add	a, TILE_HEIGHT_HALF + 2
 	ld	(OffsetY_SMC2), a
 	add	a, TILE_HEIGHT_HALF - 1
 	ld	(OffsetY_SMC1), a
 	ld	(OffsetY_SMC3), a
-	sub	a, 17
-	ld	e, a
 	xor	a, a
 	ld	d, 10
 	bit	3, e
 	jr	z, .jump1
 	inc	d
 	ld	a, dec_a
-.jump1:	
+.jump1:
 	ld	(TileWhichAction), a			; Write nop/dec a to tile action
 	ld	a, d
 	ld	(TileHowManyRowsClipped), a
@@ -215,12 +231,13 @@ ScrollFieldUpDownRoutine:
 	ld	(hl), jr_
 	inc	hl
 	ld	(hl), StopDrawingTile - DrawTile_Clipped_Stop3 - 2
-.jump2:	
+.jump2:
 	ld	hl, mpKeyRange
 	ret
 	
 include 'routines/mainmenu.asm'
 include 'routines/drawGame.asm'
+include 'routines/gui.asm'
 ;include 'routines/pathfinding.asm'
 include 'routines/routines.asm'
 include 'routines/drawField.asm'

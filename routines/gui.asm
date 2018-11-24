@@ -1,0 +1,2 @@
+DrawGUI:
+	jp	MainGameContinue

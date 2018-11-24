@@ -82,8 +82,7 @@ PlaceResourceTypeLoop:
 	or	a, (hl)
 	inc	hl
 	or	a, (hl)
-	pop	hl
-	pop	de
+	pop	hl, de
 	jr	nz, DontDrawResource
 	ld	b, 3
 PlaceResource:

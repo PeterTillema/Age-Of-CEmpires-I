@@ -752,8 +752,7 @@ _rand:
 	lea	de, iy+0*4
 	ld	bc, 3*4
 	ldir
-	pop	bc
-	pop	de
+	pop	bc, de
 	ld	h, d
 	ld	l, e
 	add	hl, hl
@@ -802,11 +801,8 @@ __state:
 ; Outputs: none
 
 _SetTextXY:
-	or	a, a
-	sbc	hl, hl
-	ld	l, a
-	ld	(TextYPos_SMC), hl
-	ld	(TextXPos_SMC), de
+	ld	(TextYPos_SMC), a
+	ld	(TextXPos_SMC), bc
 	ret
 
 ;-------------------------------------------------------------------------------
@@ -870,10 +866,8 @@ _PrintStringXY:
 ; Returns: none
 
 _PrintString:
-	pop	de
-	pop	hl
-	push	hl
-	push	de
+	pop	de, hl
+	push	hl, de
 NextCharLoop:
 	ld	a, (hl)
 	or	a, a

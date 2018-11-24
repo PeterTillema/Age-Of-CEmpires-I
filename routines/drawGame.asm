@@ -1,5 +1,9 @@
 DrawGame:
-	ld	de, 17
+	ld	de, (currDrawingBuffer)			; Display food, wood, stone etc placeholder
+	ld	hl, resources_offset
+	ld	bc, resources_width * resources_height
+	ldir
+	ld	c, 17
 	ld	a, 4
 	call	_SetTextXY
 	ld	hl, (AmountOfWood)
