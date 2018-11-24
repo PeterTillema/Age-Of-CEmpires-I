@@ -465,43 +465,13 @@ FillBorderLoop:
 	add	hl, de
 	ld	(hl), c
 	ld	sp, hl
-	push	bc					; Fill with black using pushes (bc = 0, writes 3 bytes at the same time)
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
+	db	21 dup 0C5h				; Fill with black using pushes (bc = 0, writes 3 bytes at the same time)
 	dec	a
 	jr	nz, FillBorderLoop
 	ld	de, lcdWidth - TILE_WIDTH + 2
 	add	hl, de					; Clear the last row of the right edge
 	ld	sp, hl
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
-	push	bc
+	db	11 dup 0C5h
 TempSP2 = $+1
 	ld	sp, 0					; Yay, we are finally done!
 	jp	MainGameContinue

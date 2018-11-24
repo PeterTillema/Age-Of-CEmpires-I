@@ -167,6 +167,7 @@ CheckGraphicsAppvarsLoop:
 	ld	(TempSP3), hl
 	ld	(TempSP4), hl
 	ld	(TempSP5), hl
+	ld	(TempSP6), hl
 	
 ; TODO: load villager and sheep sprites, place towncenter from you and enemy
 
