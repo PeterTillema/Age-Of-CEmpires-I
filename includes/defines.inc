@@ -14,9 +14,9 @@ SCROLL_SPEED                = 4
 ;;; Variables
 MAP_SIZE                    = 128
 RESOURCE_MAX                = 200
-MAX_AMOUNT_PEOPLE           = 100
 AMOUNT_OF_TREES             = 4
 AMOUNT_OF_UNITS             = 1
+MAX_AMOUNT_PEOPLE           = 100
 MAX_AMOUNT_BUILDINGS        = 100
 UNIT_DIE_TIMEOUT            = 3000 * 32768 / 1000
 
@@ -63,48 +63,63 @@ TILE_TREE                   = 15
 TILE_BUILDING               = TILE_TREE + AMOUNT_OF_TREES
 
 ;;; Unit struct 1
-SIZEOF_UNIT_STRUCT_1        = 8
-UnitTeamLoaded              = 0
-UnitTCPPtr                  = 1
-UnitRAMPtr                  = 4
-UnitType                    = 7
+virtual at 0
+UNIT_SPRITE:
+.TEAM_LOADED                rb 1
+.TCPPTR                     rl 1
+.RAMPTR                     rl 1
+.TYPE                       rb 1
+.size := $-.
+end virtual
 
 ;;; Unit struct 2
-SIZEOF_UNIT_STRUCT_2        = 14
-UnitIndex                   = 0
-UnitTeam                    = 1
-UnitEvent                   = 2
-UnitHealth                  = 3
-UnitHitpoints               = 4
-UnitPath                    = 5
-UnitNext                    = 8
-UnitOffsetX                 = 9
-UnitOffsetY                 = 10
-UnitPrev                    = 11
-UnitX                       = 12
-UnitY                       = 13
+virtual at 0
+UNIT_ENTRY:
+.INDEX                      rb 1
+.TEAM                       rb 1
+.EVENT                      rb 1
+.HEALTH                     rb 1
+.HITPOINTS                  rb 1
+.PATH                       rl 1
+.NEXT                       rb 1
+.OFFSET_X                   rb 1
+.OFFSET_Y                   rb 1
+.PREV                       rb 1
+.X                          rb 1
+.Y                          rb 1
+.size := $-.
+end virtual
 
-;;; Building struct 1
-SIZEOF_BUILDING_STRUCT_1    = 8
-BuildingTeamLoaded          = 0
-BuildingRAMPtr              = 1
-BuildingTCPPtr              = 4
-BuildingType                = 7
+
+virtual at 0
+BUILDING_SPRITE:
+.TEAM_LOADED                rb 1
+.TCPPTR                     rl 1
+.RAMPTR                     rl 1
+.TYPE                       rb 1
+.size := $-.
+end virtual
 
 ;;; Building struct 2
-SIZEOF_BUILDING_STRUCT_2    = 6
-BuildingIndex               = 0
-BuildingTeam                = 1
-BuildingHealth              = 2
-BuildingHitpoints           = 3       ; Useful for towers and castle
-BuildingX                   = 4
-BuildingY                   = 5
+virtual at 0
+BUILDING_ENTRY:
+.INDEX                      rb 1
+.TEAM                       rb 1
+.HEALTH                     rb 1
+.HITPOINTS                  rb 1
+.X                          rb 1
+.Y                          rb 1
+.size := $-.
+end virtual
 
 ;;; Schedule event struct
-SIZEOF_SCHEDULING_EVENT     = 8
-SchedulingEventPointer      = 0
-SchedulingEventUnit         = 3
-SchedulingEventTime         = 4
+virtual at 0
+EVENT:
+.POINTER                    dl 0
+.UNIT                       db 0
+.TIME                       rb 4
+.size := $-.
+end virtual
 
 ;;; Flags
 holdDownEnterKey            = 0

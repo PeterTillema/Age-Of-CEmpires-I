@@ -208,13 +208,13 @@ DisplayBuilding:
 TempSP4 = $+1
 	ld	sp, 0
 	ld	(BackupIY3), iy
-	ld	hl, (BuildingsStackPtr)
+	ld	hl, BuildingsStack
 	ld	c, a
-	ld	b, SIZEOF_BUILDING_STRUCT_2
+	ld	b, BUILDING_ENTRY.size
 	mlt	bc
 	add	hl, bc
 	ld	c, (hl)					; C = building index
-	ld	b, SIZEOF_BUILDING_STRUCT_1
+	ld	b, BUILDING_SPRITE.size
 	mlt	bc
 	inc	hl
 	ld	a, (hl)					; A = which team to load
@@ -227,23 +227,26 @@ TempSP4 = $+1
 ; 1        0      Dec
 ; 1        1      Nothing
 
-	cp	a, (iy + BuildingTeamLoaded)		; Eventually swap teamcolors
+	cp	a, (iy + BUILDING_SPRITE.TEAM_LOADED)		; Eventually swap teamcolors
 	jr	z, NoBuildingTeamColorsSwap
 	ld	a, iyh
 	ld	(IYH_SMC1), a
 	jr	nc, .inc
-.dec:	dec	(iy + BuildingTeamLoaded)
+.dec:
+	dec	(iy + BUILDING_SPRITE.TEAM_LOADED)
 	call	TeamColorsToDec
 	jr	.ins
-.inc:	inc	(iy + BuildingTeamLoaded)
+.inc:
+	inc	(iy + BUILDING_SPRITE.TEAM_LOADED)
 	call	TeamColorsToInc
-.ins:	ld	hl, (iy + BuildingRAMPtr)
-	ld	de, (iy + BuildingTCPPtr)
+.ins:
+	ld	hl, (iy + BUILDING_SPRITE.RAMPTR)
+	ld	de, (iy + BUILDING_SPRITE.TCPPTR)
 	call	IncTeamColors
 IYH_SMC1 = $+2
 	ld	iyh, 3
 NoBuildingTeamColorsSwap:
-	ld	hl, (iy + BuildingRAMPtr)
+	ld	hl, (iy + BUILDING_SPRITE.RAMPTR)
 	push	hl					; Sprite struct
 	ld	a, (hl)					; A = building_width
 	srl	a
@@ -615,11 +618,11 @@ TempSP5 = $+1
 	ld	hl, UnitsPerTile
 FindNextUnit:
 	ld	e, a
-	ld	d, SIZEOF_UNIT_STRUCT_2
+	ld	d, UNIT_ENTRY.size
 	mlt	de
-	ld	iy, (UnitsStackPtr)
+	ld	iy, UnitsStack
 	add	iy, de
-	ld	de, (iy + UnitNext)
+	ld	de, (iy + UNIT_ENTRY.NEXT)
 	ld	c, e					; C is next unit
 	ld	e, a
 	ld	(hl), de
@@ -678,13 +681,13 @@ DisplayUnitLoop:
 	push	bc
 	push	hl
 	ld	c, (hl)					; Unit index
-	ld	b, SIZEOF_UNIT_STRUCT_2
+	ld	b, UNIT_ENTRY.size
 	mlt	bc
-	ld	iy, (UnitsStackPtr)
+	ld	iy, UnitsStack
 	add	iy, bc					; Pointer to unit struct in game
-	ld	a, (iy + UnitTeam)
-	ld	c, (iy + UnitIndex)
-	ld	b, SIZEOF_UNIT_STRUCT_1
+	ld	a, (iy + UNIT_ENTRY.TEAM)
+	ld	c, (iy + UNIT_ENTRY.INDEX)
+	ld	b, UNIT_SPRITE.size
 	mlt	bc
 	ld	ix, UnitsLoaded
 	add	ix, bc					; Pointer to unit struct in RAM
@@ -695,30 +698,33 @@ DisplayUnitLoop:
 ; 1        0      Dec
 ; 1        1      Nothing
 
-	cp	a, (ix + UnitTeamLoaded)
+	cp	a, (ix + UNIT_SPRITE.TEAM_LOADED)
 	jr	z, NoUnitTeamColorsSwap
 	ld	a, iyh
 	ld	(IYH_SMC2), a
 	jr	nc, .inc
-.dec:	dec	(ix + UnitTeamLoaded)
+.dec:
+	dec	(ix + UNIT_SPRITE.TEAM_LOADED)
 	call	TeamColorsToDec
 	jr	.ins
-.inc:	inc	(ix + UnitTeamLoaded)
+.inc:
+	inc	(ix + UNIT_SPRITE.TEAM_LOADED)
 	call	TeamColorsToInc
-.ins:	ld	hl, (ix + UnitRAMPtr)
-	ld	de, (ix + UnitTCPPtr)
+.ins:
+	ld	hl, (ix + UNIT_SPRITE.RAMPTR)
+	ld	de, (ix + UNIT_SPRITE.TCPPTR)
 	call	IncTeamColors
 	ld	b, 0
 IYH_SMC2 = $+2
 	ld	iyh, 0
 NoUnitTeamColorsSwap:
-	ld	c, (ix + UnitType)
+	ld	c, (ix + UNIT_SPRITE.TYPE)
 	ld	hl, UnitsSpritesPointersTable		; Get the table per unit
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
 	ld	hl, (hl)				; Pointer to table with sprites per unit
-	ld	c, (iy + UnitEvent)
+	ld	c, (iy + UNIT_ENTRY.EVENT)
 	add	hl, bc					; sizeof(uint) = 5
 	add	hl, bc
 	add	hl, bc
@@ -728,7 +734,7 @@ NoUnitTeamColorsSwap:
 	ldi
 	ldi
 	ld	hl, (hl)				; Sprite offset
-	ld	bc, (ix + UnitRAMPtr)
+	ld	bc, (ix + UNIT_SPRITE.RAMPTR)
 	add	hl, bc					; Pointer to sprite
 	push	hl
 	ex	af, af'
@@ -744,8 +750,8 @@ NoUnitTeamColorsSwap:
 OffsetY_SMC3 = $+1
 	ld	de, 17
 	add	hl, de
-	ld	a, (iy + UnitOffsetX)			; Coordinates in isometric tile = (X+Y)/2
-	ld	b, (iy + UnitOffsetY)
+	ld	a, (iy + UNIT_ENTRY.OFFSET_X)		; Coordinates in isometric tile = (X+Y)/2
+	ld	b, (iy + UNIT_ENTRY.OFFSET_Y)
 	add	a, b
 	rra
 	ld	e, a
@@ -754,7 +760,7 @@ OffsetY_SMC3 = $+1
 	ld	e, a
 	sbc	hl, de
 	push	hl
-	ld	a, (iy + UnitOffsetX)			; Coordinates in isometric tile = X-Y
+	ld	a, (iy + UNIT_ENTRY.OFFSET_X)		; Coordinates in isometric tile = X-Y
 	sub	a, b
 	sbc	hl, hl
 	ld	l, a

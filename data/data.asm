@@ -14,33 +14,31 @@ AmountOfBuildings:
 	db	0
 MapDataPtr:
 	dl	0
-SchedulingEventsBase:
-	dl	0
-SchedulingEventsPtr:
-	dl	0
+SchedulingEvents:
+	rb	MAX_AMOUNT_PEOPLE * 2 * EVENT.size
+AmountOfEvents:
+	db	0
 TempUnitData:
 	db	0
 	db	0
-AmountOfEvents:
-	db	0
 	
-BuildingsStackPtr:
+BuildingsStack:
+	rb	MAX_AMOUNT_BUILDINGS * 2 * BUILDING_ENTRY.size
+BuildingsSpritesBase:					; Pointer to the end of AoCE which is the start of dynamically loading buildings
 	dl	0
-BuildingsSpritesBase:
-	dl	0
-BuildingsSpritesPtr:
+BuildingsSpritesPtr:					; Pointer to the end of all the building sprites
 	dl	0
 BuildingsLoaded:
-	rb	SIZEOF_BUILDING_STRUCT_1 * 18
+	rb	BUILDING_SPRITE.size * 18
 	
-UnitsStackPtr:						; Pointer to the allocated memory for all the 200 units
-	dl	0
+UnitsStack:
+	rb	MAX_AMOUNT_PEOPLE * 2 * UNIT_ENTRY.size
 UnitsSpritesBase:					; Pointer to the loaded graphics start
 	dl	0
 UnitsSpritesPtr:					; Pointer to the loaded graphics end
 	dl	0
 UnitsLoaded:						; Stack with which unit is loaded in RAM (graphics)
-	rb	SIZEOF_UNIT_STRUCT_1 * 22
+	rb	UNIT_SPRITE.size * 22
 UnitsActive:						; A list with all the active units or not
 	rb	MAX_AMOUNT_PEOPLE * 2
 	

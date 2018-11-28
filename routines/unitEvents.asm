@@ -40,10 +40,10 @@ UnitWalk83:
 	ret
 	
 RemoveUnitFromTile:
-	ld	ix, (UnitsStackPtr)
+	ld	ix, UnitsStack
 	ld	c, a					; C = unit index
 	ld	e, a					; E = unit index
-	ld	b, SIZEOF_UNIT_STRUCT_2
+	ld	b, UNIT_ENTRY.size
 	mlt	bc
 	add	ix, bc
 	ld	hl, UnitsActive				; Set unit inactive
@@ -51,12 +51,12 @@ RemoveUnitFromTile:
 	ld	b, 0
 	add	hl, bc
 	dec	(hl)
-	ld	c, (ix + UnitY)
+	ld	c, (ix + UNIT_ENTRY.Y)
 	ld	b, MAP_SIZE
 	mlt	bc
 	ld	hl, (MapDataPtr)
 	add	hl, bc
-	ld	c, (ix + UnitX)
+	ld	c, (ix + UNIT_ENTRY.X)
 	ld	b, 0
 	add	hl, bc
 	
@@ -70,22 +70,22 @@ RemoveUnitFromTile:
 ;       255 : Set 255 as UnitNext of unit X
 ;       Y   : Set UnitPrev of unit Y to X, set UnitNext of unit X to unit Y
 
-	ld	a, (ix + UnitPrev)
+	ld	a, (ix + UNIT_ENTRY.PREV)
 	cp	a, 255
 	jr	nz, ChangeUnitNext
 ; UnitPrev = 255
-	ld	c, (ix + UnitNext)
+	ld	c, (ix + UNIT_ENTRY.NEXT)
 	inc	c
 	jr	z, RemoveUnitFromMap
 ; UnitNext = X
 	dec	c					; Set mapa data to unit X
 	inc	hl
 	ld	(hl), c
-	ld	b, SIZEOF_UNIT_STRUCT_2			; Set 255 as UnitPrev of unit X
+	ld	b, UNIT_ENTRY.size			; Set 255 as UnitPrev of unit X
 	mlt	bc
-	ld	ix, (UnitsStackPtr)
+	ld	ix, UnitsStack
 	add	ix, bc
-	ld	(ix + UnitPrev), 255
+	ld	(ix + UNIT_ENTRY.PREV), 255
 	ret
 RemoveUnitFromMap:
 ; UnitNext = 255
@@ -95,22 +95,22 @@ RemoveUnitFromMap:
 	ret
 ChangeUnitNext:						; A = UnitPrev
 ; UnitPrev = X
-	ld	e, (ix + UnitNext)
+	ld	e, (ix + UNIT_ENTRY.NEXT)
 	ld	c, a
-	ld	b, SIZEOF_UNIT_STRUCT_2
+	ld	b, UNIT_ENTRY.size
 	mlt	bc
-	ld	ix, (UnitsStackPtr)
-	lea	hl, ix + UnitNext
+	ld	ix, UnitsStack
+	lea	hl, ix + UNIT_ENTRY.NEXT
 	add	hl, bc
 	ld	(hl), e
 	inc	e
 	ret	z
 ; UnitNext = Y
 	dec	e
-	ld	d, SIZEOF_UNIT_STRUCT_2
+	ld	d, UNIT_ENTRY.size
 	mlt	de
-	ld	ix, (UnitsStackPtr)
+	ld	ix, UnitsStack
 	add	ix, de
-	ld	(ix + UnitPrev), a
+	ld	(ix + UNIT_ENTRY.PREV), a
 	ret
 	

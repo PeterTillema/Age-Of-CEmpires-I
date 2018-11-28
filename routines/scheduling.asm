@@ -7,20 +7,24 @@ RegisterEvent:
 ;   UHL = time offset
 	exx
 	ld	hl, AmountOfEvents
+	ld	e, (hl)
+	ld	d, EVENT.size
+	mlt	de
 	inc	(hl)
-	ld	iy, (SchedulingEventsPtr)
-	lea	hl, iy + SIZEOF_SCHEDULING_EVENT
+	ld	iy, SchedulingEvents
+	add	iy, de
+	lea	hl, iy + EVENT.size
 	exx
-	ld	(iy + SchedulingEventPointer), bc
-	ld	(iy + SchedulingEventUnit), a
+	ld	(iy + EVENT.POINTER), bc
+	ld	(iy + EVENT.UNIT), a
 	ld	bc, (mpTmr1Counter)			; Add offset to current time
 	ld	a, (mpTmr1Counter + 3)
 	add	hl, bc
 	adc	a, 0
-	ld	(iy + SchedulingEventTime), hl
-	ld	(iy + SchedulingEventTime + 3), a
+	ld	(iy + EVENT.TIME), hl
+	ld	(iy + EVENT.TIME + 3), a
 	exx
-	ld	(SchedulingEventsPtr), hl
+	ld	(SchedulingEvents), hl
 	ret
 
 CheckAllEvents:
@@ -28,13 +32,13 @@ CheckAllEvents:
 	or	a, a
 	ret	z
 	ld	d, a
-	ld	iy, (SchedulingEventsBase)
+	ld	iy, SchedulingEvents
 	ld	hl, (mpTmr1Counter)
 	ld	a, (mpTmr1Counter + 3)
 	ld	e, a
 CheckEventLoop:
-	ld	bc, (iy + SchedulingEventTime)		; EUHL = current time
-	ld	a, (iy + SchedulingEventTime + 3)	; AUBC = event time
+	ld	bc, (iy + EVENT.TIME)			; EUHL = current time
+	ld	a, (iy + EVENT.TIME + 3)		; AUBC = event time
 	cp	a, e					; If AUBC <= EUHL, do event, so    A<E or (A=E and BC<=HL)
 	jr	z, CheckBCHL				; A=E -> check BC >= HL
 	jr	c, DoEvent				; A<E -> do event
@@ -45,8 +49,8 @@ CheckBCHL:
 	jr	c, CheckNextEvent			; BC>=HL -> no event
 DoEvent:
 	exx						; D' = event index
-	ld	hl, (iy + SchedulingEventPointer)
-	ld	a, (iy + SchedulingEventUnit)
+	ld	hl, (iy + EVENT.POINTER)
+	ld	a, (iy + EVENT.UNIT)
 	call	JumpHL
 	ld	a, (AmountOfEvents)
 	dec	a
@@ -59,14 +63,14 @@ DoEvent:
 	ld	ixl, d
 	exx
 	ld	c, a
-	ld	b, SIZEOF_SCHEDULING_EVENT
+	ld	b, EVENT.size
 	mlt	bc
-	ld	hl, (SchedulingEventsBase)
+	ld	hl, SchedulingEvents
 	add	hl, bc
 	ex	de, hl
-	ld	hl, (SchedulingEventsBase)
+	ld	hl, SchedulingEvents
 	add	hl, bc
-	ld	bc, SIZEOF_SCHEDULING_EVENT
+	ld	bc, EVENT.size
 	add	hl, bc
 	ld	b, ixl
 	mlt	bc
@@ -75,7 +79,7 @@ DoEvent:
 .noremove:
 	inc	d
 CheckNextEvent:
-	lea	iy, iy + SIZEOF_SCHEDULING_EVENT
+	lea	iy, iy + EVENT.size
 	dec	d
 	jr	nz, CheckEventLoop
 	ret

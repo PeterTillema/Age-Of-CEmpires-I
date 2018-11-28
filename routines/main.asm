@@ -25,10 +25,10 @@ MainGameContinue:
 ; Check all the events of the units
 	ld	a, (AmountOfPeople)
 	ld	b, a
-	ld	iy, (UnitsStackPtr)
+	ld	iy, UnitsStack
 DoUnitEventLoop:
 	push	bc
-	ld	c, (iy + UnitEvent)
+	ld	c, (iy + UNIT_ENTRY.EVENT)
 	ld	b, 3
 	mlt	bc
 	ld	hl, UnitsEventsTable
@@ -36,7 +36,7 @@ DoUnitEventLoop:
 	ld	hl, (hl)
 	call	JumpHL
 	pop	bc
-	lea	iy, iy + SIZEOF_UNIT_STRUCT_2
+	lea	iy, iy + UNIT_ENTRY.size
 	djnz	DoUnitEventLoop
 	
 ; Scheduling

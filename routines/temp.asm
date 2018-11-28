@@ -17,13 +17,13 @@ FillScreenPink:
 PlaceTempBuildings:
 	ld	a, 5
 	ld	e, 2
-	ld	hl, 0
+	ld	hl, 0;barracks_1_offset
 	call	LoadBuildingDynamically
-	ld	hl, (BuildingsStackPtr)
+	ld	hl, BuildingsStack
 	ld	(hl), 5
 	inc	hl
 	ld	(hl), 0
-	ld	de, SIZEOF_BUILDING_STRUCT_2 - 1
+	ld	de, BUILDING_ENTRY.size - 1
 	add	hl, de
 	ld	(hl), 5
 	inc	hl
@@ -35,9 +35,9 @@ PlaceTempBuildings:
 	ret
 	
 PlaceTempUnits:
-	ld	de, (UnitsStackPtr)
+	ld	de, UnitsStack
 	ld	hl, TempUnitsData
-	ld	bc, SIZEOF_UNIT_STRUCT_2 * 3
+	ld	bc, UNIT_ENTRY.size * 3
 	ldir
 	ld	hl, (MapDataPtr)
 	ld	(hl), TILE_UNIT_GRASS

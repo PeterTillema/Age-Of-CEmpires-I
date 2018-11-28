@@ -629,7 +629,7 @@ LoadBuildingDynamically:
 	ld	(BuildingsSpritesPtr), hl
 	ld	e, iyh
 	ld	c, e
-	ld	b, SIZEOF_BUILDING_STRUCT_1
+	ld	b, BUILDING_SPRITE.size
 	mlt	bc
 	ld	iy, BuildingsLoaded
 	add	iy, bc
@@ -638,11 +638,11 @@ LoadBuildingDynamically:
 	inc	hl
 	ld	b, (hl)
 	inc	hl
-	ld	(iy + BuildingTeamLoaded), 0
-	ld	(iy + BuildingRAMPtr), hl
+	ld	(iy + BUILDING_SPRITE.TEAM_LOADED), 0
+	ld	(iy + BUILDING_SPRITE.RAMPTR), hl
 	add	hl, bc
-	ld	(iy + BuildingTCPPtr), hl
-	ld	(iy + BuildingType), e
+	ld	(iy + BUILDING_SPRITE.TCPPTR), hl
+	ld	(iy + BUILDING_SPRITE.TYPE), e
 	ret
 	
 ;-------------------------------------------------------------------------------
@@ -664,7 +664,7 @@ LoadUnitDynamically:
 	ld	d, 3
 	mlt	de
 	add	iy, de
-	ld	(iy + UnitType), a
+	ld	(iy + UNIT_SPRITE.TYPE), a
 	ld	de, (BuildingsSpritesPtr)
 	push	de
 	call	dzx7_Turbo					; HL = pointer to byte after uncompressed data
@@ -684,10 +684,10 @@ LoadUnitDynamically:
 	inc	hl
 	ld	b, (hl)
 	inc	hl
-	ld	(iy + UnitTeamLoaded), 0			; Set the unit struct
-	ld	(iy + UnitRAMPtr), hl
+	ld	(iy + UNIT_SPRITE.TEAM_LOADED), 0			; Set the unit struct
+	ld	(iy + UNIT_SPRITE.RAMPTR), hl
 	add	hl, bc
-	ld	(iy + UnitTCPPtr), hl
+	ld	(iy + UNIT_SPRITE.TCPPTR), hl
 	ret
 	
 ;-------------------------------------------------------------------------------

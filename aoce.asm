@@ -4,8 +4,8 @@ AOCE_VERSION := "1.0.0"
 include 'includes/ez80.inc'
 include 'includes/ti84pceg.inc'
 include 'includes/tiformat.inc'
-include 'includes/defines.inc'
 include 'includes/macros.inc'
+include 'includes/defines.inc'
 include 'includes/symbol_table.inc'
 
 ; Make AoCE an app
@@ -116,16 +116,7 @@ CheckGraphicsAppvarsLoop:
 	ld	hl, (AOCE_RAM_START + 3)
 	ld	bc, foundation_11_offset
 	ldir
-	ld	(BuildingsStackPtr), de
-	ld	hl, MAX_AMOUNT_BUILDINGS * 2 * SIZEOF_BUILDING_STRUCT_2
-	add	hl, de
-	ld	(UnitsStackPtr), hl
-	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_UNIT_STRUCT_2
-	add	hl, de
-	ld	(SchedulingEventsBase), hl
-	ld	(SchedulingEventsPtr), hl
-	ld	de, MAX_AMOUNT_PEOPLE * 2 * SIZEOF_SCHEDULING_EVENT
-	add	hl, de
+	ex	de, hl
 	ld	(BuildingsSpritesBase), hl
 	ld	(BuildingsSpritesPtr), hl
 	ld	hl, vRAM - (stackTop - stackBot)
