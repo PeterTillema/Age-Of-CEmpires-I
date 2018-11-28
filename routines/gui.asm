@@ -1,13 +1,17 @@
 DrawGUI:
-	ld	de, 0
-	ld	b, 240
+	ld	de, 0					; Black
+	ld	b, 225
 	ld	hl, (currDrawingBuffer)
 	ld	sp, lcdWidth * lcdHeight
 	add	hl, sp
 	ld	sp, hl
-.fill:
-	db	100 dup 0D5h				; push de
-	djnz	.fill					; 240*100*3 = lcdWidth * (lcdHeight - resources_height)
+	ld	hl, 0010101h				; White
+.fill:							; (53 * 3) + 3 - 1 + (53 * 3) = lcdWidth
+	db	53 dup 0D5h				; push de
+	push	hl
+	inc	sp
+	db	53 dup 0D5h				; push de
+	djnz	.fill
 	
 TempSP6 = $+1
 	ld	sp, 0					; Yay, we are finally done!

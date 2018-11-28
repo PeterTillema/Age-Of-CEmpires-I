@@ -639,10 +639,12 @@ SortUnits:
 	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
 	ld	c, a					; C = unit index [1,X]
 	ld	iy, UnitsPerTile + 3			; IY = pointer to current element
-.loop1:	ld	hl, (iy)				; HL = current element
+.loop1:	
+	ld	hl, (iy)				; HL = current element
 	lea	ix, iy-3				; IX = pointer to test element
 	ld	c, a
-.loop2:	ld	de, (ix)				; DE = test element
+.loop2:	
+	ld	de, (ix)				; DE = test element
 	or	a, a					; Compare elements
 	sbc	hl, de
 	add	hl, de
@@ -651,14 +653,14 @@ SortUnits:
 	lea	ix, ix-3				; Decrease test pointer
 	dec	c					; Loop through all the remaining units
 	jr	nz, .loop2
-.ins:	ld	(ix+3), hl				; Insert the current element in the right position
+.ins:	
+	ld	(ix+3), hl				; Insert the current element in the right position
 	lea	iy, iy+3				; Increment current element pointer
 	inc	a					; Loop through all the units
 	djnz	.loop1
 	
 ;---------------------------------------------------------------------------------------------------------------------------------
 DisplayAllUnits:
-	
 ; Inputs:
 ;   A  = amount of units
 ;   A' = row index
