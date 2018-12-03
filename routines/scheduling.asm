@@ -14,6 +14,7 @@ RegisterEvent:
 	ld	iy, SchedulingEvents
 	add	iy, de
 	lea	hl, iy + EVENT.size
+	ld	(SchedulingEvents), hl
 	exx
 	ld	(iy + EVENT.POINTER), bc
 	ld	(iy + EVENT.UNIT), a
@@ -23,8 +24,6 @@ RegisterEvent:
 	adc	a, 0
 	ld	(iy + EVENT.TIME), hl
 	ld	(iy + EVENT.TIME + 3), a
-	exx
-	ld	(SchedulingEvents), hl
 	ret
 
 CheckAllEvents:
@@ -39,10 +38,9 @@ CheckAllEvents:
 CheckEventLoop:
 	ld	bc, (iy + EVENT.TIME)			; EUHL = current time
 	ld	a, (iy + EVENT.TIME + 3)		; AUBC = event time
-	cp	a, e					; If AUBC <= EUHL, do event, so    A<E or (A=E and BC<=HL)
-	jr	z, CheckBCHL				; A=E -> check BC >= HL
+	cp	a, e					; If AUBC <= EUHL, do event, so A<E or (A=E and BC<=HL)
 	jr	c, DoEvent				; A<E -> do event
-	jr	CheckNextEvent				; A>E -> no event
+	jr	nz, CheckNextEvent			; A=E -> check BC <= HL
 CheckBCHL:
 	sbc	hl, bc
 	add	hl, bc
