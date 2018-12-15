@@ -102,6 +102,34 @@ BuildingsAge4:
 	dl	university_4_compressed_offset		; 16
 	dl	btower_4_compressed_offset		; 17
 	
+IconsTable1:
+	dl	icon_house_offset
+	dl	icon_mill_offset
+	dl	icon_farm_offset
+	dl	icon_miningcamp_offset
+	dl	icon_lumbercamp_offset
+	dl	icon_blacksmith_offset
+	dl	icon_monastery_offset
+	dl	icon_siege_offset
+	dl	icon_market_offset
+	dl	icon_university_offset
+	dl	icon_towncenter_offset
+	
+IconsTable2:
+	dl	icon_outpost_offset
+	dl	icon_barracks_offset
+	dl	icon_archery_offset
+	dl	icon_stable_offset
+	dl	icon_tower_offset
+	dl	icon_castle_offset
+	dl	icon_btower_offset
+	
+IconsTableAges:
+	db	5, 2
+	db	7, 5
+	db	10, 6
+	db	11, 7
+	
 UnitsSpritesPointersTable:
 	dl	UnitArbalest
 	dl	UnitArcher
