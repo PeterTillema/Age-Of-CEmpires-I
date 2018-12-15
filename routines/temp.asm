@@ -19,7 +19,7 @@ PlaceTempBuildings:
 	ld	e, 2
 	ld	hl, 0;barracks_1_offset
 	call	LoadBuildingDynamically
-	ld	hl, BuildingsStack
+	ld	hl, buildings_stack
 	ld	(hl), 5
 	inc	hl
 	ld	(hl), 0
@@ -28,18 +28,18 @@ PlaceTempBuildings:
 	ld	(hl), 5
 	inc	hl
 	ld	(hl), 1
-	ld	hl, (MapDataPtr)
+	ld	hl, (map_data_ptr)
 	ld	(hl), TILE_BUILDING
 	inc	hl
 	ld	(hl), 0
 	ret
 	
 PlaceTempUnits:
-	ld	de, UnitsStack
+	ld	de, units_stack
 	ld	hl, TempUnitsData
 	ld	bc, UNIT_ENTRY.size * 3
 	ldir
-	ld	hl, (MapDataPtr)
+	ld	hl, (map_data_ptr)
 	ld	(hl), TILE_UNIT_GRASS
 	inc	hl
 	ld	(hl), 0
@@ -47,7 +47,7 @@ PlaceTempUnits:
 	ld	a, 0
 	ld	e, 6
 	call	LoadUnitDynamically
-	ld	hl, UnitsActive
+	ld	hl, units_active
 	ld	(hl), 1
 	inc	hl
 	ld	(hl), 1

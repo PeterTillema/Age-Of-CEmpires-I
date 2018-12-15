@@ -86,7 +86,7 @@ CheckGraphicsAppvarsLoop:
 	ld	(BackupSP), sp
 	call	BackupRAM
 	AoCE_RAM.copy
-	ld	(MapDataPtr), de
+	ld	(map_data_ptr), de
 	
 ; Use the moved stack
 	ld	hl, vRAM - stackTop
@@ -108,7 +108,7 @@ CheckGraphicsAppvarsLoop:
 	DrawField.copy
 	
 ; Copy the game sprites to RAM and set some pointers
-	ld	hl, (MapDataPtr)
+	ld	hl, (map_data_ptr)
 	ld	de, MAP_SIZE * MAP_SIZE * 2
 	add	hl, de
 	push	hl
@@ -117,11 +117,11 @@ CheckGraphicsAppvarsLoop:
 	ld	bc, foundation_11_offset
 	ldir
 	ex	de, hl
-	ld	(BuildingsSpritesBase), hl
-	ld	(BuildingsSpritesPtr), hl
+	ld	(buildings_sprites_base), hl
+	ld	(buildings_sprites_ptr), hl
 	ld	hl, vRAM - (stackTop - stackBot)
-	ld	(UnitsSpritesBase), hl
-	ld	(UnitsSpritesPtr), hl
+	ld	(units_sprites_base), hl
+	ld	(units_sprites_ptr), hl
 	pop	bc
 	ld	hl, RelocationTable2 + 3	; Note that "ld	bc, foundation_11_offset" adds another entry to the relocation table
 	call	ModifyRelocationTable

@@ -14,5 +14,8 @@ DrawGUI:
 	djnz	.fill
 	
 TempSP6 = $+1
-	ld	sp, 0					; Yay, we are finally done!
+	ld	sp, 0
+	ld	hl, IconsTableAges
+	call	_Sprite_NoClip
+	
 	jp	MainGameContinue

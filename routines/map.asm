@@ -46,7 +46,7 @@ PlaceResourceTypeLoop:
 	add	hl, hl
 	add	hl, hl
 	add	hl, de
-	ld	de, ResourcesType1
+	ld	de, resource_type_1
 	add	hl, de
 	push	hl
 	randInt MAP_SIZE - 2 - 2	; X
@@ -115,7 +115,7 @@ DontDrawResource:
 	jp	nz, PlaceAllResourceTypesLoop
 	
 ; All the resources are now placed, so copy them to the map data
-	ld	de, (MapDataPtr)
+	ld	de, (map_data_ptr)
 	ld	hl, screenBuffer
 	ld	ixh, MAP_SIZE
 CopyMapToNewAppvarLoop:
@@ -144,7 +144,7 @@ TileIsResource:
 LoadMap:
 	call	EraseArea
 	printString LoadingMapMessage, 5, 112
-	ld	hl, (MapDataPtr)
+	ld	hl, (map_data_ptr)
 	ld	(hl), TILE_UNIT_GRASS
 	inc	hl
 	ld	(hl), 0

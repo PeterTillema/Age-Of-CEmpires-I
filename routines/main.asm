@@ -23,9 +23,9 @@ MainGameContinue:
 	set	2, (hl)
 	
 ; Check all the events of the units
-	ld	a, (AmountOfPeople)
+	ld	a, (amount_of_people)
 	ld	b, a
-	ld	iy, UnitsStack
+	ld	iy, units_stack
 DoUnitEventLoop:
 	push	bc
 	ld	c, (iy + UNIT_ENTRY.EVENT)
@@ -43,9 +43,9 @@ DoUnitEventLoop:
 	call	CheckAllEvents
 	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	ld	hl, (AmountOfWood)
+	ld	hl, (amount_of_wood)
 	inc	hl
-	ld	(AmountOfWood), hl
+	ld	(amount_of_wood), hl
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	call	GetKeyFast
@@ -116,9 +116,9 @@ CheckClearEnter:
 	;set	holdDownEnterKey, (AoCEFlags1)
 	;jr	nz, CheckStop
 ;CreateNewSelectedArea:
-	;ld	hl, (CursorX)
+	;ld	hl, (cursor_x)
 	;ld	(SelectedAreaStartX), hl
-	;ld	l, (CursorY)
+	;ld	l, (cursor_y)
 	;ld	(SelectedAreaStartY), l
 	;jr	CheckStop
 ;CheckReleaseEnterKey:
@@ -137,33 +137,33 @@ JumpHL:
 	jp	(hl)
 
 ScrollFieldRight:
-	ld	a, (OFFSET_X)
+	ld	a, (x_offset)
 	or	a, a
 	jr	nz, .jump
-	ld	de, (TopLeftXTile)
+	ld	de, (x_start)
 	inc	de
-	ld	(TopLeftXTile), de
-	ld	de, (TopLeftYTile)
+	ld	(x_start), de
+	ld	de, (y_start)
 	dec	de
-	ld	(TopLeftYTile), de
+	ld	(y_start), de
 .jump:
 	sub	a, SCROLL_SPEED
 	and	a, TILE_WIDTH - 1
 	jr	ScrollFieldLeftRightRoutine
 
 ScrollFieldLeft:
-	ld	a, (OFFSET_X)
+	ld	a, (x_offset)
 	add	a, SCROLL_SPEED
 	and	a, TILE_WIDTH - 1
 	jr	nz, ScrollFieldLeftRightRoutine
-	ld	de, (TopLeftXTile)
+	ld	de, (x_start)
 	dec	de
-	ld	(TopLeftXTile), de
-	ld	de, (TopLeftYTile)
+	ld	(x_start), de
+	ld	de, (y_start)
 	inc	de
-	ld	(TopLeftYTile), de
+	ld	(y_start), de
 ScrollFieldLeftRightRoutine:
-	ld	(OFFSET_X), a
+	ld	(x_offset), a
 	ld	(OffsetX_SMC1), a
 	ld	(OffsetX_SMC2), a
 	ld	(OffsetX_SMC3), a
@@ -180,33 +180,33 @@ ScrollFieldLeftRightRoutine:
 	ret
 
 ScrollFieldUp:
-	ld	a, (OFFSET_Y)
+	ld	a, (y_offset)
 	add	a, SCROLL_SPEED
 	and	a, TILE_HEIGHT - 1
 	jr	nz, ScrollFieldUpDownRoutine
-	ld	de, (TopLeftXTile)
+	ld	de, (x_start)
 	dec	de
-	ld	(TopLeftXTile), de
-	ld	de, (TopLeftYTile)
+	ld	(x_start), de
+	ld	de, (y_start)
 	dec	de
-	ld	(TopLeftYTile), de
+	ld	(y_start), de
 	jr	ScrollFieldUpDownRoutine
 
 ScrollFieldDown:
-	ld	a, (OFFSET_Y)
+	ld	a, (y_offset)
 	or	a, a
 	jr	nz, .jump
-	ld	de, (TopLeftXTile)
+	ld	de, (x_start)
 	inc	de
-	ld	(TopLeftXTile), de
-	ld	de, (TopLeftYTile)
+	ld	(x_start), de
+	ld	de, (y_start)
 	inc	de
-	ld	(TopLeftYTile), de
+	ld	(y_start), de
 .jump:
 	sub	a, SCROLL_SPEED
 	and	a, TILE_HEIGHT - 1
 ScrollFieldUpDownRoutine:
-	ld	(OFFSET_Y), a
+	ld	(y_offset), a
 	ld	e, a
 	add	a, TILE_HEIGHT_HALF + 2
 	ld	(OffsetY_SMC2), a

@@ -6,15 +6,15 @@ RegisterEvent:
 ;   BC  = pointer
 ;   UHL = time offset
 	exx
-	ld	hl, AmountOfEvents
+	ld	hl, amount_of_events
 	ld	e, (hl)
 	ld	d, EVENT.size
 	mlt	de
 	inc	(hl)
-	ld	iy, SchedulingEvents
+	ld	iy, scheduling_events
 	add	iy, de
 	lea	hl, iy + EVENT.size
-	ld	(SchedulingEvents), hl
+	ld	(scheduling_events), hl
 	exx
 	ld	(iy + EVENT.POINTER), bc
 	ld	(iy + EVENT.UNIT), a
@@ -27,11 +27,11 @@ RegisterEvent:
 	ret
 
 CheckAllEvents:
-	ld	a, (AmountOfEvents)
+	ld	a, (amount_of_events)
 	or	a, a
 	ret	z
 	ld	d, a
-	ld	iy, SchedulingEvents
+	ld	iy, scheduling_events
 	ld	hl, (mpTmr1Counter)
 	ld	a, (mpTmr1Counter + 3)
 	ld	e, a
@@ -50,9 +50,9 @@ DoEvent:
 	ld	hl, (iy + EVENT.POINTER)
 	ld	a, (iy + EVENT.UNIT)
 	call	JumpHL
-	ld	a, (AmountOfEvents)
+	ld	a, (amount_of_events)
 	dec	a
-	ld	(AmountOfEvents), a
+	ld	(amount_of_events), a
 	ret	z					; No events left, so return
 	exx						; D = event index
 	dec	d					; D = amount - current event index
@@ -63,10 +63,10 @@ DoEvent:
 	ld	c, a
 	ld	b, EVENT.size
 	mlt	bc
-	ld	hl, SchedulingEvents
+	ld	hl, scheduling_events
 	add	hl, bc
 	ex	de, hl
-	ld	hl, SchedulingEvents
+	ld	hl, scheduling_events
 	add	hl, bc
 	ld	bc, EVENT.size
 	add	hl, bc

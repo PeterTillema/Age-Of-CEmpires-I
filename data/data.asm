@@ -1,94 +1,88 @@
-AmountOfWood:
-	dl	0
-AmountOfFood:
-	dl	0
-AmountOfGold:
-	dl	0
-AmountOfStone:
-	dl	0
-AmountOfPeople:
-	db	3
-AmountOfMaxPeople:
-	db	10
-AmountOfBuildings:
+age:
 	db	0
-MapDataPtr:
+amount_of_wood:
 	dl	0
-SchedulingEvents:
+amount_of_food:
+	dl	0
+amount_of_gold:
+	dl	0
+amount_of_stone:
+	dl	0
+amount_of_people:
+	dl	3
+amount_of_max_people:
+	dl	10
+amount_of_buildings:
+	db	0
+map_data_ptr:
+	dl	0
+scheduling_events:
 	rb	MAX_AMOUNT_PEOPLE * 2 * EVENT.size
-AmountOfEvents:
+amount_of_events:
 	db	0
-TempUnitData:
+temp_unit_data:
 	db	0
 	db	0
 	
-BuildingsStack:
+buildings_stack:
 	rb	MAX_AMOUNT_BUILDINGS * 2 * BUILDING_ENTRY.size
-BuildingsSpritesBase:					; Pointer to the end of AoCE which is the start of dynamically loading buildings
+buildings_sprites_base:					; Pointer to the end of AoCE which is the start of dynamically loading buildings
 	dl	0
-BuildingsSpritesPtr:					; Pointer to the end of all the building sprites
+buildings_sprites_ptr:					; Pointer to the end of all the building sprites
 	dl	0
-BuildingsLoaded:
+buildings_loaded:
 	rb	BUILDING_SPRITE.size * 18
 	
-UnitsStack:
+units_stack:
 	rb	MAX_AMOUNT_PEOPLE * 2 * UNIT_ENTRY.size
-UnitsSpritesBase:					; Pointer to the loaded graphics start
+units_sprites_base:					; Pointer to the loaded graphics start
 	dl	0
-UnitsSpritesPtr:					; Pointer to the loaded graphics end
+units_sprites_ptr:					; Pointer to the loaded graphics end
 	dl	0
-UnitsLoaded:						; Stack with which unit is loaded in RAM (graphics)
+units_loaded:						; Stack with which unit is loaded in RAM (graphics)
 	rb	UNIT_SPRITE.size * 22
-UnitsActive:						; A list with all the active units or not
+units_active:						; A list with all the active units or not
 	rb	MAX_AMOUNT_PEOPLE * 2
 	
-UnitsPerTile:
+units_per_tile:
 	rb	5 * 3
-TempData1:
-	rb	8
-PathFindingData:
-	rb	20
 	
 virtual at iy
-	TopLeftXTile:			dl -10 - 2 - 2			; (-10, -3) is the begin position measured from the top left
-	TopLeftYTile:			dl -3 + 2 + 2			; We start with 4 columns to the left, because buildings can be 4 tiles width
-	CursorX:			dl lcdWidth / 2 - 12
-	CursorY:			db lcdHeight / 2 - 16
-	SelectedAreaStartX:		dl 0
-	SelectedAreaStartY:		db 0
-	TempData2:			rb 12
-	AoCEFlags1:			db 0
-	OFFSET_X:			db 0
-	OFFSET_Y:			db 0
+	x_start:			dl -10 - 2 - 2			; (-10, -3) is the begin position measured from the top left
+	y_start:			dl -3 + 2 + 2			; We start with 4 columns to the left, because buildings can be 4 tiles width
+	cursor_x:			dl lcdWidth / 2 - 12
+	cursor_y:			db lcdHeight / 2 - 16
+	x_offset:			db 0
+	y_offset:			db 0
 	load iy_data: $ - $$ from $$
 end virtual
 iy_base db iy_data
 
-ResourcesType1:
+resource_type_1:
 	db	0, 1, 0
 	db	0, 1, 1
 	db	1, 1, 1
-ResourcesType2:
+resource_type_2:
 	db	1, 0, 0
 	db	0, 1, 0
 	db	0, 1, 1
-ResourcesType3:
+resource_type_3:
 	db	0, 0, 0
 	db	1, 1, 0
 	db	0, 0, 0
-ResourcesType4:
+resource_type_4:
 	db	1, 1, 1
 	db	0, 1, 0
 	db	0, 0, 0
-ResourcesType5:
+resource_type_5:
 	db	0, 0, 0
 	db	0, 0, 1
 	db	1, 1, 1
-ResourcesType6:
+resource_type_6:
 	db	0, 0, 0
 	db	0, 1, 0
 	db	0, 0, 0
-ResourcesType7:
+resource_type_7:
 	db	0, 0, 0
 	db	0, 0, 1
 	db	0, 1, 1
@@ -127,7 +121,7 @@ pal_sprites:				; Don't worry, it's just the xLIBC palette
 	dw $7870, $78F1, $7972, $79F3, $7A74, $7AF5, $7B76, $7BF7
 	dw $7C78, $7CF9, $7D7A, $7DFB, $7E7C, $7EFD, $7F7E, $FFFF
 	
-DefaultCharSpacing_ASM:
+default_char_spacing:
 	;   0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F
 	db 8,8,8,8,8,8,8,8,8,8,8,8,8,2,8,8
 	db 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8
@@ -141,7 +135,7 @@ DefaultCharSpacing_ASM:
 	db 8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8
 
 ;-------------------------------------------------------------------------------
-DefaultTextData_ASM:
+default_text_data:
 Char000: db $00,$00,$00,$00,$00,$00,$00,$00 ; .
 Char001: db $7E,$81,$A5,$81,$BD,$BD,$81,$7E ; .
 Char002: db $7E,$FF,$DB,$FF,$C3,$C3,$FF,$7E ; .

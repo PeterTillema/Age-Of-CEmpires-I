@@ -40,13 +40,13 @@ UnitWalk83:
 	ret
 	
 RemoveUnitFromTile:
-	ld	ix, UnitsStack
+	ld	ix, units_stack
 	ld	c, a					; C = unit index
 	ld	e, a					; E = unit index
 	ld	b, UNIT_ENTRY.size
 	mlt	bc
 	add	ix, bc
-	ld	hl, UnitsActive				; Set unit inactive
+	ld	hl, units_active				; Set unit inactive
 	ld	c, e
 	ld	b, 0
 	add	hl, bc
@@ -54,7 +54,7 @@ RemoveUnitFromTile:
 	ld	c, (ix + UNIT_ENTRY.Y)
 	ld	b, MAP_SIZE
 	mlt	bc
-	ld	hl, (MapDataPtr)
+	ld	hl, (map_data_ptr)
 	add	hl, bc
 	ld	c, (ix + UNIT_ENTRY.X)
 	ld	b, 0
@@ -83,7 +83,7 @@ RemoveUnitFromTile:
 	ld	(hl), c
 	ld	b, UNIT_ENTRY.size			; Set 255 as UnitPrev of unit X
 	mlt	bc
-	ld	ix, UnitsStack
+	ld	ix, units_stack
 	add	ix, bc
 	ld	(ix + UNIT_ENTRY.PREV), 255
 	ret
@@ -99,7 +99,7 @@ ChangeUnitNext:						; A = UnitPrev
 	ld	c, a
 	ld	b, UNIT_ENTRY.size
 	mlt	bc
-	ld	ix, UnitsStack
+	ld	ix, units_stack
 	lea	hl, ix + UNIT_ENTRY.NEXT
 	add	hl, bc
 	ld	(hl), e
@@ -109,7 +109,7 @@ ChangeUnitNext:						; A = UnitPrev
 	dec	e
 	ld	d, UNIT_ENTRY.size
 	mlt	de
-	ld	ix, UnitsStack
+	ld	ix, units_stack
 	add	ix, de
 	ld	(ix + UNIT_ENTRY.PREV), a
 	ret

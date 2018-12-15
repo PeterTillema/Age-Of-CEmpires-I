@@ -622,16 +622,16 @@ LoadBuildingDynamically:
 	add	iy, de
 	ld	de, (iy)
 	add	hl, de
-	ld	de, (BuildingsSpritesPtr)
+	ld	de, (buildings_sprites_ptr)
 	push	de
 	ld	iyh, a
 	call	dzx7_Turbo
-	ld	(BuildingsSpritesPtr), hl
+	ld	(buildings_sprites_ptr), hl
 	ld	e, iyh
 	ld	c, e
 	ld	b, BUILDING_SPRITE.size
 	mlt	bc
-	ld	iy, BuildingsLoaded
+	ld	iy, buildings_loaded
 	add	iy, bc
 	pop	hl
 	ld	c, (hl)
@@ -659,13 +659,13 @@ LoadUnitDynamically:
 	add	hl, de
 	ld	hl, (hl)
 	add	hl, bc
-	ld	iy, UnitsLoaded
+	ld	iy, units_loaded
 	ld	e, a
 	ld	d, 3
 	mlt	de
 	add	iy, de
 	ld	(iy + UNIT_SPRITE.TYPE), a
-	ld	de, (BuildingsSpritesPtr)
+	ld	de, (buildings_sprites_ptr)
 	push	de
 	call	dzx7_Turbo					; HL = pointer to byte after uncompressed data
 	pop	de
@@ -675,9 +675,9 @@ LoadUnitDynamically:
 	pop	bc						; BC = data length
 	add	hl, de
 	dec	hl
-	ld	de, (UnitsSpritesPtr)
+	ld	de, (units_sprites_ptr)
 	lddr							; Copy to sprite stack
-	ld	(UnitsSpritesPtr), de
+	ld	(units_sprites_ptr), de
 	inc	de
 	ex	de, hl
 	ld	c, (hl)
@@ -888,7 +888,7 @@ _PrintChar:
 	or	a, a
 	sbc	hl, hl
 	ld	l, e
-	ld	bc, DefaultCharSpacing_ASM
+	ld	bc, default_char_spacing
 	add	hl, bc
 	ld	a, (hl)
 TextXPos_SMC = $+1
@@ -915,7 +915,7 @@ TextYPos_SMC = $+1
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	bc, DefaultTextData_ASM
+	ld	bc, default_text_data
 	add	hl, bc
 	ld	iy, 0
 	ld	ixl, 8

@@ -11,7 +11,7 @@ DrawField:
 	ld	(DrawTile_Clipped_Stop1), hl
 	ld	(DrawTile_Clipped_Stop2), hl
 	
-	ld	e, (OFFSET_Y)
+	ld	e, (y_offset)
 	bit	2, e
 	ld	hl, DrawTile_Clipped_Stop2
 	ld	a, StopDrawingTile - DrawTile_Clipped_Stop2 - 2	; Offset to end of clipped routine
@@ -24,7 +24,7 @@ DrawField:
 	set	4, e					; Point to the row of the bottom right pixel
 	ld	d, lcdWidth / 2
 	mlt	de
-	ld	a, (OFFSET_X)
+	ld	a, (x_offset)
 	sub	a, TILE_WIDTH * AMOUNT_OF_COLUMNS_LEFT - (TILE_WIDTH_HALF - 1)	; We start at column 17 (bottom right pixel), but 4 tiles to the left
 	sbc	hl, hl
 	ld	l, a
@@ -33,7 +33,7 @@ DrawField:
 	ld	de, (currDrawingBuffer)
 	add	hl, de
 	ld	(startingPosition), hl
-	ld	ix, (TopLeftYTile)			; TopLeftYTile is already positioned 4 columns at the left
+	ld	ix, (y_start)			; y_start is already positioned 4 columns at the left
 	lea	hl, ix					; Y * MAP_SIZE + X, point to the map data
 	add	hl, hl
 	add	hl, hl
@@ -42,10 +42,10 @@ DrawField:
 	add	hl, hl
 	add	hl, hl
 	add	hl, hl
-	ld	de, (TopLeftXTile)			; TopLeftXTile is already positioned 4 columns at the left
+	ld	de, (x_start)			; x_start is already positioned 4 columns at the left
 	add	hl, de
 	add	hl, hl					; Each tile is 2 bytes worth
-	ld	bc, (MapDataPtr)
+	ld	bc, (map_data_ptr)
 	add	hl, bc
 	ld	a, AMOUNT_OF_ROWS			; Last X rows only trees/buildings
 	exx
@@ -208,7 +208,7 @@ DisplayBuilding:
 TempSP4 = $+1
 	ld	sp, 0
 	ld	(BackupIY3), iy
-	ld	hl, BuildingsStack
+	ld	hl, buildings_stack
 	ld	c, a
 	ld	b, BUILDING_ENTRY.size
 	mlt	bc
@@ -218,7 +218,7 @@ TempSP4 = $+1
 	mlt	bc
 	inc	hl
 	ld	a, (hl)					; A = which team to load
-	ld	iy, BuildingsLoaded
+	ld	iy, buildings_loaded
 	add	iy, bc					; IY = pointer to general building struct
 	
 ; Loaded | Team | Action
@@ -615,12 +615,12 @@ TempSP5 = $+1
 	ld	a, (hl)					; Unit index
 	dec	hl
 	exx
-	ld	hl, UnitsPerTile
+	ld	hl, units_per_tile
 FindNextUnit:
 	ld	e, a
 	ld	d, UNIT_ENTRY.size
 	mlt	de
-	ld	iy, UnitsStack
+	ld	iy, units_stack
 	add	iy, de
 	ld	de, (iy + UNIT_ENTRY.NEXT)
 	ld	c, e					; C is next unit
@@ -641,7 +641,7 @@ SortUnits:
 	ld	a, 1					; A = unit index [1,X]
 	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
 	ld	c, a					; C = unit index [1,X]
-	ld	iy, UnitsPerTile + 3			; IY = pointer to current element
+	ld	iy, units_per_tile + 3			; IY = pointer to current element
 .loop1:	
 	ld	hl, (iy)				; HL = current element
 	lea	ix, iy-3				; IX = pointer to test element
@@ -672,24 +672,24 @@ DisplayAllUnits:
 ; screen.x = (map.x - map.y) * TILE_WIDTH_HALF;
 ; screen.y = (map.x + map.y) * TILE_HEIGHT_HALF;
 
-; Y coordinate: A' * 8 + 17 + offset_y + (sprite_x + sprite_y) / 2 - sprite_base_offset
-; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + offset_x + sprite_x - sprite_y + sprite_base_offset
+; Y coordinate: A' * 8 + 17 + y_offset + (sprite_x + sprite_y) / 2 - sprite_base_offset
+; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + x_offset + sprite_x - sprite_y + sprite_base_offset
 
 	ld	b, a
-	ld	hl, UnitsPerTile
+	ld	hl, units_per_tile
 DisplayUnitLoop:
 	push	bc
 	push	hl
 	ld	c, (hl)					; Unit index
 	ld	b, UNIT_ENTRY.size
 	mlt	bc
-	ld	iy, UnitsStack
+	ld	iy, units_stack
 	add	iy, bc					; Pointer to unit struct in game
 	ld	a, (iy + UNIT_ENTRY.TEAM)
 	ld	c, (iy + UNIT_ENTRY.INDEX)
 	ld	b, UNIT_SPRITE.size
 	mlt	bc
-	ld	ix, UnitsLoaded
+	ld	ix, units_loaded
 	add	ix, bc					; Pointer to unit struct in RAM
 	
 ; Loaded | Team | Action
@@ -730,7 +730,7 @@ NoUnitTeamColorsSwap:
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
-	ld	de, TempUnitData			; Copy the base offsets
+	ld	de, temp_unit_data			; Copy the base offsets
 	ldi
 	ldi
 	ld	hl, (hl)				; Sprite offset
@@ -756,7 +756,7 @@ OffsetY_SMC3 = $+1
 	rra
 	ld	e, a
 	add	hl, de
-	ld	a, (TempUnitData + 1)			; Substract base height from sprite
+	ld	a, (temp_unit_data + 1)			; Substract base height from sprite
 	ld	e, a
 	sbc	hl, de
 	push	hl
@@ -773,7 +773,7 @@ OffsetY_SMC3 = $+1
 	mlt	de
 	add	hl, de
 	add	hl, de
-	ld	a, (TempUnitData)
+	ld	a, (temp_unit_data)
 	ld	e, a
 	add	hl, de
 OffsetX_SMC3 = $+1

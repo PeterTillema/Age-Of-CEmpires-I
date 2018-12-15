@@ -6,28 +6,25 @@ DrawGame:
 	ld	c, 17
 	ld	a, 4
 	call	_SetTextXY
-	ld	hl, (AmountOfWood)
+	ld	hl, (amount_of_wood)
 	call	_PrintUInt_5
 	ld	hl, 78
 	ld	(TextXPos_SMC), hl
-	ld	hl, (AmountOfFood)
+	ld	hl, (amount_of_food)
 	call	_PrintUInt_5
 	ld	hl, 142
 	ld	(TextXPos_SMC), hl
-	ld	hl, (AmountOfGold)
+	ld	hl, (amount_of_gold)
 	call	_PrintUInt_5
 	ld	hl, 200
 	ld	(TextXPos_SMC), hl
-	ld	hl, (AmountOfStone)
+	ld	hl, (amount_of_stone)
 	call	_PrintUInt_5
 	ld	hl, 261
 	ld	(TextXPos_SMC), hl
-	ld	a, (AmountOfPeople)
-	or	a, a
-	sbc	hl, hl
-	ld	l, a
+	ld	hl, (amount_of_people)
 	call	_PrintUInt_3
 	ld	a, '/'
 	call	_PrintChar
-	ld	hl, MAX_AMOUNT_PEOPLE
+	ld	hl, (amount_of_max_people)
 	jp	_PrintUInt_3
