@@ -18,7 +18,8 @@ MainGameContinue:
 	ld	(currDrawingBuffer), de
 	ld	(mpLcdBase), hl
 	
-; Set the bit to wait for the LCD to be updated; meanwhile we do all the calculations, maybe then it already has been swapped and we don't need to wait anymore
+; Set the bit to wait for the LCD to be updated; meanwhile we do all the calculations,
+; maybe then it already has been swapped and we don't need to wait anymore
 	ld	hl, mpLcdIcr
 	set	2, (hl)
 	

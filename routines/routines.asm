@@ -82,7 +82,7 @@ __flSubCalc = $+1
 	call	0000000h
 	or	a, a
 	sbc	hl, hl
-        ; red
+; red
 	ld	a, (ix+1)
 	rrca
 	rrca
@@ -94,7 +94,7 @@ flSkipR:
 	rlca
 	rlca
 	ld	l, a
-        ; green
+; green
 	ld	e, (ix + 1)
 	ld	d, (ix)
 	sla	d
@@ -123,7 +123,7 @@ flSkipG:
 	ld	a, h
 	or	a, d
 	ld	h, a
-        ; blue
+; blue
 	ld	a, (ix)
 	and	a, 00011111b
 	sub	a, c

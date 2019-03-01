@@ -78,11 +78,6 @@ macro relocate? name, address*, maxSize*
 	end macro
 end macro
 
-macro debugger?
-	ld	a, 2
-	ld	(-1), a
-end macro
-
 virtual
 	jr	z, $
 	load	jr_z: byte from $$

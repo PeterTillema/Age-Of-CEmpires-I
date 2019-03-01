@@ -1,4 +1,7 @@
 DrawGUI:
+	scf
+	sbc	hl, hl
+	ld	(hl), 2
 	ld	de, 0					; Black
 	ld	b, 225
 	ld	hl, (currDrawingBuffer)
@@ -16,6 +19,12 @@ DrawGUI:
 TempSP6 = $+1
 	ld	sp, 0
 	ld	hl, IconsTableAges
+	ld	b, (hl)
+DrawIcons:
+	ld	hl, IconsTable1
+.loop:
+	push	hl
+	ld	hl, (hl)
 	call	_Sprite_NoClip
 	
 	jp	MainGameContinue

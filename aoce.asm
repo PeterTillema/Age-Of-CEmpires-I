@@ -13,7 +13,7 @@ format ti executable 'AOCE'
 include 'includes/app.inc'
 
 ; Include all the gfx .inc files
-appvars GFX,2, AGE,4, UNI,3
+appvars GFX,2, AGE,4, UNI,2
 
 	app_create
 	
