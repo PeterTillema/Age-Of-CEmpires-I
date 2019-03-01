@@ -22,10 +22,9 @@ towncenter_2    - 6887
 archery_2       - 4524
 blacksmith_2    - 4267
 market_2        - 7263
-stable_2        - 3510
 tower_2         - 1515
                 ----------- +
-                  46858
+                  43348
 	
 Age 3:
 farm_1          - 4909
@@ -39,14 +38,13 @@ towncenter_3    - 7682
 archery_3       - 4664
 blacksmith_3    - 4604
 market_3        - 8476
-stable_3        - 4959
 tower_3         - 1693
 castle_3        - 13934
 monastery_3     - 6572
 siegeworkshop_3 - 6615
 university_3    - 7001
                 ----------- +
-                  85835
+                  80876
 	
 Age 4:
 farm_1          - 4909
@@ -60,7 +58,6 @@ towncenter_4    - 7384
 archery_3       - 4664
 blacksmith_3    - 4604
 market_4        - 7565
-stable_3        - 4959
 tower_4         - 1585
 castle_3        - 13934
 monastery_3     - 6572
@@ -68,6 +65,4 @@ siegeworkshop_3 - 6615
 university_4    - 7653
 btower_4        - 1552
                 ----------- +
-                  86722
-				  
-Total amount of free RAM: ~85kB
+                  81763

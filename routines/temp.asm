@@ -45,7 +45,7 @@ PlaceTempUnits:
 	ld	(hl), 0
 	ld	bc, arbalest_gfx
 	ld	a, 0
-	ld	e, 6
+	ld	e, 5
 	call	LoadUnitDynamically
 	ld	hl, units_active
 	ld	(hl), 1

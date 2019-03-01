@@ -40,7 +40,7 @@ AlreadyInstalled:
 	
 ; Check if all the appvars exists
 	ld	hl, GraphicsAppvars
-	ld	iyh, 9
+	ld	iyh, 8
 CheckGraphicsAppvarsLoop:
 	call	_Mov9ToOP1
 	inc	hl
@@ -54,7 +54,6 @@ CheckGraphicsAppvarsLoop:
 	call	_ChkFindSym
 	ex	de, hl
 	ld	de, 9
-	ld	a, e
 	add	hl, de
 	ld	e, (hl)
 	add	hl, de
@@ -62,6 +61,7 @@ CheckGraphicsAppvarsLoop:
 	inc	hl
 	inc	hl
 	ex	de, hl
+	ld	a, 8
 	sub	a, iyh
 	ld	c, a
 	ld	b, 3
@@ -305,7 +305,6 @@ LoadingMessage:
 AppDataStart:
 
 AppvarsPointersTable:
-	dl	0
 	dl	0
 	dl	0
 	dl	0

@@ -23,7 +23,6 @@ TempSP6 = $+1
 DrawIcons:
 	ld	hl, IconsTable1
 .loop:
-	push	hl
 	ld	hl, (hl)
 	call	_Sprite_NoClip
 	
