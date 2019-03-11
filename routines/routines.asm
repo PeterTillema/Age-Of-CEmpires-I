@@ -610,9 +610,8 @@ LoadBuildingDynamically:
 ; Uncompresses a building to RAM
 ; Inputs:
 ;   A  = building index
+;   E  = appvar index
 ;   HL = offset in appvar
-	ld	e, 2
-AgeAppvarIndex = $-1
 	ld	d, 3
 	mlt	de
 	ld	iy, AOCE_RAM_START
@@ -1170,9 +1169,7 @@ IncTeamColors_LoopStart_Jr_SMC = $-1
 ;   A = new age (0-3)
 ; Outputs: none
 GoToAge:
-	add	a, 2
-	ld	(AgeAppvarIndex), a
-	sub	a, 2
+	or	a, a
 	sbc	hl, hl
 	ld	l, a
 	add	hl, hl
@@ -1208,10 +1205,11 @@ GoToAge:
 	
 	push	iy
 	ld	e, a
-	ld	d, 11; sizeof(costs)
+	ld	d, 12; sizeof(costs)
 	mlt	de
 	add	iy, de
 	ld	hl, (iy)
+	ld	e, (iy + 3)
 	call	LoadBuildingDynamically
 	pop	iy
 	exx

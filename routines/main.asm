@@ -47,10 +47,24 @@ DoUnitEventLoop:
 	ld	hl, (amount_of_wood)
 	inc	hl
 	ld	(amount_of_wood), hl
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	ld	hl, (amount_of_wood)
 	ld	de, 200
 	or	a, a
 	sbc	hl, de
 	ld	a, 1
+	call	z, GoToAge
+	ld	hl, (amount_of_wood)
+	ld	de, 400
+	or	a, a
+	sbc	hl, de
+	ld	a, 2
+	call	z, GoToAge
+	ld	hl, (amount_of_wood)
+	ld	de, 600
+	or	a, a
+	sbc	hl, de
+	ld	a, 3
 	call	z, GoToAge
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

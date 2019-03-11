@@ -159,8 +159,9 @@ macro unit? base_x*, base_y*, name*
 	dl	name
 end macro
 
-macro costs? offset*, wood*, food*, gold*, stone*
+macro costs? offset*, appvar*, wood*, food*, gold*, stone*
 	dl	offset
+	db	appvar
 	dw	wood
 	dw	food
 	dw	gold
