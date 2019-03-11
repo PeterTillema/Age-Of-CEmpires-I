@@ -213,7 +213,7 @@ TempSP4 = $+1
 	ld	b, BUILDING_ENTRY.size
 	mlt	bc
 	add	hl, bc
-	ld	c, (hl)					; C = building index
+	ld	c, (hl)					; C = building type
 	ld	b, BUILDING_SPRITE.size
 	mlt	bc
 	inc	hl

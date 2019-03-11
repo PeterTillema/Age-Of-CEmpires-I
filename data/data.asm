@@ -24,13 +24,13 @@ temp_unit_data:
 	db	0
 	db	0
 	
-buildings_stack:
+buildings_stack:					; A stack with all the buildings in the game, with its properties
 	rb	MAX_AMOUNT_BUILDINGS * 2 * BUILDING_ENTRY.size
 buildings_sprites_base:					; Pointer to the end of AoCE which is the start of dynamically loading buildings
 	dl	0
 buildings_sprites_ptr:					; Pointer to the end of all the building sprites
 	dl	0
-buildings_loaded:
+buildings_loaded:					; A stack with all the buildings with poiters to the sprites in RAM
 	rb	BUILDING_SPRITE.size * 18
 	
 units_stack:

@@ -1,7 +1,4 @@
 DrawGUI:
-	scf
-	sbc	hl, hl
-	ld	(hl), 2
 	ld	de, 0					; Black
 	ld	b, 225
 	ld	hl, (currDrawingBuffer)
@@ -18,12 +15,42 @@ DrawGUI:
 	
 TempSP6 = $+1
 	ld	sp, 0
-	ld	hl, IconsTableAges
-	ld	b, (hl)
-DrawIcons:
+AgeIconsTable = $+2
+	ld	ix, (IconsTableAges)
+	ld	b, 2
 	ld	hl, IconsTable1
+	ld	de, 204
+DisplayIconsRowLoop:
+	push	de
+	ld	de, 0
 .loop:
-	ld	hl, (hl)
+	push	de
+	ld	de, (hl)
+	push	de
+	exx
 	call	_Sprite_NoClip
+	pop	hl
+	exx
+	inc	hl
+	inc	hl
+	inc	hl
+	pop	de
+	ld	a, 20
+	add	a, e
+	ld	e, a
+;	adc	a, d
+;	sub	a, e
+;	ld	d, a
+CurrentRow = $+1
+	dec	ixl
+	jr	nz, .loop
+	ld	hl, CurrentRow
+	ld	a, (hl)
+	xor	a, 0x25 xor 0x2D			; Swap between "dec ixl" and "dec ixh"
+	ld	(hl), a
+	pop	de
+	ld	hl, IconsTable2
+	ld	de, 222
+	djnz	DisplayIconsRowLoop
 	
 	jp	MainGameContinue

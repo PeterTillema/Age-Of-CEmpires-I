@@ -78,12 +78,12 @@ CheckGraphicsAppvarsLoop:
 	call	_PutS
 	
 ; Backup RAM
+	ld	(BackupSP), sp
 	di
 	ld	a, 0D1h
 	ld	mb, a
 	ld.sis	sp, AOCE_RAM_START and 0FFFFh
 	call.lis fUnlockFlash and 0FFFFh
-	ld	(BackupSP), sp
 	call	BackupRAM
 	AoCE_RAM.copy
 	ld	(map_data_ptr), de
@@ -152,7 +152,7 @@ CheckGraphicsAppvarsLoop:
 	ldir
 	
 ; Since the stack is always the same, hardcode the sp backup pointers
-	ld	hl, -6
+	ld	hl, -3
 	add	hl, sp
 	ld	(TempSP2), hl
 	ld	(TempSP3), hl
@@ -188,6 +188,10 @@ CheckGraphicsAppvarsLoop:
 	;call	RegisterUnitDieEvent
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
+; Already advance to age 1
+	xor	a, a
+	call	GoToAge
+	
 ; Call the main loop
 	ld	iy, iy_base
 	call	MainGameLoop
@@ -207,7 +211,7 @@ ForceStopProgramFadeOut:
 	ld	bc, stackTop - stackBot
 	ldir
 	
-; Yeah... let's lock flash again :P
+; Restore things
 	call.lis fLockFlash and 0FFFFh
 	ld	a, 0D0h
 	ld	mb, a

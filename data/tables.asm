@@ -38,66 +38,73 @@ TilePointersStart:
 	dl	tree_3_offset
 	dl	tree_4_offset
 	
+BuildingsAgesPointers:
+	dl	BuildingsAge1
+	dl	BuildingsAge2
+	dl	BuildingsAge3
+	dl	BuildingsAge4
+	
 BuildingsAge1:
-	dl	farm_1_compressed_offset		; 0
-	dl	lumbercamp_1_compressed_offset		; 1
-	dl	miningcamp_1_compressed_offset		; 2
-	dl	outpost_1_compressed_offset		; 3
-	dl	barracks_1_compressed_offset		; 4
-	dl	house_1_compressed_offset		; 5
-	dl	mill_1_compressed_offset		; 6
-	dl	towncenter_1_compressed_offset		; 7
+	;	pointer                            wood food gold stone
+	costs	farm_1_compressed_offset,          60, 0, 0, 0		; 0
+	costs	lumbercamp_1_compressed_offset,    100, 0, 0, 0		; 1
+	costs	miningcamp_1_compressed_offset,    100, 0, 0, 0		; 2
+	costs	outpost_1_compressed_offset,       25, 0, 0, 10		; 3
+	costs	barracks_1_compressed_offset,      175, 0, 0, 0		; 4
+	costs	house_1_compressed_offset,         30, 0, 0, 0		; 5
+	costs	mill_1_compressed_offset,          100, 0, 0, 0		; 6
+	costs	towncenter_1_compressed_offset,    275, 0, 0, 100	; 7
 	
 BuildingsAge2:
-	dl	farm_1_compressed_offset		; 0
-	dl	lumbercamp_1_compressed_offset		; 1
-	dl	miningcamp_1_compressed_offset		; 2
-	dl	outpost_1_compressed_offset		; 3
-	dl	barracks_2_compressed_offset		; 4
-	dl	house_2_compressed_offset		; 5
-	dl	mill_2_compressed_offset		; 6
-	dl	towncenter_2_compressed_offset		; 7
-	dl	archery_2_compressed_offset		; 8
-	dl	blacksmith_2_compressed_offset		; 9
-	dl	market_2_compressed_offset		; 10
-	dl	tower_2_compressed_offset		; 11
+	costs	farm_1_compressed_offset,          60, 0, 0, 0		; 0
+	costs	lumbercamp_1_compressed_offset,    100, 0, 0, 0		; 1
+	costs	miningcamp_1_compressed_offset,    100, 0, 0, 0		; 2
+	costs	outpost_1_compressed_offset,       25, 0, 0, 10		; 3
+	costs	barracks_2_compressed_offset,      175, 0, 0, 0		; 4
+	costs	house_2_compressed_offset,         30, 0, 0, 0		; 5
+	costs	mill_2_compressed_offset,          100, 0, 0, 0		; 6
+	costs	towncenter_2_compressed_offset,    275, 0, 0, 100	; 7
+	costs	archery_2_compressed_offset,       175, 0, 0, 0		; 8
+	costs	blacksmith_2_compressed_offset,    150, 0, 0, 0		; 9
+	costs	market_2_compressed_offset,        175, 0, 0, 0		; 10
+	costs	tower_2_compressed_offset,         25, 0, 0, 125	; 11
 	
 BuildingsAge3:
-	dl	farm_1_compressed_offset		; 0
-	dl	lumbercamp_1_compressed_offset		; 1
-	dl	miningcamp_1_compressed_offset		; 2
-	dl	outpost_1_compressed_offset		; 3
-	dl	barracks_3_compressed_offset		; 4
-	dl	house_3_compressed_offset		; 5
-	dl	mill_3_compressed_offset		; 6
-	dl	towncenter_3_compressed_offset		; 7
-	dl	archery_3_compressed_offset		; 8
-	dl	blacksmith_3_compressed_offset		; 9
-	dl	market_3_compressed_offset		; 10
-	dl	tower_3_compressed_offset		; 11
-	dl	castle_3_compressed_offset		; 12
-	dl	monastery_3_compressed_offset		; 13
-	dl	siegeworkshop_3_compressed_offset	; 14
-	dl	university_3_compressed_offset		; 15
+	costs	farm_1_compressed_offset,          60, 0, 0, 0		; 0
+	costs	lumbercamp_1_compressed_offset,    100, 0, 0, 0		; 1
+	costs	miningcamp_1_compressed_offset,    100, 0, 0, 0		; 2
+	costs	outpost_1_compressed_offset,       25, 0, 0, 10		; 3
+	costs	barracks_3_compressed_offset,      175, 0, 0, 0		; 4
+	costs	house_3_compressed_offset,         30, 0, 0, 0		; 5
+	costs	mill_3_compressed_offset,          100, 0, 0, 0		; 6
+	costs	towncenter_3_compressed_offset,    275, 0, 0, 100	; 7
+	costs	archery_3_compressed_offset,       175, 0, 0, 0		; 8
+	costs	blacksmith_3_compressed_offset,    150, 0, 0, 0		; 9
+	costs	market_3_compressed_offset,        175, 0, 0, 0		; 10
+	costs	tower_3_compressed_offset,         25, 0, 0, 125	; 11
+	costs	castle_3_compressed_offset,        0, 0, 0, 650		; 12
+	costs	monastery_3_compressed_offset,     175, 0, 0, 0		; 13
+	costs	siegeworkshop_3_compressed_offset, 200, 0, 0, 0		; 14
+	costs	university_3_compressed_offset,    200, 0, 0, 0		; 15
 	
 BuildingsAge4:
-	dl	farm_1_compressed_offset		; 0
-	dl	lumbercamp_1_compressed_offset		; 1
-	dl	miningcamp_1_compressed_offset		; 2
-	dl	outpost_1_compressed_offset		; 3
-	dl	barracks_3_compressed_offset		; 4
-	dl	house_3_compressed_offset		; 5
-	dl	mill_3_compressed_offset		; 6
-	dl	towncenter_4_compressed_offset		; 7
-	dl	archery_3_compressed_offset		; 8
-	dl	blacksmith_3_compressed_offset		; 9
-	dl	market_4_compressed_offset		; 10
-	dl	tower_4_compressed_offset		; 11
-	dl	castle_3_compressed_offset		; 12
-	dl	monastery_3_compressed_offset		; 13
-	dl	siegeworkshop_3_compressed_offset	; 14
-	dl	university_4_compressed_offset		; 15
-	dl	btower_4_compressed_offset		; 16
+	costs	farm_1_compressed_offset,          60, 0, 0, 0		; 0
+	costs	lumbercamp_1_compressed_offset,    100, 0, 0, 0		; 1
+	costs	miningcamp_1_compressed_offset,    100, 0, 0, 0		; 2
+	costs	outpost_1_compressed_offset,       25, 0, 0, 10		; 3
+	costs	barracks_3_compressed_offset,      175, 0, 0, 0		; 4
+	costs	house_3_compressed_offset,         30, 0, 0, 0		; 5
+	costs	mill_3_compressed_offset,          100, 0, 0, 0		; 6
+	costs	towncenter_4_compressed_offset,    275, 0, 0, 100	; 7
+	costs	archery_3_compressed_offset,       175, 0, 0, 0		; 8
+	costs	blacksmith_3_compressed_offset,    150, 0, 0, 0		; 9
+	costs	market_4_compressed_offset,        175, 0, 0, 0		; 10
+	costs	tower_4_compressed_offset,         25, 0, 0, 125	; 11
+	costs	castle_3_compressed_offset,        0, 0, 0, 650		; 12
+	costs	monastery_3_compressed_offset,     175, 0, 0, 0		; 13
+	costs	siegeworkshop_3_compressed_offset, 200, 0, 0, 0		; 14
+	costs	university_3_compressed_offset,    200, 0, 0, 0		; 15
+	costs	btower_4_compressed_offset,        0, 0, 100, 125	; 16
 	
 IconsTable1:
 	dl	icon_house_offset

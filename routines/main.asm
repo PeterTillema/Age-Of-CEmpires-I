@@ -47,6 +47,11 @@ DoUnitEventLoop:
 	ld	hl, (amount_of_wood)
 	inc	hl
 	ld	(amount_of_wood), hl
+	ld	de, 200
+	or	a, a
+	sbc	hl, de
+	ld	a, 1
+	call	z, GoToAge
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 	call	GetKeyFast

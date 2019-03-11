@@ -15,19 +15,12 @@ FillScreenPink:
 	ret
 	
 PlaceTempBuildings:
-	ld	a, 5
-	ld	e, 2
-	ld	hl, 0;barracks_1_offset
-	call	LoadBuildingDynamically
+	ld	hl, buildings_loaded + (BUILDING_SPRITE.size * 5) + BUILDING_SPRITE.RAMPTR
+	inc	(hl)				; Set nonzero
 	ld	hl, buildings_stack
 	ld	(hl), 5
 	inc	hl
 	ld	(hl), 0
-	ld	de, BUILDING_ENTRY.size - 1
-	add	hl, de
-	ld	(hl), 5
-	inc	hl
-	ld	(hl), 1
 	ld	hl, (map_data_ptr)
 	ld	(hl), TILE_BUILDING
 	inc	hl

@@ -158,3 +158,11 @@ macro unit? base_x*, base_y*, name*
 	db	base_y
 	dl	name
 end macro
+
+macro costs? offset*, wood*, food*, gold*, stone*
+	dl	offset
+	dw	wood
+	dw	food
+	dw	gold
+	dw	stone
+end macro

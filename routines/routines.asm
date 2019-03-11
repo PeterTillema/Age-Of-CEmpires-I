@@ -163,7 +163,6 @@ Wait2Loop:
 ;   DE = target location
 ;   HL = source location
 ; Outputs: none
-
 dzx7_Turbo:
 	ld      a, 128
 dzx7t_copy_byte_loop:
@@ -607,15 +606,13 @@ _RLETSprite_NoClip_LoopJr_SMC = $-1
 	ret
 	
 ;-------------------------------------------------------------------------------
+LoadBuildingDynamically:
 ; Uncompresses a building to RAM
 ; Inputs:
 ;   A  = building index
-;   E  = appvar index
 ;   HL = offset in appvar
-; Outputs:
-;   E  = building index
-
-LoadBuildingDynamically:
+	ld	e, 2
+AgeAppvarIndex = $-1
 	ld	d, 3
 	mlt	de
 	ld	iy, AOCE_RAM_START
@@ -627,8 +624,7 @@ LoadBuildingDynamically:
 	ld	iyh, a
 	call	dzx7_Turbo
 	ld	(buildings_sprites_ptr), hl
-	ld	e, iyh
-	ld	c, e
+	ld	c, iyh
 	ld	b, BUILDING_SPRITE.size
 	mlt	bc
 	ld	iy, buildings_loaded
@@ -642,7 +638,6 @@ LoadBuildingDynamically:
 	ld	(iy + BUILDING_SPRITE.RAMPTR), hl
 	add	hl, bc
 	ld	(iy + BUILDING_SPRITE.TCPPTR), hl
-	ld	(iy + BUILDING_SPRITE.TYPE), e
 	ret
 	
 ;-------------------------------------------------------------------------------
@@ -1168,3 +1163,59 @@ IncTeamColors:
 IncTeamColors_LoopStart_Jr:
 	jr	$
 IncTeamColors_LoopStart_Jr_SMC = $-1
+
+;-------------------------------------------------------------------------------
+; Goes to new age; replaces all buildings and pointers
+; Inputs:
+;   A = new age (0-3)
+; Outputs: none
+GoToAge:
+	add	a, 2
+	ld	(AgeAppvarIndex), a
+	sub	a, 2
+	sbc	hl, hl
+	ld	l, a
+	add	hl, hl
+	ld	de, IconsTableAges
+	add	hl, de
+	ld	(AgeIconsTable), hl
+	
+; Get the pointer to BuildingsAgesPointers[age]
+	ld	e, a
+	ld	d, 3
+	mlt	de
+	ld	iy, BuildingsAgesPointers
+	add	iy, de
+	ld	iy, (iy)
+
+; Replace all building sprites with the new sprites! :O
+	ld	hl, (buildings_sprites_base)
+	ld	(buildings_sprites_ptr), hl
+	ld	ix, buildings_loaded
+	ld	b, 18					; Amount of different buildings
+.loop:
+	ld	hl, (ix + BUILDING_SPRITE.RAMPTR)
+	add	hl, de
+	or	a, a
+	sbc	hl, de
+	jr	z, .skip
+	ld	a, 18
+	sub	a, b
+	exx
+
+; Just load the building again, using the proper new appvar and building index
+; We do need to retrieve the right pointer, which is equal to BuildingsAgesPointers[age][building]
+	
+	push	iy
+	ld	e, a
+	ld	d, 11; sizeof(costs)
+	mlt	de
+	add	iy, de
+	ld	hl, (iy)
+	call	LoadBuildingDynamically
+	pop	iy
+	exx
+.skip:
+	lea	ix, ix + BUILDING_SPRITE.size
+	djnz	.loop
+	ret
