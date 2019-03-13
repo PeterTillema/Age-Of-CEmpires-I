@@ -26,7 +26,26 @@ appvars GFX,2, AGE,4, UNI,2
 	jp	_ClrLCDFull
 DeleteAoCEProg:
 	call	_ChkFindSym
-	jp	_DelVarArc		; delete installer code
+	call	_DelVarArc		; delete installer code
+	ld	de, (asm_prgm_size)	; load this program size
+	ld	hl, userMem
+	call	_DelMem
+	or	a, a
+	sbc	hl, hl
+	ld	(asm_prgm_size), hl
+	inc	h
+	call	_EnoughMem
+	jp	c, _ErrMemory
+
+	ld	hl, aoce_name
+	ld	de, progToEdit
+	ld	bc, 5
+	ldir
+	ld	a, kExtApps
+	jp	_NewContext
+
+aoce_name:
+	db	"AoCE", 0
 	
 AlreadyInstalled:
 	db	"AoCE already installed,   please delete app to      reinstall", 0
