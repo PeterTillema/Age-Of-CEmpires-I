@@ -41,11 +41,9 @@ units_sprites_ptr:					; Pointer to the loaded graphics end
 	dl	0
 units_loaded:						; Stack with which unit is loaded in RAM (graphics)
 	rb	UNIT_SPRITE.size * 22
-units_active:						; A list with all the active units or not
-	rb	MAX_AMOUNT_PEOPLE * 2
 	
 units_per_tile:
-	rb	5 * 3
+	rb	MAX_UNITS_PER_TILE * 3			; Bytes: <type> <x offset> <y offset>
 	
 virtual at iy
 	x_start:			dl -10 - 2 - 2			; (-10, -3) is the begin position measured from the top left

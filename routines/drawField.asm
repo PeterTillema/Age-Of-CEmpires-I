@@ -609,7 +609,7 @@ DisplayUnits:
 TempSP5 = $+1
 	ld	sp, 0
 	push	ix
-	ld	b, 5					; Amount of units at the tile
+	ld	b, MAX_UNITS_PER_TILE
 	exx
 	inc	hl
 	ld	a, (hl)					; Unit index
@@ -622,29 +622,29 @@ FindNextUnit:
 	mlt	de
 	ld	iy, units_stack
 	add	iy, de
-	ld	de, (iy + UNIT_ENTRY.NEXT)
+	ld	de, (iy + UNIT_ENTRY.NEXT)		; Here DE contains: E = next, D = x offset, DEU = y offset
 	ld	c, e					; C is next unit
-	ld	e, a
+	ld	e, a					; Here DE contains: E = curr, D = x offset, DEU = y offset
 	ld	(hl), de
 	inc	hl
 	inc	hl
 	inc	hl
-	inc	c
+	inc	c					; If C = 255, it's the last item in the chain
 	jr	z, SortUnits
 	dec	c
 	ld	a, c
 	djnz	FindNextUnit
 SortUnits:
-	ld	a, 5
+	ld	a, MAX_UNITS_PER_TILE
 	sub	a, b
-	ld	b, a					; B = 5 - unit index
+	ld	b, a					; B = MAX_UNITS_PER_TILE - unit index
 	ld	a, 1					; A = unit index [1,X]
 	jr	z, DisplayAllUnits			; Only 1 unit, no need to sort
 	ld	c, a					; C = unit index [1,X]
 	ld	iy, units_per_tile + 3			; IY = pointer to current element
 .loop1:	
 	ld	hl, (iy)				; HL = current element
-	lea	ix, iy-3				; IX = pointer to test element
+	lea	ix, iy - 3				; IX = pointer to test element
 	ld	c, a
 .loop2:	
 	ld	de, (ix)				; DE = test element
@@ -652,13 +652,13 @@ SortUnits:
 	sbc	hl, de
 	add	hl, de
 	jr	nc, .ins				; HL > DE, so stop with swapping
-	ld	(ix+3), de				; Move the test element to the previous position
-	lea	ix, ix-3				; Decrease test pointer
+	ld	(ix + 3), de				; Move the test element to the previous position
+	lea	ix, ix - 3				; Decrease test pointer
 	dec	c					; Loop through all the remaining units
 	jr	nz, .loop2
 .ins:	
-	ld	(ix+3), hl				; Insert the current element in the right position
-	lea	iy, iy+3				; Increment current element pointer
+	ld	(ix + 3), hl				; Insert the current element in the right position
+	lea	iy, iy + 3				; Increment current element pointer
 	inc	a					; Loop through all the units
 	djnz	.loop1
 	
@@ -675,22 +675,25 @@ DisplayAllUnits:
 ; Y coordinate: A' * 8 + 17 + y_offset + (sprite_x + sprite_y) / 2 - sprite_base_offset
 ; X coordinate: B' * 32 + !(A' & 0) && ((B' & 1 << 4) ? -16 : 16) + x_offset + sprite_x - sprite_y + sprite_base_offset
 
-	ld	b, a
-	ld	hl, units_per_tile
+	ld	b, a					; B = amount of units to draw
+	ld	hl, units_per_tile			; HL = pointer to temp unit
 DisplayUnitLoop:
 	push	bc
 	push	hl
-	ld	c, (hl)					; Unit index
+	ld	c, (hl)					; Unit type
 	ld	b, UNIT_ENTRY.size
 	mlt	bc
 	ld	iy, units_stack
 	add	iy, bc					; Pointer to unit struct in game
+	push	iy
 	ld	a, (iy + UNIT_ENTRY.TEAM)
-	ld	c, (iy + UNIT_ENTRY.INDEX)
+	ld	c, (iy + UNIT_ENTRY.TYPE)
+	ld	iyl, c
 	ld	b, UNIT_SPRITE.size
 	mlt	bc
 	ld	ix, units_loaded
 	add	ix, bc					; Pointer to unit struct in RAM
+
 	
 ; Loaded | Team | Action
 ; 0        0      Nothing
@@ -700,8 +703,6 @@ DisplayUnitLoop:
 
 	cp	a, (ix + UNIT_SPRITE.TEAM_LOADED)
 	jr	z, NoUnitTeamColorsSwap
-	ld	a, iyh
-	ld	(IYH_SMC2), a
 	jr	nc, .inc
 .dec:
 	dec	(ix + UNIT_SPRITE.TEAM_LOADED)
@@ -715,17 +716,19 @@ DisplayUnitLoop:
 	ld	de, (ix + UNIT_SPRITE.TCPPTR)
 	call	IncTeamColors
 	ld	b, 0
-IYH_SMC2 = $+2
-	ld	iyh, 0
 NoUnitTeamColorsSwap:
-	ld	c, (ix + UNIT_SPRITE.TYPE)
+	ld	c, iyl
+	pop	iy
+	sla	c
 	ld	hl, UnitsSpritesPointersTable		; Get the table per unit
+	add	hl, bc
+	add	hl, bc
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc
 	ld	hl, (hl)				; Pointer to table with sprites per unit
 	ld	c, (iy + UNIT_ENTRY.EVENT)
-	add	hl, bc					; sizeof(uint) = 5
+	add	hl, bc					; sizeof(unit) = 5
 	add	hl, bc
 	add	hl, bc
 	add	hl, bc

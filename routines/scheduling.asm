@@ -4,7 +4,7 @@ RegisterEvent:
 ; Inputs:
 ;   A   = unit
 ;   BC  = pointer
-;   UHL = time offset
+;   HL = time offset
 	exx
 	ld	hl, amount_of_events
 	ld	e, (hl)
@@ -13,8 +13,6 @@ RegisterEvent:
 	inc	(hl)
 	ld	iy, scheduling_events
 	add	iy, de
-	lea	hl, iy + EVENT.size
-	ld	(scheduling_events), hl
 	exx
 	ld	(iy + EVENT.POINTER), bc
 	ld	(iy + EVENT.UNIT), a

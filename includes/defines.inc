@@ -19,6 +19,7 @@ AMOUNT_OF_UNITS        = 1
 MAX_AMOUNT_PEOPLE      = 100
 MAX_AMOUNT_BUILDINGS   = 100
 UNIT_DIE_TIMEOUT       = 3000 * 32768 / 1000
+MAX_UNITS_PER_TILE     = 5
 
 ;;; Pointers
 currDrawingBuffer     = 0E30014h
@@ -68,14 +69,13 @@ UNIT_SPRITE:
 .TEAM_LOADED          rb 1
 .TCPPTR               rl 1
 .RAMPTR               rl 1
-.TYPE                 rb 1
 .size                 := $ - .
 end virtual
 
 ;;; Unit struct 2
 virtual at 0
 UNIT_ENTRY:
-.INDEX                rb 1
+.TYPE                 rb 1
 .TEAM                 rb 1
 .EVENT                rb 1
 .HEALTH               rb 1

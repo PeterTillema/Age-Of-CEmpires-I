@@ -40,17 +40,14 @@ UnitWalk83:
 	ret
 	
 RemoveUnitFromTile:
+; Inputs:
+;   A = unit index
 	ld	ix, units_stack
 	ld	c, a					; C = unit index
 	ld	e, a					; E = unit index
 	ld	b, UNIT_ENTRY.size
 	mlt	bc
 	add	ix, bc
-	ld	hl, units_active				; Set unit inactive
-	ld	c, e
-	ld	b, 0
-	add	hl, bc
-	dec	(hl)
 	ld	c, (ix + UNIT_ENTRY.Y)
 	ld	b, MAP_SIZE
 	mlt	bc

@@ -45,66 +45,66 @@ BuildingsAgesPointers:
 	dl	BuildingsAge4
 	
 BuildingsAge1:
-	;	pointer                            wood food gold stone
-	costs	farm_1_compressed_offset,          2, 60, 0, 0, 0		; 0
-	costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0, 0		; 1
-	costs	miningcamp_1_compressed_offset,    2, 100, 0, 0, 0		; 2
-	costs	outpost_1_compressed_offset,       2, 25, 0, 0, 10		; 3
-	costs	barracks_1_compressed_offset,      2, 175, 0, 0, 0		; 4
-	costs	house_1_compressed_offset,         2, 30, 0, 0, 0		; 5
-	costs	mill_1_compressed_offset,          2, 100, 0, 0, 0		; 6
-	costs	towncenter_1_compressed_offset,    2, 275, 0, 0, 100	; 7
+	;		pointer                            appvar wood gold stone
+	building_costs	farm_1_compressed_offset,          2, 60, 0, 0		; 0
+	building_costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0		; 1
+	building_costs	miningcamp_1_compressed_offset,    2, 100, 0, 0		; 2
+	building_costs	outpost_1_compressed_offset,       2, 25, 0, 10		; 3
+	building_costs	barracks_1_compressed_offset,      2, 175, 0, 0		; 4
+	building_costs	house_1_compressed_offset,         2, 30, 0, 0		; 5
+	building_costs	mill_1_compressed_offset,          2, 100, 0, 0		; 6
+	building_costs	towncenter_1_compressed_offset,    2, 275, 0, 100	; 7
 	
 BuildingsAge2:
-	costs	farm_1_compressed_offset,          2, 60, 0, 0, 0		; 0
-	costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0, 0		; 1
-	costs	miningcamp_1_compressed_offset,    2, 100, 0, 0, 0		; 2
-	costs	outpost_1_compressed_offset,       2, 25, 0, 0, 10		; 3
-	costs	barracks_2_compressed_offset,      3, 175, 0, 0, 0		; 4
-	costs	house_2_compressed_offset,         3, 30, 0, 0, 0		; 5
-	costs	mill_2_compressed_offset,          3, 100, 0, 0, 0		; 6
-	costs	towncenter_2_compressed_offset,    3, 275, 0, 0, 100		; 7
-	costs	archery_2_compressed_offset,       3, 175, 0, 0, 0		; 8
-	costs	blacksmith_2_compressed_offset,    3, 150, 0, 0, 0		; 9
-	costs	market_2_compressed_offset,        3, 175, 0, 0, 0		; 10
-	costs	tower_2_compressed_offset,         3, 25, 0, 0, 125		; 11
+	building_costs	farm_1_compressed_offset,          2, 60, 0, 0		; 0
+	building_costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0		; 1
+	building_costs	miningcamp_1_compressed_offset,    2, 100, 0, 0		; 2
+	building_costs	outpost_1_compressed_offset,       2, 25, 0, 10		; 3
+	building_costs	barracks_2_compressed_offset,      3, 175, 0, 0		; 4
+	building_costs	house_2_compressed_offset,         3, 30, 0, 0		; 5
+	building_costs	mill_2_compressed_offset,          3, 100, 0, 0		; 6
+	building_costs	towncenter_2_compressed_offset,    3, 275, 0, 100	; 7
+	building_costs	archery_2_compressed_offset,       3, 175, 0, 0		; 8
+	building_costs	blacksmith_2_compressed_offset,    3, 150, 0, 0		; 9
+	building_costs	market_2_compressed_offset,        3, 175, 0, 0		; 10
+	building_costs	tower_2_compressed_offset,         3, 25, 0, 125	; 11
 	
 BuildingsAge3:
-	costs	farm_1_compressed_offset,          2, 60, 0, 0, 0		; 0
-	costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0, 0		; 1
-	costs	miningcamp_1_compressed_offset,    2, 100, 0, 0, 0		; 2
-	costs	outpost_1_compressed_offset,       2, 25, 0, 0, 10		; 3
-	costs	barracks_3_compressed_offset,      4, 175, 0, 0, 0		; 4
-	costs	house_3_compressed_offset,         4, 30, 0, 0, 0		; 5
-	costs	mill_3_compressed_offset,          4, 100, 0, 0, 0		; 6
-	costs	towncenter_3_compressed_offset,    4, 275, 0, 0, 100		; 7
-	costs	archery_3_compressed_offset,       4, 175, 0, 0, 0		; 8
-	costs	blacksmith_3_compressed_offset,    4, 150, 0, 0, 0		; 9
-	costs	market_3_compressed_offset,        4, 175, 0, 0, 0		; 10
-	costs	tower_3_compressed_offset,         4, 25, 0, 0, 125		; 11
-	costs	castle_3_compressed_offset,        4, 0, 0, 0, 650		; 12
-	costs	monastery_3_compressed_offset,     4, 175, 0, 0, 0		; 13
-	costs	siegeworkshop_3_compressed_offset, 4, 200, 0, 0, 0		; 14
-	costs	university_3_compressed_offset,    4, 200, 0, 0, 0		; 15
+	building_costs	farm_1_compressed_offset,          2, 60, 0, 0		; 0
+	building_costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0		; 1
+	building_costs	miningcamp_1_compressed_offset,    2, 100, 0, 0		; 2
+	building_costs	outpost_1_compressed_offset,       2, 25, 0, 10		; 3
+	building_costs	barracks_3_compressed_offset,      4, 175, 0, 0		; 4
+	building_costs	house_3_compressed_offset,         4, 30, 0, 0		; 5
+	building_costs	mill_3_compressed_offset,          4, 100, 0, 0		; 6
+	building_costs	towncenter_3_compressed_offset,    4, 275, 0, 100	; 7
+	building_costs	archery_3_compressed_offset,       4, 175, 0, 0		; 8
+	building_costs	blacksmith_3_compressed_offset,    4, 150, 0, 0		; 9
+	building_costs	market_3_compressed_offset,        4, 175, 0, 0		; 10
+	building_costs	tower_3_compressed_offset,         4, 25, 0, 125	; 11
+	building_costs	castle_3_compressed_offset,        4, 0, 0, 650		; 12
+	building_costs	monastery_3_compressed_offset,     4, 175, 0, 0		; 13
+	building_costs	siegeworkshop_3_compressed_offset, 4, 200, 0, 0		; 14
+	building_costs	university_3_compressed_offset,    4, 200, 0, 0		; 15
 	
 BuildingsAge4:
-	costs	farm_1_compressed_offset,          2, 60, 0, 0, 0		; 0
-	costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0, 0		; 1
-	costs	miningcamp_1_compressed_offset,    2, 100, 0, 0, 0		; 2
-	costs	outpost_1_compressed_offset,       2, 25, 0, 0, 10		; 3
-	costs	barracks_3_compressed_offset,      4, 175, 0, 0, 0		; 4
-	costs	house_3_compressed_offset,         4, 30, 0, 0, 0		; 5
-	costs	mill_3_compressed_offset,          4, 100, 0, 0, 0		; 6
-	costs	towncenter_4_compressed_offset,    5, 275, 0, 0, 100		; 7
-	costs	archery_3_compressed_offset,       4, 175, 0, 0, 0		; 8
-	costs	blacksmith_3_compressed_offset,    4, 150, 0, 0, 0		; 9
-	costs	market_4_compressed_offset,        5, 175, 0, 0, 0		; 10
-	costs	tower_4_compressed_offset,         5, 25, 0, 0, 125		; 11
-	costs	castle_3_compressed_offset,        4, 0, 0, 0, 650		; 12
-	costs	monastery_3_compressed_offset,     4, 175, 0, 0, 0		; 13
-	costs	siegeworkshop_3_compressed_offset, 4, 200, 0, 0, 0		; 14
-	costs	university_4_compressed_offset,    5, 200, 0, 0, 0		; 15
-	costs	btower_4_compressed_offset,        5, 0, 0, 100, 125		; 16
+	building_costs	farm_1_compressed_offset,          2, 60, 0, 0		; 0
+	building_costs	lumbercamp_1_compressed_offset,    2, 100, 0, 0		; 1
+	building_costs	miningcamp_1_compressed_offset,    2, 100, 0, 0		; 2
+	building_costs	outpost_1_compressed_offset,       2, 25, 0, 10		; 3
+	building_costs	barracks_3_compressed_offset,      4, 175, 0, 0		; 4
+	building_costs	house_3_compressed_offset,         4, 30, 0, 0		; 5
+	building_costs	mill_3_compressed_offset,          4, 100, 0, 0		; 6
+	building_costs	towncenter_4_compressed_offset,    5, 275, 0, 100	; 7
+	building_costs	archery_3_compressed_offset,       4, 175, 0, 0		; 8
+	building_costs	blacksmith_3_compressed_offset,    4, 150, 0, 0		; 9
+	building_costs	market_4_compressed_offset,        5, 175, 0, 0		; 10
+	building_costs	tower_4_compressed_offset,         5, 25, 0, 125	; 11
+	building_costs	castle_3_compressed_offset,        4, 0, 0, 650		; 12
+	building_costs	monastery_3_compressed_offset,     4, 175, 0, 0		; 13
+	building_costs	siegeworkshop_3_compressed_offset, 4, 200, 0, 0		; 14
+	building_costs	university_4_compressed_offset,    5, 200, 0, 0		; 15
+	building_costs	btower_4_compressed_offset,        5, 0, 100, 125	; 16
 	
 IconsTable1:
 	dl	icon_house_offset
@@ -134,23 +134,24 @@ IconsTableAges:
 	db	11, 6
 	
 UnitsSpritesPointersTable:
-	dl	UnitArbalest
-	dl	UnitArcher
-	dl	UnitChampion
-	dl	UnitCrossbowman
-	dl	UnitHalbadier
-	dl	UnitLongbowman
-	dl	UnitLongswordman
-	dl	UnitManAtArms
-	dl	UnitMilitia
-	dl	UnitMonk
-	dl	UnitPikeman
-	dl	UnitSheep
-	dl	UnitSkirmisher
-	dl	UnitESkirmisher
-	dl	UnitSpearman
-	dl	UnitSwordman
-	dl	UnitVillager
+	;		pointer           appvar wood gold food
+	unit_costs	UnitArbalest,     6, 25, 45, 0
+	unit_costs	UnitArcher,       6, 25, 45, 0
+	unit_costs	UnitChampion,     6, 0, 20, 60
+	unit_costs	UnitCrossbowman,  6, 0, 75, 125
+	unit_costs	UnitHalbadier,    6, 0, 600, 300
+	unit_costs	UnitLongbowman,   6, 35, 40, 0
+	unit_costs	UnitLongswordman, 6, 0, 65, 200
+	unit_costs	UnitManAtArms,    6, 0, 20, 60
+	unit_costs	UnitMilitia,      6, 0, 20, 60
+	unit_costs	UnitMonk,         7, 0, 100, 0
+	unit_costs	UnitPikeman,      7, 0, 90, 215
+	unit_costs	UnitSheep,        7, 0, 0, 0			; Bleep bleep I'm a sheep
+	unit_costs	UnitSkirmisher,   7, 35, 0, 25
+	unit_costs	UnitESkirmisher,  7, 35, 0, 25
+	unit_costs	UnitSpearman,     7, 25, 0, 35
+	unit_costs	UnitSwordman,     7, 0, 20, 60
+	unit_costs	UnitVillager,     7, 0, 0, 50
 	
 UnitsEventsTable:
 	dl	UnitAttack1

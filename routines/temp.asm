@@ -38,13 +38,8 @@ PlaceTempUnits:
 	ld	(hl), 0
 	ld	bc, arbalest_gfx
 	ld	a, 0
-	ld	e, 5
-	call	LoadUnitDynamically
-	ld	hl, units_active
-	ld	(hl), 1
-	inc	hl
-	ld	(hl), 1
-	ret
+	ld	e, 6
+	jp	LoadUnitDynamically
 	
 RegisterUnitDieEvent:
 	ld	hl, UNIT_DIE_TIMEOUT
@@ -54,8 +49,7 @@ RegisterUnitDieEvent:
 	ld	hl, UNIT_DIE_TIMEOUT * 2
 	ld	bc, RemoveUnitFromTile
 	ld	a, 1
-	call	RegisterEvent
-	ret
+	jp	RegisterEvent
 	
 TempUnitsData:
 	db	0, 1, 1, 100, 5

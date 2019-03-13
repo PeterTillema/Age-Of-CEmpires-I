@@ -658,7 +658,6 @@ LoadUnitDynamically:
 	ld	d, 3
 	mlt	de
 	add	iy, de
-	ld	(iy + UNIT_SPRITE.TYPE), a
 	ld	de, (buildings_sprites_ptr)
 	push	de
 	call	dzx7_Turbo					; HL = pointer to byte after uncompressed data
@@ -1205,7 +1204,7 @@ GoToAge:
 	
 	push	iy
 	ld	e, a
-	ld	d, 12; sizeof(costs)
+	ld	d, 10; sizeof(building_costs)
 	mlt	de
 	add	iy, de
 	ld	hl, (iy)

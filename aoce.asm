@@ -183,9 +183,9 @@ CheckGraphicsAppvarsLoop:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	call	SetBufferToScreen
 	call	FillScreenPink
-	call	PlaceTempBuildings
-	;call	PlaceTempUnits
-	;call	RegisterUnitDieEvent
+	;call	PlaceTempBuildings
+	call	PlaceTempUnits
+	call	RegisterUnitDieEvent
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	
 ; Already advance to age 1

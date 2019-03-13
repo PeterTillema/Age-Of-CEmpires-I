@@ -144,10 +144,6 @@ TileIsResource:
 LoadMap:
 	call	EraseArea
 	printString LoadingMapMessage, 5, 112
-	ld	hl, (map_data_ptr)
-	ld	(hl), TILE_UNIT_GRASS
-	inc	hl
-	ld	(hl), 0
 	or	a, 1				; Set NZ
 	ret
 	
