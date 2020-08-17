@@ -65,7 +65,7 @@ macro app_private
 		dl 0				; 027h
  		; start of application relocation table
 		app.table_offset := $% - app.start_offset
-		dl app.relocation_table
+		db app.relocation_table
 
 		app.code_offset := $% - app.start_offset
 		app.code := $% - app.header_start

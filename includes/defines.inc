@@ -114,8 +114,8 @@ end virtual
 ;;; Schedule event struct
 virtual at 0
 EVENT:
-.POINTER              dl 0
-.UNIT                 db 0
+.POINTER              rl 1
+.UNIT                 rb 1
 .TIME                 rb 4
 .size                 := $ - .
 end virtual

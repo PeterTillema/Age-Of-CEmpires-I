@@ -1,6 +1,6 @@
 # Commands and tools
 ASSEMBLER ?= fasmg
-CONVPNG   ?= convpng
+CONVPNG   ?= convpng.exe
 
 # Sources
 SRC       ?= aoce.asm
