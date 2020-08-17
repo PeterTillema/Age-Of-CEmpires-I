@@ -38,8 +38,8 @@ end macro
 
 macro @ez80.word @value*
 	local value, address
-	value = @value
-	address = $
+	value := @value
+	address := $
 	if elementsof value
 		irpv each, appvar
 			if value relativeto each
